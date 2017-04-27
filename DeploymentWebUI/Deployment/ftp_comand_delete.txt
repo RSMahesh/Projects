@@ -1,0 +1,12 @@
+open waws-prod-sg1-001.ftp.azurewebsites.windows.net
+MBDevAsiAPI\RSMahesh
+1234test!
+
+mdelete /site/wwwroot/App_Data/jobs/continuous/EntityChangeListener/*
+rmdir /site/wwwroot/App_Data/jobs/continuous/EntityChangeListener
+rmdir /site/wwwroot/App_Data/jobs/continuous
+rmdir /site/wwwroot/App_Data/jobs
+cd /site/wwwroot/App_Data/
+dir
+disconnect
+bye

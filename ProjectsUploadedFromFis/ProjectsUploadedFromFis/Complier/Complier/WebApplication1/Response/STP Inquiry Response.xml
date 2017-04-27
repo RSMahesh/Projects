@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" ?>
+<IFX xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.fiserv.com/cbs">
+	<GeneralStatus>
+		<StatusCode>0</StatusCode>
+		<StatusLevel>IFX</StatusLevel>
+		<StatusDesc>The request was processed successfully.</StatusDesc>
+	</GeneralStatus>
+	<Status>
+		<StatusCode>0</StatusCode>
+		<Severity>Info</Severity>
+		<StatusDesc>The request was processed successfully.</StatusDesc>
+		<SupportUID>83ADADEB-B8BB-4988-B2CB-4C2B2D4CD0E8</SupportUID>
+	</Status>
+	<SignonRs>
+		<Status>
+			<StatusCode>0</StatusCode>
+			<Severity>Info</Severity>
+			<StatusDesc>The request was processed successfully.</StatusDesc>
+			<SupportUID>0BAB9E42-3EB1-4E68-BEE7-5D9029E0DE95</SupportUID>
+		</Status>
+		<SignonRole>CSR</SignonRole>
+		<CustId>
+			<SPName>FiservCBS</SPName>
+			<CustLoginId>comr152</CustLoginId>
+		</CustId>
+		<GenSessKey>0</GenSessKey>
+		<ClientDt>
+			<Year>2009</Year>
+			<Month>3</Month>
+			<Day>12</Day>
+			<Hour>5</Hour>
+			<Minute>42</Minute>
+			<Second>20</Second>
+		</ClientDt>
+		<CustLangPref />
+		<ClientApp>
+			<Org>Fiserv</Org>
+			<Name>CommAdmin</Name>
+			<ClientAppKey>CBSILOUBHLLZSUPFBTEMBUHQJOIVKDBR</ClientAppKey>
+		</ClientApp>
+		<ServerDt>
+			<Year>2009</Year>
+			<Month>3</Month>
+			<Day>12</Day>
+			<Hour>4</Hour>
+			<Minute>30</Minute>
+			<Second>1</Second>
+			<Fraction>140000</Fraction>
+			<UTCOffset>-300</UTCOffset>
+		</ServerDt>
+		<Language>en-US</Language>
+		<PersonName>
+			<LastName>user</LastName>
+			<FirstName>fiserv</FirstName>
+		</PersonName>
+	</SignonRs>
+	<EnvironmentInfo>
+		<EnvironmentName>rlsbank</EnvironmentName>
+	</EnvironmentInfo>
+	<CashManSvcRs>
+		<Status>
+			<StatusCode>0</StatusCode>
+			<Severity>Info</Severity>
+			<StatusDesc>The request was processed successfully.</StatusDesc>
+			<SupportUID>E6489828-11F2-4572-A8A0-92971594F70A</SupportUID>
+		</Status>
+		<RqUID>e6489828-11f2-4572-a8a0-92971594f70a</RqUID>
+		<SPName>FiservCBS</SPName>
+		<Version>8.1.0.9</Version>
+		<StopChkInqRs>
+			<Status>
+				<StatusCode>0</StatusCode>
+				<Severity>Info</Severity>
+				<StatusDesc>The request was processed successfully.</StatusDesc>
+				<SupportUID>C58CD599-A76C-487C-AB46-57F68F6193A3</SupportUID>
+			</Status>
+			<RqUID>1f68c136-8b3d-4b8f-91b3-42f42c08cbaf</RqUID>
+			<RecCtrlOut>
+				<MatchedRec></MatchedRec>
+				<SentRec></SentRec>
+				<Cursor></Cursor>
+			</RecCtrlOut>
+			<SelRangeDt>
+				 <StartDt>
+					<Year>2011</Year>
+					<Month>2</Month>
+					<Day>4</Day>
+				</StartDt>
+				 <EndDt>
+					<Year>2011</Year>
+					<Month>3</Month>
+					<Day>6</Day>
+				</EndDt>
+			</SelRangeDt>
+			<SelRangeCurAmt>
+				<LowCurAmt>
+					<Amt>1022.36000000</Amt>
+				</LowCurAmt>
+				 <HighCurAmt>
+					<Amt>1042.36</Amt>
+				</HighCurAmt>
+			</SelRangeCurAmt>
+			<StopChkInfo>
+				 <ChkRange>
+					<ChkNumStart>7443449</ChkNumStart>
+					<ChkNumEnd />
+				</ChkRange>
+				<ChkNumRqFlag>Y</ChkNumRqFlag>
+			</StopChkInfo>
+			<StopChkRec>
+				<StopChkInfo>
+					[stpInquiryDetails.CheckNumber]
+					<ChkNum>756756</ChkNum>		
+					<ChkRange>
+						<ChkNumStart>756756</ChkNumStart>
+						[stpInquiryDetails.ToCheckNumber]
+						<ChkNumEnd />
+					</ChkRange>
+					<Name>ds</Name>
+					[stpInquiryDetails.Amount]
+					<CurAmt>
+						<Amt>23.00</Amt>
+					</CurAmt>
+					[stpInquiryDetails.IssueDate]
+					<OrigDt>
+						<Year>2009</Year>
+						<Month>3</Month>
+						<Day>12</Day>
+					</OrigDt>
+					[stpInquiryDetails.Reason]
+					<ReasonDesc>as</ReasonDesc>
+					<ChkNumRqFlag>Y</ChkNumRqFlag>
+					[stpInquiryDetails.CreateDate]
+					<EnterDt>
+						<Year>2009</Year>
+						<Month>3</Month>
+						<Day>12</Day>
+					</EnterDt>
+					[stpInquiryDetails.ExpirationDate]
+					<ExpDt>
+						<Year>2009</Year>
+						<Month>9</Month>
+						<Day>8</Day>
+					</ExpDt>
+					<CardSignedFlag>1</CardSignedFlag>
+				</StopChkInfo>
+			
+				<StopChkStatusCode> </StopChkStatusCode>
+				<CSPRefId>00004</CSPRefId>
+
+			</StopChkRec>
+			<DepAcctId>
+				<AcctId>9995552229</AcctId>		[Account ID]
+				<AcctType>SV</AcctType>			[Account Type]
+			</DepAcctId>
+			<RecType>Stop</RecType>			[Stop Description]
+			<StopChkInfo>
+				[stpInquiryDetails.CheckNumber]
+				<ChkNum>756756</ChkNum>		[Check Number]
+				<ChkRange>
+					<ChkNumStart>756756</ChkNumStart>
+					[stpInquiryDetails.ToCheckNumber]
+					<ChkNumEnd />
+				</ChkRange>
+				<Name>ds</Name>
+				[stpInquiryDetails.Amount]
+				<CurAmt>
+					<Amt>23.00</Amt>
+				</CurAmt>
+				[stpInquiryDetails.IssueDate]
+				<OrigDt>
+					<Year>2009</Year>
+					<Month>3</Month>
+					<Day>12</Day>
+				</OrigDt>
+				[stpInquiryDetails.Reason]
+				<ReasonDesc>as</ReasonDesc>
+				<ChkNumRqFlag>Y</ChkNumRqFlag>
+				[stpInquiryDetails.CreateDate]
+				<EnterDt>
+					<Year>2009</Year>
+					<Month>3</Month>
+					<Day>12</Day>
+				</EnterDt>
+				[stpInquiryDetails.ExpirationDate]
+				<ExpDt>
+					<Year>2009</Year>
+					<Month>9</Month>
+					<Day>8</Day>
+				</ExpDt>
+				<CardSignedFlag>1</CardSignedFlag>
+			</StopChkInfo>
+			<ExpDt>
+				<Year>2009</Year>
+				<Month>9</Month>
+				<Day>8</Day>
+			</ExpDt>
+			[ReferenceId]
+			<CSPRefId>00004</CSPRefId>
+		</StopChkInqRs>
+	</CashManSvcRs>
+</IFX>
+
+

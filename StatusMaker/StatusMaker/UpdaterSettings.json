@@ -1,0 +1,12 @@
+﻿[
+  {
+    "Name": "AppUpdater.VNCAppUpdater",
+    "Location": "\\\\10.131.40.102\\StatusMaker\\ExecutionFolder",
+    "Sequence": 1
+  },
+  {
+    "Name": "AppUpdater.GitHubAppUpdater",
+    "Location": "https://api.github.com/repos/MaheshBailwal/StatusMakerLastestApp/contents/App",
+    "Sequence": 2
+  }
+]

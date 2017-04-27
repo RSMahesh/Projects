@@ -1,0 +1,77 @@
+﻿@model InfoWebTicketSystem.MVC.ViewModels.SelectDepartmentViewModel
+@{
+    ViewBag.Title = "SelectDepartment";
+    
+}
+
+@using (Html.BeginForm("SelectDepartment", "NewTicket", FormMethod.Post, null))
+{
+    <div id="maincorecontent">
+
+        <!-- BEGIN DIALOG PROCESSING -->
+        <div class="boxcontainer">
+            <div class="boxcontainerlabel">
+                Select a department
+            </div>
+            <div class="boxcontainercontent">
+                If you can't find a solution to your problem in our knowledgebase, you can submit
+                a ticket by selecting the appropriate department below.
+                <br />
+                <br />
+                <table class="hlineheader">
+                    <tr>
+                        <th rowspan="2" nowrap>
+                            Departments
+                        </th>
+                        <td>
+                            &nbsp;
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="hlinelower">
+                            &nbsp;
+                        </td>
+                    </tr>
+                </table>
+                <table width="100%" border="0" cellspacing="1" cellpadding="4">
+                    <tr>
+                        <td width="16" align="left" valign="middle" class="zebraodd">
+                            @Html.RadioButtonFor(model => model.Department, "SALE")
+                        </td>
+                        <td>
+                            <label for="department_116">
+                                Sales
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="16" align="left" valign="middle" class="zebraodd">
+                            @Html.RadioButtonFor(model => model.Department, "BILL")
+                        </td>
+                        <td>
+                            <label for="department_117">
+                                Billing
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="16" align="left" valign="middle" class="zebraodd">
+                            @Html.RadioButtonFor(model => model.Department, "TECH")
+                        </td>
+                        <td>
+                            <label for="department_118">
+                                Technical
+                            </label>
+                        </td>
+                    </tr>
+
+                </table>
+                <br />
+                <div class="subcontent">
+                    <input class="rebuttonwide2" value="Next &raquo;" type="submit" name="button" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

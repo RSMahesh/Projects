@@ -1,0 +1,147 @@
+﻿<div id="maincorecontent">
+    <div style="display: none;" class="dialogerror">
+        <div class="dialogerrorsub">
+            <div class="dialogerrorcontent">
+            </div>
+        </div>
+    </div>
+    <!-- BEGIN DIALOG PROCESSING -->
+    <div class="boxcontainer">
+        <div class="boxcontainerlabel">
+            Your ticket details
+        </div>
+        <div class="boxcontainercontent">
+            Enter your ticket details below. If you are reporting a problem, please remember
+                to provide as much information that is relevant to the issue as possible.<br />
+            <br />
+            <table class="hlineheader">
+                <tr>
+                    <th rowspan="2" nowrap>General Information
+                    </th>
+                    <td>&nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td class="hlinelower">&nbsp;
+                    </td>
+                </tr>
+            </table>
+            <table width="100%" border="0" cellspacing="1" cellpadding="4">
+                <tr>
+                    <td width="200" align="left" valign="middle" class="zebraodd">Type
+                    </td>
+                    <td>
+                        <select ng-model="CollectTicketDetailViewModal.TicketType">
+                            <option value="NI">Need Information</option>
+                            <option value="ER">Error on Web Site</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <br />
+            <table class="hlineheader">
+                <tr>
+                    <th rowspan="2" nowrap>Ticket authentication details
+                    </th>
+                    <td>&nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td class="hlinelower">&nbsp;
+                    </td>
+                </tr>
+            </table>
+            <table width="100%" border="0" cellspacing="1" cellpadding="4">
+                <tr>
+                    <td width="200" align="left" valign="middle" class="zebraodd">Domain name:
+                    </td>
+                    <td>
+                        <input type="text" ng-model="CollectTicketDetailViewModal.Domain" value="toptoolbarlink" class="swifttextlarge" maxlength="190" autocomplete="off" size="20" />
+
+                        <br />
+                        <span class="smalltext">Please enter a valid domain name for which you need support</span>
+                    </td>
+                </tr>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <tr>
+                        <td width="200" align="left" valign="middle" class="zebraodd">Email ID:<span class="customfieldrequired">*</span>
+                        </td>
+                        <td>
+                            <input type="text" ng-model="CollectTicketDetailViewModal.UserEmail" value="toptoolbarlink" class="swifttextlarge" maxlength="190" autocomplete="off" size="20" />
+                            <br />
+                            <span class="smalltext">Please enter a valid email id for mail communication</span>
+                        </td>
+                    </tr>
+                }
+            </table>
+            <br />
+            <table class="hlineheader">
+                <tr>
+                    <th rowspan="2" nowrap>Message Details
+                    </th>
+                    <td>&nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td class="hlinelower">&nbsp;
+                    </td>
+                </tr>
+            </table>
+            <table width="100%" border="0" cellspacing="1" cellpadding="4">
+                <tr>
+                    <td width="200" align="left" valign="middle" class="zebraodd">Subject
+                    </td>
+                    <td width="">
+                        <input type="text" ng-model="CollectTicketDetailViewModal.Subject" class="swifttextlarge" />
+            
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="left" valign="top">
+
+                        <textarea ng-model="CollectTicketDetailViewModal.Message" class="swifttextareawide" rows="15" />
+
+                        <div id="irscontainer" class="irscontainer">
+                            <div class="irsui">
+                                <div class="irstitle">
+                                    Loading knowledgebase suggestions...
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <br />
+            <table class="hlineheader">
+                <tr>
+                    <th rowspan="2" nowrap>Upload File(s) [<div class="addplus">
+                        <a href="#ticketattachmentcontainer" onclick="javascript:$('#ticketattachmentcontainer').show();">Add File
+                        </a>
+                    </div>
+                        ]
+                    </th>
+                    <td>&nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td class="hlinelower">&nbsp;
+                    </td>
+                </tr>
+            </table>
+            <div id="ticketattachmentcontainer" style="display: none">
+                <div class="ticketattachmentitem">
+                    <div class="ticketattachmentitemdelete">
+                        &nbsp;
+                    </div>
+                    <input type="file" class="swifttextlarge" ng-model="CollectTicketDetailViewModal.AttachedFile" />
+                </div>
+            </div>
+            <br />
+            <div class="subcontent">
+                <input class="rebuttonwide2" value="Submit" type="button" name="button" ng-click="submitTicketDetail()" /><input type="hidden" name="departmentid" value="117" />
+            </div>
+        </div>
+    </div>
+    
+</div>

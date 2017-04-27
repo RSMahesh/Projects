@@ -1,0 +1,9 @@
+﻿ILMerge
+
+ILMerge is a utility for merging multiple .NET assemblies into a single .NET assembly. It works on executables and DLLs alike and comes with several options for controlling the processing and format of the output. See the accompanying documentation for details.
+
+Download link http://www.microsoft.com/en-us/download/details.aspx?id=17630
+
+Example
+
+"C:\Program Files\Microsoft\ILMerge\ilmerge.exe" /target:winexe /out:C:\Release\ServerWindowsInterface12.exe C:\Release\ServerWindowsInterface.exe C:\Release\SelfUpdatingSever.dll C:\Release\ServerDLL.dll

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ServiceConfiguration serviceName="FTPService" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="4" osVersion="*" schemaVersion="2015-04.2.6">
+  <Role name="FTPWorker">
+    <Instances count="1" />
+    <ConfigurationSettings>
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=mediavaletdevasiadiags;AccountKey=zM9IMwr7d8ek/sDSu7MpoJywgnjE5r9qr7SyXUivHvrDy8KctamIUBAKLIFjZINaHSJNLorWhoie0dGALJpYOw==" />
+      <Setting name="StorageConnectionString" value="DefaultEndpointsProtocol=https;AccountName=mediavaletdevasia;AccountKey=wtjIEIXRmtA6tHUW5zkhYwc1cCYhlFhsW8z2Cf3TUpKacrrnYWBaLUUrQDacfH3kQ3XhftEhVt3f2ONZQhCMog==" />
+      <Setting name="BacthTablePollingSleepTimeInSeconds" value="60" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="admin" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="MIIBpQYJKoZIhvcNAQcDoIIBljCCAZICAQAxggFWMIIBUgIBADA6MCYxJDAiBgNVBAMTG01lZGlhdmFsZXQgZGV2ZWxvcG1lbnQgMjAxNAIQvggsKfaYdIpHYghQsixd9DANBgkqhkiG9w0BAQEFAASCAQAgsIZGAKNrF/d5u3HT3U60z0bN8AlskhKI4tuuCvC3SOje4kNj5S68jWi9uU/CDNnDOiq7t/Ra5oj7LeikBZTWEVhon0MuiQ2hb8ABP7lacTshaRRiJUfYNpZ9r/xXybxqsvt9qPNx62ZBpdzWh9bkeesfNTI6K/Et4QK5oOmejkDjBbNeITqG4q2Q+8eP221FnC5J7nxYi14hzbSNiJuvVq/Dxmyndy8FjRmqCOz8AWaQV8TNwHqtdtl6EvtRRDvZEo1T1CW6uWtoqkKktHV8ViqzM1OhCB0/DnfHJqibzz2ApI1yVrvB6Fow3L3M4bpjnZxMm/2ncvZz6f4Kb8V+MDMGCSqGSIb3DQEHATAUBggqhkiG9w0DBwQI0kogXLIEDFWAEBmXmuM6n7b3KMbeAIUy3r8=" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2015-07-18T23:59:59.0000000+05:30" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteForwarder.Enabled" value="true" />
+      <Setting name="ApplicationMode" value="live" />
+      <Setting name="BlobStorageEndpoint" value="https://mediavaletdevasia.blob.core.windows.net" />
+      <Setting name="AccountName" value="mediavaletdevasia" />
+      <Setting name="AccountSharedKey" value="wtjIEIXRmtA6tHUW5zkhYwc1cCYhlFhsW8z2Cf3TUpKacrrnYWBaLUUrQDacfH3kQ3XhftEhVt3f2ONZQhCMog==" />
+      <Setting name="DiagnosticsTransferPeriod" value="1" />
+      <Setting name="EventSyncTimeOutSeconds" value="360" />
+      <Setting name="FromAddress" value="delivery@mediavalet.net" />
+      <Setting name="SmtpHost" value="smtp.sendgrid.net" />
+      <Setting name="OutGoingEmailUsername" value="rs-mv-sendgrid" />
+      <Setting name="OutGoingEmailPassword" value="y&quot;~3|xM4!1~3[$w" />
+      <Setting name="Port" value="587" />
+      <Setting name="Ssl" value="true" />
+      <Setting name="FromEmailDisplayName" value="MediaValet Support" />
+      <Setting name="SenderEmailAddress" value="delivery@mediavalet.net" />
+      <Setting name="ToAddress" value="delivery@mediavalet.net" />
+      <Setting name="DeploymentEnvironment" value="TEST North America" />
+      <Setting name="ServiceBusConnectionString" value="" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="36B895622A98F627E2B33D0E7F5E55A9FBD5A5BC" thumbprintAlgorithm="sha1" />
+    </Certificates>
+  </Role>
+</ServiceConfiguration>
+

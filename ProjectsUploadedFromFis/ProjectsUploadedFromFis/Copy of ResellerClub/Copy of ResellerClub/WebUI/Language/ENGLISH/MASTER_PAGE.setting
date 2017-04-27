@@ -1,0 +1,18 @@
+MASTER_GET_WEBSITE = Get WebSite
+MASTER_GET_WINDOWS_HOSTING = Get Windows Hosting
+MASTER_GET_LINUX_HOSTING = Get Linux Hosting
+MASTER_GET_EMAILHOSTING = Get Email Hosting
+MASTER_GET_CERTIFICATE = Get Digital Certificate
+
+
+MASTER_HOME = Home
+MASTER_LOGIN = Login
+MASTER_SIGNOUT = SignOut	
+
+MASTER_MY_ACCOUNT = My Account
+MASTER_CONTACT_US = Contact Us
+
+MASTER_CART_ITEM = Item(s) in Cart
+
+MASTER_CHECKOUT = checkout
+

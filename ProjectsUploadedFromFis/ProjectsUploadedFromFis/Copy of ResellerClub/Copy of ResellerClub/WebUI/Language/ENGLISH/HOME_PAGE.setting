@@ -1,0 +1,31 @@
+HOMEPAGE_LEFT_HEADING_PART1 = Get Your
+HOMEPAGE_LEFT_HEADING_PART2 = Domain Name
+HOMEPAGE_RIGHT_HEADING = Build your Own Website
+HOMEPAGE_RIGHT_SUBHEADING1 = Quick & Easy to Use
+HOMEPAGE_RIGHT_SUBHEADING2 = Choose from hundreds of template designs
+HOMEPAGE_RIGHT_SUBHEADING3 = Up-and-Running User Friendly Interface
+HOMEPAGE_RIGHT_SUBHEADING4 = Build Your High-Quality Professional Websites
+
+
+HOMEPAGE_WEBHOSTING = Web Hosting
+HOMEPAGE_WEBHOSTING_DESCRIPTION = Host you website with infoweb sercices. 30 days money back garunteed. 
+HOMEPAGE_WEBHOSTING_FEATURE1 = 99.9% Uptime Guaranteed
+HOMEPAGE_WEBHOSTING_FEATURE2 = Reliable & Secure
+HOMEPAGE_WEBHOSTING_FEATURE3 = Powered by cPanel/Plesk and more ..
+
+
+HOMEPAGE_EMAILHOSTING = Email Hosting
+HOMEPAGE_EMAILHOSTING_DESCRIPTION = Professional email hosting service is ideal for businesses and individuals.
+HOMEPAGE_EMAILHOSTING_FEATURE1 = SMTP/POP3/IMAP Access
+HOMEPAGE_EMAILHOSTING_FEATURE2 = Web-Based Email Access 	
+HOMEPAGE_EMAILHOSTING_FEATURE3 = Blackberry Enabled and more ...
+
+
+HOMEPAGE_SSL = SSL Certificate
+HOMEPAGE_SSL_DESCRIPTION = There is no better way of building users' trust than by enabling SSL on your website
+HOMEPAGE_SSL_FEATURE1 = Upto 256 bit encryption
+HOMEPAGE_SSL_FEATURE2 = Maximum Browser Compatibility
+HOMEPAGE_SSL_FEATURE3 = Unlimited Free Reissues and more ...
+
+HOMEPAGE_ViewPlan = View Plan
+HOMEPAGE_GO = Go

@@ -1,0 +1,87 @@
+﻿<IFX>
+	<GeneralStatus>
+		<StatusCode>0</StatusCode>
+		<StatusLevel>IFX</StatusLevel>
+		<StatusDesc>The request was processed successfully.</StatusDesc>
+	</GeneralStatus>
+	<Status>
+		<StatusCode>0</StatusCode>
+		<Severity>Info</Severity>
+		<StatusDesc>The request was processed successfully.</StatusDesc>
+		<SupportUID>83ADADEB-B8BB-4988-B2CB-4C2B2D4CD0E8</SupportUID>
+	</Status>
+	<SignonRs>
+		<Status>
+			<StatusCode>0</StatusCode>
+			<Severity>Info</Severity>
+			<StatusDesc>The request was processed successfully.</StatusDesc>
+			<SupportUID>0BAB9E42-3EB1-4E68-BEE7-5D9029E0DE95</SupportUID>
+		</Status>
+		<SignonRole>CSR</SignonRole>
+		<CustId>
+			<SPName>FiservCBS</SPName>
+			<CustLoginId>comr152</CustLoginId>
+		</CustId>
+		<GenSessKey>0</GenSessKey>
+		<ClientDt>
+			<Year>2009</Year>
+			<Month>3</Month>
+			<Day>12</Day>
+			<Hour>5</Hour>
+			<Minute>42</Minute>
+			<Second>20</Second>
+		</ClientDt>
+		<CustLangPref />
+		<ClientApp>
+			<Org>Fiserv</Org>
+			<Name>CommAdmin</Name>
+			<ClientAppKey>CBSILOUBHLLZSUPFBTEMBUHQJOIVKDBR</ClientAppKey>
+		</ClientApp>
+		<ServerDt>
+			<Year>2009</Year>
+			<Month>3</Month>
+			<Day>12</Day>
+			<Hour>4</Hour>
+			<Minute>30</Minute>
+			<Second>1</Second>
+			<Fraction>140000</Fraction>
+			<UTCOffset>-300</UTCOffset>
+		</ServerDt>
+		<Language>en-US</Language>
+		<PersonName>
+			<LastName>user</LastName>
+			<FirstName>fiserv</FirstName>
+		</PersonName>
+	</SignonRs>
+	<EnvironmentInfo>
+		<EnvironmentName>rlsbank</EnvironmentName>
+	</EnvironmentInfo>
+	<CashManSvcRs>
+		<Status>
+			<StatusCode>0</StatusCode>
+			<Severity>Info</Severity>
+			<StatusDesc>The request was processed successfully.</StatusDesc>
+			<SupportUID>E6489828-11F2-4572-A8A0-92971594F70A</SupportUID>
+		</Status>
+		<RqUID>4b68a123-a5bb-44c4-931f-19ce48ec36a9</RqUID>
+		<SPName>FiservCBS</SPName>
+		<Version>8.1.0.9</Version>
+		<StopChkCanRs>
+			<Status>
+				<StatusCode>0</StatusCode>
+				<Severity>Info</Severity>
+				<StatusDesc>The request was processed successfully.</StatusDesc>
+				<SupportUID>C58CD599-A76C-487C-AB46-57F68F6193A3</SupportUID>
+			</Status>
+			<RqUID>1f68c136-8b3d-4b8f-91b3-42f42c08cbaf</RqUID>
+			<DepAcctId>
+				<AcctId>Fiserv.CBS.IFX.DepAcctIdType</AcctId>
+				<AcctType>SV</AcctType>
+			</DepAcctId>
+			<RecType>Stop</RecType>
+			<StopChkInfo/>
+			<CSPRefId>00004</CSPRefId>
+		</StopChkCanRs>
+	</CashManSvcRs>
+</IFX>
+

@@ -1,0 +1,534 @@
+﻿<?xml version="1.0" ?>
+<IFX xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.fiserv.com/cbs">
+	<GeneralStatus>
+		<StatusCode>0</StatusCode>
+		<StatusLevel>IFX</StatusLevel>
+		<StatusDesc>The request was processed successfully.</StatusDesc>
+	</GeneralStatus>
+	<Status>
+		<StatusCode>0</StatusCode>
+		<Severity>Info</Severity>
+		<StatusDesc>The request was processed successfully.</StatusDesc>
+		<SupportUID>F0136E9F-6459-482C-87AD-DD2394795F11</SupportUID>
+	</Status>
+	<SignonRs>
+		<Status>
+			<StatusCode>0</StatusCode>
+			<Severity>Info</Severity>
+			<StatusDesc>The request was processed successfully.</StatusDesc>
+			<SupportUID>F9E92C16-554E-4D1F-BA29-1F8AE7D7222B</SupportUID>
+		</Status>
+		<SignonRole>CSR</SignonRole>
+		<CustId>
+			<SPName>FiservCBS</SPName>
+			<CustLoginId>BLUSER</CustLoginId>
+		</CustId>
+		<GenSessKey>0</GenSessKey>
+		<ClientDt>
+			<Year>2009</Year>
+			<Month>2</Month>
+			<Day>27</Day>
+			<Hour>14</Hour>
+			<Minute>44</Minute>
+			<Second>9</Second>
+		</ClientDt>
+		<CustLangPref />
+		<ClientApp>
+			<Org>CCU</Org>
+			<Name>BankLink</Name>
+			<ClientAppKey>CCUTXMHRTJUKJUHPBHCTSPRMFQUCIQXD</ClientAppKey>
+		</ClientApp>
+		<ServerDt>
+			<Year>2009</Year>
+			<Month>2</Month>
+			<Day>27</Day>
+			<Hour>13</Hour>
+			<Minute>44</Minute>
+			<Second>10</Second>
+			<Fraction>139000</Fraction>
+			<UTCOffset>-360</UTCOffset>
+		</ServerDt>
+		<Language>en-US</Language>
+		<PersonName>
+			<LastName>Link</LastName>
+			<FirstName>Bank</FirstName>
+		</PersonName>
+	</SignonRs>
+	<EnvironmentInfo>
+		<EnvironmentName>BankLink</EnvironmentName>
+	</EnvironmentInfo>
+	<CashManSvcRs>
+		<Status>
+			<StatusCode>0</StatusCode>
+			<Severity>Info</Severity>
+			<StatusDesc>The request was processed successfully.</StatusDesc>
+			<SupportUID>9ADC1D37-53D8-4C6B-AC5F-E06E24989D8F</SupportUID>
+		</Status>
+		<RqUID>9adc1d37-53d8-4c6b-ac5f-e06e24989d8f</RqUID>
+		<SPName>FiservCBS</SPName>
+		<Version>8.1.0.9</Version>
+		<AcctInqRs>
+			<Status>
+				<StatusCode>0</StatusCode>
+				<Severity>Info</Severity>
+				<StatusDesc>The request was processed successfully.</StatusDesc>
+				<SupportUID>86F1B17C-D271-4C45-A9A6-334D732424C8</SupportUID>
+			</Status>
+			<RqUID>8d81a966-aa4d-4b64-b5a9-7e8990000031</RqUID> [Transmit Number same as request]
+			<DepAcctId>
+				<AcctId>101334240</AcctId>   [Same as request]
+				<AcctType>DD</AcctType> 	     [Same as request]
+			</DepAcctId>
+			<IncExtBal>1</IncExtBal>
+			<IncBal>1</IncBal>
+			<Addr>
+				<FullName>MARANATHA SUNDAY SCHOOL</FullName>
+				<Addr1>11738 ROGUE WAY</Addr1>
+				<Addr2>DALLAS TX 75218-1832</Addr2>
+			</Addr>
+			<UpDt>
+				<Year>2008</Year>
+				<Month>11</Month>
+				<Day>24</Day>
+			</UpDt>
+			<LastTrnDt>
+				<Year>2008</Year>
+				<Month>11</Month>
+				<Day>13</Day>
+			</LastTrnDt>
+			<LastStmtDt>
+				<Year>2009</Year>
+				<Month>1</Month>
+				<Day>31</Day>
+			</LastStmtDt>
+			<IntRate>0</IntRate>
+			<SweepBalRelFlag>0</SweepBalRelFlag>
+			<AcctBal>
+				<BalType>Ledger</BalType>
+				<CurAmt>
+					[Ledger Balance]
+					<Amt>-4.55</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</AcctBal>
+			<AcctBal>
+				<BalType>Avail</BalType>
+				<CurAmt>
+					[Available Balance]
+					<Amt>-4.55</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</AcctBal>
+			<AcctBal>
+				<BalType>Current</BalType>
+				<CurAmt>
+					[Current Balance]
+					<Amt>-4.55</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</AcctBal>
+			<AcctBal>
+				<BalType>AvailCredit</BalType>
+				<CurAmt>
+					<Amt>0.00</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</AcctBal>
+			<AcctBal>
+				<BalType>MemoAvail</BalType>
+				<CurAmt>
+					<Amt>-4.55</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</AcctBal>
+			<AcctBal>
+				<BalType>MemoLedger</BalType>
+				<CurAmt>
+					<Amt>-4.55</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</AcctBal>
+			<AcctBal>
+				<BalType>Memo</BalType>
+				<CurAmt>
+					<Amt>-4.55</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</AcctBal>
+			<AcctBal>
+				<BalType>Inquiry</BalType>
+				<CurAmt>
+					<Amt>-4.55</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</AcctBal>
+			<AcctBal>
+				<BalType>MemoHold</BalType>
+				<CurAmt>
+					<Amt>0.00</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</AcctBal>
+			<AcctBal>
+				<BalType>Hold</BalType>
+				<CurAmt>
+					<Amt>0.00</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</AcctBal>
+			<AcctBal>
+				<BalType>MemoOverdraft</BalType>
+				<CurAmt>
+					<Amt>0.00</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</AcctBal>
+			<AcctBal>
+				<BalType>AvailLOC</BalType>
+				<CurAmt>
+					<Amt>0.00</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</AcctBal>
+			<AcctBal>
+				<BalType>AccruedInterest</BalType>
+				<CurAmt>
+					[Intereset Accured]
+					<Amt>0.00</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</AcctBal>
+			<ExtAcctBal>
+				<ExtBalType>Overdraft</ExtBalType>
+				<CurAmt>
+					<Amt>0.00</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</ExtAcctBal>
+			<ExtAcctBal>
+				<ExtBalType>PendAuthAmt</ExtBalType>
+				<CurAmt>
+					<Amt>0.00</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</ExtAcctBal>
+			<ExtAcctBal>
+				<ExtBalType>YTDInterestPaid</ExtBalType>
+				<CurAmt>
+					<Amt>0.00</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</ExtAcctBal>
+			<ExtAcctBal>
+				<ExtBalType>YTDWithholding</ExtBalType>
+				<CurAmt>
+					<Amt>0.00</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</ExtAcctBal>
+			<ExtAcctBal>
+				<ExtBalType>LastYrIntPaid</ExtBalType>
+				<CurAmt>
+					<Amt>0.00</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</ExtAcctBal>
+			<ExtAcctBal>
+				<ExtBalType>MemoAvail2</ExtBalType>
+				<CurAmt>
+					<Amt>-4.55</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</ExtAcctBal>
+			<ExtAcctBal>
+				<ExtBalType>Avail2</ExtBalType>
+				<CurAmt>
+					<Amt>-4.55</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</ExtAcctBal>
+			<ExtAcctBal>
+				<ExtBalType>Unavail</ExtBalType>
+				<CurAmt>
+					<Amt>0.00</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</ExtAcctBal>
+			<ExtAcctBal>
+				<ExtBalType>Float</ExtBalType>
+				<CurAmt>
+					<Amt>0.00</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</ExtAcctBal>
+			<ExtAcctBal>
+				<ExtBalType>LastIntPaidAmt</ExtBalType>
+				<CurAmt>
+					<Amt>0.00</Amt> 					[Interest Paid]
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</ExtAcctBal>
+			<ExtAcctBal>
+				<ExtBalType>Interest</ExtBalType>
+				<CurAmt>
+					<Amt>0.00</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</ExtAcctBal>
+			<ExtAcctBal>
+				<ExtBalType>LastStmtBal</ExtBalType>
+				<CurAmt>
+					<Amt>-4.55</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</ExtAcctBal>
+			<ExtAcctBal>
+				<ExtBalType>CreditPostedToday</ExtBalType>
+				<CurAmt>
+					<Amt>0.00</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</ExtAcctBal>
+			<ExtAcctBal>
+				<ExtBalType>DebitPostedToday</ExtBalType>
+				<CurAmt>
+					<Amt>0.00</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</ExtAcctBal>
+			<ExtAcctBal>
+				<ExtBalType>CustCollected</ExtBalType>
+				<CurAmt>
+					<Amt>-4.55</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</ExtAcctBal>
+			<ExtAcctBal>
+				<ExtBalType>AvgCollected</ExtBalType>
+				<CurAmt>
+					<Amt>-4.55</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</ExtAcctBal>
+			<ExtAcctBal>
+				<ExtBalType>OpenAmt</ExtBalType>
+				<CurAmt>
+					<Amt>0.00</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</ExtAcctBal>
+			<ExtAcctBal>
+				<ExtBalType>TotalMemoCredits</ExtBalType>
+				<CurAmt>
+					<Amt>0.00</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</ExtAcctBal>
+			<ExtAcctBal>
+				<ExtBalType>TotalMemoDebits</ExtBalType>
+				<CurAmt>
+					<Amt>0.00</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</ExtAcctBal>
+			<DepAcctRec>
+				<StopCount>0</StopCount>
+				<HoldCount>0</HoldCount>
+				<LastDepDt>
+					<Year>2008</Year>
+					<Month>5</Month> 				[Last Statement Date]
+					<Day>28</Day>
+				</LastDepDt>
+				<LastDepCurAmt>
+					<Amt>38.00</Amt>
+					<CurCode>USD</CurCode>
+				</LastDepCurAmt>
+				<GovtFundsCode>NotGovt</GovtFundsCode>
+				<ChildSupportTrustCode>NotTrust</ChildSupportTrustCode>
+				<TrustDepCode>N</TrustDepCode>
+				<BrokerDepCode />
+				<FDICOwnershipCode>001</FDICOwnershipCode>
+				<VarIntFlag>0</VarIntFlag>
+				<LastPrcDt>
+					<Year>2009</Year>
+					<Month>2</Month>
+					<Day>26</Day>
+				</LastPrcDt>
+				<OpenDt>
+					<Year>1990</Year>
+					<Month>12</Month>
+					<Day>17</Day>
+				</OpenDt>
+				<YTDODCount>1</YTDODCount>
+				<VarIntRate>0</VarIntRate>
+			</DepAcctRec>
+		</AcctInqRs>
+	</CashManSvcRs>
+</IFX>
+
+
+
+
+<?xml version="1.0" ?>
+<IFX xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.fiserv.com/cbs">
+	<GeneralStatus>
+		<StatusCode>0</StatusCode>
+		<StatusLevel>IFX</StatusLevel>
+		<StatusDesc>The request was processed successfully.</StatusDesc>
+	</GeneralStatus>
+	<Status>
+		<StatusCode>0</StatusCode>
+		<Severity>Info</Severity>
+		<StatusDesc>The request was processed successfully.</StatusDesc>
+		<SupportUID>F0136E9F-6459-482C-87AD-DD2394795F11</SupportUID>
+	</Status>
+	<SignonRs>
+		<Status>
+			<StatusCode>0</StatusCode>
+			<Severity>Info</Severity>
+			<StatusDesc>The request was processed successfully.</StatusDesc>
+			<SupportUID>F9E92C16-554E-4D1F-BA29-1F8AE7D7222B</SupportUID>
+		</Status>
+		<SignonRole>CSR</SignonRole>
+		<CustId>
+			<SPName>FiservCBS</SPName>
+			<CustLoginId>BLUSER</CustLoginId>
+		</CustId>
+		<GenSessKey>0</GenSessKey>
+		<ClientDt>
+			<Year>2009</Year>
+			<Month>2</Month>
+			<Day>27</Day>
+			<Hour>14</Hour>
+			<Minute>44</Minute>
+			<Second>9</Second>
+		</ClientDt>
+		<CustLangPref />
+		<ClientApp>
+			<Org>CCU</Org>
+			<Name>BankLink</Name>
+			<ClientAppKey>CCUTXMHRTJUKJUHPBHCTSPRMFQUCIQXD</ClientAppKey>
+		</ClientApp>
+		<ServerDt>
+			<Year>2009</Year>
+			<Month>2</Month>
+			<Day>27</Day>
+			<Hour>13</Hour>
+			<Minute>44</Minute>
+			<Second>10</Second>
+			<Fraction>139000</Fraction>
+			<UTCOffset>-360</UTCOffset>
+		</ServerDt>
+		<Language>en-US</Language>
+		<PersonName>
+			<LastName>Link</LastName>
+			<FirstName>Bank</FirstName>
+		</PersonName>
+	</SignonRs>
+	<EnvironmentInfo>
+		<EnvironmentName>BankLink</EnvironmentName>
+	</EnvironmentInfo>
+	<CashManSvcRs>
+		<Status>
+			<StatusCode>0</StatusCode>
+			<Severity>Info</Severity>
+			<StatusDesc>The request was processed successfully.</StatusDesc>
+			<SupportUID>9ADC1D37-53D8-4C6B-AC5F-E06E24989D8F</SupportUID>
+		</Status>
+		<RqUID>9adc1d37-53d8-4c6b-ac5f-e06e24989d8f</RqUID>
+		<SPName>FiservCBS</SPName>
+		<Version>8.1.0.9</Version>
+		<AcctInqRs>
+			<Status>
+				<StatusCode>0</StatusCode>
+				<Severity>Info</Severity>
+				<StatusDesc>The request was processed successfully.</StatusDesc>
+				<SupportUID>86F1B17C-D271-4C45-A9A6-334D732424C8</SupportUID>
+			</Status>
+			<RqUID>8d81a966-aa4d-4b64-b5a9-7e8990000031</RqUID> [Transmit Number same as request]
+			<DepAcctId>
+				<AcctId>101334240</AcctId>   [Same as request]
+				<AcctType>DD</AcctType> 	     [Same as request]
+			</DepAcctId>
+			<IncExtBal>1</IncExtBal>
+			<IncBal>1</IncBal>
+			<Addr>
+				<FullName>MARANATHA SUNDAY SCHOOL</FullName>
+				<Addr1>11738 ROGUE WAY</Addr1>
+				<Addr2>DALLAS TX 75218-1832</Addr2>
+			</Addr>
+			<UpDt>
+				<Year>2008</Year>
+				<Month>11</Month>
+				<Day>24</Day>
+			</UpDt>
+			<LastTrnDt>
+				<Year>2008</Year>
+				<Month>11</Month>
+				<Day>13</Day>
+			</LastTrnDt>
+			<LastStmtDt>
+				LastStatementDate===========
+				<Year>2009</Year>
+				<Month>1</Month>
+				<Day>31</Day>
+			</LastStmtDt>
+			<IntRate>0</IntRate>
+			<SweepBalRelFlag>0</SweepBalRelFlag>
+			<AcctBal>
+				<BalType>Ledger</BalType>
+				<CurAmt>
+					[Ledger Balance]
+					<Amt>-4.55</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</AcctBal>
+			<AcctBal>
+				<BalType>Avail</BalType>
+				<CurAmt>
+					[Available Balance]
+					<Amt>-4.55</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</AcctBal>
+			<AcctBal>
+				<BalType>Current</BalType>
+				<CurAmt>
+					[Current Balance]
+					<Amt>-4.55</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</AcctBal>
+			<ExtAcctBal>
+				<ExtBalType>Avail2</ExtBalType>
+				<CurAmt>
+					<Amt>-4.55</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</ExtAcctBal>
+
+			<ExtAcctBal>
+				<ExtBalType>LastIntPaidAmt</ExtBalType>
+				<CurAmt>
+					<Amt>0.00</Amt> 					[Interest Paid]
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</ExtAcctBal>
+			<ExtAcctBal>
+				<ExtBalType>CustCollected</ExtBalType>public decimal CollectedBalance = 0;
+				<CurAmt>
+					<Amt>-4.55</Amt>
+					<CurCode>USD</CurCode>
+				</CurAmt>
+			</ExtAcctBal>
+
+		</AcctInqRs>
+	</CashManSvcRs>
+</IFX>
+
+
+
+
+
+
+

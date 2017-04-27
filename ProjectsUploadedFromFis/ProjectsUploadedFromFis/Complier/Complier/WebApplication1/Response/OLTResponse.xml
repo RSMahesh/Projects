@@ -1,0 +1,261 @@
+﻿
+<?xml version="1.0" ?>
+<IFX xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.fiserv.com/cbs">
+	<GeneralStatus>
+		<StatusCode>0</StatusCode>
+		<StatusLevel>IFX</StatusLevel>
+		<StatusDesc>The request was processed successfully.</StatusDesc>
+	</GeneralStatus>
+	<Status>
+		<StatusCode>0</StatusCode>
+		<Severity>Info</Severity>
+		<StatusDesc>The request was processed successfully.</StatusDesc>
+		<SupportUID>4A63A88A-F293-455B-A7FC-5429E4125901</SupportUID>
+	</Status>
+	<SignonRs>
+		<Status>
+			<StatusCode>0</StatusCode>
+			<Severity>Info</Severity>
+			<StatusDesc>The request was processed successfully.</StatusDesc>
+			<SupportUID>A55BE4B8-3B83-42A9-BA8F-1ED0C37FCA7A</SupportUID>
+		</Status>
+		<SignonRole>CSR</SignonRole>
+		<CustId>
+			<SPName>FiservCBS</SPName>
+			<CustLoginId>comr152</CustLoginId>
+		</CustId>
+		<GenSessKey>0</GenSessKey>
+		<ClientDt>
+			<Year>2009</Year>
+			<Month>3</Month>
+			<Day>12</Day>
+			<Hour>5</Hour>
+			<Minute>28</Minute>
+			<Second>11</Second>
+		</ClientDt>
+		<CustLangPref />
+		<ClientApp>
+			<Org>Fiserv</Org>
+			<Name>CommAdmin</Name>
+			<ClientAppKey>CBSILOUBHLLZSUPFBTEMBUHQJOIVKDBR</ClientAppKey>
+		</ClientApp>
+		<ServerDt>
+			<Year>2009</Year>
+			<Month>3</Month>
+			<Day>12</Day>
+			<Hour>4</Hour>
+			<Minute>15</Minute>
+			<Second>49</Second>
+			<Fraction>984000</Fraction>
+			<UTCOffset>-300</UTCOffset>
+		</ServerDt>
+		<Language>en-US</Language>
+		<PersonName>
+			<LastName>user</LastName>
+			<FirstName>fiserv</FirstName>
+		</PersonName>
+	</SignonRs>
+	<EnvironmentInfo>
+		<EnvironmentName>rlsbank</EnvironmentName>
+	</EnvironmentInfo>
+	<CashManSvcRs>
+		<Status>
+			<StatusCode>0</StatusCode>
+			<Severity>Info</Severity>
+			<StatusDesc>The request was processed successfully.</StatusDesc>
+			<SupportUID>B372C4AA-48CE-4DDD-BC4F-C5B5ED2D5ABA</SupportUID>
+		</Status>
+		<RqUID>b372c4aa-48ce-4ddd-bc4f-c5b5ed2d5aba</RqUID>
+		<SPName>FiservCBS</SPName>
+		<Version>8.1.0.9</Version>
+		<DepAcctTrnInqRs>
+			<Status>
+				<StatusCode>0</StatusCode>
+				<Severity>Info</Severity>
+				<StatusDesc>The request was processed successfully.</StatusDesc>
+				<SupportUID>D8CE9739-AE42-4D61-8802-7D7CAD5C9F64</SupportUID>
+			</Status>
+			<RqUID>493db837-fbef-46cc-a72a-c9a28889aaad</RqUID>
+			<RecCtrlOut>
+				<MatchedRec>0</MatchedRec>
+				<SentRec>1</SentRec>
+			</RecCtrlOut>
+			<DepAcctId>
+				<AcctId>000000000000000514254</AcctId>
+				<AcctType>DD</AcctType>
+			</DepAcctId>
+			<SelRangeDt>
+				<StartDt>
+					<Year>2009</Year>
+					<Month>3</Month>
+					<Day>12</Day> 					[Date Range]
+				</StartDt>
+				<EndDt>
+					<Year>2009</Year>
+					<Month>3</Month>
+					<Day>17</Day>
+				</EndDt>
+			</SelRangeDt>
+			<DepAcctTrnRec>
+				<BankAcctTrnRec>
+					[CreditDebit]
+					<TrnType>Debit</TrnType> 			[Credit Debit]
+					<TrnSrc />
+					[Date]
+					<PostedDt>
+						<Year>2009</Year>
+						<Month>3</Month>
+						<Day>12</Day>
+					</PostedDt>
+					<OrigDt>
+						<Year>2009</Year>
+						<Month>3</Month>
+						<Day>12</Day>
+					</OrigDt>
+					[TransactionAmount]
+					<CurAmt>
+						<Amt>5.00</Amt>
+					</CurAmt>
+					<TranDesc1 />						[Transaction Description]
+					<TranDesc2 />
+					<TranDesc3 />
+					<CSPRefId>000000000001</CSPRefId>
+					<SPRefId>200903129000001</SPRefId>
+					<MemoPostFlag>1</MemoPostFlag>
+					<ReversalCode />
+					[Transaction Code]
+					<TrnCode>MD</TrnCode>				
+				</BankAcctTrnRec>
+				<AcctBal>
+					<BalType>RunningBal</BalType>
+					<CurAmt>
+						<Amt>1794520.67</Amt>				[Transaction Amount]
+					</CurAmt>
+				</AcctBal>
+				[CheckNumber]
+				<ChkNum>12123456</ChkNum>
+			</DepAcctTrnRec>
+		</DepAcctTrnInqRs>
+	</CashManSvcRs>
+</IFX>
+
+
+
+
+
+<IFX xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.fiserv.com/cbs">
+	<GeneralStatus>
+		<StatusCode>0</StatusCode>
+		<StatusLevel>IFX</StatusLevel>
+		<StatusDesc>The request was processed successfully.</StatusDesc>
+	</GeneralStatus>
+	<Status>
+		<StatusCode>0</StatusCode>
+		<Severity>Info</Severity>
+		<StatusDesc>The request was processed successfully.</StatusDesc>
+		<SupportUID>4A63A88A-F293-455B-A7FC-5429E4125901</SupportUID>
+	</Status>
+	<SignonRs>
+		<Status>
+			<StatusCode>0</StatusCode>
+			<Severity>Info</Severity>
+			<StatusDesc>The request was processed successfully.</StatusDesc>
+			<SupportUID>A55BE4B8-3B83-42A9-BA8F-1ED0C37FCA7A</SupportUID>
+		</Status>
+		<SignonRole>CSR</SignonRole>
+		<CustId>
+			<SPName>FiservCBS</SPName>
+			<CustLoginId>comr152</CustLoginId>
+		</CustId>
+		<GenSessKey>0</GenSessKey>
+		<ClientDt>
+			<Year>2009</Year>
+			<Month>3</Month>
+			<Day>12</Day>
+			<Hour>5</Hour>
+			<Minute>28</Minute>
+			<Second>11</Second>
+		</ClientDt>
+		<CustLangPref />
+		<ClientApp>
+			<Org>Fiserv</Org>
+			<Name>CommAdmin</Name>
+			<ClientAppKey>CBSILOUBHLLZSUPFBTEMBUHQJOIVKDBR</ClientAppKey>
+		</ClientApp>
+		<ServerDt>
+			<Year>2009</Year>
+			<Month>3</Month>
+			<Day>12</Day>
+			<Hour>4</Hour>
+			<Minute>15</Minute>
+			<Second>49</Second>
+			<Fraction>984000</Fraction>
+			<UTCOffset>-300</UTCOffset>
+		</ServerDt>
+		<Language>en-US</Language>
+		<PersonName>
+			<LastName>user</LastName>
+			<FirstName>fiserv</FirstName>
+		</PersonName>
+	</SignonRs>
+	<EnvironmentInfo>
+		<EnvironmentName>rlsbank</EnvironmentName>
+	</EnvironmentInfo>
+	<CashManSvcRs>
+		<Status>
+			<StatusCode>0</StatusCode>
+			<Severity>Info</Severity>
+			<StatusDesc>The request was processed successfully.</StatusDesc>
+			<SupportUID>B372C4AA-48CE-4DDD-BC4F-C5B5ED2D5ABA</SupportUID>
+		</Status>
+		<RqUID>b372c4aa-48ce-4ddd-bc4f-c5b5ed2d5aba</RqUID>
+		<SPName>FiservCBS</SPName>
+		<Version>8.1.0.9</Version>
+		<DepAcctTrnInqRs>
+			<Status>
+				<StatusCode>0</StatusCode>
+				<Severity>Info</Severity>
+				<StatusDesc>The request was processed successfully.</StatusDesc>
+				<SupportUID>D8CE9739-AE42-4D61-8802-7D7CAD5C9F64</SupportUID>
+			</Status>
+			<RqUID>493db837-fbef-46cc-a72a-c9a28889aaad</RqUID>
+			<RecCtrlOut>
+				<MatchedRec>0</MatchedRec>
+				<SentRec>1</SentRec>
+			</RecCtrlOut>
+			<DepAcctId>
+				<AcctId>000000000000000514254</AcctId>
+				<AcctType>DD</AcctType>
+			</DepAcctId>
+			<SelRangeDt>
+
+
+			</SelRangeDt>
+			<DepAcctTrnRec>
+				<BankAcctTrnRec>
+					[CreditDebit]
+					<TrnType>Debit</TrnType> 			[Credit Debit]
+					[Date]
+					<PostedDt>
+						<Year>2009</Year>
+						<Month>3</Month>
+						<Day>12</Day>
+					</PostedDt>
+					[TransactionAmount]
+					<CurAmt>
+						<Amt>5.00</Amt>
+					</CurAmt>
+					<TranDesc1 />						[Transaction Description]
+					<TranDesc2 />
+					<TranDesc3 />
+					[Transaction Code]
+					<TrnCode>MD</TrnCode>
+				</BankAcctTrnRec>
+				[CheckNumber]
+				<ChkNum>12123456</ChkNum>
+			</DepAcctTrnRec>
+		</DepAcctTrnInqRs>
+	</CashManSvcRs>
+</IFX>
+
+

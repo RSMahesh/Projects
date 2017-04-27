@@ -1,0 +1,187 @@
+
+TimeStamp: 10-18-2013 19:37:59.8425071
+Assembly: ResellerClub.WebUI
+Class: ResellerClub.WebUI.Global
+Method: Application_Error
+Message: 
+=========================================================
+
+
+TimeStamp: 10-18-2013 19:37:59.8425071
+Assembly: ResellerClub.Common
+Class: ResellerClub.Common.Logging.XmlTraceWriter
+Method: Trace
+Message: 
+0	
+Message:Exception of type 'System.Web.HttpUnhandledException' was thrown.
+StackTrace:   at System.Web.UI.Page.HandleError(Exception e)
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest()
+   at System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   at System.Web.UI.Page.ProcessRequest(HttpContext context)
+   at ASP.home_aspx.ProcessRequest(HttpContext context) in c:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\Temporary ASP.NET Files\root\901c823f\a615e9bd\App_Web_8lvpiwrm.0.cs:line 0
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+
+
+TimeStamp: 10-18-2013 19:37:59.8425071
+Assembly: ResellerClub.Common
+Class: ResellerClub.Common.Logging.XmlTraceWriter
+Method: Trace
+Message: 
+0	
+Message:Resolution of the dependency failed, type = "IExceptionLogger", name = "". Exception message is: The current build operation (build key Build Key[ResellerClub.BusinessLogic.ExceptionLogger, null]) failed: The type initializer for 'ResellerClub.BusinessLogic.BaseBRL' threw an exception. (Strategy type Microsoft.Practices.ObjectBuilder2.BuildPlanStrategy, index 2)
+StackTrace:   at Microsoft.Practices.Unity.UnityContainer.DoBuildUp(Type t, Object existing, String name)
+   at Microsoft.Practices.Unity.UnityContainer.DoBuildUp(Type t, String name)
+   at Microsoft.Practices.Unity.UnityContainer.Resolve(Type t, String name)
+   at Microsoft.Practices.Unity.UnityContainerBase.Resolve(Type t)
+   at Microsoft.Practices.Unity.UnityContainerBase.Resolve[T]()
+   at ResellerClub.WebUI.ApiObjectFactory.GetObject[T]() in C:\Documents and Settings\mahesh.bailwal\My Documents\Projects\ResellerClub\WebUI\code\ApiObjectFactory.cs:line 38
+   at ResellerClub.WebUI.Global.Application_Error(Object sender, EventArgs e) in C:\Documents and Settings\mahesh.bailwal\My Documents\Projects\ResellerClub\WebUI\Global.asax.cs:line 115
+
+
+TimeStamp: 10-18-2013 19:37:59.8425071
+Assembly: ResellerClub.WebUI
+Class: ResellerClub.WebUI.Global
+Method: Application_Error
+Message: 
+=========================================================
+
+
+TimeStamp: 10-14-2013 12:16:01.5665144
+Assembly: ResellerClub.WebUI
+Class: ResellerClub.WebUI.Global
+Method: Application_Error
+Message: 
+=========================================================
+
+
+TimeStamp: 10-14-2013 12:16:01.5665144
+Assembly: ResellerClub.Common
+Class: ResellerClub.Common.Logging.XmlTraceWriter
+Method: Trace
+Message: 
+0	
+Message:File does not exist.
+StackTrace:   at System.Web.StaticFileHandler.GetFileInfo(String virtualPathWithPathInfo, String physicalPath, HttpResponse response)
+   at System.Web.StaticFileHandler.ProcessRequestInternal(HttpContext context)
+   at System.Web.DefaultHttpHandler.BeginProcessRequest(HttpContext context, AsyncCallback callback, Object state)
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+
+
+TimeStamp: 10-14-2013 12:16:01.5665144
+Assembly: ResellerClub.Common
+Class: ResellerClub.Common.Logging.XmlTraceWriter
+Method: Trace
+Message: 
+0	
+Message:Resolution of the dependency failed, type = "IExceptionLogger", name = "". Exception message is: The current build operation (build key Build Key[ResellerClub.BusinessLogic.ExceptionLogger, null]) failed: The type initializer for 'ResellerClub.BusinessLogic.BaseBRL' threw an exception. (Strategy type Microsoft.Practices.ObjectBuilder2.BuildPlanStrategy, index 2)
+StackTrace:   at Microsoft.Practices.Unity.UnityContainer.DoBuildUp(Type t, Object existing, String name)
+   at Microsoft.Practices.Unity.UnityContainer.DoBuildUp(Type t, String name)
+   at Microsoft.Practices.Unity.UnityContainer.Resolve(Type t, String name)
+   at Microsoft.Practices.Unity.UnityContainerBase.Resolve(Type t)
+   at Microsoft.Practices.Unity.UnityContainerBase.Resolve[T]()
+   at ResellerClub.WebUI.ApiObjectFactory.GetObject[T]() in C:\Documents and Settings\mahesh.bailwal\My Documents\Projects\ResellerClub\WebUI\code\ApiObjectFactory.cs:line 38
+   at ResellerClub.WebUI.Global.Application_Error(Object sender, EventArgs e) in C:\Documents and Settings\mahesh.bailwal\My Documents\Projects\ResellerClub\WebUI\Global.asax.cs:line 115
+
+
+TimeStamp: 10-14-2013 12:16:01.5665144
+Assembly: ResellerClub.WebUI
+Class: ResellerClub.WebUI.Global
+Method: Application_Error
+Message: 
+=========================================================
+
+arserStateObject stateObj)
+   at System.Data.SqlClient.SqlCommand.RunExecuteNonQueryTds(String methodName, Boolean async)
+   at System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(DbAsyncResult result, String methodName, Boolean sendToPipe)
+   at System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at ResellerClub.DataAccess.Connection.ExecuteNonQuery() in C:\Documents and Settings\mahesh.bailwal\My Documents\Projects\ResellerClub\ResellerClub.DataAccess\Connection.cs:line 302
+   at ResellerClub.DataAccess.Connection.ExecuteSQL(String SQL) in C:\Documents and Settings\mahesh.bailwal\My Documents\Projects\ResellerClub\ResellerClub.DataAccess\Connection.cs:line 120
+   at ResellerClub.DataAccess.ExceptionLogger.LogException(Nullable`1 sessionID, String userIP, String message, String stackTrace, String url, String additionalInfo) in C:\Documents and Settings\mahesh.bailwal\My Documents\Projects\ResellerClub\ResellerClub.DataAccess\ExceptionLogger.cs:line 29
+   at ResellerClub.BusinessLogic.ExceptionLogger.LogException(Exception ex, Nullable`1 sessionId, String userIP, String url, String additionalInfo, Int32 exceptionObjectHash, Int32 innerExceptionCount) in C:\Documents and Settings\mahesh.bailwal\My Documents\Projects\ResellerClub\BusinessLogic\ExceptionLogger.cs:line 27
+
+
+TimeStamp: 04-24-2013 15:42:39.9039882
+Assembly: ResellerClub.BusinessLogic
+Class: ResellerClub.BusinessLogic.ExceptionLogger
+Method: LogException
+Message: 
+
+UserIP:127.0.0.1
+SessionID:65cfdad7-1a42-401f-a908-7de2a68122f5
+AdditionalInfo
+
+
+
+TimeStamp: 04-24-2013 15:42:39.9039882
+Assembly: ResellerClub.BusinessLogic
+Class: ResellerClub.BusinessLogic.ExceptionLogger
+Method: LogException
+Message: 
+=========================================================
+
+
+TimeStamp: 04-24-2013 15:43:27.1209250
+Assembly: ResellerClub.BusinessLogic
+Class: ResellerClub.BusinessLogic.ExceptionLogger
+Method: LogException
+Message: 
+=========================================================
+
+
+TimeStamp: 04-24-2013 15:43:27.1209250
+Assembly: ResellerClub.Common
+Class: ResellerClub.Common.Logging.XmlTraceWriter
+Method: Trace
+Message: 
+0	
+Message:zz
+StackTrace:   at ResellerClub.WebUI.AjaxHandler.RemoveItem(String removeItem) in C:\Documents and Settings\mahesh.bailwal\My Documents\Projects\ResellerClub\WebUI\HttpHandlers\AjaxHandler.ashx.cs:line 48
+   at ResellerClub.WebUI.AjaxHandler.ProcessRequest(HttpContext context) in C:\Documents and Settings\mahesh.bailwal\My Documents\Projects\ResellerClub\WebUI\HttpHandlers\AjaxHandler.ashx.cs:line 36
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+
+
+TimeStamp: 04-24-2013 15:43:27.1209250
+Assembly: ResellerClub.Common
+Class: ResellerClub.Common.Logging.XmlTraceWriter
+Method: Trace
+Message: 
+0	
+Message:String or binary data would be truncated.
+The statement has been terminated.
+StackTrace:   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj)
+   at System.Data.SqlClient.TdsParser.Run(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj)
+   at System.Data.SqlClient.SqlCommand.RunExecuteNonQueryTds(String methodName, Boolean async)
+   at System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(DbAsyncResult result, String methodName, Boolean sendToPipe)
+   at System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at ResellerClub.DataAccess.Connection.ExecuteNonQuery() in C:\Documents and Settings\mahesh.bailwal\My Documents\Projects\ResellerClub\ResellerClub.DataAccess\Connection.cs:line 302
+   at ResellerClub.DataAccess.Connection.ExecuteSQL(String SQL) in C:\Documents and Settings\mahesh.bailwal\My Documents\Projects\ResellerClub\ResellerClub.DataAccess\Connection.cs:line 120
+   at ResellerClub.DataAccess.ExceptionLogger.LogException(Nullable`1 sessionID, String userIP, String message, String stackTrace, String url, String additionalInfo) in C:\Documents and Settings\mahesh.bailwal\My Documents\Projects\ResellerClub\ResellerClub.DataAccess\ExceptionLogger.cs:line 29
+   at ResellerClub.BusinessLogic.ExceptionLogger.LogException(Exception ex, Nullable`1 sessionId, String userIP, String url, String additionalInfo, Int32 exceptionObjectHash, Int32 innerExceptionCount) in C:\Documents and Settings\mahesh.bailwal\My Documents\Projects\ResellerClub\BusinessLogic\ExceptionLogger.cs:line 27
+
+
+TimeStamp: 04-24-2013 15:43:27.1209250
+Assembly: ResellerClub.BusinessLogic
+Class: ResellerClub.BusinessLogic.ExceptionLogger
+Method: LogException
+Message: 
+
+UserIP:127.0.0.1
+SessionID:65cfdad7-1a42-401f-a908-7de2a68122f5
+AdditionalInfo
+
+
+
+TimeStamp: 04-24-2013 15:43:27.1209250
+Assembly: ResellerClub.BusinessLogic
+Class: ResellerClub.BusinessLogic.ExceptionLogger
+Method: LogException
+Message: 
+=========================================================
+

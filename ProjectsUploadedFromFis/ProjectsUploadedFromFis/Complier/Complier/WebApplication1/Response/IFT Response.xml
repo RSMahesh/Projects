@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<IFX xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.fiserv.com/cbs">
+	<GeneralStatus>
+		<StatusCode>0</StatusCode>
+		<StatusLevel>IFX</StatusLevel>
+		<StatusDesc>The request was processed successfully.</StatusDesc>
+	</GeneralStatus>
+	<Status>
+		<StatusCode>0</StatusCode>
+		<Severity>Info</Severity>
+		<StatusDesc>The request was processed successfully.</StatusDesc>
+		<SupportUID>2329F08C-279F-4832-A7B9-6D314495F30F</SupportUID>
+	</Status>
+	<SignonRs>
+		<Status>
+			<StatusCode>0</StatusCode>
+			<Severity>Info</Severity>
+			<StatusDesc>The request was processed successfully.</StatusDesc>
+			<SupportUID>EB41CE56-F96E-473D-BAD3-252AAF9F9557</SupportUID>
+		</Status>
+		<SignonRole>CSR</SignonRole>
+		<CustId>
+			<SPName>FiservCBS</SPName>
+			<CustLoginId>BLUSER</CustLoginId>
+		</CustId>
+		<GenSessKey>0</GenSessKey>
+		<ClientDt>
+			<Year>2009</Year>
+			<Month>2</Month>
+			<Day>27</Day>
+			<Hour>15</Hour>
+			<Minute>25</Minute>
+			<Second>40</Second>
+		</ClientDt>
+		<CustLangPref />
+		<ClientApp>
+			<Org>CCU</Org>
+			<Name>BankLink</Name>
+			<ClientAppKey>CCUTXMHRTJUKJUHPBHCTSPRMFQUCIQXD</ClientAppKey>
+		</ClientApp>
+		<ServerDt>
+			<Year>2009</Year>
+			<Month>2</Month>
+			<Day>27</Day>
+			<Hour>14</Hour>
+			<Minute>25</Minute>
+			<Second>42</Second>
+			<Fraction>46000</Fraction>
+			<UTCOffset>-360</UTCOffset>
+		</ServerDt>
+		<Language>en-US</Language>
+		<PersonName>
+			<LastName>Link</LastName>
+			<FirstName>Bank</FirstName>
+		</PersonName>
+	</SignonRs>
+	<EnvironmentInfo>
+		<EnvironmentName>BankLink</EnvironmentName>
+	</EnvironmentInfo>
+	<CashManSvcRs>
+		<Status>
+			<StatusCode>0</StatusCode>
+			<Severity>Info</Severity>
+			<StatusDesc>The request was processed successfully.</StatusDesc>
+			<SupportUID>688F2F92-A6A6-4D3F-A80B-CF1468C1E4D8</SupportUID>
+		</Status>
+		<RqUID>688f2f92-a6a6-4d3f-a80b-cf1468c1e4d8</RqUID>
+		<SPName>FiservCBS</SPName>
+		<Version>8.1.0.9</Version>
+		<XferAddRs>
+			[Signifies IFT Response]
+
+			<Status>
+				<StatusCode>0</StatusCode> 
+				<Severity>Info</Severity>
+				<StatusDesc>The request was processed successfully.</StatusDesc>
+				<SupportUID>0DE2E5E1-70EA-4B9A-9F47-70B98DD7BE46</SupportUID>
+			</Status>
+			<RqUID>a6723a0c-307c-4c53-a058-e7ca5cfb8e7f</RqUID>
+			<XferRec>
+				<XferId>142541000008</XferId>
+			</XferRec>
+		</XferAddRs>
+	</CashManSvcRs>
+	<ResponseTime>1.75</ResponseTime>
+	<ResponseDateTime>2009-02-27_03-25-42-32619</ResponseDateTime>
+</IFX>
+
+

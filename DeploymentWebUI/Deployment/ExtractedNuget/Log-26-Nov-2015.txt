@@ -1,0 +1,3 @@
+Thursday, November 26, 2015  PackageID:MediaValet.WebJobs.EntityChangeListener Version:1.0.0.128
+  Nuget CopletedThursday, November 26, 2015  PackageID:MediaValet.Api.IISHost Version:1.0.0.128
+  Nuget Copleted

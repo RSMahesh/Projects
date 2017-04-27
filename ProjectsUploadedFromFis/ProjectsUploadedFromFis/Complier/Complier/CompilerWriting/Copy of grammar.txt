@@ -1,0 +1,59 @@
+<TypeDeclaration> := Type <TypeName>Start  <ClassVaribale>* <InstanceVariable>* <MethodDeclaration>* End
+<ClassVaribale> :=  ClassLevel var <ident> = <expr>
+<InstanceVariable>:= var <ident> = <expr>
+
+<MethodName>:=<string>
+<MethodDeclaration> := (ClassLevel)* Method <Return><MethodName> (<Args>) Start <stmt> End
+<Return>:=<string>
+<MethodName>:=<string>
+<Args>:= var <string> | (var <string>,var <string>)*
+
+<stmt> := var <ident> = <expr>
+	| <ident> = <expr>
+	| <ident> = <MethodCall>
+	| <VoidMethodCall>
+	| for <ident> = <expr> to <expr> do <stmt> end
+	| read_int <ident>
+	| print <expr>
+	| <stmt> ; <stmt>
+
+<expr> := <string>
+	| <int>
+	| <arith_expr>
+	| <ident>
+    | <MethodCall>
+    | new <MethodCall>
+    
+<bin_expr> := <expr> <bin_op> <expr>
+<bin_op> := + | - | * | /| EqualTo | NotEqualTo
+
+<ident> := <char> <ident_rest>*
+<ident_rest> := <char> | <digit>
+
+<int> := <digit>+
+<digit> := 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+
+<string> := " <string_elem>* "
+<string_elem> := <any char other than ">
+
+<MethodCall> := Call <Method>(<Parameters>) | new <TypeName>(<Parameters>);
+<Method>:=<string>
+<Parameters>:= <Parameter>|(<Parameter>,<Parameter>)*
+<Parameter>:= <ident> 
+
+<if_statement> := if <boolean_expression> Start
+<stmt>
+End
+
+<boolean_expression> := <expr> <bin_op> <expr>
+
+<while_statement> := while <boolean_expression> Start
+					<stmt>
+					End
+
+
+/*<if_statement> ::= if <boolean_expression> then
+<statement_sequence>
+else
+<statement_sequence> 
+end if ;*/

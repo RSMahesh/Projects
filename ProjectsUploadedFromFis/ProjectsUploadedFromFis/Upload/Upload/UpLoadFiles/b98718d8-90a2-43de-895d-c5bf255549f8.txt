@@ -1,0 +1,34 @@
+POST /UploadFile.aspx HTTP/1.1
+Cache-Control: no-cache
+Connection: Keep-Alive
+Content-Length: 798
+Content-Type: multipart/form-data; boundary=---------------------------7dd1a2c705b0
+Accept: image/gif, image/jpeg, image/pjpeg, image/pjpeg, application/x-shockwave-flash, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/msword, application/x-ms-application, application/x-ms-xbap, application/vnd.ms-xpsdocument, application/xaml+xml, */*
+Accept-Encoding: gzip, deflate
+Accept-Language: en-us
+Host: localhost:3190
+Referer: http://localhost:3190/UploadFile.aspx
+User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729; .NET4.0C; .NET4.0E)
+
+-----------------------------7dd1a2c705b0
+Content-Disposition: form-data; name="__VIEWSTATE"
+
+/wEPDwUKLTQ2OTQxMTk5OQ9kFgICAw8WAh4HZW5jdHlwZQUTbXVsdGlwYXJ0L2Zvcm0tZGF0YRYCAgcPPCsADQBkGAEFCUdyaWRWaWV3MQ9nZFm2fhTqu8f/29N7p3pvH5QhF9T/
+-----------------------------7dd1a2c705b0
+Content-Disposition: form-data; name="__EVENTVALIDATION"
+
+/wEWAwKygO3tAQLs0bLrBgKM54rGBtudRIdT7/8YO1yvWNm46M4DCswf
+-----------------------------7dd1a2c705b0
+Content-Disposition: form-data; name="FileUpload1"; filename=""
+Content-Type: application/octet-stream
+
+
+-----------------------------7dd1a2c705b0
+Content-Disposition: form-data; name="TextBox1"
+
+MB248001
+-----------------------------7dd1a2c705b0
+Content-Disposition: form-data; name="Button1"
+
+Button
+-----------------------------7dd1a2c705b0--

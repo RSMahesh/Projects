@@ -1,0 +1,3 @@
+﻿add context
+move comun name to there class
+add test case for not data availavle for day.

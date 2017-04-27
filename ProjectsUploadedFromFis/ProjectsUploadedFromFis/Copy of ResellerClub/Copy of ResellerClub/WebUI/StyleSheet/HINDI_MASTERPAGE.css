@@ -1,0 +1,123 @@
+﻿  
+        body
+        {
+            font-family: Verdana;
+            padding-right: 0px;
+            padding-left: 0px;
+            font-size: 13px;
+            background-image: url(images/bg.gif);
+            padding-bottom: 0px;
+            margin: 0px;
+            color: #282828;
+            padding-top: 0px;
+            background-repeat: repeat-x;
+        }
+        .pageHeaderWide
+        {
+            position: relative;
+            line-height: 10px;
+            width: 100%;
+            background: url(images/newbg1.jpg) no-repeat center 50%;
+            height: 42px;
+            clear: both;
+        }
+        H1
+        {
+            padding-top: 20px;
+            padding-left: 10px;
+            color: #454545;
+            font-size: 12px;
+        }
+        SPAN#dashbaord-cartitemcount
+        {
+            background-color: Orange;
+            margin-left: 5px;
+            color: White;
+            padding: 3px 3px 3px 3px;
+        }
+        .dashboard
+        {
+            height: 70px;
+            width: 284px;
+            padding-left: 12px;
+            padding-right: 12px;
+        }
+        .dashbaord-chekout
+        {
+            text-align: center;
+            line-height: 25px;
+            width: 102px;
+            display: block;
+            background: url(images/bg-checkout-button.png) no-repeat left top;
+            height: 25px;
+            color: #d26c1a;
+            font-size: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            text-shadow: 1px 1px 1px #fff;
+        }
+        .dashbaord-myaccount
+        {
+            color: Blue;
+            text-decoration: underline;
+        }
+        #footer
+        {
+            color: White;
+            background-color: #cccccc;
+            border: solid 1px #fffff;
+        }
+        #footer TD
+        {
+            padding-top: 5px;
+            border-color: #ffffff;
+            border-bottom-width: 0px;
+            border-top-width: 1px;
+            border-left-width: 0px;
+            border-right-width: 0px;
+            border-right-color: transparent;
+        }
+        #footer TH
+        {
+            border-bottom-width: 0px;
+            border-top-width: 0px;
+            border-left-width: 0px;
+            border-right-width: 0px;
+        }
+ 
+        .contentredbold
+        {
+            font-style: normal;
+            font-family: Verdana;
+            color: #d35c27;
+            font-size: 10pt;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .contentblue
+        {
+            font-style: normal;
+            font-family: Verdana;
+            color: #157dbc;
+            font-size: 9pt;
+            font-weight: normal;
+            text-decoration: none;
+        }
+        .menutop
+        {
+            font-style: normal;
+            font-family: Tahoma;
+            color: #ffffff;
+            font-size: 9.5pt;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .menubottom
+        {
+            font-style: normal;
+            font-family: Tahoma;
+            color: #000000;
+            font-size: 8.5pt;
+            font-weight: bold;
+            text-decoration: none;
+        }

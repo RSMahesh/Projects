@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<IFX>
+	<SignonRq>
+		<SessOverrideFlag>0</SessOverrideFlag>
+		<SignonPswd>
+			<SignonRole>CSR</SignonRole>
+			<CustId>
+				<SPName>FiservCBS</SPName>
+				<CustLoginId>comr152</CustLoginId>
+			</CustId>
+			<CustPswd>
+				<CryptType>NONE</CryptType>
+				<Pswd>topdog1</Pswd>
+			</CustPswd>
+			<GenSessKey>0</GenSessKey>
+		</SignonPswd>
+		<ClientDt>
+			<Year>2009</Year>
+			<Month>3</Month>
+			<Day>11</Day>
+			<Hour>15</Hour>
+			<Minute>11</Minute>
+			<Second>59</Second>
+		</ClientDt>
+		<ClientApp>
+			<Org>Fiserv</Org>
+			<Name>CommAdmin</Name>
+			<ClientAppKey>CBSILOUBHLLZSUPFBTEMBUHQJOIVKDBR</ClientAppKey>
+		</ClientApp>
+		<ComputerId>BLNYV03CBST201</ComputerId>
+		<InstitutionCode>CBSIL</InstitutionCode>
+	</SignonRq>
+	<EnvironmentInfo>
+		<EnvironmentName>rlsbank</EnvironmentName>
+	</EnvironmentInfo>
+	<CashManSvcRq>
+		<RqUID>ef72992d-943d-4e5e-a3ac-b4e3f8e02dd1</RqUID>
+		<SPName>FiservCBS</SPName>
+		<AcctInqRq>
+			<RqUID>9cc12ea6-ab66-4190-a484-2fe34e6ffc33</RqUID>
+			<BankRoutingInfo>
+				[ABA]
+				<RoutingNum>021912915</RoutingNum> 		
+			</BankRoutingInfo>
+			[Signifies LNR Request]
+			<LoanAcctId>
+				[AccountNumber]
+				<AcctId>3106</AcctId> 		
+				[AccountType]
+				<AcctType>LN</AcctType>		
+			</LoanAcctId>
+			<IncExtBal>1</IncExtBal>
+			<IncBal>1</IncBal>
+		</AcctInqRq>
+	</CashManSvcRq>
+</IFX>
+

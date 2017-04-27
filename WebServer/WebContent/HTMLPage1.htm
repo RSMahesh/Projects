@@ -1,0 +1,40 @@
+﻿<html>
+<head>
+    <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.7.1/modernizr.dev.min.js"></script>
+</head>
+<body>
+    <script src="Script/OnDemandFileLoader.js"></script>
+    <script>
+        var divContainer = null;
+        function loadControl(controlNo) {
+
+            fileLoader.loadFile("Style/Control" + controlNo + ".css");
+            fileLoader.loadFile("Script/Control" + controlNo + ".js");
+            divContainer = document.getElementById("divContainer");
+            if (typeof window["DrawCotrol" + controlNo] != 'undefined') {
+                divContainer.innerHTML = divContainer.innerHTML + eval("DrawCotrol" + controlNo + "()");
+            }
+            else {
+                setTimeout("loadControl(" + controlNo + ")", 100);
+            }
+        }
+
+        function unLoadControl(controlNo) {
+            fileLoader.unLoadFile("Style/Control" + controlNo + ".css");
+            fileLoader.unLoadFile("Script/Control" + controlNo + ".js");
+        }
+
+    </script>
+    <input type="button" value="Laod Control 1" onclick="loadControl(1)" />
+    <input type="button" value="Unload Control1 Files" onclick="unLoadControl(1)" />
+    <br />
+    <input type="button" value="Laod Control 2" onclick="loadControl(2)" />
+    <input type="button" value="Unload Control2 Files" onclick="unLoadControl(2)" />
+    <br />
+    <input type="button" value="Laod Control 3" onclick="loadControl(3)" />
+    <input type="button" value="Unload Control3 Files" onclick="unLoadControl(3)" />
+    <br />
+    <div id="divContainer"></div>
+</body>
+</html>

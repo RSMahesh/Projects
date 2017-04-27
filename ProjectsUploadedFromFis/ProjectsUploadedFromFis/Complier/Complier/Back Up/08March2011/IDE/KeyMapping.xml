@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+	<add KeyBordKey="y"	DisplayString="ya" ComplilerKeyWord="" />
+	<add KeyBordKey="ya"	DisplayString="yaa" ComplilerKeyWord="" />
+	<add KeyBordKey="ye"	DisplayString="yao" ComplilerKeyWord="" />
+	<add KeyBordKey="yai"	DisplayString="yao" ComplilerKeyWord="" />
+	<add KeyBordKey="yo"	DisplayString="yaao" ComplilerKeyWord="" />
+	<add KeyBordKey="a"	DisplayString="a" ComplilerKeyWord="" />
+	<add KeyBordKey="b"	DisplayString="ba" ComplilerKeyWord="" />
+	<add KeyBordKey="s"	DisplayString="sa" ComplilerKeyWord="" />
+	<add KeyBordKey="p"	DisplayString="p" ComplilerKeyWord="" />
+	<add KeyBordKey="l"	DisplayString="la" ComplilerKeyWord="" />
+	<add KeyBordKey="i"	DisplayString="I" ComplilerKeyWord="" />
+	<add KeyBordKey="e"	DisplayString="o" ComplilerKeyWord="" />
+	<add KeyBordKey="o"	DisplayString="o" ComplilerKeyWord="" />
+	<add KeyBordKey="O"	DisplayString="O" ComplilerKeyWord="" />
+	<add KeyBordKey="E"	DisplayString="e" ComplilerKeyWord="" />
+	
+	<add KeyBordKey="parvartnaSaIla" DisplayString="parvartnaSaIla" ComplilerKeyWord="VariableDeclaration"  />
+	<add KeyBordKey="guna"	DisplayString="gauna" ComplilerKeyWord="*" />
+	<add KeyBordKey="chhap" DisplayString="Cap" ComplilerKeyWord="Print"/>
+	<add KeyBordKey="bhati" DisplayString="BaMait" ComplilerKeyWord="Type" />
+	<add KeyBordKey="vidhi" DisplayString="ivaiQa" ComplilerKeyWord="Method" />
+	<add KeyBordKey="bulawo" DisplayString="baulaavaao" ComplilerKeyWord="Call" />
+	<add KeyBordKey="shuru" DisplayString="Sau$" ComplilerKeyWord="Start" />
+	<add KeyBordKey="anth" DisplayString="AMt" ComplilerKeyWord="End" />
+	<add KeyBordKey="naya" DisplayString="nayaa" ComplilerKeyWord="new" />
+	<add KeyBordKey="yadi" DisplayString="yaid" ComplilerKeyWord="if" />
+	<add KeyBordKey="jabtak" DisplayString="jabatk" ComplilerKeyWord="while" />
+	<add KeyBordKey="barabar" DisplayString="barabar" ComplilerKeyWord="EqualTo" />
+	<add KeyBordKey="nahi barabar" DisplayString="nahI barabar" ComplilerKeyWord="NotEqualTo" />
+	<add KeyBordKey="isthir" DisplayString="isqar" ComplilerKeyWord="ClassLevel" />
+			
+</root>

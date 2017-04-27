@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<IFX>
+	<SignonRq>
+		<SessOverrideFlag>0</SessOverrideFlag>
+		<SignonPswd>
+			<SignonRole>CSR</SignonRole>
+			<CustId>
+				<SPName>FiservCBS</SPName>
+				<CustLoginId>BLUSER</CustLoginId>
+			</CustId>
+			<CustPswd>
+				<CryptType>NONE</CryptType>
+				<Pswd>SuperC@$h!</Pswd>
+			</CustPswd>
+			<GenSessKey>0</GenSessKey>
+		</SignonPswd>
+		<ClientDt>
+			<Year>2009</Year>
+			<Month>2</Month>
+			<Day>27</Day>
+			<Hour>14</Hour>
+			<Minute>45</Minute>
+			<Second>3</Second>
+		</ClientDt>
+		<ClientApp>
+			<Org>CCU</Org>
+			<Name>BankLink</Name>
+			<ClientAppKey>CCUTXMHRTJUKJUHPBHCTSPRMFQUCIQXD</ClientAppKey>
+		</ClientApp>
+		<ComputerId>BLNYV03CBST201</ComputerId>
+		<InstitutionCode>CCUTX</InstitutionCode>
+	</SignonRq>
+	<EnvironmentInfo>
+		<EnvironmentName>BankLink</EnvironmentName>
+	</EnvironmentInfo>
+	<CashManSvcRq>
+
+		<RqUID>e153c3e7-6e01-4e70-9e94-b7faca032b2f</RqUID>
+		<SPName>FiservCBS</SPName>
+		[Signifies IFT Request]
+		<XferAddRq>
+			<RqUID>ad660bcb-e94e-4978-a3b3-31aef66cef29</RqUID>
+			<AccessId>9880010000000021</AccessId>
+			<XferInfo>
+				<DepAcctIdFrom>
+					[BankID]
+					<BankId>311987773</BankId>
+					[FromAccountNumber]
+					<AcctId>101325530</AcctId>
+					[FromAccountType]
+					<AcctType>DD</AcctType>
+				</DepAcctIdFrom>
+				<DepAcctIdTo>
+					[BankID]
+					<BankId>311987773</BankId>
+					[ToAccountNumber]
+					<AcctId>1013342401</AcctId>
+					[ToAccountType]
+					<AcctType>SV</AcctType>
+				</DepAcctIdTo>
+				[Amount]
+				<CurAmt>
+					<Amt>335.98</Amt>
+				</CurAmt>
+			</XferInfo>
+		</XferAddRq>
+	</CashManSvcRq>
+</IFX>
+

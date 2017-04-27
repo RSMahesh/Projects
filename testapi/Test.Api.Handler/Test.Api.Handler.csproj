@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{60A2E84D-76B7-49B1-A144-EA5AD3F03210}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Test.Api.Handler</RootNamespace>
+    <AssemblyName>Test.Api.Handler</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="HomeHandler.cs" />
+    <Compile Include="IHomeHandler.cs" />
+    <Compile Include="ITicketHandler.cs" />
+    <Compile Include="IUserHandler.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TicketHandler.cs" />
+    <Compile Include="UserHandler.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Test.Api.Business\Test.Api.Business.csproj">
+      <Project>{78afbbf4-9351-433c-b8aa-4e7fe35c7b46}</Project>
+      <Name>Test.Api.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Test.Api.Core\Test.Api.Core.csproj">
+      <Project>{B6C7C51E-D2F1-46B5-ACAF-785E323B02BD}</Project>
+      <Name>Test.Api.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Test.Api.Data\Test.Api.Data.csproj">
+      <Project>{eacfae15-b6e6-461c-bdeb-d18ff34ec9ef}</Project>
+      <Name>Test.Api.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Test.Api.HyperMedia\Test.Api.HyperMedia.csproj">
+      <Project>{657b39cb-809e-41c9-922d-a77d0d2ff6e5}</Project>
+      <Name>Test.Api.HyperMedia</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Test.Api.Producers\Test.Api.Producers.csproj">
+      <Project>{53438977-3e40-4349-b91f-2c9fe3924a45}</Project>
+      <Name>Test.Api.Producers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Test.Api.Services\Test.Api.Services.csproj">
+      <Project>{08cd5ce7-8bfb-4b9a-b13b-5e46bceb52a8}</Project>
+      <Name>Test.Api.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Test.Api.WebModels\Test.Api.WebModels.csproj">
+      <Project>{3ba1697b-c60f-4da2-bdb1-151107da268e}</Project>
+      <Name>Test.Api.WebModels</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

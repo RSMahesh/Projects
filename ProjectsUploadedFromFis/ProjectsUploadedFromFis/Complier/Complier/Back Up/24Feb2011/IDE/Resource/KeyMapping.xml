@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+	<add key="y"	mapping="ya" />
+	<add key="ya"	mapping="yaa" />
+	<add key="ye"	mapping="yao" />
+	<add key="yai"	mapping="yao" />
+	<add key="yo"	mapping="yaao" />
+	<add key="a"	mapping="A" />
+	<add key="b"	mapping="ba" />
+	<add key="s"	mapping="sa" />
+	<add key="parvartnaSaIla" mapping="parvartnaSaIla" />
+	<add key="guna"	mapping="gauna" />
+	<add key="chhap" mapping="Cap" />
+	<add key="class" mapping="class" />
+
+</root>

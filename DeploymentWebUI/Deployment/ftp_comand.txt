@@ -1,0 +1,37 @@
+open waws-prod-sg1-001.ftp.azurewebsites.windows.net
+MBDevAsiAPI\RSMahesh
+1234test!
+lcd D:\GitRepo\Deployment\WebJob
+cd /site/wwwroot
+
+mkdir App_Data
+cd App_Data
+
+mkdir jobs
+cd jobs
+
+mkdir continuous
+cd continuous
+
+mkdir EntityChangeListener
+cd EntityChangeListener
+
+
+cd /site/wwwroot/App_Data/jobs/continuous/EntityChangeListener
+
+binary
+mput *.*
+
+lcd D:\GitRepo\Deployment\Dlls
+
+binary
+mput *.*
+
+
+cd /site/wwwroot/bin
+
+binary
+mput *.*
+
+disconnect
+bye

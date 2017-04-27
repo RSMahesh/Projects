@@ -1,0 +1,44 @@
+  <div id="maincoreleft">
+                <div id="leftloginsubscribebox">
+                    <div class="login-blurb">
+                        <div class="tabrow" id="leftloginsubscribeboxtabs">
+                            <a id="leftloginsubscribeboxlogintab" href="#" onclick="javascript: ActivateLoginTab();"
+                                class="atab"><span class="tableftgap">&nbsp;</span><span class="tabbulk"><span class="tabtext">Login
+                                    to the Helpdesk</span></span></a></div>
+                        <div id="leftloginbox" class="switchingpanel active">
+                            <div class="lbox-wrp">
+                                <input type="hidden" name="_redirectAction" value="" />
+                                <div class="inputframe zebraeven">
+                                    <label for="email address" class="form-label">
+                                        Email Address</label>
+                                    <input class="loginstyledlabel" value="Your email address" onfocus="javascript: ResetLabel(this, 'Your email address', 'loginstyled');"
+                                        name="scemail" type="text">
+                                </div>
+                                <div class="inputframe zebraodd">
+                                    <label for="password" class="form-label">
+                                        Password</label>
+                                    <input class="loginstyled" value="" name="scpassword" type="password">
+                                </div>
+                                <div class="inputframe zebraeven">
+                                    <input id="leftloginboxrememberme" name="rememberme" value="1" type="checkbox"><label
+                                        for="leftloginboxrememberme"><span id="leftloginboxremembermetext">Remember me</span></label></div>
+                                <hr class="vdivider">
+                                <div id="logintext">
+                                    <a href="http://www.infowebservices.in/InfowebTest/Core/ForgotPassword.aspx">
+                                        Lost password</a></div>
+                                <div id="loginsubscribebuttons">
+                                    <input class="rebutton" value="Login" name="button" type="submit" /></div>
+                            </div>
+                        </div>
+                      
+                    </div>
+                </div>
+            <script>
+            function ResetLabel(obj,text,sty){
+            if($(obj).val() == text){
+            $(obj).val("");
+            }
+            }
+            
+            </script> 
+            </div>

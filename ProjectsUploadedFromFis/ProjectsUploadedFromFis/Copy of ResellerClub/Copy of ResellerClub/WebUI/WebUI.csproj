@@ -1,0 +1,480 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1A1EAF05-6CB0-4571-B4F1-43E553E00D96}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WebUI</RootNamespace>
+    <AssemblyName>WebUI</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Comman, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Practices.ObjectBuilder2, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Microsoft.Practices.ObjectBuilder2.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.StaticFactory, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Microsoft.Practices.Unity.StaticFactory.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Default.aspx" />
+    <Content Include="Global.asax" />
+    <Content Include="HTMLPage1.htm" />
+    <Content Include="img_files\cart.js" />
+    <Content Include="img_files\commonScripts.js" />
+    <Content Include="img_files\domains-heading-bg.jpg" />
+    <Content Include="img_files\domains-masthead1.gif" />
+    <Content Include="img_files\domains-submit-bg.gif" />
+    <Content Include="img_files\fdns-pullout-bg.gif" />
+    <Content Include="img_files\frontpage-hosting-blurb-bg.jpg" />
+    <Content Include="img_files\ga.js" />
+    <Content Include="img_files\getImage.gif" />
+    <Content Include="img_files\getImage.jpg" />
+    <Content Include="img_files\getImage_002.gif" />
+    <Content Include="img_files\getImage_002.jpg" />
+    <Content Include="img_files\getImage_003.gif" />
+    <Content Include="img_files\getImage_004.gif" />
+    <Content Include="img_files\getImage_005.gif" />
+    <Content Include="img_files\getImage_006.gif" />
+    <Content Include="img_files\getImage_007.gif" />
+    <Content Include="img_files\getImage_008.gif" />
+    <Content Include="img_files\getImage_009.gif" />
+    <Content Include="img_files\getImage_010.gif" />
+    <Content Include="img_files\getImage_011.gif" />
+    <Content Include="img_files\getImage_012.gif" />
+    <Content Include="img_files\getImage_014.gif" />
+    <Content Include="img_files\homepage-domains-bg.gif" />
+    <Content Include="img_files\index1.htm" />
+    <Content Include="img_files\menu_data.js" />
+    <Content Include="img_files\menu_style.js" />
+    <Content Include="img_files\milonic_src.js" />
+    <Content Include="img_files\mmenudom.js" />
+    <Content Include="img_files\mynav-rightcurve.gif" />
+    <Content Include="img_files\preloader.js" />
+    <Content Include="img_files\promo-sidebar-blurb-header.gif" />
+    <Content Include="img_files\rounded-box-bottomcap.gif" />
+    <Content Include="img_files\rounded-box-topcap.gif" />
+    <Content Include="img_files\show_afs_search.js" />
+    <Content Include="img_files\view-all-plans-hosting-link.gif" />
+    <Content Include="img_files\wz_tooltip.js" />
+    <Content Include="index.htm" />
+    <Content Include="PayPal.aspx" />
+    <Content Include="Style.css" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="code\ApiObjectFactory.cs" />
+    <Compile Include="code\CahceManager.cs" />
+    <Compile Include="code\Cart.cs" />
+    <Compile Include="code\InvoiceInfo.cs" />
+    <Compile Include="code\SessionManager.cs" />
+    <Compile Include="DigitalCertificates.aspx.cs">
+      <DependentUpon>DigitalCertificates.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DigitalCertificates.aspx.designer.cs">
+      <DependentUpon>DigitalCertificates.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EmailHosting.aspx.cs">
+      <DependentUpon>EmailHosting.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EmailHosting.aspx.designer.cs">
+      <DependentUpon>EmailHosting.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceDetail.aspx.cs">
+      <DependentUpon>InvoiceDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="InvoiceDetail.aspx.designer.cs">
+      <DependentUpon>InvoiceDetail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LinuxHostingPlan.aspx.cs">
+      <DependentUpon>LinuxHostingPlan.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LinuxHostingPlan.aspx.designer.cs">
+      <DependentUpon>LinuxHostingPlan.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PayPal.aspx.cs">
+      <DependentUpon>PayPal.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PayPal.aspx.designer.cs">
+      <DependentUpon>PayPal.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SelectHostingDomain.aspx.cs">
+      <DependentUpon>SelectHostingDomain.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SelectHostingDomain.aspx.designer.cs">
+      <DependentUpon>SelectHostingDomain.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SelectWebService.aspx.cs">
+      <DependentUpon>SelectWebService.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SelectWebService.aspx.designer.cs">
+      <DependentUpon>SelectWebService.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\BaseUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\CustomerRegistration.ascx.cs">
+      <DependentUpon>CustomerRegistration.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\CustomerRegistration.ascx.designer.cs">
+      <DependentUpon>CustomerRegistration.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="HttpHandlers\AjaxHandler.ashx.cs">
+      <DependentUpon>AjaxHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\AvailableDomainList.ascx.cs">
+      <DependentUpon>AvailableDomainList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\AvailableDomainList.ascx.designer.cs">
+      <DependentUpon>AvailableDomainList.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="code\BasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Blank.Master.cs">
+      <DependentUpon>Blank.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Blank.Master.designer.cs">
+      <DependentUpon>Blank.Master</DependentUpon>
+    </Compile>
+    <Compile Include="CheckOut.aspx.cs">
+      <DependentUpon>CheckOut.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CheckOut.aspx.designer.cs">
+      <DependentUpon>CheckOut.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="code\ModuleNames.cs" />
+    <Compile Include="CustomerRegistration.aspx.cs">
+      <DependentUpon>CustomerRegistration.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CustomerRegistration.aspx.designer.cs">
+      <DependentUpon>CustomerRegistration.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Domain.aspx.cs">
+      <DependentUpon>Domain.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Domain.aspx.designer.cs">
+      <DependentUpon>Domain.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\DomainSearchControl.ascx.cs">
+      <DependentUpon>DomainSearchControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\DomainSearchControl.ascx.designer.cs">
+      <DependentUpon>DomainSearchControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Footer.aspx.cs">
+      <DependentUpon>Footer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Footer.aspx.designer.cs">
+      <DependentUpon>Footer.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HttpHandlers\GenericHandler.ashx.cs">
+      <DependentUpon>GenericHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Header.aspx.cs">
+      <DependentUpon>Header.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Header.aspx.designer.cs">
+      <DependentUpon>Header.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Home.aspx.cs">
+      <DependentUpon>Home.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Home.aspx.designer.cs">
+      <DependentUpon>Home.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Main.Master.cs">
+      <DependentUpon>Main.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main.Master.designer.cs">
+      <DependentUpon>Main.Master</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\DomainSerachControl2.ascx.cs">
+      <DependentUpon>DomainSerachControl2.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\DomainSerachControl2.ascx.designer.cs">
+      <DependentUpon>DomainSerachControl2.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\OderDetail.ascx.cs">
+      <DependentUpon>OderDetail.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\OderDetail.ascx.designer.cs">
+      <DependentUpon>OderDetail.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="OrderProcessed.aspx.cs">
+      <DependentUpon>OrderProcessed.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrderProcessed.aspx.designer.cs">
+      <DependentUpon>OrderProcessed.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PaymentOption.aspx.cs">
+      <DependentUpon>PaymentOption.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PaymentOption.aspx.designer.cs">
+      <DependentUpon>PaymentOption.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ProcessCreditCard.aspx.cs">
+      <DependentUpon>ProcessCreditCard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ProcessCreditCard.aspx.designer.cs">
+      <DependentUpon>ProcessCreditCard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Site1.Master.cs">
+      <DependentUpon>Site1.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Site1.Master.designer.cs">
+      <DependentUpon>Site1.Master</DependentUpon>
+    </Compile>
+    <Compile Include="TestURL.aspx.cs">
+      <DependentUpon>TestURL.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TestURL.aspx.designer.cs">
+      <DependentUpon>TestURL.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="code\Util.cs" />
+    <Compile Include="WebForm1.aspx.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForm1.aspx.designer.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebSiteDesign.aspx.cs">
+      <DependentUpon>WebSiteDesign.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebSiteDesign.aspx.designer.cs">
+      <DependentUpon>WebSiteDesign.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsHostingPlan.aspx.cs">
+      <DependentUpon>WindowsHostingPlan.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WindowsHostingPlan.aspx.designer.cs">
+      <DependentUpon>WindowsHostingPlan.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\API.Common.dll" />
+    <Content Include="bin\API.Common.pdb" />
+    <Content Include="bin\API.dll" />
+    <Content Include="bin\API.Interface.dll" />
+    <Content Include="bin\API.Interface.pdb" />
+    <Content Include="bin\API.pdb" />
+    <Content Include="bin\Comman.dll" />
+    <Content Include="bin\Comman.pdb" />
+    <Content Include="bin\Localization.dll" />
+    <Content Include="bin\Localization.pdb" />
+    <Content Include="DigitalCertificates.aspx" />
+    <Content Include="EmailHosting.aspx" />
+    <Content Include="HostingPlan.htm" />
+    <Content Include="InvoiceDetail.aspx" />
+    <Content Include="JueryControl\collapsible.html" />
+    <Content Include="JueryControl\demos.css" />
+    <Content Include="JueryControl\demos\accordion\collapsible.html" />
+    <Content Include="JueryControl\demos\accordion\custom-icons.html" />
+    <Content Include="JueryControl\demos\demos.css" />
+    <Content Include="JueryControl\jquery-1.6.2.js" />
+    <Content Include="JueryControl\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="JueryControl\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="JueryControl\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="JueryControl\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="JueryControl\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="JueryControl\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="JueryControl\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="JueryControl\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="JueryControl\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="JueryControl\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="JueryControl\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="JueryControl\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="JueryControl\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="JueryControl\themes\base\jquery.ui.accordion.css" />
+    <Content Include="JueryControl\themes\base\jquery.ui.all.css" />
+    <Content Include="JueryControl\themes\base\jquery.ui.base.css" />
+    <Content Include="JueryControl\themes\base\jquery.ui.core.css" />
+    <Content Include="JueryControl\themes\base\jquery.ui.theme.css" />
+    <Content Include="JueryControl\ui\jquery.ui.accordion.js" />
+    <Content Include="JueryControl\ui\jquery.ui.core.js" />
+    <Content Include="JueryControl\ui\jquery.ui.widget.js" />
+    <Content Include="JueryControl\ui\minified\jquery.ui.accordion.min.js" />
+    <Content Include="JueryControl\ui\minified\jquery.ui.core.min.js" />
+    <Content Include="JueryControl\ui\minified\jquery.ui.draggable.min.js" />
+    <Content Include="JueryControl\ui\minified\jquery.ui.droppable.min.js" />
+    <Content Include="JueryControl\ui\minified\jquery.ui.mouse.min.js" />
+    <Content Include="JueryControl\ui\minified\jquery.ui.position.min.js" />
+    <Content Include="JueryControl\ui\minified\jquery.ui.resizable.min.js" />
+    <Content Include="JueryControl\ui\minified\jquery.ui.selectable.min.js" />
+    <Content Include="JueryControl\ui\minified\jquery.ui.sortable.min.js" />
+    <Content Include="JueryControl\ui\minified\jquery.ui.widget.min.js" />
+    <Content Include="LinuxHostingPlan.aspx" />
+    <Content Include="SelectHostingDomain.aspx" />
+    <Content Include="SelectWebService.aspx" />
+    <Content Include="UserControl\CustomerRegistration.ascx" />
+    <Content Include="UserControl\AvailableDomainList.ascx" />
+    <Content Include="Blank.Master" />
+    <Content Include="HttpHandlers\AjaxHandler.ashx" />
+    <Content Include="HttpHandlers\GenericHandler.ashx" />
+    <None Include="img_files\brand" />
+    <Content Include="CheckOut.aspx" />
+    <Content Include="CustomerRegistration.aspx" />
+    <Content Include="Domain.aspx" />
+    <Content Include="UserControl\DomainSearchControl.ascx" />
+    <Content Include="Domain_backup.htm" />
+    <Content Include="Footer.aspx" />
+    <Content Include="Header.aspx" />
+    <Content Include="Home.aspx" />
+    <Content Include="HTMLPage2.htm" />
+    <Content Include="HTMLPage3.htm" />
+    <Content Include="Main.Master" />
+    <Content Include="UserControl\DomainSerachControl2.ascx" />
+    <Content Include="UserControl\OderDetail.ascx" />
+    <Content Include="OrderProcessed.aspx" />
+    <Content Include="PaymentOption.aspx" />
+    <Content Include="ProcessCreditCard.aspx" />
+    <Content Include="Site1.Master" />
+    <Content Include="TestURL.aspx" />
+    <Content Include="WebForm1.aspx" />
+    <Content Include="WebSiteDesign.aspx" />
+    <Content Include="WindowsHostingPlan.aspx" />
+    <Content Include="XMLs\Config.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{B0B00F8D-DE99-45F1-8391-C03E4F7700FC}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Interface\Interface.csproj">
+      <Project>{C1064610-7B4A-4A76-A5B6-7FC7614C0C22}</Project>
+      <Name>Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj">
+      <Project>{10FBB774-DFED-47AF-ADDC-5164F00D49D5}</Project>
+      <Name>BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Localization\Localization.csproj">
+      <Project>{A116CC97-7065-49B0-BC28-8803B99A1076}</Project>
+      <Name>Localization</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="images\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>False</AutoAssignPort>
+          <DevelopmentServerPort>4980</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

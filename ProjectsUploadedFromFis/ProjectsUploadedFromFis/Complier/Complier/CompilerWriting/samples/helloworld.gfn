@@ -1,0 +1,8 @@
+  var x = "hello world!";
+  print x;
+  
+  var x = 4 Plus 20;
+  var y = x Minus 11;
+  var z = x MULTIPLY y;
+  var t = x Plus z;
+  print t;

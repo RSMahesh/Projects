@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServiceDefinition name="FTPService" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2015-04.2.6">
+  <WorkerRole name="FTPWorker" vmsize="Small">
+    <Imports>
+      <Import moduleName="Diagnostics" />
+      <Import moduleName="RemoteAccess" />
+      <Import moduleName="RemoteForwarder" />
+    </Imports>
+    <ConfigurationSettings>
+      <Setting name="StorageConnectionString" />
+      <Setting name="BacthTablePollingSleepTimeInSeconds" />
+      <Setting name="ApplicationMode" />
+      <Setting name="BlobStorageEndpoint" />
+      <Setting name="AccountName" />
+      <Setting name="AccountSharedKey" />
+      <Setting name="DiagnosticsTransferPeriod" />
+      <Setting name="EventSyncTimeOutSeconds" />
+      <Setting name="FromAddress" />
+      <Setting name="SmtpHost" />
+      <Setting name="OutGoingEmailUsername" />
+      <Setting name="OutGoingEmailPassword" />
+      <Setting name="Port" />
+      <Setting name="Ssl" />
+      <Setting name="FromEmailDisplayName" />
+      <Setting name="SenderEmailAddress" />
+      <Setting name="ToAddress" />
+      <Setting name="DeploymentEnvironment" />
+      <Setting name="ServiceBusConnectionString" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" />
+    </ConfigurationSettings>
+    <LocalResources>
+      <LocalStorage name="BackupWorkFolder" cleanOnRoleRecycle="true" sizeInMB="20000" />
+    </LocalResources>
+
+  </WorkerRole>
+</ServiceDefinition>
+
+

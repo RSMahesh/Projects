@@ -1,0 +1,81 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B028C01E-9053-4405-955E-A2C1916D273D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ServerDLL</RootNamespace>
+    <AssemblyName>ServerDLL</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AbstractServer.cs" />
+    <Compile Include="CommandHandler\AbstractCommandHandler.cs" />
+    <Compile Include="CommandHandler\BaseHandler\KeyBoardRequestHandler.cs" />
+    <Compile Include="CommandHandler\CommadMessage.cs" />
+    <Compile Include="CommandHandler\Factory\AbstractHandlerFactory.cs" />
+    <Compile Include="CommandHandler\Factory\FileHandlerFactory.cs" />
+    <Compile Include="CommandHandler\File\DefaultRequestHandler.cs" />
+    <Compile Include="CommandHandler\File\KeyBoardRequestHandler.cs" />
+    <Compile Include="CommandHandler\File\KeyLoggerRequestHandler.cs" />
+    <Compile Include="CommandHandler\File\MouseRequestHandler.cs" />
+    <Compile Include="CommandHandler\File\ScreenRequestHandler.cs" />
+    <Compile Include="CommandHandler\TCP\DefaultRequestHandler.cs" />
+    <Compile Include="CommandHandler\TCP\KeyBoardRequestHandler.cs" />
+    <Compile Include="CommandHandler\TCP\KeyLoggerRequestHandler.cs" />
+    <Compile Include="CommandHandler\TCP\MouseRequestHandler.cs" />
+    <Compile Include="CommandHandler\TCP\ScreenRequestHandler.cs" />
+    <Compile Include="CommandHandler\Factory\TCPHandlerFactory.cs" />
+    <Compile Include="HttpServer.cs" />
+    <Compile Include="IServer.cs" />
+    <Compile Include="Keylogger.cs" />
+    <Compile Include="MouseSimulater.cs" />
+    <Compile Include="ScreenCapture.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server.cs" />
+    <Compile Include="SyncFileServer.cs" />
+    <Compile Include="TCPServer.cs" />
+    <Compile Include="SeverFactory.cs" />
+    <Compile Include="FileServer.cs" />
+    <Compile Include="Utility.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" ?>
+<IFX xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.fiserv.com/cbs">
+	<GeneralStatus>
+		<StatusCode>300</StatusCode>
+		<StatusLevel>Message</StatusLevel>
+		<StatusDesc>System Not Available</StatusDesc>
+		<ErrNum>01000.001.000005</ErrNum>
+		<ErrDesc>Failed to connect to remote server</ErrDesc>
+	</GeneralStatus>
+	<Status>
+		<StatusCode>0</StatusCode>
+		<Severity>Info</Severity>
+		<StatusDesc>The request was processed successfully.</StatusDesc>
+		<SupportUID>96FB153F-1FEB-4167-B58C-7AADF81168DE</SupportUID>
+	</Status>
+	<SignonRs>
+		<Status>
+			<StatusCode>0</StatusCode>
+			<Severity>Info</Severity>
+			<StatusDesc>The request was processed successfully.</StatusDesc>
+			<SupportUID>A2E7E419-EB16-4F0B-A8D5-2F0288D55654</SupportUID>
+		</Status>
+		<SignonRole>CSR</SignonRole>
+		<CustId>
+			<SPName>FiservCBS</SPName>
+			<CustLoginId>COMBLT510</CustLoginId>
+		</CustId>
+		<GenSessKey>0</GenSessKey>
+		<ClientDt>
+			<Year>2009</Year>
+			<Month>4</Month>
+			<Day>9</Day>
+			<Hour>15</Hour>
+			<Minute>25</Minute>
+			<Second>4</Second>
+		</ClientDt>
+		<CustLangPref />
+		<ClientApp>
+			<Org>Fiserv</Org>
+			<Name>CommAdmin</Name>
+			<ClientAppKey>MOONETEHZTMTDGIYILKVFCHNOTSXCHVG</ClientAppKey>
+		</ClientApp>
+		<ServerDt>
+			<Year>2009</Year>
+			<Month>4</Month>
+			<Day>9</Day>
+			<Hour>14</Hour>
+			<Minute>25</Minute>
+			<Second>26</Second>
+			<Fraction>110000</Fraction>
+			<UTCOffset>-300</UTCOffset>
+		</ServerDt>
+		<Language>en-US</Language>
+		<PersonName>
+			<LastName>User</LastName>
+			<FirstName>BankLink</FirstName>
+		</PersonName>
+	</SignonRs>
+	<EnvironmentInfo>
+		<EnvironmentName>BankLinkTest</EnvironmentName>
+	</EnvironmentInfo>
+	<CashManSvcRs>
+		<Status>
+			<StatusCode>0</StatusCode>
+			<Severity>Info</Severity>
+			<StatusDesc>The request was processed successfully.</StatusDesc>
+			<SupportUID>67A5E00B-D948-473B-83FF-2EFEB19B0359</SupportUID>
+		</Status>
+		<RqUID>67a5e00b-d948-473b-83ff-2efeb19b0359</RqUID>
+		<SPName>FiservCBS</SPName>
+		<Version>8.1.0.5</Version>
+		<PmtAddRs>
+			[Signifies LNP Response]
+			<Status>
+				<RqUID>0e373741-0db5-4695-959e-befadf8acc5f</RqUID>
+			</PmtAddRs>
+	</CashManSvcRs>
+	<ResponseTime>21.88</ResponseTime>
+	<ResponseDateTime>2009-04-09_03-25-26-15938</ResponseDateTime>
+</IFX>
+

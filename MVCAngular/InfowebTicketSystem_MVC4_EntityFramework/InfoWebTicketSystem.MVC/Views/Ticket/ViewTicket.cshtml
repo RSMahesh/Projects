@@ -1,0 +1,275 @@
+﻿@model InfoWebTicketSystem.MVC.ViewModels.ViewTicketViewModel
+@{
+    ViewBag.Title = "ViewTicket";
+    
+}
+
+<h2>ViewTicket</h2>
+
+@using (Html.BeginForm("UpdateTicket", "Ticket", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(model => model.ID);
+    
+    <div id="maincorecontent">
+        <!-- BEGIN DIALOG PROCESSING -->
+        <div class="boxcontainer">
+            <div class="boxcontainerlabel">
+                <div style="float: right">
+                    <div class="headerbutton" onclick="javascript:UpdateTicket();">
+                        Update
+                    </div>
+                    <div class="headerbuttongreen" onclick="javascript: $('#postreplycontainer').show(); $('#replycontents').focus();">
+                        Post Reply
+                    </div>
+                </div>
+                View Ticket: #NMU-@Model.TicketNumber-XOJ
+            </div>
+            <div class="boxcontainercontenttight">
+                <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="ticketgeneralcontainer">
+                                    <div class="ticketgeneraltitlecontainer">
+                                        <div class="ticketgeneraldepartment" style="display: none">
+                                            API
+                                        </div>
+                                        <div class="ticketgeneraltitle">
+                                            @Model.Subject
+                                        </div>
+                                    </div>
+                                    <div class="ticketgeneralinfocontainer">
+                                        Created:@Model.CreateDate&nbsp;&nbsp;&nbsp;&nbsp;Updated:
+                                        @Model.LastUpdateDate
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="background-color: #c7c7c7;">
+                                <div class="ticketgeneralcontainer">
+                                    <div style="background-color: #c7c7c7;" class="ticketgeneralproperties">
+                                        <div class="ticketgeneralpropertiesdivider">
+                                            <img border="0" align="middle" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAwCAQAAAB6OtgKAAAAN0lEQVQI113GiQkAIBADwXhqE1Zk/+2cL5GICMOymNVQDFmS+oli6hZYcEBTxqOzjXO7+TPnfQHCiBfALhHbGgAAAABJRU5ErkJggg==">
+                                        </div>
+                                        <div class="ticketgeneralpropertiesobject">
+                                            <div class="ticketgeneralpropertiestitle">
+                                                DEPARTMENT
+                                            </div>
+                                            <div class="ticketgeneralpropertiescontent">
+                                                @Model.Department
+                                            </div>
+                                        </div>
+
+                                        <div class="ticketgeneralpropertiesdivider">
+                                            <img border="0" align="middle" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAwCAQAAAB6OtgKAAAAN0lEQVQI113GiQkAIBADwXhqE1Zk/+2cL5GICMOymNVQDFmS+oli6hZYcEBTxqOzjXO7+TPnfQHCiBfALhHbGgAAAABJRU5ErkJggg==">
+                                        </div>
+                                        <div class="ticketgeneralpropertiesobject">
+                                            <div class="ticketgeneralpropertiestitle">
+                                                OWNER
+                                            </div>
+                                            <div class="ticketgeneralpropertiescontent">
+                                                Unassigned
+                                            </div>
+                                        </div>
+                                        <div class="ticketgeneralpropertiesdivider">
+                                            <img border="0" align="middle" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAwCAQAAAB6OtgKAAAAN0lEQVQI113GiQkAIBADwXhqE1Zk/+2cL5GICMOymNVQDFmS+oli6hZYcEBTxqOzjXO7+TPnfQHCiBfALhHbGgAAAABJRU5ErkJggg==">
+                                        </div>
+                                        <div class="ticketgeneralpropertiesobject">
+                                            <div class="ticketgeneralpropertiestitle">
+                                                TYPE
+                                            </div>
+                                            <div class="ticketgeneralpropertiescontent">
+                                                @Model.TicketType
+                                            </div>
+                                        </div>
+                                        <div class="ticketgeneralpropertiesdivider">
+                                            <img border="0" align="middle" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAwCAQAAAB6OtgKAAAAN0lEQVQI113GiQkAIBADwXhqE1Zk/+2cL5GICMOymNVQDFmS+oli6hZYcEBTxqOzjXO7+TPnfQHCiBfALhHbGgAAAABJRU5ErkJggg==">
+                                        </div>
+                                        <div class="ticketgeneralpropertiesobject">
+                                            <div class="ticketgeneralpropertiestitle">
+                                                STATUS
+                                            </div>
+                                            <div class="ticketgeneralpropertiesselect">
+
+                                                @Html.DropDownListFor(modal => modal.Status,
+                            new SelectList(
+                            new List<object>
+                                {
+                                new { value ="OP" , text = "OPEN"  },
+                                 new { value ="CS" , text = "Closed"  },
+                                  new { value ="OH" , text = "On Hold"  },
+                                new { value = "AW" , text = "Awaiting Client Update" }
+                                },
+                                "value",
+                                "text"
+                                ), new { @class = "swiftselect" }
+                                )
+
+                                            </div>
+                                        </div>
+                                        <div class="ticketgeneralpropertiesdivider">
+                                            <img border="0" align="middle" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAwCAQAAAB6OtgKAAAAN0lEQVQI113GiQkAIBADwXhqE1Zk/+2cL5GICMOymNVQDFmS+oli6hZYcEBTxqOzjXO7+TPnfQHCiBfALhHbGgAAAABJRU5ErkJggg==">
+                                        </div>
+                                        <div class="ticketgeneralpropertiesobject" >
+                                            <div class="ticketgeneralpropertiestitle">
+                                                PRIORITY
+                                            </div>
+                                            <div class="ticketgeneralpropertiesselect">
+                                                         @Html.DropDownListFor(modal => modal.Priority,
+                            new SelectList(
+                            new List<object>
+                                {
+                                new { value ="NR" , text = "Normal"  },
+                                 new { value ="EM" , text = "Emergency"  },
+                                  new { value ="CR" , text = "Critical"  },
+                                },
+                                "value",
+                                "text"
+                                ), new { @class = "swiftselect" }
+                                )
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br />
+                <div class="viewticketcontentcontainer">
+                    <br />
+                </div>
+                <div id="postreplycontainer" style="display: none;">
+                    <div class="ticketpaddingcontainer">
+                        <table class="hlineheader">
+                            <tr>
+                                <th rowspan="2" nowrap>Message Details
+                                </th>
+                                <td>&nbsp;
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="hlinelower">&nbsp;
+                                </td>
+                            </tr>
+                        </table>
+                        <table width="100%" border="0" cellspacing="1" cellpadding="4">
+                            <tr>
+                                <td colspan="2" align="left" valign="top">
+
+                                    @Html.TextAreaFor(model => model.Message,
+                                            new
+                                               {
+                                                   @class = "swifttextareawide",
+                                                   rows = "15",
+                                                   columns = "25"
+
+                                               })
+                                </td>
+                            </tr>
+                        </table>
+                        <br />
+                        <table class="hlineheader">
+                            <tr>
+                                <th rowspan="2" nowrap>Upload File(s) [<div class="addplus">
+                                    <a href="#ticketattachmentcontainer" onclick="javascript: $('#ticketattachmentcontainer').show();">Add File</a>
+                                </div>
+                                    ]
+                                </th>
+                                <td>&nbsp;
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="hlinelower">&nbsp;
+                                </td>
+                            </tr>
+                        </table>
+                        <div id="ticketattachmentcontainer" style="display: none">
+                            <div class="ticketattachmentitem">
+                                <div class="ticketattachmentitemdelete">
+                                    &nbsp;
+                                </div>
+                                  @Html.TextBoxFor(m => m.AttachedFile, new {type = "file", @class="swifttextlarge"})
+                              
+                            </div>
+                        </div>
+                        <br />
+                        <div class="subcontent">
+                            <input class="rebuttonwide2" value="Send" type="submit" name="button" />
+                        </div>
+                    </div>
+                </div>
+         
+                   @foreach (var conver in Model.Conversation)
+                   {
+                        <div class="ticketpostsholder">
+                            <div class="ticketpostcontainer">
+                                <div class="ticketpostbar">
+                                    <div class="ticketpostbarname">
+                                       @conver.User</div>
+                                    <div class="ticketpostbarbadgeblue" >
+                                        <div class="tpbadgetext">
+                                              @conver.Staff</div>
+                                    </div>
+                                </div>
+                                <div style="min-height: 340px;" class="ticketpostcontents">
+                                    <div class="ticketpostcontentsbar">
+                                        <div onclick="javascript: QuoteTicketPost('524123', '1136269');" class="ticketbarquote">
+                                        </div>
+                                        <div class="ticketbarcontents">
+                                            Posted on:
+                                                                                   @conver.CreateDate</div>
+                                        <span class="ticketbardatefold"></span>
+                                    </div>
+                                    <div class="ticketpostcontentsdetails">
+                                    
+                                        <div class="ticketpostcontentsattachments" style="display:@conver.GotAttachment " >
+                                            <div style="background-image: url(/images/mimeico_pic.gif)"
+                                                class="ticketpostcontentsattachmentitem" onclick="javascript: PopupSmallWindow('@conver.AttachmentFileRaw');">
+                                                &nbsp;@conver.AttachmentFileName</div>
+                                        </div>
+                                    
+                                        <div class="ticketpostcontentsholder">
+                                            <div class="ticketpostcontentsdetailscontainer">
+                                                <pre>
+@conver.Message</pre>
+                                            </div>
+                                        </div>
+                                        <div class="ticketpostcontentsbottom">
+                                            <span class="ticketpostbottomright">&nbsp;</span><div class="ticketpostbottomcontents">
+                                                &nbsp;</div>
+                                        </div>
+                                    </div>
+                                    <div class="ticketpostbarbottom">
+                                        <div class="ticketpostbottomcontents">
+                                            &nbsp;&nbsp;</div>
+                                    </div>
+                                    <div class="ticketpostclearer">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                   }
+             
+            </div>
+        </div>
+    </div>
+
+}
+<script>
+    function UpdateTicket() {
+        var myform = document.forms[0];
+        //    $(myform).append('<input type="hidden" name="button" value="Update" />');
+        $(myform).submit();
+    }
+
+
+    function PopupSmallWindow(url) {
+        window.open(url);
+    }
+
+</script>
+
+</asp:content>

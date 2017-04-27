@@ -1,0 +1,9 @@
+BaMait phlaI
+Sau$
+ivaiQa phalaI()
+Sau$
+parvartnaSaIla A = 10;
+A = 10;
+baulaavaao Cap(A);
+AMt
+AMt

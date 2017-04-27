@@ -1,0 +1,54 @@
+﻿<html>
+<head>
+    <%=style%>
+</head>
+<body lang="EN-US" link="blue" vlink="purple" style='tab-interval: .5in'>
+    <div class="WordSection1">
+        <div>
+            <div>
+                <p>
+                    <span style='font-family: "Arial","sans-serif"'>
+                        <br>
+                        Dear
+                        <%=CustomerName%>,
+                        <br />
+                        <br />
+                        Thank you for using InfoWeb Services. Your Order is till pending with us. Please
+                        find your Order details below.
+                        <br />
+                        <br />
+                        <b>Order Number :
+                            <%=OrderNumber%></b>
+                        <br />
+                        <br />
+                        <%=OrderDetail%>
+                        <br />
+                        <span style="text-decoration: underline">Please follow below steps so that we can excute
+                            your Order
+                            <%=OrderNumber%>
+                        </span>at earliest.
+                        <ul>
+                            <li>Make Payment through Net Banking i.e. ETF to
+                                <br>
+                                <div>
+                                    Our ICICI Bank Account No.<b>025301538753</b><br />
+                                    IFSC Code <b>ICIC0000253 </b>
+                                </div>
+                                <div style="padding-left: 100px; padding-bottom: 10px; padding-top: 10px">
+                                    OR</div>
+                                Make Payment through IMPS to
+                                <br>
+                                Our Mobile Money Identifier (MMID) No.<b>9229189</b> </li>
+                            <li style="padding-top: 15px">After making payment.Click on this link
+                                <%=OrderUpdateLink%>
+                                and update your payment transcation number. </li>
+                        </ul>
+                        <%=Email_Footer%>
+            </div>
+        </div>
+        <p class="MsoNormal">
+            <o:p>&nbsp;</o:p>
+        </p>
+    </div>
+</body>
+</html>

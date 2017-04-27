@@ -1,0 +1,34 @@
+import javax.swing.*; 
+ import java.awt.*; 
+ import java.awt.event.*;
+class Form1 extends JFrame 
+ { 
+ 	 JPanel p1=new mypanel(); 
+ 	 public Form1()
+ 	{ 
+	setSize(415,367);
+	setTitle("Form1");
+	Container cp=getContentPane();cp.add(p1);
+	 p1.setLayout(null);
+	 addWindowListener(new WindowAdapter()
+	 {public void windowClosing(WindowEvent e){System.exit(0);}});
+	
+	}
+	public static void main(String s[])
+	{
+	Form1 ff=new Form1();
+	ff.setLocation(137,90);
+	ff.show();
+	}
+ }  
+class mypanel Extends JPanel
+{
+	 public mypanel()
+	{
+	 setLayout(null);
+	 TextField Text3 = new TextField("Text3");
+	 Text3.setBounds(16,80,113,33);
+	 TextField Text2 = new TextField("Text2");
+	 Text2.setBounds(128,136,233,25);
+	}
+}

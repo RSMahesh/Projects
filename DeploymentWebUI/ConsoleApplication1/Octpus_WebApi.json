@@ -1,0 +1,381 @@
+{
+  "Project": {
+    "Id": "Projects-1",
+    "VariableSetId": "variableset-Projects-1",
+    "DeploymentProcessId": "deploymentprocess-Projects-1",
+    "IncludedLibraryVariableSetIds": [],
+    "DefaultToSkipIfAlreadyInstalled": false,
+    "VersioningStrategy": {
+      "DonorPackageStepId": null,
+      "Template": "#{Octopus.Version.LastMajor}.#{Octopus.Version.LastMinor}.#{Octopus.Version.NextPatch}"
+    },
+    "ReleaseCreationStrategy": {
+      "ReleaseCreationPackageStepId": null
+    },
+    "Name": "WebApi",
+    "Slug": "webapi",
+    "Description": "",
+    "IsDisabled": false,
+    "ProjectGroupId": "ProjectGroups-1",
+    "LifecycleId": "Lifecycles-1",
+    "AutoCreateRelease": false,
+    "Links": {
+      "Self": "/octopus/api/projects/Projects-1",
+      "Releases": "/octopus/api/projects/Projects-1/releases{/version}{?skip}",
+      "Variables": "/octopus/api/variables/variableset-Projects-1",
+      "Progression": "/octopus/api/progression/Projects-1",
+      "DeploymentProcess": "/octopus/api/deploymentprocesses/deploymentprocess-Projects-1",
+      "Web": "/octopus/app#/projects/Projects-1",
+      "Logo": "/octopus/api/projects/Projects-1/logo"
+    }
+  },
+  "ProjectGroup": {
+    "Id": "ProjectGroups-1",
+    "Name": "All Projects"
+  },
+  "VariableSet": {
+    "Id": "variableset-Projects-1",
+    "OwnerId": "Projects-1",
+    "Version": 8,
+    "Variables": [
+      {
+        "Id": "d2eed552-27b5-3781-4e32-49b922743137",
+        "Name": "TableStorageEndpoint",
+        "Value": "https://mediavaletdevasia.table.core.windows.net",
+        "Scope": {
+          "Environment": [
+            "Environments-1"
+          ]
+        },
+        "IsSensitive": false,
+        "IsEditable": true,
+        "Prompt": null
+      },
+      {
+        "Id": "f086c683-22e5-ca47-0917-f5a14c9897fc",
+        "Name": "BlobStorageEndpoint",
+        "Value": "https://mediavaletdevasia.blob.core.windows.net",
+        "Scope": {
+          "Environment": [
+            "Environments-1"
+          ]
+        },
+        "IsSensitive": false,
+        "IsEditable": true,
+        "Prompt": null
+      },
+      {
+        "Id": "8c3fd697-8477-4267-278e-145cc76b7c7d",
+        "Name": "AccountName",
+        "Value": "mediavaletdevasia",
+        "Scope": {
+          "Environment": [
+            "Environments-1"
+          ]
+        },
+        "IsSensitive": false,
+        "IsEditable": true,
+        "Prompt": null
+      },
+      {
+        "Id": "e359bda2-cad9-c814-8aaf-e3c150ec6eb8",
+        "Name": "AccountSharedKey",
+        "Value": "wtjIEIXRmtA6tHUW5zkhYwc1cCYhlFhsW8z2Cf3TUpKacrrnYWBaLUUrQDacfH3kQ3XhftEhVt3f2ONZQhCMog==",
+        "Scope": {
+          "Environment": [
+            "Environments-1"
+          ]
+        },
+        "IsSensitive": false,
+        "IsEditable": true,
+        "Prompt": null
+      },
+      {
+        "Id": "010e216e-4722-06cf-6227-ee17b7198ea5",
+        "Name": "StorageConnectionString",
+        "Value": "DefaultEndpointsProtocol=https;AccountName=mediavaletdevasia;AccountKey=wtjIEIXRmtA6tHUW5zkhYwc1cCYhlFhsW8z2Cf3TUpKacrrnYWBaLUUrQDacfH3kQ3XhftEhVt3f2ONZQhCMog==",
+        "Scope": {
+          "Environment": [
+            "Environments-1"
+          ]
+        },
+        "IsSensitive": false,
+        "IsEditable": true,
+        "Prompt": null
+      },
+      {
+        "Id": "395c9621-d6cc-0e12-77c6-cb6732c73edb",
+        "Name": "BlobContainerBaseUri",
+        "Value": "http://mediavaletdevasia.blob.core.windows.net",
+        "Scope": {
+          "Environment": [
+            "Environments-1"
+          ]
+        },
+        "IsSensitive": false,
+        "IsEditable": true,
+        "Prompt": null
+      },
+      {
+        "Id": "10db04a6-0201-f305-4f1f-4dc1305fcfb5",
+        "Name": "VideoStreamingServer",
+        "Value": "mediavaletdevvod.cloudapp.net",
+        "Scope": {
+          "Environment": [
+            "Environments-1"
+          ]
+        },
+        "IsSensitive": false,
+        "IsEditable": true,
+        "Prompt": null
+      },
+      {
+        "Id": "4176335a-1f46-80b6-8093-b1efca8101a6",
+        "Name": "WebJobFolderPath",
+        "Value": "D:\\GitRepo\\Deployment\\WebJob",
+        "Scope": {
+          "Environment": [
+            "Environments-1"
+          ]
+        },
+        "IsSensitive": false,
+        "IsEditable": true,
+        "Prompt": null
+      },
+      {
+        "Id": "5f6c5319-7d39-fa51-62bd-d266a5111294",
+        "Name": "WebJobQueueName",
+        "Value": "web-job-triggers-mb",
+        "Scope": {
+          "Environment": [
+            "Environments-1"
+          ]
+        },
+        "IsSensitive": false,
+        "IsEditable": true,
+        "Prompt": null
+      },
+      {
+        "Id": "1f8ff3de-824e-5699-9352-703e4264286f",
+        "Name": "WebJobStorageConnectionString",
+        "Value": "DefaultEndpointsProtocol=https;AccountName=mediavaletdevasia;AccountKey=wtjIEIXRmtA6tHUW5zkhYwc1cCYhlFhsW8z2Cf3TUpKacrrnYWBaLUUrQDacfH3kQ3XhftEhVt3f2ONZQhCMog==",
+        "Scope": {},
+        "IsSensitive": false,
+        "IsEditable": true,
+        "Prompt": null
+      }
+    ],
+    "ScopeValues": {
+      "Environments": [
+        {
+          "Id": "Environments-1",
+          "Name": "Development"
+        },
+        {
+          "Id": "Environments-20",
+          "Name": "Test"
+        }
+      ],
+      "Machines": [
+        {
+          "Id": "Machines-1",
+          "Name": "MBTestApi"
+        }
+      ],
+      "Actions": [
+        {
+          "Id": "785f12f1-0ae8-4d04-828e-0b73ce2c2752",
+          "Name": "1. Delete web job"
+        },
+        {
+          "Id": "3d9132b8-63f8-4856-8c7d-44858bee437d",
+          "Name": "2. MediaValet.Api.IISHost"
+        },
+        {
+          "Id": "692a89f5-e2a1-4f2c-9953-97c4c373f6f2",
+          "Name": "3. ExtractWebJobNuget"
+        },
+        {
+          "Id": "eb3dc1e4-1919-409a-a8cc-d9a02c754aa9",
+          "Name": "4. UpdateWebJobConfig"
+        },
+        {
+          "Id": "cab96c40-f248-4355-9259-e0f0f849a81a",
+          "Name": "5. FTP Web Job"
+        }
+      ],
+      "Roles": [
+        {
+          "Id": "admin",
+          "Name": "admin"
+        }
+      ]
+    },
+    "Links": {
+      "Self": "/octopus/api/variables/variableset-Projects-1"
+    }
+  },
+  "NuGetFeeds": [
+    {
+      "Id": "feeds-localhosteamcitynuget",
+      "Name": "localhosTeamCityNuget"
+    }
+  ],
+  "ActionTemplates": [],
+  "DeploymentProcess": {
+    "Id": "deploymentprocess-Projects-1",
+    "ProjectId": "Projects-1",
+    "Steps": [
+      {
+        "Id": "1b21fe74-3c7b-4013-87f5-b0c06aa5aebb",
+        "Name": "Delete web job",
+        "RequiresPackagesToBeAcquired": false,
+        "Properties": {
+          "Octopus.Action.TargetRoles": "admin"
+        },
+        "Condition": "Success",
+        "StartTrigger": "StartAfterPrevious",
+        "Actions": [
+          {
+            "Id": "785f12f1-0ae8-4d04-828e-0b73ce2c2752",
+            "Name": "Delete web job",
+            "ActionType": "Octopus.Script",
+            "Environments": [
+              "Environments-1"
+            ],
+            "Properties": {
+              "Octopus.Action.Script.Syntax": "CSharp",
+              "Octopus.Action.Script.ScriptBody": "System.Diagnostics.Process process = new System.Diagnostics.Process();\n            process.StartInfo = new System.Diagnostics.ProcessStartInfo(@\"D:\\GitRepo\\Deployment\\FTPDeleteWebJob.bat\");\n            process.Start();\n            process.WaitForExit();"
+            },
+            "SensitiveProperties": {}
+          }
+        ],
+        "SensitiveProperties": {}
+      },
+      {
+        "Id": "f748dfc6-3a07-4a78-8909-8303bfb70d64",
+        "Name": "MediaValet.Api.IISHost",
+        "RequiresPackagesToBeAcquired": false,
+        "Properties": {
+          "Octopus.Action.TargetRoles": "admin"
+        },
+        "Condition": "Success",
+        "StartTrigger": "StartAfterPrevious",
+        "Actions": [
+          {
+            "Id": "3d9132b8-63f8-4856-8c7d-44858bee437d",
+            "Name": "MediaValet.Api.IISHost",
+            "ActionType": "Octopus.TentaclePackage",
+            "Environments": [
+              "Environments-1"
+            ],
+            "Properties": {
+              "Octopus.Action.Package.NuGetFeedId": "feeds-localhosteamcitynuget",
+              "Octopus.Action.EnabledFeatures": "Octopus.Features.ConfigurationVariables",
+              "Octopus.Action.Package.AutomaticallyRunConfigurationTransformationFiles": "False",
+              "Octopus.Action.Package.AutomaticallyUpdateAppSettingsAndConnectionStrings": "True",
+              "Octopus.Action.Package.DownloadOnTentacle": "False",
+              "Octopus.Action.Package.NuGetPackageId": "MediaValet.Api.IISHost",
+              "Octopus.Action.SubstituteInFiles.Enabled": "False"
+            },
+            "SensitiveProperties": {}
+          }
+        ],
+        "SensitiveProperties": {}
+      },
+      {
+        "Id": "e345d626-8006-445f-ac3f-596b899b1570",
+        "Name": "ExtractWebJobNuget",
+        "RequiresPackagesToBeAcquired": false,
+        "Properties": {
+          "Octopus.Action.TargetRoles": "admin"
+        },
+        "Condition": "Success",
+        "StartTrigger": "StartAfterPrevious",
+        "Actions": [
+          {
+            "Id": "692a89f5-e2a1-4f2c-9953-97c4c373f6f2",
+            "Name": "ExtractWebJobNuget",
+            "ActionType": "Octopus.Script",
+            "Environments": [
+              "Environments-1"
+            ],
+            "Properties": {
+              "Octopus.Action.Script.Syntax": "CSharp",
+              "Octopus.Action.Script.ScriptBody": "var feedUrl = \"http://localhost:81/guestAuth/app/nuget/v1/FeedService.svc/\";\n            var packageID = \"MediaValet.WebJobs.EntityChangeListener\";\n            var version = \"1.0.0.43\";\n            var extractionFolder = @\"D:\\GitRepo\\Deployment\\WebJob\";\n            var nugetDownloaderExe = @\"D:\\Projects\\NugetDownlaoder\\NugetDownlaoder\\bin\\Debug\\NugetDownlaoder.exe\";\n\n            var arguments = feedUrl + \" \" + packageID + \" \" + version + \" \" + extractionFolder;\n            \n            System.Diagnostics.Process process = new System.Diagnostics.Process();\n            process.StartInfo = new System.Diagnostics.ProcessStartInfo(nugetDownloaderExe, arguments);\n            process.Start();\n            process.WaitForExit();\n\n"
+            },
+            "SensitiveProperties": {}
+          }
+        ],
+        "SensitiveProperties": {}
+      },
+      {
+        "Id": "b3a2fcdc-1ca8-4306-8e6a-6841545fd73d",
+        "Name": "UpdateWebJobConfig",
+        "RequiresPackagesToBeAcquired": false,
+        "Properties": {
+          "Octopus.Action.TargetRoles": "admin"
+        },
+        "Condition": "Success",
+        "StartTrigger": "StartAfterPrevious",
+        "Actions": [
+          {
+            "Id": "eb3dc1e4-1919-409a-a8cc-d9a02c754aa9",
+            "Name": "UpdateWebJobConfig",
+            "ActionType": "Octopus.Script",
+            "Environments": [],
+            "Properties": {
+              "Octopus.Action.Script.Syntax": "CSharp",
+              "Octopus.Action.Script.ScriptBody": "Dictionary<string, string> dic = new Dictionary<string, string>();\n \n foreach (var item in Octopus.Parameters)\n            {\n                    if ( ! (item.Key.ToLower().StartsWith(\"octopus\") || item.Key.ToLower().StartsWith(\"env:\")))\n                {\n                    System.IO.File.AppendAllText(\n                        @\"C:\\dic.txt\",\n                        item.Key.ToLower() + \" :\" + item.Value + Environment.NewLine);\n                        \n                        dic[item.Key] = item.Value;\n                }\n            }\n\n foreach (var item in dic)\n {\n  \n    System.IO.File.AppendAllText(\n                        @\"C:\\dic.txt\",\n                        item.Key + \"::\" + item.Value + Environment.NewLine);   \n }\n\n\n //Dictionary<string, string> dic = new Dictionary<string, string>();\n       //    dic[\"AccountName\"] = \"mediavaletdevasiaThatIsit\";\n\n            string appConfigFile = System.IO.Path.Combine(Octopus.Parameters[\"WebJobFolderPath\"], \"MediaValet.WebJobs.EntityChangeListener.exe.config\" );\n\n            System.Xml.Linq.XElement xelement = System.Xml.Linq.XElement.Load(appConfigFile);\n\n            IEnumerable<System.Xml.Linq.XElement> elements = xelement.Elements().ToList();\n            // Read the entire XML\n            foreach (var element in elements)\n            {\n                if (element.Name.LocalName == \"appSettings\")\n                {\n                    var eles = element.Elements().ToList();\n\n                    foreach (var ele in eles)\n                    {\n                        if (dic.ContainsKey(ele.Attribute(\"key\").Value))\n                        {\n                            ele.Attribute(\"value\").Value = dic[ele.Attribute(\"key\").Value];\n                        }\n                    }\n                }\n            }\n\n            var ww = new System.Xml.XmlTextWriter(appConfigFile, System.Text.Encoding.UTF8);\n            ww.Formatting = System.Xml.Formatting.Indented;\n            ww.WriteStartDocument();\n\n            xelement.WriteTo(ww);\n            ww.Flush();\n            ww.Close();"
+            },
+            "SensitiveProperties": {}
+          }
+        ],
+        "SensitiveProperties": {}
+      },
+      {
+        "Id": "1c70f938-5fc9-488f-9ee4-b752cff1bb38",
+        "Name": "FTP Web Job",
+        "RequiresPackagesToBeAcquired": false,
+        "Properties": {
+          "Octopus.Action.TargetRoles": "admin"
+        },
+        "Condition": "Success",
+        "StartTrigger": "StartAfterPrevious",
+        "Actions": [
+          {
+            "Id": "cab96c40-f248-4355-9259-e0f0f849a81a",
+            "Name": "FTP Web Job",
+            "ActionType": "Octopus.Script",
+            "Environments": [
+              "Environments-1"
+            ],
+            "Properties": {
+              "Octopus.Action.Script.Syntax": "CSharp",
+              "Octopus.Action.Script.ScriptBody": "System.Diagnostics.Process process = new System.Diagnostics.Process();\n            process.StartInfo = new System.Diagnostics.ProcessStartInfo(@\"D:\\GitRepo\\Deployment\\FTPWebJob.bat\");\n            process.Start();\n            process.WaitForExit();"
+            },
+            "SensitiveProperties": {}
+          }
+        ],
+        "SensitiveProperties": {}
+      }
+    ],
+    "Version": 37,
+    "Links": {
+      "Self": "/octopus/api/deploymentprocesses/deploymentprocess-Projects-1",
+      "Project": "/octopus/api/projects/Projects-1",
+      "Template": "/octopus/api/deploymentprocesses/deploymentprocess-Projects-1/template"
+    }
+  },
+  "LibraryVariableSets": [],
+  "Lifecycle": {
+    "Id": "Lifecycles-1",
+    "Name": "Default Lifecycle"
+  },
+  "$Meta": {
+    "ExportedAt": "2015-09-21T18:12:56.247+05:30",
+    "OctopusVersion": "3.0.11.2328",
+    "Type": "project",
+    "ContainerType": "ProjectWithDependencies"
+  }
+}

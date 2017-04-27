@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<IFX>
+	<SignonRq>
+		<SessOverrideFlag>0</SessOverrideFlag>
+		<SignonPswd>
+			<SignonRole>CSR</SignonRole>
+			<CustId>
+				<SPName>FiservCBS</SPName>
+				<CustLoginId>comr152</CustLoginId>
+			</CustId>
+			<CustPswd>
+				<CryptType>NONE</CryptType>
+				<Pswd>topdog1</Pswd>
+			</CustPswd>
+			<GenSessKey>0</GenSessKey>
+		</SignonPswd>
+		<ClientDt>
+			<Year>2009</Year>
+			<Month>3</Month>
+			<Day>31</Day>
+			<Hour>5</Hour>
+			<Minute>3</Minute>
+			<Second>6</Second>
+		</ClientDt>
+		<ClientApp>
+			<Org>Fiserv</Org>
+			<Name>CommAdmin</Name>
+			<ClientAppKey>CBSILOUBHLLZSUPFBTEMBUHQJOIVKDBR</ClientAppKey>
+		</ClientApp>
+		<ComputerId>BLNYV03CBST201</ComputerId>
+		<InstitutionCode>CBSIL</InstitutionCode>
+	</SignonRq>
+	<EnvironmentInfo>
+		<EnvironmentName>rlsbank</EnvironmentName>
+	</EnvironmentInfo>
+	<CashManSvcRq>
+		<RqUID>2d17a11d-9d59-4007-8ab4-59c1719f29f5</RqUID>
+		<SPName>FiservCBS</SPName>
+		[Signifies ECO Request]
+		<HostStatusInqRq>
+			<RqUID>767782bd-0951-471e-90a8-93c556782d30</RqUID>
+			<BankRoutingInfo>
+				[BankID]
+				<BankId>8000</BankId>
+				[ABANumber]
+				<RoutingNum>021912915</RoutingNum>		
+
+			</BankRoutingInfo>
+		</HostStatusInqRq>
+	</CashManSvcRq>
+</IFX>
+
+
+

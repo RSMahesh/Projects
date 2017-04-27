@@ -1,0 +1,701 @@
+<style type=text/css>
+	@media all {
+				.table {border-collapse: collapse; border: 1px solid #EEEEEE}
+				.dummy	{	}
+				.nowrap {white-space: nowrap;}
+				.xheader {font: 10pt Lucida Console,Arial,Sans-Serif; background-color: black; color: white;}
+				.xlabel {font: 10pt Lucida Console,Arial,Sans-Serif; background-color: #8B081D; color: white;}
+				.xcell {font: 10pt Lucida Console,Arial,Sans-Serif; background-color: #EEEEEE;}
+				.menushadow {filter: progid:DXImageTransform.Microsoft.dropShadow(Color=BBBBBB,offX=4,offY=4,positive=true);}
+				.xpbutton {background-color: transparent; color: black; text-decoration: none;}
+				BODY {font: 10pt Verdana,Arial,Sans-Serif; }
+				
+
+	}
+
+				
+				#divMain{display:block;}
+				#print_area{display:none;}
+				.safarishadow {-webkit-box-shadow:4px 4px #BBBBBB; color: #000000; background-color: #FFFFFF; font: 8pt verdana,Sans-Serif;}
+				.Mozillashadow{-moz-box-shadow: 4px 4px 0px #BBBBBB; color: #000000; background-color: #FFFFFF; font: 8pt verdana,Sans-Serif;}
+				.Body           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Body A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Body A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Body A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Body A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Body0           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Body0 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Body0 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Body0 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Body0 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Body1           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Body1 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Body1 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Body1 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Body1 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyB           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyB A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyB A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyB A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyB A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyD           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyD A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyD A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyD A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyD A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyL           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyL A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyL A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyL A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyL A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button0           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button0 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button0 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button0 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button0 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button1           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button1 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button1 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button1 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button1 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonB           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonB A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonB A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonB A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonB A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonD           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonD A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonD A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonD A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonD A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonL           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonL A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonL A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonL A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonL A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Check           {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Check A:active  {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Check A:hover   {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Check A:link    {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Check A:visited {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Check0           {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Check0 A:active  {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Check0 A:hover   {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Check0 A:link    {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Check0 A:visited {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Check1           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Check1 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Check1 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Check1 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Check1 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.CheckB           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.CheckB A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.CheckB A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.CheckB A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.CheckB A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.CheckD           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.CheckD A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.CheckD A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.CheckD A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.CheckD A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.CheckL           {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.CheckL A:active  {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.CheckL A:hover   {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.CheckL A:link    {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.CheckL A:visited {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint0           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint0 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint0 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint0 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint0 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint1           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint1 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint1 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint1 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint1 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintB           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintB A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintB A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintB A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintB A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintD           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintD A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintD A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintD A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintD A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintL           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintL A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintL A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintL A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintL A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.General           {color: #FFFFFF; background-color: #336699; font: 8pt Arial,Sans-Serif;}
+				.General A:active  {color: #FFFFFF; background-color: #336699; font: 8pt Arial,Sans-Serif;}
+				.General A:hover   {color: #FFFFFF; background-color: #336699; font: 8pt Arial,Sans-Serif;}
+				.General A:link    {color: #FFFFFF; background-color: #336699; font: 8pt Arial,Sans-Serif;}
+				.General A:visited {color: #FFFFFF; background-color: #336699; font: 8pt Arial,Sans-Serif;}
+				.General0           {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.General0 A:active  {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.General0 A:hover   {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.General0 A:link    {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.General0 A:visited {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.General1           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.General1 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.General1 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.General1 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.General1 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.GeneralB           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.GeneralB A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.GeneralB A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.GeneralB A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.GeneralB A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.GeneralD           {color: #FFFFFF; background-color: #000000; font: 8pt Arial,Sans-Serif;}
+				.GeneralD A:active  {color: #FFFFFF; background-color: #000000; font: 8pt Arial,Sans-Serif;}
+				.GeneralD A:hover   {color: #FFFFFF; background-color: #000000; font: 8pt Arial,Sans-Serif;}
+				.GeneralD A:link    {color: #FFFFFF; background-color: #000000; font: 8pt Arial,Sans-Serif;}
+				.GeneralD A:visited {color: #FFFFFF; background-color: #000000; font: 8pt Arial,Sans-Serif;}
+				.GeneralL           {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.GeneralL A:active  {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.GeneralL A:hover   {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.GeneralL A:link    {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.GeneralL A:visited {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.MenuBar           {color: #FFFFFF; background-color: #3E6E9E; font: 8pt Arial,Sans-Serif;}
+				.MenuBar A:active  {color: #FFFFFF; background-color: #3E6E9E; font: 8pt Arial,Sans-Serif;}
+				.MenuBar A:hover   {color: #FFFFFF; background-color: #3E6E9E; font: 8pt Arial,Sans-Serif;}
+				.MenuBar A:link    {color: #FFFFFF; background-color: #3E6E9E; font: 8pt Arial,Sans-Serif;}
+				.MenuBar A:visited {color: #FFFFFF; background-color: #3E6E9E; font: 8pt Arial,Sans-Serif;}
+				.MenuBar0           {color: #FFFFFF; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.MenuBar0 A:active  {color: #FFFFFF; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.MenuBar0 A:hover   {color: #FFFFFF; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.MenuBar0 A:link    {color: #FFFFFF; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.MenuBar0 A:visited {color: #FFFFFF; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.MenuBar1           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBar1 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBar1 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBar1 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBar1 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarB           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarB A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarB A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarB A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarB A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarD           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarD A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarD A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarD A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarD A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarL           {color: #FFFFFF; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarL A:active  {color: #FFFFFF; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarL A:hover   {color: #FFFFFF; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarL A:link    {color: #FFFFFF; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarL A:visited {color: #FFFFFF; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.Preference           {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Preference A:active  {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Preference A:hover   {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Preference A:link    {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Preference A:visited {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Preference0           {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Preference0 A:active  {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Preference0 A:hover   {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Preference0 A:link    {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Preference0 A:visited {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Preference1           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Preference1 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Preference1 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Preference1 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Preference1 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceB           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceB A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceB A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceB A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceB A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceD           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceD A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceD A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceD A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceD A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceL           {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceL A:active  {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceL A:hover   {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceL A:link    {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceL A:visited {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.Report           {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Report A:active  {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Report A:hover   {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Report A:link    {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Report A:visited {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Report0           {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Report0 A:active  {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Report0 A:hover   {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Report0 A:link    {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Report0 A:visited {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Report1           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Report1 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Report1 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Report1 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Report1 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ReportB           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ReportB A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ReportB A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ReportB A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ReportB A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ReportD           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ReportD A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ReportD A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ReportD A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ReportD A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ReportL           {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.ReportL A:active  {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.ReportL A:hover   {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.ReportL A:link    {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.ReportL A:visited {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox0           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox0 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox0 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox0 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox0 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox1           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox1 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox1 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox1 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox1 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxB           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxB A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxB A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxB A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxB A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxD           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxD A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxD A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxD A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxD A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxL           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxL A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxL A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxL A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxL A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox0           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox0 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox0 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox0 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox0 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox1           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox1 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox1 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox1 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox1 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxB           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxB A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxB A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxB A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxB A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxD           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxD A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxD A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxD A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxD A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxL           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxL A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxL A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxL A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxL A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxDateTime    {color: #000000; background-color: Transparent; font: 8pt verdana,Sans-Serif;}
+				.Transaction           {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Transaction A:active  {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Transaction A:hover   {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Transaction A:link    {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Transaction A:visited {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Transaction0           {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Transaction0 A:active  {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Transaction0 A:hover   {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Transaction0 A:link    {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Transaction0 A:visited {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Transaction1           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Transaction1 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Transaction1 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Transaction1 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Transaction1 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TransactionB           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TransactionB A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TransactionB A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TransactionB A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TransactionB A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TransactionD           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TransactionD A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TransactionD A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TransactionD A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TransactionD A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TransactionL           {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.TransactionL A:active  {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.TransactionL A:hover   {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.TransactionL A:link    {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.TransactionL A:visited {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.SubTabOnMouseOver      {font:normal 11px Arial,Sans-Serif;cursor:pointer;color:#7d7b7b;}
+				.SubTabActive           {font:normal 11px Arial,Sans-Serif; color:#3E6E9E;cursor:default;}
+				.SubTabInActive         {font: normal 11px Arial,Sans-Serif; cursor:pointer;}
+				.MainTab				{font: normal 12px tahoma,arial,helvetica; }
+				.Menu-item				{font: normal 10px Arial,Sans-Serif; cursor:pointer;}
+				.Quicklink				{font: normal 11px tahoma,arial,helvetica;}
+				.Footer		            {color: #FFFFFF; background-color: #3E6E9E; font: 8pt Arial,Sans-Serif;}
+				.AccountPanel           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				 .AdminTabStripTabActive	       {color: #000000; background-color: #3E6E9E; font: 8pt Arial,Sans-Serif;}
+.SubTabStripOnMouseOver	       {color: #FFFFFF; background-color: #3E6E9E; font: 8pt Arial,Sans-Serif;}
+.SubTabStripTabActive	       {color: #aca7cf; background-color: #3E6E9E; font: 8pt Arial,Sans-Serif;}
+
+
+
+	@media print {
+				#divMain{display:none;}
+				#print_area{display:block;}
+				.Body           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Body A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Body A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Body A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Body A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Body0           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Body0 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Body0 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Body0 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Body0 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Body1           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Body1 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Body1 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Body1 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Body1 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyB           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyB A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyB A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyB A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyB A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyD           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyD A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyD A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyD A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyD A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyL           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyL A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyL A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyL A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.BodyL A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button0           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button0 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button0 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button0 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button0 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button1           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button1 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button1 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button1 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Button1 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonB           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonB A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonB A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonB A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonB A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonD           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonD A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonD A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonD A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonD A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonL           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonL A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonL A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonL A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ButtonL A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Check           {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Check A:active  {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Check A:hover   {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Check A:link    {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Check A:visited {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Check0           {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Check0 A:active  {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Check0 A:hover   {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Check0 A:link    {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Check0 A:visited {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Check1           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Check1 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Check1 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Check1 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Check1 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.CheckB           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.CheckB A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.CheckB A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.CheckB A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.CheckB A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.CheckD           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.CheckD A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.CheckD A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.CheckD A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.CheckD A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.CheckL           {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.CheckL A:active  {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.CheckL A:hover   {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.CheckL A:link    {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.CheckL A:visited {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint0           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint0 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint0 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint0 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint0 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint1           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint1 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint1 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint1 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrint1 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintB           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintB A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintB A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintB A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintB A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintD           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintD A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintD A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintD A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintD A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintL           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintL A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintL A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintL A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.FinePrintL A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.General           {color: #FFFFFF; background-color: #336699; font: 8pt Arial,Sans-Serif;}
+				.General A:active  {color: #FFFFFF; background-color: #336699; font: 8pt Arial,Sans-Serif;}
+				.General A:hover   {color: #FFFFFF; background-color: #336699; font: 8pt Arial,Sans-Serif;}
+				.General A:link    {color: #FFFFFF; background-color: #336699; font: 8pt Arial,Sans-Serif;}
+				.General A:visited {color: #FFFFFF; background-color: #336699; font: 8pt Arial,Sans-Serif;}
+				.General0           {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.General0 A:active  {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.General0 A:hover   {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.General0 A:link    {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.General0 A:visited {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.General1           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.General1 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.General1 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.General1 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.General1 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.GeneralB           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.GeneralB A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.GeneralB A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.GeneralB A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.GeneralB A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.GeneralD           {color: #FFFFFF; background-color: #000000; font: 8pt Arial,Sans-Serif;}
+				.GeneralD A:active  {color: #FFFFFF; background-color: #000000; font: 8pt Arial,Sans-Serif;}
+				.GeneralD A:hover   {color: #FFFFFF; background-color: #000000; font: 8pt Arial,Sans-Serif;}
+				.GeneralD A:link    {color: #FFFFFF; background-color: #000000; font: 8pt Arial,Sans-Serif;}
+				.GeneralD A:visited {color: #FFFFFF; background-color: #000000; font: 8pt Arial,Sans-Serif;}
+				.GeneralL           {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.GeneralL A:active  {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.GeneralL A:hover   {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.GeneralL A:link    {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.GeneralL A:visited {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.MenuBar           {color: #FFFFFF; background-color: #3E6E9E; font: 8pt Arial,Sans-Serif;}
+				.MenuBar A:active  {color: #FFFFFF; background-color: #3E6E9E; font: 8pt Arial,Sans-Serif;}
+				.MenuBar A:hover   {color: #FFFFFF; background-color: #3E6E9E; font: 8pt Arial,Sans-Serif;}
+				.MenuBar A:link    {color: #FFFFFF; background-color: #3E6E9E; font: 8pt Arial,Sans-Serif;}
+				.MenuBar A:visited {color: #FFFFFF; background-color: #3E6E9E; font: 8pt Arial,Sans-Serif;}
+				.MenuBar0           {color: #FFFFFF; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.MenuBar0 A:active  {color: #FFFFFF; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.MenuBar0 A:hover   {color: #FFFFFF; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.MenuBar0 A:link    {color: #FFFFFF; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.MenuBar0 A:visited {color: #FFFFFF; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.MenuBar1           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBar1 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBar1 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBar1 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBar1 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarB           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarB A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarB A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarB A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarB A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarD           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarD A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarD A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarD A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarD A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarL           {color: #FFFFFF; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarL A:active  {color: #FFFFFF; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarL A:hover   {color: #FFFFFF; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarL A:link    {color: #FFFFFF; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.MenuBarL A:visited {color: #FFFFFF; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.Preference           {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Preference A:active  {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Preference A:hover   {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Preference A:link    {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Preference A:visited {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Preference0           {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Preference0 A:active  {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Preference0 A:hover   {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Preference0 A:link    {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Preference0 A:visited {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Preference1           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Preference1 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Preference1 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Preference1 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Preference1 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceB           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceB A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceB A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceB A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceB A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceD           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceD A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceD A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceD A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceD A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceL           {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceL A:active  {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceL A:hover   {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceL A:link    {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.PreferenceL A:visited {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.Report           {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Report A:active  {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Report A:hover   {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Report A:link    {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Report A:visited {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Report0           {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Report0 A:active  {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Report0 A:hover   {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Report0 A:link    {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Report0 A:visited {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Report1           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Report1 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Report1 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Report1 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Report1 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ReportB           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ReportB A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ReportB A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ReportB A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ReportB A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ReportD           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ReportD A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ReportD A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ReportD A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ReportD A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.ReportL           {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.ReportL A:active  {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.ReportL A:hover   {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.ReportL A:link    {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.ReportL A:visited {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox0           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox0 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox0 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox0 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox0 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox1           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox1 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox1 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox1 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBox1 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxB           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxB A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxB A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxB A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxB A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxD           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxD A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxD A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxD A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxD A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxL           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxL A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxL A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxL A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.SelectBoxL A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox0           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox0 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox0 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox0 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox0 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox1           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox1 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox1 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox1 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBox1 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxB           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxB A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxB A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxB A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxB A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxD           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxD A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxD A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxD A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxD A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxL           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxL A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxL A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxL A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TextBoxL A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Transaction           {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Transaction A:active  {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Transaction A:hover   {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Transaction A:link    {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Transaction A:visited {color: #FFFFFF; background-color: #003366; font: 8pt Arial,Sans-Serif;}
+				.Transaction0           {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Transaction0 A:active  {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Transaction0 A:hover   {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Transaction0 A:link    {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Transaction0 A:visited {color: #000000; background-color: #C4D3E1; font: 8pt Arial,Sans-Serif;}
+				.Transaction1           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Transaction1 A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Transaction1 A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Transaction1 A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.Transaction1 A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TransactionB           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TransactionB A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TransactionB A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TransactionB A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TransactionB A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TransactionD           {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TransactionD A:active  {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TransactionD A:hover   {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TransactionD A:link    {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TransactionD A:visited {color: #000000; background-color: #FFFFFF; font: 8pt Arial,Sans-Serif;}
+				.TransactionL           {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.TransactionL A:active  {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.TransactionL A:hover   {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.TransactionL A:link    {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+				.TransactionL A:visited {color: #000000; background-color: #D9DDDF; font: 8pt Arial,Sans-Serif;}
+
+	}
+</style>

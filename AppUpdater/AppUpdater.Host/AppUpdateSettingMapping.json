@@ -1,0 +1,10 @@
+﻿[
+  {
+    "AppName": "StatusMaker",
+    "SettingFile": "https://api.github.com/repos/MaheshBailwal/StatusMakerLastestApp/contents/App/UpdaterSettings.json"
+  },
+  {
+    "AppName": "TestApp",
+    "SettingFile": "https://api.github.com/repos/MaheshBailwal/TestRepo/contents/App/UpdaterSettings.json"
+  }
+]

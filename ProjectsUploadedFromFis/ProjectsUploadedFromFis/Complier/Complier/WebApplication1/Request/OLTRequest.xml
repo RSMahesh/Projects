@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<IFX>
+	<SignonRq>
+		<SessOverrideFlag>0</SessOverrideFlag>
+		<SignonPswd>
+			<SignonRole>CSR</SignonRole>
+			<CustId>
+				<SPName>FiservCBS</SPName>
+				<CustLoginId>comr152</CustLoginId>
+			</CustId>
+			<CustPswd>
+				<CryptType>NONE</CryptType>
+				<Pswd>topdog1</Pswd>
+			</CustPswd>
+			<GenSessKey>0</GenSessKey>
+		</SignonPswd>
+		<ClientDt>
+			<Year>2009</Year>
+			<Month>2</Month>
+			<Day>25</Day>
+			<Hour>17</Hour>
+			<Minute>2</Minute>
+			<Second>34</Second>
+		</ClientDt>
+		<ClientApp>
+			<Org>Fiserv</Org>
+			<Name>CommAdmin</Name>
+			<ClientAppKey>CBSILOUBHLLZSUPFBTEMBUHQJOIVKDBR</ClientAppKey>
+		</ClientApp>
+		<ComputerId>BLNYV03CBST201</ComputerId>
+		<InstitutionCode>CBSIL</InstitutionCode>
+	</SignonRq>
+	<EnvironmentInfo>
+		<EnvironmentName>rlsbank</EnvironmentName>
+	</EnvironmentInfo>
+	<CashManSvcRq>
+		<RqUID>800beba4-32d2-4313-bd84-2dfe1c07b01a</RqUID>
+		<SPName>FiservCBS</SPName>
+		[Signifies OLT Request]
+		<DepAcctTrnInqRq>
+			<RqUID>af1a7e94-a1f7-4168-83e6-02c6eee77595</RqUID>
+			<BankRoutingInfo>
+				[ABA Number]
+				<RoutingNum>021912915</RoutingNum> 
+			</BankRoutingInfo>
+			<RecCtrlIn>
+				<MaxRec>300</MaxRec>
+			</RecCtrlIn>
+			<DepAcctId>
+				[AccountNumber]
+				<AcctId>000000000000000000343</AcctId>
+				[AccountType]
+				<AcctType>DD</AcctType>			    
+			</DepAcctId>
+			<SelRangeDt>
+				[StartDate]
+				<StartDt>
+					<Year>2009</Year>
+					<Month>2</Month>
+					<Day>25</Day> 				
+				</StartDt>
+				[EndDate]
+				<EndDt>
+					<Year>2009</Year>
+					<Month>3</Month>
+					<Day>2</Day>
+				</EndDt>
+			</SelRangeDt>
+			[MemoItems]
+			<MemoPostFlag>1</MemoPostFlag>
+		</DepAcctTrnInqRq>
+	</CashManSvcRq>
+</IFX>
+
+

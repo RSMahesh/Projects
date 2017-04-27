@@ -1,0 +1,33 @@
+<html> 
+  <head> 
+    <script type="text/javascript" src="http://www.google.com/jsapi"> 
+    </script> 
+    <script type="text/javascript"> 
+ alert(2);
+    google.load("language", "10"); 
+ 
+    function initialize() { 
+      var text = document.getElementById("text").innerHTML; 
+      google.language.detect(text, function(result) { 
+        if (!result.error && result.language) { 
+          google.language.translate(text, result.language, "en", 
+                                    function(result) { 
+            var translated = document.getElementById("translation"); 
+            if (result.translation) { 
+              translated.innerHTML = result.translation; 
+              alert(result.translation);
+            } 
+          }); 
+        } 
+      }); 
+    } 
+    google.setOnLoadCallback(initialize); 
+    
+    initialize();
+ 
+    </script> 
+  </head> 
+  <body> 
+    <div id="text">ABCD</div> 
+    <div id="translation"></div> 
+  </body> 

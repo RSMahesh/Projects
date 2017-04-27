@@ -1,0 +1,341 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+CREATE SCHEMA IF NOT EXISTS `medwritedbdev` DEFAULT CHARACTER SET latin1 ;
+USE `medwritedbdev` ;
+
+-- -----------------------------------------------------
+-- Table `medwritedbdev`.`tlkp_country`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `medwritedbdev`.`tlkp_country` (
+  `CountryID` INT(11) NOT NULL,
+  `Name` VARCHAR(80) NOT NULL,
+  PRIMARY KEY (`CountryID`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `medwritedbdev`.`t_group`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `medwritedbdev`.`t_group` (
+  `GroupID` INT(11) NOT NULL AUTO_INCREMENT,
+  `Name` VARCHAR(50) NOT NULL,
+  `Address1` VARCHAR(100) NULL DEFAULT NULL,
+  `Address2` VARCHAR(100) NULL DEFAULT NULL,
+  `Description` VARCHAR(50) NULL DEFAULT NULL,
+  `Country` INT(11) NULL DEFAULT NULL,
+  `State` VARCHAR(50) NULL DEFAULT NULL,
+  `City` VARCHAR(50) NULL DEFAULT NULL,
+  `ZipCode` VARCHAR(10) NULL DEFAULT NULL,
+  `LogoFileName` VARCHAR(100) NULL DEFAULT NULL,
+  `IsExtrenalUserAllowed` BIT(1) NOT NULL,
+  `IsActive` BIT(1) NOT NULL DEFAULT b'1',
+  `CreatedDate` DATETIME NOT NULL,
+  `CreatedBy` INT(11) NOT NULL,
+  PRIMARY KEY (`GroupID`),
+  INDEX `FKCountry_idx` (`Country` ASC),
+  CONSTRAINT `FKCountry`
+    FOREIGN KEY (`Country`)
+    REFERENCES `medwritedbdev`.`tlkp_country` (`CountryID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 128
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `medwritedbdev`.`tlkp_securityquestion`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `medwritedbdev`.`tlkp_securityquestion` (
+  `SecurityQuestionID` INT(11) NOT NULL AUTO_INCREMENT,
+  `Question` VARCHAR(500) NOT NULL,
+  PRIMARY KEY (`SecurityQuestionID`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 7
+DEFAULT CHARACTER SET = latin1
+COMMENT = 'Contains list of Security Questions';
+
+
+-- -----------------------------------------------------
+-- Table `medwritedbdev`.`t_user`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `medwritedbdev`.`t_user` (
+  `UserID` INT(11) NOT NULL AUTO_INCREMENT,
+  `Username` VARCHAR(100) NOT NULL,
+  `Password` VARCHAR(45) NOT NULL,
+  `Email` VARCHAR(100) NULL DEFAULT NULL,
+  `ScreenName` VARCHAR(70) NOT NULL,
+  `GroupID` INT(11) NOT NULL,
+  `IsGroupAdmin` BIT(1) NOT NULL,
+  `IsSuperAdmin` BIT(1) NULL DEFAULT NULL,
+  `IsActive` BIT(1) NOT NULL DEFAULT b'1',
+  `CreatedDate` DATETIME NOT NULL,
+  `CreatedBy` INT(11) NOT NULL,
+  `ModifiedDate` DATETIME NULL DEFAULT NULL,
+  `ModifiedBy` INT(11) NULL DEFAULT NULL,
+  `SecurityQuestionID` INT(11) NULL DEFAULT NULL,
+  `SecurityAnswer` VARCHAR(100) NULL DEFAULT NULL,
+  `SecurityQuestionCustom` VARCHAR(200) NULL DEFAULT NULL,
+  `IsTextMessagingEnabled` BIT(1) NOT NULL,
+  `PhoneNumber` VARCHAR(15) NULL DEFAULT NULL,
+  PRIMARY KEY (`UserID`),
+  INDEX `FK_t_User_tLkp_SecurityQuestions__idx` (`SecurityQuestionID` ASC),
+  INDEX `SecurityQuestionID_idx` (`SecurityQuestionID` ASC),
+  INDEX `SecurityQuestionID_idx1` (`SecurityQuestionID` ASC),
+  INDEX `FK_GroupID_idx` (`GroupID` ASC),
+  CONSTRAINT `FK_GroupID`
+    FOREIGN KEY (`GroupID`)
+    REFERENCES `medwritedbdev`.`t_group` (`GroupID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `SecurityQuestionID`
+    FOREIGN KEY (`SecurityQuestionID`)
+    REFERENCES `medwritedbdev`.`tlkp_securityquestion` (`SecurityQuestionID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 138
+DEFAULT CHARACTER SET = latin1
+COMMENT = 'User table which hold all users in the system';
+
+
+-- -----------------------------------------------------
+-- Table `medwritedbdev`.`t_meeting`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `medwritedbdev`.`t_meeting` (
+  `MeetingID` INT(11) NOT NULL AUTO_INCREMENT,
+ `AccessCode` VARCHAR(9) NOT NULL,
+  `Subject` VARCHAR(500) NULL DEFAULT NULL,
+  `IsRecurring` BIT(1) NOT NULL,
+  `RecurringPattern` VARCHAR(500) NULL DEFAULT NULL,
+  `IsStarted` BIT(1) NOT NULL,
+  `IsEnded` BIT(1) NULL DEFAULT NULL,
+  `LastActivityTime` DATETIME NULL DEFAULT NULL,
+  `IsPasswordEnabled` BIT(1) NOT NULL,
+  `Password` VARCHAR(50) NOT NULL,
+  `IsConnected` BIT(1) NOT NULL DEFAULT b'0',
+  `IsExpired` BIT(1) NULL DEFAULT NULL,
+  `IsExternalUserAllowed` BIT(1) NULL DEFAULT NULL,
+  `ScheduledStartDate` DATETIME NOT NULL,
+  `StartDateTime` DATETIME NULL DEFAULT NULL,
+  `EndDateTime` DATETIME NULL DEFAULT NULL,
+  `CreatedDate` DATETIME NOT NULL,
+  `CreatedBy` INT(11) NOT NULL,
+  `ModifiedDate` DATETIME NULL DEFAULT NULL,
+  `ModifiedBy` INT(11) NULL DEFAULT NULL,
+  `IsActive` BIT(1) NOT NULL,
+  `ActualStartDateTime` DATETIME NULL DEFAULT NULL,
+  `ActualEndDateTime` DATETIME NULL DEFAULT NULL,
+  `CanTextChat` BIT(1) NULL DEFAULT NULL,
+  `CanVoiceChat` BIT(1) NULL DEFAULT NULL,
+  `CanWebCam` BIT(1) NULL DEFAULT NULL,
+  `CanScreenShare` BIT(1) NULL DEFAULT NULL,
+  PRIMARY KEY (`MeetingID`),
+  INDEX `FK_CreatedBy_User_idx` (`CreatedBy` ASC),
+  CONSTRAINT `FK_CreatedBy_User`
+    FOREIGN KEY (`CreatedBy`)
+    REFERENCES `medwritedbdev`.`t_user` (`UserID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 1442
+DEFAULT CHARACTER SET = latin1
+COMMENT = 'Main meeting table';
+
+
+-- -----------------------------------------------------
+-- Table `medwritedbdev`.`tidx_meetingattendee`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `medwritedbdev`.`tidx_meetingattendee` (
+  `MeetingAttendeeID` INT(11) NOT NULL AUTO_INCREMENT,
+  `MeetingID` INT(11) NOT NULL,
+  `Email` VARCHAR(100) NOT NULL,
+  `ScreenName` VARCHAR(70) NOT NULL,
+  `UserID` INT(11) NULL DEFAULT NULL,
+  `IsOrganizer` BIT(1) NOT NULL,
+  `IsPresenter` BIT(1) NOT NULL,
+  `IsCurrentPresenter` BIT(1) NOT NULL,
+  `JoinedTime` DATETIME NULL DEFAULT NULL,
+  `LeftTime` DATETIME NULL DEFAULT NULL,
+  `IsBarred` BIT(1) NULL DEFAULT NULL,
+  `IsConnected` BIT(1) NOT NULL,
+  `DisconnectedTime` DATETIME NULL DEFAULT NULL,
+  `CreatedTime` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `LastActivityTime` DATETIME NULL DEFAULT NULL,
+  `HasKeyboardMouseControl` BIT(1) NULL DEFAULT b'0',
+  `IsWebcamOn` BIT(1) NULL DEFAULT b'0',
+  `IsMicrophoneOn` BIT(1) NULL DEFAULT b'0',
+  `IsMutedByOrganizer` BIT(1) NULL DEFAULT b'0',
+  PRIMARY KEY (`MeetingAttendeeID`),
+  INDEX `FK_MeetingID_idx` (`MeetingID` ASC),
+  INDEX `FK_USerID_idx` (`UserID` ASC),
+  CONSTRAINT `FK_MeetingAttendeeUserID_t_user`
+    FOREIGN KEY (`UserID`)
+    REFERENCES `medwritedbdev`.`t_user` (`UserID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `FK_MeetngAttendeeMeetingID_t_meeting`
+    FOREIGN KEY (`MeetingID`)
+    REFERENCES `medwritedbdev`.`t_meeting` (`MeetingID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 4859
+DEFAULT CHARACTER SET = latin1
+COMMENT = 'Relation table to maintain all ateendees information';
+
+
+-- -----------------------------------------------------
+-- Table `medwritedbdev`.`t_chathistory`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `medwritedbdev`.`t_chathistory` (
+  `ChatID` INT(11) NOT NULL AUTO_INCREMENT,
+  `MeetingID` INT(11) NOT NULL,
+  `FromMeetingAttendeeID` INT(11) NOT NULL,
+  `ToMeetingAttendeeID` INT(11) NULL DEFAULT NULL,
+  `DateTime` DATETIME NULL DEFAULT NULL,
+  `ChatText` VARCHAR(2000) NULL DEFAULT NULL,
+  PRIMARY KEY (`ChatID`),
+  INDEX `FK_MeetingID_idx` (`MeetingID` ASC),
+  INDEX `FK_FromMeetingAttendeeID_idx` (`FromMeetingAttendeeID` ASC),
+  INDEX `FK_ToMeetingAttendeeID_idx` (`ToMeetingAttendeeID` ASC),
+  CONSTRAINT `FK_FromMeetingAttendeeID`
+    FOREIGN KEY (`FromMeetingAttendeeID`)
+    REFERENCES `medwritedbdev`.`tidx_meetingattendee` (`MeetingAttendeeID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `FK_MeetingID`
+    FOREIGN KEY (`MeetingID`)
+    REFERENCES `medwritedbdev`.`t_meeting` (`MeetingID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `FK_ToMeetingAttendeeID`
+    FOREIGN KEY (`ToMeetingAttendeeID`)
+    REFERENCES `medwritedbdev`.`tidx_meetingattendee` (`MeetingAttendeeID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 8425
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `medwritedbdev`.`t_config`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `medwritedbdev`.`t_config` (
+  `ConfigID` INT(11) NOT NULL AUTO_INCREMENT,
+  `Key` VARCHAR(100) NOT NULL,
+  `Value` VARCHAR(100) NOT NULL,
+  `DataType` VARCHAR(10) NOT NULL,
+  `CreatedBy` INT(11) NOT NULL,
+  `CreatedDate` DATETIME NOT NULL,
+  `ModifiedBy` INT(11) NULL DEFAULT NULL,
+  `ModifiedDate` DATETIME NULL DEFAULT NULL,
+  PRIMARY KEY (`ConfigID`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1
+COMMENT = 'CONFIGURATION SETTINGS';
+
+
+-- -----------------------------------------------------
+-- Table `medwritedbdev`.`t_user_uploaded_file`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `medwritedbdev`.`t_user_uploaded_file` (
+  `UploadID` INT(11) NOT NULL AUTO_INCREMENT,
+  `UserID` INT(11) NOT NULL,
+  `ClientFilePath` VARCHAR(1000) NOT NULL,
+  `FileName` VARCHAR(500) NOT NULL,
+  `FileHash` VARCHAR(100) NOT NULL,
+  `LastUpdate` DATETIME NOT NULL,
+  `SavedBytes` BIGINT(20) NOT NULL,
+  `UploadedCompleted` TINYINT(1) NOT NULL,
+  PRIMARY KEY (`UploadID`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `medwritedbdev`.`tlkp_menu`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `medwritedbdev`.`tlkp_menu` (
+  `MenuID` INT(11) NOT NULL AUTO_INCREMENT,
+  `Name` VARCHAR(50) NOT NULL,
+  `ParentID` INT(11) NOT NULL COMMENT 'if 0 then denotes parent node, otherwise child node',
+  `IsActive` BIT(1) NOT NULL DEFAULT b'1',
+  PRIMARY KEY (`MenuID`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 12
+DEFAULT CHARACTER SET = latin1
+COMMENT = 'Menu List';
+
+
+-- -----------------------------------------------------
+-- Table `medwritedbdev`.`tidx_usermenu`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `medwritedbdev`.`tidx_usermenu` (
+  `UserMenuID` INT(11) NOT NULL AUTO_INCREMENT,
+  `UserID` INT(11) NOT NULL,
+  `IsActive` BIT(1) NOT NULL DEFAULT b'1',
+  `MenuID` INT(11) NOT NULL,
+  PRIMARY KEY (`UserMenuID`),
+  INDEX `FKUserID_idx` (`UserID` ASC),
+  INDEX `UserID_idx` (`UserID` ASC),
+  INDEX `MenuID_idx` (`MenuID` ASC),
+  INDEX `UserID_idx1` (`UserID` ASC),
+  CONSTRAINT `FK_UserID_UserMenu`
+    FOREIGN KEY (`UserID`)
+    REFERENCES `medwritedbdev`.`t_user` (`UserID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `MenuID`
+    FOREIGN KEY (`MenuID`)
+    REFERENCES `medwritedbdev`.`tlkp_menu` (`MenuID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 960
+DEFAULT CHARACTER SET = latin1
+COMMENT = 'Relation table for user permissions ';
+
+
+-- -----------------------------------------------------
+-- Table `medwritedbdev`.`tlkp_zipcode`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `medwritedbdev`.`tlkp_zipcode` (
+  `ZIpID` INT(11) NOT NULL AUTO_INCREMENT,
+  `ZipCode` VARCHAR(45) NOT NULL,
+  `City` VARCHAR(100) NOT NULL,
+  `State` VARCHAR(4) NOT NULL,
+  `Country` VARCHAR(4) NOT NULL,
+  PRIMARY KEY (`ZIpID`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 69617
+DEFAULT CHARACTER SET = latin1;
+
+USE `medwritedbdev` ;
+
+-- -----------------------------------------------------
+-- function DiffMinutes
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `medwritedbdev`$$
+CREATE DEFINER=`root`@`%` FUNCTION `DiffMinutes`(timeValue1 datetime,timeValue2 datetime) RETURNS decimal(8,2)
+BEGIN
+        DECLARE _minutes decimal;
+        DECLARE _seconds decimal;
+
+        set _seconds=TIMESTAMPDIFF(SECOND,timeValue2,timeValue1);
+        set _minutes=_seconds/60;
+
+        RETURN _minutes;
+END$$
+
+DELIMITER ;
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

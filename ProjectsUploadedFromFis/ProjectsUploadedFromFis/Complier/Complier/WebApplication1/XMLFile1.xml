@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<IFX>
+ <SignonRq>
+	<SessOverrideFlag>0</SessOverrideFlag>
+	- <SignonPswd>
+		<SignonRole>CSR</SignonRole>
+		- <CustId>
+			<SPName>FiservCBS</SPName>
+			<CustLoginId>BLUSER</CustLoginId>
+		</CustId>
+		- <CustPswd>
+			<CryptType>NONE</CryptType>
+			<Pswd>SuperC@$h!</Pswd>
+		</CustPswd>
+		<GenSessKey>0</GenSessKey>
+	</SignonPswd>
+	- <ClientDt>
+		<Year>2009</Year>
+		<Month>2</Month>
+		<Day>27</Day>
+		<Hour>13</Hour>
+		<Minute>42</Minute>
+		<Second>54</Second>
+	</ClientDt>
+	- <ClientApp>
+		<Org>CCU</Org>
+		<Name>BankLink</Name>
+		<ClientAppKey>CCUTXMHRTJUKJUHPBHCTSPRMFQUCIQXD</ClientAppKey>
+	</ClientApp>
+	<ComputerId>BLNYV03CBST201</ComputerId>
+	<InstitutionCode>CCUTX</InstitutionCode>
+</SignonRq>
+<EnvironmentInfo>
+	<EnvironmentName>BankLink</EnvironmentName>
+</EnvironmentInfo>
+ <CashManSvcRq>
+	<RqUID>7fb7f63d-8928-4883-9d90-52e1dd6513d2</RqUID>
+	<SPName>FiservCBS</SPName>
+	 <AcctInqRq>
+		[Signifies OLB Request]
+		<RqUID>88f526d3-fb86-462f-af83-5eaf20000012</RqUID> [Transmit Number]
+		<BankRoutingInfo>
+			<RoutingNum>311987773</RoutingNum>				[ABA Number]
+		</BankRoutingInfo>
+		 <DepAcctId>
+			<AcctId>88606004</AcctId>						[Account Number]
+			<AcctType>DD</AcctType> 						[Account Type]
+		</DepAcctId>
+		<IncExtBal>1</IncExtBal>
+		<IncBal>1</IncBal>
+	</AcctInqRq>
+</CashManSvcRq>
+</IFX>
+
+
+
+
