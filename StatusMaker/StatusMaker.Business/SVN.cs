@@ -165,10 +165,9 @@ namespace StatusMaker.Business
                           + "&ip=" + IPAddress.GetCurrentMachineIp();
 
                 var res = _httpEngine.GetResponseStringAsync(url).Result;
+                
             }
-#pragma warning disable CS0168 // The variable 'ex' is declared but never used
             catch (Exception ex)
-#pragma warning restore CS0168 // The variable 'ex' is declared but never used
             {
                 return false;
             }
