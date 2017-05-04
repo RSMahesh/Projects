@@ -256,7 +256,7 @@ namespace TransparentWindow
                 escapedKepPressed = false;
             }
 
-            if (e.KeyValue == 38)
+            if (e.KeyCode ==  Keys.Up)
             {
                 if (e.Shift)
                 {
@@ -273,7 +273,7 @@ namespace TransparentWindow
                 }
             }
 
-            if (e.KeyValue == 40)
+            if (e.KeyCode == Keys.Down)
             {
 
                 if (e.Shift)
@@ -295,7 +295,7 @@ namespace TransparentWindow
             HandleHeightDecrease(e);
 
 
-            if (e.KeyValue == 112)
+            if (e.KeyCode == Keys.F1)
             {
                 string helpMsg = ">To Make Transparent Box moveable/sizeable with mouse Press control Key and move window with mouse" + Environment.NewLine + Environment.NewLine;
                 helpMsg += ">To Make Transparent Box along with mouse double click outside Transparent Box" + Environment.NewLine + Environment.NewLine;
@@ -312,7 +312,7 @@ namespace TransparentWindow
 
             }
 
-            if (e.KeyValue == 115)
+            if (e.KeyCode == Keys.F4)
             {
                 this.RealignBackGround();
             }
@@ -382,6 +382,59 @@ namespace TransparentWindow
 
             }
 
+        }
+
+        private void TransparentFrm_KeyUp(object sender, KeyEventArgs e)
+        {
+
+            if (e.KeyCode == Keys.Tab)
+            {
+                if (Height > 10 && Width > 10)
+                {
+                    _sizeBeforeLastTab.Width = this.Width;
+                    _sizeBeforeLastTab.Height = this.Height;
+                    this.Height = 0;
+                    this.Width = 0;
+                }
+                else
+                {
+                    this.Height = _sizeBeforeLastTab.Height;
+                    this.Width = _sizeBeforeLastTab.Width;
+                }
+
+                RealignBackGround();
+            }
+
+            if (controlKeyPressed)
+            {
+                _transpainter.ToggleTransparent();
+                controlKeyPressed = false;
+            }
+
+            if (altKeyPressed)
+            {
+                altKeyPressed = false;
+            }
+
+            // I don't know why the hell its stop  working in keyDown
+            if (e.KeyValue == 38)
+            {
+                if (e.Shift)
+                {
+                    _Opacity += .1;
+                    this.SetOpacity();
+                }
+            }
+
+            if (e.KeyValue == 40)
+            {
+
+                if (e.Shift)
+                {
+                    _Opacity -= .1;
+                    this.SetOpacity();
+                }
+            }
         }
 
         private void RealignBackGround()
@@ -525,63 +578,9 @@ namespace TransparentWindow
         }
 
 
-        private void TransparentFrm_KeyUp(object sender, KeyEventArgs e)
-        {
+     
 
-            if (e.KeyCode == Keys.Tab)
-            {
-                if (Height > 10 && Width > 10)
-                {
-                    _sizeBeforeLastTab.Width = this.Width;
-                    _sizeBeforeLastTab.Height = this.Height;
-                    this.Height = 0;
-                    this.Width = 0;
-                }
-                else
-                {
-                    this.Height = _sizeBeforeLastTab.Height;
-                    this.Width = _sizeBeforeLastTab.Width;
-                }
-
-                RealignBackGround();
-            }
-
-            if (controlKeyPressed)
-            {
-                _transpainter.ToggleTransparent();
-                controlKeyPressed = false;
-            }
-
-            if (altKeyPressed)
-            {
-                altKeyPressed = false;
-            }
-
-            // I don't know why the hell its stop  working in keyDown
-            if (e.KeyValue == 38)
-            {
-                if (e.Shift)
-                {
-                    _Opacity += .1;
-                    this.SetOpacity();
-                }
-            }
-
-            if (e.KeyValue == 40)
-            {
-
-                if (e.Shift)
-                {
-                    _Opacity -= .1;
-                    this.SetOpacity();
-                }
-            }
-        }
-
-        private void TransparentFrm_KeyPress(object sender, KeyPressEventArgs e)
-        {
-        }
-
+      
         private void SaveCurrentLocationOld()
         {
             DialogResult result1 = MessageBox.Show(
@@ -636,40 +635,6 @@ namespace TransparentWindow
                 _favouriteLocation.SaveCurrentLocation(locationFileName);
             }
 
-        }
-        private void MoveToFavoriteLocationold()
-        {
-            DialogResult result1 = MessageBox.Show(
-             "Move To Favorite Location ",
-             "Important Question",
-             MessageBoxButtons.YesNo);
-
-            if (result1 == DialogResult.Yes)
-            {
-                if (!File.Exists("FavoriteLocation.txt"))
-                {
-                    MessageBox.Show("FavoriteLocation.txt does not exist");
-                    return;
-                }
-
-                var location = File.ReadAllText("FavoriteLocation.txt").Split('|')[0];
-                var dememsions = location.Split(',');
-
-                this.Left = int.Parse(dememsions[0]);
-                this.Top = int.Parse(dememsions[1]);
-                this.Width = int.Parse(dememsions[2]);
-                this.Height = int.Parse(dememsions[3]);
-
-                if (File.ReadAllText("FavoriteLocation.txt").Split('|').Length > 1)
-                {
-                    var attachedWindowlocation1 = File.ReadAllText("FavoriteLocation.txt").Split('|')[1];
-
-                    dememsions = attachedWindowlocation1.Split(',');
-
-
-                    _attachedWindow.MoveResizeAttacheWindow(int.Parse(dememsions[0]), int.Parse(dememsions[1]), int.Parse(dememsions[2]), int.Parse(dememsions[3]));
-                }
-            }
         }
 
         private void MoveToFavoriteLocation()
@@ -731,11 +696,7 @@ namespace TransparentWindow
             LastTransperWindowPoint.Y = this.Top;
             LastTransperWindowPoint.X = this.Left;
         }
-
-        private void TransparentFrm_ResizeEnd(object sender, EventArgs e)
-        {
-
-        }
+      
 
     }
 }

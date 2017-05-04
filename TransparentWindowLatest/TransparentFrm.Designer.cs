@@ -48,10 +48,8 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TransparentFrm_FormClosed);
             this.Load += new System.EventHandler(this.OnLoad);
             this.ResizeBegin += new System.EventHandler(this.TransparentFrm_ResizeBegin);
-            this.ResizeEnd += new System.EventHandler(this.TransparentFrm_ResizeEnd);
             this.LocationChanged += new System.EventHandler(this.TransparentFrm_LocationChanged);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TransparentFrm_KeyDown);
-            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TransparentFrm_KeyPress);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TransparentFrm_KeyUp);
             this.Resize += new System.EventHandler(this.TransparentFrm_Resize);
             this.ResumeLayout(false);
