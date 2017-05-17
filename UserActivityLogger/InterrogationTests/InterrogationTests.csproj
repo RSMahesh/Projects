@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A2292725-EA9B-4CE4-8AAA-4285821E2870}</ProjectGuid>
+    <ProjectGuid>{6C371457-C935-4516-8F97-ADB3DF022DDC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KeyBoardEventsListener.Tests</RootNamespace>
-    <AssemblyName>KeyBoardEventsListener.Tests</AssemblyName>
+    <RootNamespace>InterrogationTests</RootNamespace>
+    <AssemblyName>InterrogationTests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,13 +30,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=3.6.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.6.0\lib\net45\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=3.6.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.6.1\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,13 +45,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="KeyLoggerTests.cs" />
+    <Compile Include="AzureBlobLogFileArchiverTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\EventPublisher\EventPublisher.csproj">
+      <Project>{f1f4fc21-024f-4567-ade5-b18270b65c8c}</Project>
+      <Name>EventPublisher</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{8dff7262-975d-4cde-8c55-e42564271b72}</Project>
       <Name>Core</Name>
@@ -59,6 +66,10 @@
     <ProjectReference Include="..\KeyBoardEventsLogger\KeyBoardEventsListener.csproj">
       <Project>{a547b22a-327b-4d32-9013-b6d6dd72dbe7}</Project>
       <Name>KeyBoardEventsListener</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UserActivityLogger\ActivityLogger.csproj">
+      <Project>{6fe4df64-9e52-4378-ab2e-8b8d332baa9c}</Project>
+      <Name>ActivityLogger</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

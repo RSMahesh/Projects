@@ -239,151 +239,122 @@ namespace TransparentWindow
             }
 
 
-            if (e.KeyCode == Keys.Escape)
+
+            switch (e.KeyCode)
             {
-                if (_transpainter.WindowTransparentAlpha != 100)
-                {
-                    _transpainter.WindowTransparentAlpha = 100;
-                    _transpainter.MakeTranseparent();
-                    return;
-                }
-                //topFrm.WindowState = FormWindowState.Minimized;
-                escapedKepPressed = true;
-                _attachedWindow.MinizeAttachWindow();
-                MinimizeAll();
-                MiniZeAllForms();
-                _attachedWindow.MinizeAttachWindow();
-                escapedKepPressed = false;
-            }
-
-            if (e.KeyCode ==  Keys.Up)
-            {
-                if (e.Shift)
-                {
-                    _Opacity += .1;
-                    this.SetOpacity();
-                }
-                else if (e.Alt)
-                {
-                    if (_transpainter.WindowTransparentAlpha < 100)
-                    {
-                        _transpainter.WindowTransparentAlpha++;
-                        _transpainter.MakeTranseparent();
-                    }
-                }
-            }
-
-            if (e.KeyCode == Keys.Down)
-            {
-
-                if (e.Shift)
-                {
-                    _Opacity -= .1;
-                    this.SetOpacity();
-                }
-                else if (e.Alt)
-                {
-                    if (_transpainter.WindowTransparentAlpha > 0)
-                    {
-                        _transpainter.WindowTransparentAlpha--;
-                        _transpainter.MakeTranseparent();
-                    }
-                }
-            }
-
-
-            HandleHeightDecrease(e);
-
-
-            if (e.KeyCode == Keys.F1)
-            {
-                string helpMsg = ">To Make Transparent Box moveable/sizeable with mouse Press control Key and move window with mouse" + Environment.NewLine + Environment.NewLine;
-                helpMsg += ">To Make Transparent Box along with mouse double click outside Transparent Box" + Environment.NewLine + Environment.NewLine;
-                helpMsg += ">To incress/decrease the opacity of transpent box use Arrow Keys with ALT" + Environment.NewLine + Environment.NewLine;
-                helpMsg += ">To incress/decrease opacity of background use up and down arrow key with SHIFT" + Environment.NewLine + Environment.NewLine;
-                helpMsg += ">To Reduces Bottom use F2 key. To reverse SHIFT F2" + Environment.NewLine + Environment.NewLine;
-                helpMsg += ">To Reduces TOP use F3 key. To reverse SHIFT F3" + Environment.NewLine + Environment.NewLine;
-                helpMsg += ">To Refresh/Realign use F4 key." + Environment.NewLine + Environment.NewLine;
-                helpMsg += ">To Save Favorate Location F6/F7 key." + Environment.NewLine + Environment.NewLine;
-                helpMsg += ">To Close use ESC key" + Environment.NewLine + Environment.NewLine;
-                helpMsg += ">To Toggle TopMost Property cick on top form" + Environment.NewLine + Environment.NewLine;
-
-                MessageBox.Show(helpMsg);
-
-            }
-
-            if (e.KeyCode == Keys.F4)
-            {
-                this.RealignBackGround();
-            }
-
-            if (e.KeyValue == 117)
-            {
-                SaveCurrentLocation();
-            }
-
-            if (e.KeyValue == 118)
-            {
-                this.MoveToFavoriteLocation();
-                this.RealignBackGround();
-            }
-
-            if (e.KeyValue == 119)
-            {
-                //this.MakeTranspranceyLowSlowly();
-
-                if (_transpainter.WindowTransparentAlpha < 100)
-                {
-                    _transpainter.WindowTransparentAlpha += 10;
-
-                    if (_transpainter.WindowTransparentAlpha > 100)
+                case Keys.Escape:
+                    if (_transpainter.WindowTransparentAlpha != 100)
                     {
                         _transpainter.WindowTransparentAlpha = 100;
+                        _transpainter.MakeTranseparent();
+                        return;
                     }
+                    escapedKepPressed = true;
+                    _attachedWindow.MinizeAttachWindow();
+                    MinimizeAll();
+                    MiniZeAllForms();
+                    _attachedWindow.MinizeAttachWindow();
+                    escapedKepPressed = false;
 
-                    _transpainter.MakeTranseparent();
-                }
-            }
-
-            //F9
-            if (e.KeyValue == 120)
-            {
-
-                if (_transpainter.WindowTransparentAlpha > 0)
-                {
-                    _transpainter.WindowTransparentAlpha -= 10;
-
-                    if (_transpainter.WindowTransparentAlpha < 0)
+                    break;
+                case Keys.Up:
+                    if (e.Shift)
                     {
-                        _transpainter.WindowTransparentAlpha = 0;
+                        _Opacity += .1;
+                         SetOpacity();
+                    }
+                    else if (e.Alt)
+                    {
+                        if (_transpainter.WindowTransparentAlpha < 100)
+                        {
+                            _transpainter.WindowTransparentAlpha++;
+                            _transpainter.MakeTranseparent();
+                        }
+                    }
+                    break;
+                case Keys.Down:
+                    if (e.Shift)
+                    {
+                        _Opacity -= .1;
+                        this.SetOpacity();
+                    }
+                    else if (e.Alt)
+                    {
+                        if (_transpainter.WindowTransparentAlpha > 0)
+                        {
+                            _transpainter.WindowTransparentAlpha--;
+                            _transpainter.MakeTranseparent();
+                        }
                     }
 
-                    _transpainter.MakeTranseparent();
-                }
-                //WindowTransparentAlpha = 0;
-                //this.MakeTranseparent();
+                    break;
+
+                case Keys.F1:
+                    ShowHelp();
+                    break;
+                case Keys.F4:
+                    this.RealignBackGround();
+                    break;
+
+                case Keys.F6:
+                    SaveCurrentLocation();
+                    break;
+                case Keys.F7:
+                    this.MoveToFavoriteLocation();
+                    this.RealignBackGround();
+                    break;
+                case Keys.F8:
+                    if (_transpainter.WindowTransparentAlpha < 100)
+                    {
+                        _transpainter.WindowTransparentAlpha += 10;
+
+                        if (_transpainter.WindowTransparentAlpha > 100)
+                        {
+                            _transpainter.WindowTransparentAlpha = 100;
+                        }
+
+                        _transpainter.MakeTranseparent();
+                    }
+                    break;
+                case Keys.F9:
+                    if (_transpainter.WindowTransparentAlpha > 0)
+                    {
+                        _transpainter.WindowTransparentAlpha -= 10;
+
+                        if (_transpainter.WindowTransparentAlpha < 0)
+                        {
+                            _transpainter.WindowTransparentAlpha = 0;
+                        }
+
+                        _transpainter.MakeTranseparent();
+                    }
+                    break;
+                case Keys.F11:
+                    ToggleTopMost();
+                    SetBackGround();
+                    ToggleTopMost();
+                    RealignBackGround();
+                    break;
+                case Keys.F12:
+                    _transpainter.MakeTranseparent12();
+                    break;
             }
-
-            //F11
-            if (e.KeyValue == 122)
-            {
-                ToggleTopMost();
-                SetBackGround();
-                ToggleTopMost();
-
-                RealignBackGround();
-
-            }
-
-            //F12
-            if (e.KeyValue == 123)
-            {
-                _transpainter.MakeTranseparent12();
-
-            }
-
         }
 
+        private void ShowHelp()
+        {
+            string helpMsg = ">To Make Transparent Box moveable/sizeable with mouse Press control Key and move window with mouse" + Environment.NewLine + Environment.NewLine;
+            helpMsg += ">To Make Transparent Box along with mouse double click outside Transparent Box" + Environment.NewLine + Environment.NewLine;
+            helpMsg += ">To incress/decrease the opacity of transpent box use Arrow Keys with ALT" + Environment.NewLine + Environment.NewLine;
+            helpMsg += ">To incress/decrease opacity of background use up and down arrow key with SHIFT" + Environment.NewLine + Environment.NewLine;
+            helpMsg += ">To Reduces Bottom use F2 key. To reverse SHIFT F2" + Environment.NewLine + Environment.NewLine;
+            helpMsg += ">To Reduces TOP use F3 key. To reverse SHIFT F3" + Environment.NewLine + Environment.NewLine;
+            helpMsg += ">To Refresh/Realign use F4 key." + Environment.NewLine + Environment.NewLine;
+            helpMsg += ">To Save Favorate Location F6/F7 key." + Environment.NewLine + Environment.NewLine;
+            helpMsg += ">To Close use ESC key" + Environment.NewLine + Environment.NewLine;
+            helpMsg += ">To Toggle TopMost Property cick on top form" + Environment.NewLine + Environment.NewLine;
+            MessageBox.Show(helpMsg);
+        }
         private void TransparentFrm_KeyUp(object sender, KeyEventArgs e)
         {
 
@@ -578,9 +549,9 @@ namespace TransparentWindow
         }
 
 
-     
 
-      
+
+
         private void SaveCurrentLocationOld()
         {
             DialogResult result1 = MessageBox.Show(
@@ -674,14 +645,14 @@ namespace TransparentWindow
         {
             var imageMagic = @"C:\Media\Tools\Apps\ImageMagick\convert.exe";
 
-            backGroundImageFile =  RuntimeHelper.MapToCurrentLocation(Guid.NewGuid().ToString() + "backGroundImageFile.jpg") ;
+            backGroundImageFile = RuntimeHelper.MapToCurrentLocation(Guid.NewGuid().ToString() + "backGroundImageFile.jpg");
 
             var parameters = string.Format(
                 "{0} -resize  {1}x{2}!  {3}",
                  "\"" + sourceImagepath + "\"",
                 size.Width,
                 size.Height,
-               "\""+ backGroundImageFile+ "\"");
+               "\"" + backGroundImageFile + "\"");
 
             var startInfo = new ProcessStartInfo(imageMagic, parameters);
 
@@ -696,7 +667,7 @@ namespace TransparentWindow
             LastTransperWindowPoint.Y = this.Top;
             LastTransperWindowPoint.X = this.Left;
         }
-      
+
 
     }
 }

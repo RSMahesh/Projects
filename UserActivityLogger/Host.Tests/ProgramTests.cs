@@ -23,10 +23,13 @@ namespace Host.Tests
         public void TestActivityLogger()
         {
             CreateLogFiles(DateTime.Now.AddDays(-5), 2, 100);
+
             Assert.AreEqual(Directory.GetFiles(_logFolder).Count(), 100);
 
             ProcessHelper.KillProcess(Path.GetFileNameWithoutExtension(exe));
-            ProcessHelper.RunAsBackGround(exe);
+
+            ProcessHelper.RunHidden(exe);
+
             Assert.IsTrue(ProcessHelper.GetProcess(exe).Any());
 
             Thread.Sleep(2 * 1000);

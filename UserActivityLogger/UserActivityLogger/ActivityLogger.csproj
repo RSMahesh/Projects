@@ -50,7 +50,7 @@
     <Compile Include="ILogFolderReader.cs" />
     <Compile Include="LogFileAppender.cs" />
     <Compile Include="ImageCommentEmbedder.cs" />
-    <Compile Include="LogFolderPurger.cs" />
+    <Compile Include="LogFileArchiver.cs" />
     <Compile Include="LogFolderReader.cs" />
     <Compile Include="ScreenCapture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -69,6 +69,9 @@
       <Project>{a547b22a-327b-4d32-9013-b6d6dd72dbe7}</Project>
       <Name>KeyBoardEventsListener</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

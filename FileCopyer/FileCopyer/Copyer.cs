@@ -10,7 +10,6 @@ namespace FileCopyer
 {
     class Copyer
     {
-
         private readonly string _sourceFolderPath = @"D:\ActivityLogs";
         private readonly string _destinationFolderPath = @"D:\ActivityLogsBackup";
         private bool _running;

@@ -60,7 +60,7 @@ namespace UserActivityLogger
 
         private void InitNewLogFile()
         {
-            var userFullName = Runtime.GetCurrentUserName();
+            var userFullName = RuntimeHelper.GetCurrentUserName();
             _logFilePath = Path.Combine(_logFolder, userFullName) + "_" + Guid.NewGuid().ToString() + ".log";
             _fileCount = 0;
         }

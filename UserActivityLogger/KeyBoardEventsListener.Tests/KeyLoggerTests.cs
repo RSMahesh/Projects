@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Core;
+using NUnit.Framework;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -16,41 +17,29 @@ namespace KeyBoardEventsListener.Tests
     {
         KeyLogger keyLogger = new KeyLogger();
         KeyProcessor processor = new KeyProcessor();
+        KeyPressSimulater _keySimulator = new KeyPressSimulater();
+        protected void PressKey(Keys key)
+        {
+            _keySimulator.PressKey(key);
+        }
 
-        //=============================================================================
-
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern void keybd_event(byte bVk, byte bScan, int dwFlags, int dwExtraInfo);
-        public const int KEYEVENTF_EXTENDEDKEY = 0x0001; //Key down flag
-        public const int KEYEVENTF_KEYUP = 0x0002; //Key up flag
-        public const int VK_RCONTROL = 0xA3; //Right Control key code
         protected void PressKeyH()
         {
             PressKey(Keys.H);
         }
 
-        protected void PressKey(Keys key)
-        {
-            keybd_event((byte)key, 0, 0, 0);
-            Thread.Sleep(100);
-            keybd_event((byte)key, 0, KEYEVENTF_KEYUP, 0);
-        }
         protected void PressShiftDown()
         {
-            keybd_event((int)Keys.LShiftKey, 0, 0, 0);
+            _keySimulator.PressShiftDown();
         }
         protected void PressShiftUp()
         {
-            keybd_event((int)Keys.LShiftKey, 0, KEYEVENTF_KEYUP, 0);
+            _keySimulator.PressShiftUp();
         }
         protected void ToggleCapLocks()
         {
-            keybd_event((int)Keys.CapsLock, 0, 0, 0);
-            Thread.Sleep(100);
-            keybd_event((int)Keys.CapsLock, 0, KEYEVENTF_KEYUP, 0);
+            _keySimulator.ToggleCapLocks();
         }
-
-        //================================================================================
 
         [TestFixtureSetUp]
         public void Init()

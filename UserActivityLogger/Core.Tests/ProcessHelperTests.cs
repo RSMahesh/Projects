@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 namespace UserActivityLogger.Tests
 {
     [TestFixture]
+
+    [Category("Functional")]
     public class ProcessHelperTests
     {
 
@@ -18,7 +20,9 @@ namespace UserActivityLogger.Tests
         [Test]
         public void ShouldRunInForeground()
         {
-            ProcessHelper.Run(runForeverExe);
+            ProcessHelper.Run(@"D:\Projects\UserActivityLogger\Core\bin\Debug\Core.exe");
+
+
             var gotIt = ProcessHelper.GetForegroundProcess().FirstOrDefault(x => x.Equals(Path.GetFileNameWithoutExtension(runForeverExe )));
             Assert.IsTrue(!string.IsNullOrEmpty(gotIt));
         }
@@ -26,7 +30,7 @@ namespace UserActivityLogger.Tests
         [Test]
         public void ShouldRunInBackground()
         {
-            ProcessHelper.RunAsBackGround(runForeverExe);
+            ProcessHelper.RunHidden(runForeverExe);
             var gotIt = ProcessHelper.GetForegroundProcess().FirstOrDefault(x => x.Equals(Path.GetFileNameWithoutExtension(runForeverExe)));
             Assert.IsTrue(string.IsNullOrEmpty(gotIt));
         }

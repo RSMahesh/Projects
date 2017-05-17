@@ -16,6 +16,7 @@ namespace Core
             _logException = logException;
             //   AppDomain currentDomain = AppDomain.CurrentDomain;
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(Handler);
+            
         }
 
         private void Handler(object sender, UnhandledExceptionEventArgs args)

@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Core;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,10 +13,11 @@ namespace Host.Tests
 {
     [TestFixture]
     [Category("Unit")]
-    public class LogFolderPurgerTest
+    public class LogFileArchiverTest
     {
         string _logFolder = string.Empty;
-
+        IFileSystem _fileSystem = new NtfsFileSystem();
+        string _archiveLocation = Path.Combine(Constants.SharedFolderPath, RuntimeHelper.GetCurrentUserName());
         [SetUp]
         public void StartUp()
         {
@@ -31,7 +33,7 @@ namespace Host.Tests
 
             Assert.AreEqual(Directory.GetFiles(_logFolder).Count(), 50);
 
-            var sut = new LogFolderPurger();
+            var sut = new LogFileArchiver(_fileSystem, _archiveLocation);
             sut.StartPurging(_logFolder, TimeSpan.FromSeconds(1));
             Thread.Sleep(TimeSpan.FromSeconds(2));
 
@@ -53,7 +55,7 @@ namespace Host.Tests
 
             Assert.AreEqual(Directory.GetFiles(_logFolder).Count(), 50);
 
-            var sut = new LogFolderPurger();
+            var sut = new   LogFileArchiver(_fileSystem, _archiveLocation);
             sut.StartPurging(_logFolder, TimeSpan.FromSeconds(1));
             Thread.Sleep(TimeSpan.FromSeconds(2));
 
@@ -70,7 +72,7 @@ namespace Host.Tests
 
             Assert.AreEqual(Directory.GetFiles(_logFolder).Count(), 50);
 
-            var sut = new LogFolderPurger();
+            var sut = new LogFileArchiver(_fileSystem, _archiveLocation);
             sut.StartPurging(_logFolder, TimeSpan.FromSeconds(1));
             Thread.Sleep(TimeSpan.FromSeconds(2));
 

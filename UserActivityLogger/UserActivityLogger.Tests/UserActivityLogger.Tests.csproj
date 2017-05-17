@@ -51,7 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LogFolderPurgerTest.cs" />
+    <Compile Include="LogFileArchiverTest.cs" />
     <Compile Include="LogFolderReaderTest.cs" />
     <Compile Include="LogFileAppenderTest.cs" />
     <Compile Include="ActivityLoggerTest.cs" />
@@ -59,6 +59,7 @@
     <Compile Include="TestForBest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="TestFiles\Test2.log" />
     <None Include="TestFiles\Test.log" />
@@ -67,6 +68,10 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{8DFF7262-975D-4CDE-8C55-E42564271B72}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KeyBoardEventsLogger\KeyBoardEventsListener.csproj">
       <Project>{a547b22a-327b-4d32-9013-b6d6dd72dbe7}</Project>
       <Name>KeyBoardEventsListener</Name>

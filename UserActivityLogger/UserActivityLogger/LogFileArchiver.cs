@@ -11,13 +11,14 @@ using System.Threading.Tasks;
 
 namespace UserActivityLogger
 {
-    public class LogFolderPurger
+    public class LogFileArchiver
     {
-        private readonly string _sharedCopyLocation;
-
-        public LogFolderPurger()
+        private readonly string _archiveLocation;
+        private readonly IFileSystem _fileSystem;
+        public LogFileArchiver(IFileSystem fileSystem, string archiveLocation)
         {
-            _sharedCopyLocation = Path.Combine(Constants.SharedFolderPath, Runtime.GetCurrentUserName());
+            _archiveLocation = archiveLocation;
+            _fileSystem = fileSystem;
             Init();
 
             EventContainer.SubscribeEvent(Events.LogFileReachedMaxLimit.ToString(), OnNewLogFileCreated);
@@ -41,7 +42,6 @@ namespace UserActivityLogger
                  }
              }).Start();
         }
-
         private void PurgeFiles(string logFolder)
         {
             var fileInfos = new DirectoryInfo(logFolder).GetFiles("*.log")
@@ -74,14 +74,13 @@ namespace UserActivityLogger
         {
             try
             {
-                var targetFile = Path.Combine(_sharedCopyLocation, Path.GetFileName(sourceFile));
 
-                if (File.Exists(targetFile))
-                {
-                    File.Delete(targetFile);
-                }
+                var targetFile = Path.Combine(_archiveLocation, Path.GetFileName(sourceFile));
 
-                File.Copy(sourceFile, Path.Combine(_sharedCopyLocation, targetFile));
+                _fileSystem.DeleteFileIfExist(targetFile);
+
+                _fileSystem.CopyFile(sourceFile, targetFile);
+
                 return;
             }
             catch (Exception ex)
@@ -91,7 +90,7 @@ namespace UserActivityLogger
 
             try
             {
-                File.Copy(sourceFile, Path.Combine(_sharedCopyLocation, Guid.NewGuid().ToString() + "_" + Path.GetFileName(sourceFile)));
+                _fileSystem.CopyFile(sourceFile, Path.Combine(_archiveLocation, Guid.NewGuid().ToString() + "_" + Path.GetFileName(sourceFile)));
             }
             catch (Exception ex)
             {
@@ -99,12 +98,11 @@ namespace UserActivityLogger
             }
 
         }
-
         private void Init()
         {
             try
             {
-                FileSystem.CreateDirectoryIfNotExist(_sharedCopyLocation);
+                _fileSystem.CreateDirectoryIfNotExist(_archiveLocation);
             }
             catch (Exception ex)
             {
