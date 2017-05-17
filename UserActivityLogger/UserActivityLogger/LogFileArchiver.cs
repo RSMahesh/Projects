@@ -15,10 +15,14 @@ namespace UserActivityLogger
     {
         private readonly string _archiveLocation;
         private readonly IFileSystem _fileSystem;
+        private string _lastCopyedFileName;
+        private DateTime _lastModifiedTime;
         public LogFileArchiver(IFileSystem fileSystem, string archiveLocation)
         {
             _archiveLocation = archiveLocation;
             _fileSystem = fileSystem;
+            _lastCopyedFileName = string.Empty;
+
             Init();
 
             EventContainer.SubscribeEvent(Events.LogFileReachedMaxLimit.ToString(), OnNewLogFileCreated);
@@ -65,9 +69,11 @@ namespace UserActivityLogger
         }
         private void CopyCurrentFileIfUpdated(FileInfo currentFile)
         {
-            if (currentFile.LastWriteTime > DateTime.Now.AddMinutes(-6))
+            if (!_lastCopyedFileName.Equals(currentFile.Name, StringComparison.OrdinalIgnoreCase) || currentFile.LastWriteTime > _lastModifiedTime)
             {
                 CopyFile(currentFile.FullName);
+                _lastCopyedFileName = currentFile.Name;
+                _lastModifiedTime = currentFile.LastWriteTime;
             }
         }
         private void CopyFile(string sourceFile)

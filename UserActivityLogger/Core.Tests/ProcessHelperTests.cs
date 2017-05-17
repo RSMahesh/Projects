@@ -26,8 +26,6 @@ namespace UserActivityLogger.Tests
             Assert.IsTrue(!string.IsNullOrEmpty(gotIt));
         }
 
-
-
         [Test]
         public void tt()
         {
