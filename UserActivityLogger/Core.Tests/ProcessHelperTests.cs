@@ -22,10 +22,25 @@ namespace UserActivityLogger.Tests
         {
             ProcessHelper.Run(@"D:\Projects\UserActivityLogger\Core\bin\Debug\Core.exe");
 
-
             var gotIt = ProcessHelper.GetForegroundProcess().FirstOrDefault(x => x.Equals(Path.GetFileNameWithoutExtension(runForeverExe )));
             Assert.IsTrue(!string.IsNullOrEmpty(gotIt));
         }
+
+
+
+        [Test]
+        public void tt()
+        {
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            dic["lock1"] = Guid.NewGuid().ToString();
+            dic["lock2"] = Guid.NewGuid().ToString();
+
+            ProcessHelper.Run(@"D:\Projects\UserActivityLogger\Core\bin\Debug\Core.exe",dic);
+
+          //  var gotIt = ProcessHelper.GetForegroundProcess().FirstOrDefault(x => x.Equals(Path.GetFileNameWithoutExtension(runForeverExe)));
+            //Assert.IsTrue(!string.IsNullOrEmpty(gotIt));
+        }
+
 
         [Test]
         public void ShouldRunInBackground()

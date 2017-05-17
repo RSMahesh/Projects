@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Core
@@ -15,9 +17,10 @@ namespace Core
                 return;
             }
 
-            var process = ProcessHelper.GetParentProcess();
+            var parentProcess = Process.GetCurrentProcess().GetParentProcess();
 
-            ProcessHelper.WatchProcesExit(process, ProcessHelper.GetExePath(process));
+            ProcessHelper.WatchProcesExit(parentProcess, parentProcess.GetExePath());
         }
+    
     }
 }
