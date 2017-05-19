@@ -160,5 +160,10 @@ namespace StatusMaker.UI
         {
             Settings.Default.Reset();
         }
+
+        private void txtCCRecipients_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

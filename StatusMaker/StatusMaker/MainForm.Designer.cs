@@ -136,6 +136,7 @@
             this.txtCCRecipients.Size = new System.Drawing.Size(408, 38);
             this.txtCCRecipients.TabIndex = 11;
             this.txtCCRecipients.Text = resources.GetString("txtCCRecipients.Text");
+            this.txtCCRecipients.TextChanged += new System.EventHandler(this.txtCCRecipients_TextChanged);
             // 
             // chkValidateJiraStatus
             // 
