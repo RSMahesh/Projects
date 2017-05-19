@@ -25,6 +25,8 @@ namespace StatusMaker.Business
 
         public async Task<string> IsValidEpicNumberAsync(string jiraNumber, string epic)
         {
+            EnsureJiraNumberIsNotEmpty(jiraNumber);
+
             const string EpicNumberCustomField = "customfield_10007";
             const string Parent = "parent";
             var issueInformation = await GetIsuueInformation(jiraNumber);
@@ -50,6 +52,7 @@ namespace StatusMaker.Business
 
         public async Task<string> GetDescriptionAsync(string jiraNumber)
         {
+            EnsureJiraNumberIsNotEmpty(jiraNumber);
             //var file = "3__Http_"+jiraNumber+ "_" + Guid.NewGuid().ToString() + ".mb";
             //File.AppendAllText(file, Environment.NewLine + "GetIsuueInformation Start : " + jiraNumber);
             var issueInformation = await GetIsuueInformation(jiraNumber).ConfigureAwait(false);
@@ -62,6 +65,8 @@ namespace StatusMaker.Business
 
         public async Task<string> IsValidJiraStatusAsync(string jiraNumber, string status)
         {
+            EnsureJiraNumberIsNotEmpty(jiraNumber);
+
             var issueInformation = await GetIsuueInformation(jiraNumber);
 
             var fields = (Dictionary<string, object>)issueInformation["fields"];
@@ -73,6 +78,7 @@ namespace StatusMaker.Business
 
         public async Task<IEnumerable<string>> GetAllValidPullsAsync(string jiraNumber)
         {
+            EnsureJiraNumberIsNotEmpty(jiraNumber);
 
             var pullNumbersFromServer = await GetAllPullRequestFromServerAsync(jiraNumber);
 
@@ -82,6 +88,13 @@ namespace StatusMaker.Business
             return tt;
         }
 
+        private void EnsureJiraNumberIsNotEmpty(string jiraNumber)
+        {
+            if(string.IsNullOrEmpty(jiraNumber))
+            {
+                throw new Exception("Jira Number can not be empty");
+            }
+        }
 
 
         private async Task<IEnumerable<object>> GetAllPullRequestFromServerAsync(string issueNo)

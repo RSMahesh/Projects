@@ -1,15 +1,19 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 using StatusMaker.Business.Columns;
 
 namespace StatusMaker.Business.Validators
 {
-    public class ValidateReviewer : IValidateData
+    public class CommentsRequired : IValidateData
     {
-        
         private readonly IOutPutGenerator _outPutGenerator;
 
-        public ValidateReviewer(IOutPutGenerator outPutGenerator)
+        public CommentsRequired(IOutPutGenerator outPutGenerator)
         {
             _outPutGenerator = outPutGenerator;
         }
@@ -17,13 +21,9 @@ namespace StatusMaker.Business.Validators
         public async Task<string> ValidateDataAsync(System.Data.DataRow dr, string cellData)
 #pragma warning restore CS1998 // This async method lacks 'await' operators and will run synchronously. Consider using the 'await' operator to await non-blocking API calls, or 'await Task.Run(...)' to do CPU-bound work on a background thread.
         {
-
-            if (dr["Category"].ToString() == "Merged to Epic")
+            if (string.IsNullOrEmpty(dr[ColumnTypes.Comments].ToString()))
             {
-                if (string.IsNullOrEmpty(dr["Review"].ToString()))
-                {
-                    return cellData + _outPutGenerator.HighlightedTextWithCrazyImage(" Reviewer Missing");
-                }
+                return _outPutGenerator.HighlightedTextWithCrazyImage("No Comments");
             }
 
             return cellData;
@@ -33,7 +33,7 @@ namespace StatusMaker.Business.Validators
         {
             get
             {
-                return ColumnTypes.Author;
+                return ColumnTypes.Comments;
             }
         }
     }

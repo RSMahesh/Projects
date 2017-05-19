@@ -10,12 +10,12 @@ using StatusMaker.Business.Columns;
 
 namespace StatusMaker.Business.Validators
 {
-    public class ValidatePrNumber : IValidateData
+    public class PrNumberShouldMatchJira : IValidateData
     {
         private IJira _jira;
         private readonly IOutPutGenerator _outPutGenerator;
 
-        public ValidatePrNumber(IJira jira, IOutPutGenerator outPutGenerator)
+        public PrNumberShouldMatchJira(IJira jira, IOutPutGenerator outPutGenerator)
         {
             _jira = jira;
             _outPutGenerator = outPutGenerator;

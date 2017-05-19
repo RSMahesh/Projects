@@ -106,12 +106,13 @@
     <Compile Include="Columns\Status.cs" />
     <Compile Include="SVN.cs" />
     <Compile Include="Validators\IValidateData.cs" />
-    <Compile Include="Validators\ValidateEpic.cs" />
-    <Compile Include="Validators\ValidateStatus.cs" />
-    <Compile Include="Validators\ValidateDescription.cs" />
-    <Compile Include="Validators\ValidatePrNumber.cs" />
-    <Compile Include="Validators\ValidateComments.cs" />
-    <Compile Include="Validators\ValidateReviewer.cs" />
+    <Compile Include="Validators\EpicShouldMatchJira.cs" />
+    <Compile Include="Validators\StatusShouldMatchJira.cs" />
+    <Compile Include="Validators\ReadyForTestShouldBeMergedToEpic.cs" />
+    <Compile Include="Validators\DescriptionShouldMatchJira.cs" />
+    <Compile Include="Validators\PrNumberShouldMatchJira.cs" />
+    <Compile Include="Validators\CommentsRequired.cs" />
+    <Compile Include="Validators\ReviewerRequired.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StatusMaker.Data\StatusMaker.Data.csproj">

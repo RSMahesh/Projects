@@ -10,12 +10,12 @@ using StatusMaker.Business.Columns;
 
 namespace StatusMaker.Business.Validators
 {
-    public class ValidateEpic : IValidateData
+    public class EpicShouldMatchJira : IValidateData
     {
        private IJira _jira;
         private readonly IOutPutGenerator _outPutGenerator;
 
-        public ValidateEpic(IJira jira, IOutPutGenerator outPutGenerator)
+        public EpicShouldMatchJira(IJira jira, IOutPutGenerator outPutGenerator)
         {
             _jira = jira;
             _outPutGenerator = outPutGenerator;

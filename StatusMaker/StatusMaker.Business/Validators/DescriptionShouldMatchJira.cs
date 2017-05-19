@@ -11,12 +11,12 @@ using StatusMaker.Business.Columns;
 
 namespace StatusMaker.Business.Validators
 {
-    public class ValidateDescription : IValidateData
+    public class DescriptionShouldMatchJira : IValidateData
     {
        private IJira _jira;
         private readonly IOutPutGenerator _outPutGenerator;
 
-        public ValidateDescription(IJira jira, IOutPutGenerator outPutGenerator)
+        public DescriptionShouldMatchJira(IJira jira, IOutPutGenerator outPutGenerator)
         {
             _jira = jira;
             _outPutGenerator = outPutGenerator;

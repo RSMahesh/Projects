@@ -46,7 +46,17 @@ namespace StatusMaker
 
         private static void Application_ThreadException1(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
-            MessageBox.Show(e.Exception.Message);
+            MessageBox.Show(GetExceptionMessage(e.Exception));
+        }
+
+        private static string GetExceptionMessage(Exception ex)
+        {
+            if (ex.InnerException == null)
+            {
+                return ex.Message;
+            }
+
+            return ex.Message + Environment.NewLine + GetExceptionMessage(ex.InnerException);
         }
 
         static void MyHandler(object sender, UnhandledExceptionEventArgs args)

@@ -35,45 +35,7 @@ namespace StatusMaker.Business.Sections
             }
             return _outPutGenerator.GenerateSection(heading, CreateRows(rows, validateAganistJira));
         }
-
-        private string CreateRows12(IEnumerable<DataRow> rows, bool validateAganistJira)
-        {
-            var sb = new StringBuilder(1000);
-
-            var tasks = rows.Select(async row =>
-            {
-                var tokens = new Dictionary<string, string>();
-
-                foreach (var column in _columns)
-                {
-                    var columnData = column.GetData(row);
-
-                    tokens[column.TemplatePlaceHolder] = columnData;
-
-                    IEnumerable<IValidateData> valis = _validators.FindAll(x => x.ColumnType == column.TemplatePlaceHolder);
-
-                    if (validateAganistJira)
-                    {
-                        foreach (var vali in valis)
-                        {
-                            tokens[column.TemplatePlaceHolder] = await vali.ValidateDataAsync(row, columnData);
-                        }
-                    }
-                }
-
-                var htmlRow = _outPutGenerator.GenerateRow(tokens);
-
-                lock (sb)
-                {
-                    sb.AppendLine(htmlRow);
-                }
-            });
-
-            Task.WaitAll(tasks.ToArray());
-
-            return sb.ToString();
-        }
-
+  
         private string CreateRows(IEnumerable<DataRow> rows, bool validateAganistJira)
         {
             var sb = new StringBuilder(1000);

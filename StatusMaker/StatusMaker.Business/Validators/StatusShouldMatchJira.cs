@@ -6,12 +6,12 @@ using StatusMaker.Business.Columns;
 
 namespace StatusMaker.Business.Validators
 {
-    public class ValidateStatus : IValidateData
+    public class StatusShouldMatchJira : IValidateData
     {
         private IJira _jira;
         private readonly IOutPutGenerator _outPutGenerator;
 
-        public ValidateStatus(IJira jira, IOutPutGenerator outPutGenerator)
+        public StatusShouldMatchJira(IJira jira, IOutPutGenerator outPutGenerator)
         {
             _jira = jira;
             _outPutGenerator = outPutGenerator;
@@ -22,14 +22,6 @@ namespace StatusMaker.Business.Validators
             var statusInJira = await _jira.IsValidJiraStatusAsync(
                   statusDataRow[ColumnTypes.JiraNumber].ToString(),
                   statusDataRow[ColumnTypes.Status].ToString());
-
-            if (cellData == "Ready For Test")
-            {
-                if (statusDataRow["Category"].ToString() != "Merged to Epic")
-                {
-                    return _outPutGenerator.HighlightedText(cellData + Environment.NewLine + "Categoty Should be ->Merged to Epic");
-                }
-            }
 
             if (statusInJira != string.Empty)
             {
