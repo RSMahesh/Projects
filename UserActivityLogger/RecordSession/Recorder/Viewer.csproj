@@ -103,6 +103,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core.csproj">
+      <Project>{8dff7262-975d-4cde-8c55-e42564271b72}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\KeyBoardEventsLogger\KeyBoardEventsListener.csproj">
       <Project>{a547b22a-327b-4d32-9013-b6d6dd72dbe7}</Project>
       <Name>KeyBoardEventsListener</Name>

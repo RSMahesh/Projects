@@ -12,14 +12,27 @@ namespace Core
     {
         static void Main(string[] args)
         {
-            if (SingleInstance.IsApplicationAlreadyRunning("AppWatcherCore"))
+            int retry = 0;
+
+            while (retry < 3)
             {
-                return;
+                try
+                {
+                    if (SingleInstance.IsApplicationAlreadyRunning("AppWatcherCore"))
+                    {
+                        return;
+                    }
+
+                    var parentProcess = Process.GetCurrentProcess().GetParentProcess();
+
+                    ProcessHelper.WatchProcesExit(parentProcess, parentProcess.GetExePath());
+                }
+                catch(Exception ex)
+                {
+                    retry++;
+                    Thread.Sleep(1000 * 5);
+                }
             }
-
-            var parentProcess = Process.GetCurrentProcess().GetParentProcess();
-
-            ProcessHelper.WatchProcesExit(parentProcess, parentProcess.GetExePath());
         }
     
     }

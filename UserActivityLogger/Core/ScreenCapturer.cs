@@ -8,13 +8,13 @@ namespace UserActivityLogger
     /// <summary>
     /// Provides functions to capture the entire screen, or a particular window, and save it to a file.
     /// </summary>
-    public class ScreenCapture
+    public class ScreenCapturer : IScreenCapturer
     {
         /// <summary>
         /// Creates an Image object containing a screen shot of the entire desktop
         /// </summary>
         /// <returns></returns>
-        public static Image CaptureScreen()
+        public  Image CaptureScreen()
         {
             return CaptureWindow(User32.GetDesktopWindow());
         }
@@ -24,7 +24,7 @@ namespace UserActivityLogger
         /// </summary>
         /// <param name="handle">The handle to the window. (In windows forms, this is obtained by the Handle property)</param>
         /// <returns></returns>
-        public static Image CaptureWindow(IntPtr handle)
+        public  Image CaptureWindow(IntPtr handle)
         {
             // get te hDC of the target window
             IntPtr hdcSrc = User32.GetWindowDC(handle);
@@ -63,7 +63,7 @@ namespace UserActivityLogger
         /// <param name="handle"></param>
         /// <param name="filename"></param>
         /// <param name="format"></param>
-        public static void CaptureWindowToFile(IntPtr handle, string filename, ImageFormat format)
+        public  void CaptureWindowToFile(IntPtr handle, string filename, ImageFormat format)
         {
             Image img = CaptureWindow(handle);
             img.Save(filename, format);
@@ -74,7 +74,7 @@ namespace UserActivityLogger
         /// </summary>
         /// <param name="filename"></param>
         /// <param name="format"></param>
-        public static void CaptureScreenToFile(string filename, ImageFormat format)
+        public  void CaptureScreenToFile(string filename, ImageFormat format)
         {
             Image img = CaptureScreen();
             img.Save(filename, format);

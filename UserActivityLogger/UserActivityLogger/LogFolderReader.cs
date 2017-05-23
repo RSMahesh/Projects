@@ -16,9 +16,7 @@ namespace UserActivityLogger
         private int _fileIndex;
         LogFileReader _logFileReader = null;
         List<int> imagesInLogFiles = new List<int>();
-        
-
-
+       
         public LogFolderReader()
         {
            
@@ -152,7 +150,6 @@ namespace UserActivityLogger
 
                 return fileCount;
             }
-
      
             public byte[] GetNextImageBytes()
             {

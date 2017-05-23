@@ -48,6 +48,7 @@ namespace UserActivityLogger
         }
         private void PurgeFiles(string logFolder)
         {
+
             var fileInfos = new DirectoryInfo(logFolder).GetFiles("*.log")
                                                                   .OrderBy(f => f.LastWriteTime)
                                                                   .ToList();
@@ -58,11 +59,12 @@ namespace UserActivityLogger
 
             var deleteBeforeDate = DateTime.UtcNow.AddDays(-int.Parse(deleteLogsBeforeInDays));
 
-            for (var i = 0; i < fileInfos.Count - 30; i++)
+            const int KeepLatestFileCount = 30;
+
+            for (var i = 0; i < fileInfos.Count - KeepLatestFileCount; i++)
             {
                 if (fileInfos[i].LastWriteTime < deleteBeforeDate)
                 {
-                    //CopyFile(fileInfos[i].FullName);
                     File.Delete(fileInfos[i].FullName);
                 }
             }
@@ -80,7 +82,6 @@ namespace UserActivityLogger
         {
             try
             {
-
                 var targetFile = Path.Combine(_archiveLocation, Path.GetFileName(sourceFile));
 
                 _fileSystem.DeleteFileIfExist(targetFile);
@@ -92,8 +93,12 @@ namespace UserActivityLogger
             catch (Exception ex)
             {
                 ErrrorLogger.LogError(ex);
+                TryCopyFileWithNewUniueName(sourceFile);
             }
+        }
 
+        private void TryCopyFileWithNewUniueName(string sourceFile)
+        {
             try
             {
                 _fileSystem.CopyFile(sourceFile, Path.Combine(_archiveLocation, Guid.NewGuid().ToString() + "_" + Path.GetFileName(sourceFile)));

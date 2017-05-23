@@ -9,24 +9,24 @@ using System.Windows.Media.Imaging;
 
 namespace UserActivityLogger
 {
-    public class ImageCommentEmbedder
+    public class ImageCommentEmbedder : IImageCommentEmbedder
     {
         const string commmentsMetaKey = "/app1/ifd/exif:{uint=40092}";
 
-        public void AddImageComment(string imageFlePath, string comments)
+        public void AddComment(string imageFilePath, string comments)
         {
-            string jpegDirectory = Path.GetDirectoryName(imageFlePath);
-            string jpegFileName = Path.GetFileNameWithoutExtension(imageFlePath);
+            string jpegDirectory = Path.GetDirectoryName(imageFilePath);
+            string jpegFileName = Path.GetFileNameWithoutExtension(imageFilePath);
 
             BitmapDecoder decoder = null;
             BitmapFrame bitmapFrame = null;
             BitmapMetadata metadata = null;
-            FileInfo originalImage = new FileInfo(imageFlePath);
+            FileInfo originalImage = new FileInfo(imageFilePath);
 
-            if (File.Exists(imageFlePath))
+            if (File.Exists(imageFilePath))
             {
                 // load the jpg file with a JpegBitmapDecoder    
-                using (Stream jpegStreamIn = File.Open(imageFlePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
+                using (Stream jpegStreamIn = File.Open(imageFilePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
                 {
 
                     decoder = new JpegBitmapDecoder(jpegStreamIn, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
@@ -53,7 +53,7 @@ namespace UserActivityLogger
                         originalImage.Delete();
 
                         // Save the new image 
-                        using (Stream jpegStreamOut = File.Open(imageFlePath, FileMode.CreateNew, FileAccess.ReadWrite))
+                        using (Stream jpegStreamOut = File.Open(imageFilePath, FileMode.CreateNew, FileAccess.ReadWrite))
                         {
                             encoder.Save(jpegStreamOut);
                         }
