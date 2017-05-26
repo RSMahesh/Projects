@@ -25,7 +25,7 @@ namespace UserActivityLogger
             _keyLogger = keyLogger;
             _imageCommentEmbedder = new ImageCommentEmbedder();
             _activityProvider = new ActivityProvider(keyLogger, new ScreenCapturer());
-            _activitySaver = new ActivitySaver(logFolder,new JarFileFactory(), new ImageCommentEmbedder() );
+            _activitySaver = new ActivitySaver(logFolder,new FileAppender(), new ImageCommentEmbedder() );
         }
 
         public void Start()

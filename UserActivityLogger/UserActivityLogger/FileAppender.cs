@@ -34,7 +34,7 @@ namespace UserActivityLogger
         {
             if (File.Exists(dataFile))
             {
-                using (BinaryReader reader = new BinaryReader(File.Open(dataFile, FileMode.Open, FileAccess.Read)))
+                using (BinaryReader reader = new BinaryReader(File.Open(dataFile, FileMode.Open, System.IO.FileAccess.Read)))
                 {
                     var bytes = reader.ReadBytes(10);
                     var result = System.Text.Encoding.UTF8.GetString(bytes);

@@ -1,7 +1,8 @@
 ﻿using NUnit.Framework;
+using RecordSession;
 using System.IO;
 
-namespace UserActivityLogger.Tests
+namespace Viewer.Test
 {
     [TestFixture]
     [Category("Unit")]
@@ -22,7 +23,7 @@ namespace UserActivityLogger.Tests
 
                 while (true)
                 {
-                    var bytes = logFolderReader.GetNextImageBytes();
+                    var bytes = logFolderReader.GetNextImage();
 
                     if (bytes == null)
                     {

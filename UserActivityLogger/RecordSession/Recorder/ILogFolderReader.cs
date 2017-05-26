@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Drawing;
 
-namespace UserActivityLogger
+namespace RecordSession
 {
     public interface ILogFolderReader: IDisposable
     {
         void ChangeNextImagePostion(int positionNumber);
         void Dispose();
         int GetFileCountForReading();
-        byte[] GetNextImageBytes();
+        byte[] GetNextImage();
         void SetLogFolderPath(string logFolderPath);
     }
 }

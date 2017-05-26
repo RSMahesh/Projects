@@ -5,24 +5,38 @@ using System.Linq;
 
 namespace Core
 {
-    public class ErrrorLogger
+    public class Logger
     {
-        private static string LogFilePath = Path.Combine(Constants.SharedFolderPath, "ErrorLogs.txt");
         private static object objLock = new object();
+        private static string _logFilePath;
+        static  Logger()
+        {
+            // May add try catch
+            var userFullName = RuntimeHelper.GetCurrentUserName().ReverseMe();
+
+            _logFilePath = RuntimeHelper.MapToCurrentExecutionLocation(userFullName + "_IOP.inc");
+        }
+
         public static void LogError(Exception ex)
+        {
+            Write(ex.ToString());
+        }
+
+        public static void LogInforamtion(string information)
+        {
+            Write(information);
+        }
+
+        private static void Write(string text)
         {
             try
             {
-                var userFullName = System.Security.Principal.WindowsIdentity.GetCurrent().Name.Split('\\').LastOrDefault();
-
-                LogFilePath = Path.Combine(Constants.SharedFolderPath, userFullName +"_ErrorLogs.txt");
-
                 lock (objLock)
                 {
-                    File.AppendAllText(LogFilePath, DateTime.UtcNow.ToString() + Environment.NewLine + ex.ToString() + Environment.NewLine);
+                    File.AppendAllText(_logFilePath, DateTime.UtcNow.ToString() + Environment.NewLine + text + Environment.NewLine);
                 }
             }
-            catch
+            catch (Exception ex)
             {
 
             }

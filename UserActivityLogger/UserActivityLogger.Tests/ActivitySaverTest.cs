@@ -16,22 +16,20 @@ namespace UserActivityLogger.Tests
     public class ActivitySaverTest
     {
         string imageFile = @"D:\Projects\UserActivityLogger\UserActivityLogger.Tests\One.jpg";
+        Dictionary<string, List<string>> appendedFilesStore;
 
         [Test]
         public void ShouldCreateTwoLogFilesIfFilesAreGreaterThen100()
         {
-            var appendedFilesStore = new Dictionary<string, List<string>>();
+            appendedFilesStore = new Dictionary<string, List<string>>();
 
-            var fileAppender = Mock.Create<IFileAppender>();
+            var jarFactory = Mock.Create<IJarFileFactory>();
 
-            Mock.Arrange(() => fileAppender.AppendFile(Arg.AnyString, Arg.AnyString))
-                                .DoInstead((string fileToAppend, string dataFile) => AppendFile(fileToAppend, dataFile, appendedFilesStore)).OccursAtLeast(100);
-
-            Mock.Arrange(() => fileAppender.GetFileCount(Arg.AnyString)).Returns((string data) => GetFileCount(data, appendedFilesStore));
+            Mock.Arrange(() => jarFactory.GetJarFile(FileAccessMode.Write, Arg.AnyString)).Returns((FileAccessMode mode, string dataFile) => Factory(dataFile));
 
             var imageCommentEmbedder = Mock.Create<IImageCommentEmbedder>();
 
-            var activitySaver = new ActivitySaver(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), fileAppender, imageCommentEmbedder);
+            var activitySaver = new ActivitySaver(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), jarFactory, imageCommentEmbedder);
 
             var img = Image.FromFile(imageFile);
 
@@ -45,6 +43,19 @@ namespace UserActivityLogger.Tests
             Assert.AreEqual(100, appendedFilesStore[appendedFilesStore.Keys.FirstOrDefault()].Count());
             Assert.AreEqual(90, appendedFilesStore[appendedFilesStore.Keys.LastOrDefault()].Count());
             Assert.IsTrue(appendedFilesStore.Keys.FirstOrDefault().Contains(GetUserNameInReverse()));
+        }
+
+        private IJarFile Factory(string dataFile)
+        {
+
+            var jarFile = Mock.Create<IJarFile>();
+
+            Mock.Arrange(() => jarFile.AddFile(Arg.AnyString))
+                                .DoInstead((string fileToAppend) => AppendFile(fileToAppend, dataFile, appendedFilesStore)).OccursAtLeast(100);
+
+            Mock.Arrange(() => jarFile.FilesCount).Returns(() => GetFileCount(dataFile, appendedFilesStore));
+
+            return jarFile;
         }
 
         int GetFileCount(string dataFile, Dictionary<string, List<string>> appendedFilesStore)

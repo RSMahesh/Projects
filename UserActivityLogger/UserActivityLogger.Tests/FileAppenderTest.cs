@@ -48,7 +48,7 @@ namespace UserActivityLogger.Tests
 
         public int GetFileCountForReading(string logFile)
         {
-            using (var reader = new BinaryReader(File.Open(logFile, FileMode.Open, FileAccess.Read)))
+            using (var reader = new BinaryReader(File.Open(logFile, FileMode.Open, System.IO.FileAccess.Read)))
             {
                 var bytes = reader.ReadBytes(10);
                 var fileCount = int.Parse(System.Text.Encoding.UTF8.GetString(bytes));

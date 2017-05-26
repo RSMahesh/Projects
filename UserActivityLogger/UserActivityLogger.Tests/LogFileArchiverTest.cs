@@ -34,7 +34,7 @@ namespace Host.Tests
             Assert.AreEqual(Directory.GetFiles(_logFolder).Count(), 50);
 
             var sut = new LogFileArchiver(_fileSystem, _archiveLocation);
-            sut.StartPurging(_logFolder, TimeSpan.FromSeconds(1));
+            sut.Start(_logFolder, TimeSpan.FromSeconds(1));
             Thread.Sleep(TimeSpan.FromSeconds(2));
 
             startDateOfLastWrite = startDateOfLastWrite.AddMinutes(1 * 20);
@@ -56,7 +56,7 @@ namespace Host.Tests
             Assert.AreEqual(Directory.GetFiles(_logFolder).Count(), 50);
 
             var sut = new   LogFileArchiver(_fileSystem, _archiveLocation);
-            sut.StartPurging(_logFolder, TimeSpan.FromSeconds(1));
+            sut.Start(_logFolder, TimeSpan.FromSeconds(1));
             Thread.Sleep(TimeSpan.FromSeconds(2));
 
             Assert.AreEqual(Directory.GetFiles(_logFolder).Count(), 50);
@@ -73,7 +73,7 @@ namespace Host.Tests
             Assert.AreEqual(Directory.GetFiles(_logFolder).Count(), 50);
 
             var sut = new LogFileArchiver(_fileSystem, _archiveLocation);
-            sut.StartPurging(_logFolder, TimeSpan.FromSeconds(1));
+            sut.Start(_logFolder, TimeSpan.FromSeconds(1));
             Thread.Sleep(TimeSpan.FromSeconds(2));
 
             Assert.AreEqual(30, Directory.GetFiles(_logFolder).Count());

@@ -3,38 +3,36 @@ using EventPublisher;
 using System;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UserActivityLogger;
 
 namespace UserActivityLogger
 {
-    public  class ActivitySaver 
+    public class ActivitySaver
     {
         private const int MaxFileCount = 100;
         private readonly string _logFolder;
         private readonly IFileAppender _fileAppender;
         private readonly IImageCommentEmbedder _imageCommentEmbedder;
         private string _logFilePath;
+        private IJarFile _jarFile;
+        private IJarFileFactory _jarFileFactory;
 
-        public ActivitySaver(string logFolder, IFileAppender fileAppender, IImageCommentEmbedder imageCommentEmbedder)
+        public ActivitySaver(string logFolder, IJarFileFactory jarFileFactory, IImageCommentEmbedder imageCommentEmbedder)
         {
             _logFolder = logFolder;
-            _fileAppender = fileAppender;
-            _imageCommentEmbedder =  imageCommentEmbedder;
+            _jarFileFactory = jarFileFactory;
+            _imageCommentEmbedder = imageCommentEmbedder;
 
             if (!Directory.Exists(_logFolder))
             {
                 Directory.CreateDirectory(_logFolder);
             }
 
-            CreateNewLogFile();
+            CreateJarFile();
         }
         public void Save(Activity activity)
         {
             var captureImgpath = Path.Combine(_logFolder, Guid.NewGuid().ToString() + ".jpg");
-    
+
             //TODO: In memory instead saving file
             activity.ScreenShot.Save(captureImgpath, ImageFormat.Jpeg);
 
@@ -42,27 +40,36 @@ namespace UserActivityLogger
 
             var dataFile = GetDataFileName();
 
-            _fileAppender.AppendFile(captureImgpath, dataFile);
+            _jarFile.AddFile(captureImgpath);
 
             File.Delete(captureImgpath);
-            
         }
 
         private string GetDataFileName()
         {
-            if (_fileAppender.GetFileCount(_logFilePath) >= MaxFileCount)
+            if (_jarFile.FilesCount >= MaxFileCount)
             {
-                EventContainer.PublishEvent(Events.LogFileReachedMaxLimit.ToString(), new EventArg(Guid.Empty, _logFilePath));
-                CreateNewLogFile();
+                EventContainer.PublishEvent(Events.LogFileReachedMaxLimit.ToString(), new EventArg(Guid.Empty, _jarFile.JarFilePath));
+                CreateJarFile();
             }
 
-            return _logFilePath;
+            return _jarFile.JarFilePath;
         }
 
-        private void CreateNewLogFile()
+        private void CreateJarFile()
         {
             var userFullName = RuntimeHelper.GetCurrentUserName().ReverseMe();
             _logFilePath = Path.Combine(_logFolder, userFullName) + "_" + Guid.NewGuid().ToString() + ".log";
+             DisposeCurrentJarFile();
+            _jarFile = _jarFileFactory.GetJarFile(FileAccessMode.Write, _logFilePath);
+        }
+
+        private void DisposeCurrentJarFile()
+        {
+            if (_jarFile != null)
+            {
+                _jarFile.Dispose();
+            }
         }
     }
 }

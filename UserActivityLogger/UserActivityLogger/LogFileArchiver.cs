@@ -1,13 +1,10 @@
 ﻿using Core;
 using EventPublisher;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace UserActivityLogger
 {
@@ -27,7 +24,7 @@ namespace UserActivityLogger
 
             EventContainer.SubscribeEvent(Events.LogFileReachedMaxLimit.ToString(), OnNewLogFileCreated);
         }
-        public void StartPurging(string logFolder, TimeSpan pollingTimeInterval)
+        public void Start(string logFolder, TimeSpan pollingTimeInterval)
         {
             new Thread(() =>
              {
@@ -39,7 +36,7 @@ namespace UserActivityLogger
                      }
                      catch (Exception ex)
                      {
-                         ErrrorLogger.LogError(ex);
+                         Logger.LogError(ex);
                      }
 
                      Thread.Sleep(pollingTimeInterval);
@@ -92,11 +89,10 @@ namespace UserActivityLogger
             }
             catch (Exception ex)
             {
-                ErrrorLogger.LogError(ex);
+                Logger.LogError(ex);
                 TryCopyFileWithNewUniueName(sourceFile);
             }
         }
-
         private void TryCopyFileWithNewUniueName(string sourceFile)
         {
             try
@@ -105,7 +101,7 @@ namespace UserActivityLogger
             }
             catch (Exception ex)
             {
-                ErrrorLogger.LogError(ex);
+                Logger.LogError(ex);
             }
 
         }
@@ -117,10 +113,9 @@ namespace UserActivityLogger
             }
             catch (Exception ex)
             {
-                ErrrorLogger.LogError(ex);
+                Logger.LogError(ex);
             }
         }
-
         private void OnNewLogFileCreated(EventArg eventArg)
         {
             var logFile = eventArg.Arg.ToString();

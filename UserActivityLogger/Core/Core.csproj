@@ -104,6 +104,12 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KeyBoardEventsLogger\KeyBoardEventsListener.csproj">
+      <Project>{A547B22A-327B-4D32-9013-B6D6DD72DBE7}</Project>
+      <Name>KeyBoardEventsListener</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

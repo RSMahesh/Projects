@@ -81,7 +81,7 @@ namespace RecordSession
         private void timer2_Tick(object sender, EventArgs e)
         {
 
-            var imageBytes = logFolderReader.GetNextImageBytes();
+            var imageBytes = logFolderReader.GetNextImage();
             if (imageBytes == null)
             {
                 timer2.Enabled = false;

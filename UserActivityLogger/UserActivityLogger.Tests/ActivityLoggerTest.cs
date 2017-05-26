@@ -23,7 +23,7 @@ namespace UserActivityLogger.Tests
             var inputFile = new FileStream(
          fileName,
          FileMode.OpenOrCreate,
-         FileAccess.Write,
+         System.IO.FileAccess.Write,
          FileShare.ReadWrite);
 
             using (BinaryWriter writer = new BinaryWriter(inputFile))
@@ -59,7 +59,7 @@ namespace UserActivityLogger.Tests
             using (var inputFile = new FileStream(
          sourceFile,
          FileMode.Open,
-         FileAccess.Read,
+         System.IO.FileAccess.Read,
          FileShare.ReadWrite))
             {
                 using (var outputFile = new FileStream(destinationFile, FileMode.CreateNew))
