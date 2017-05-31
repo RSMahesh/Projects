@@ -66,8 +66,6 @@ namespace TransparentWindow
 
             Color backColor = Color.Black;
 
-
-
             this.TopMost = topMost;
             this.Top = 500;
             topFrm = new TopForm1();
@@ -238,8 +236,6 @@ namespace TransparentWindow
                 altKeyPressed = true;
             }
 
-
-
             switch (e.KeyCode)
             {
                 case Keys.Escape:
@@ -304,41 +300,27 @@ namespace TransparentWindow
                     this.RealignBackGround();
                     break;
                 case Keys.F8:
-                    if (_transpainter.WindowTransparentAlpha < 100)
-                    {
-                        _transpainter.WindowTransparentAlpha += 10;
 
-                        if (_transpainter.WindowTransparentAlpha > 100)
-                        {
-                            _transpainter.WindowTransparentAlpha = 100;
-                        }
-
-                        _transpainter.MakeTranseparent();
-                    }
+                    _transpainter.DecreaseTransparency(10);
                     break;
                 case Keys.F9:
-                    if (_transpainter.WindowTransparentAlpha > 0)
-                    {
-                        _transpainter.WindowTransparentAlpha -= 10;
-
-                        if (_transpainter.WindowTransparentAlpha < 0)
-                        {
-                            _transpainter.WindowTransparentAlpha = 0;
-                        }
-
-                        _transpainter.MakeTranseparent();
-                    }
+                    _transpainter.IncreaseTransparency(10);
                     break;
                 case Keys.F11:
-                    ToggleTopMost();
-                    SetBackGround();
-                    ToggleTopMost();
-                    RealignBackGround();
+                    ChangeBackgroundImage();
                     break;
                 case Keys.F12:
                     _transpainter.MakeTranseparent12();
                     break;
             }
+        }
+
+        private void ChangeBackgroundImage()
+        {
+            ToggleTopMost();
+            SetBackGround();
+            ToggleTopMost();
+            RealignBackGround();
         }
 
         private void ShowHelp()
@@ -547,10 +529,6 @@ namespace TransparentWindow
             _attachedWindow.ShowAttachWindow();
             topFrm.Activate();
         }
-
-
-
-
 
         private void SaveCurrentLocationOld()
         {

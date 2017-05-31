@@ -19,7 +19,9 @@ namespace RecordSession
         private int currentImageIndex = 0;
         public Action<int> DisplayChange;
         public int incrementCount = 1;
-        ILogFolderReader logFolderReader = new LogFolderReader();
+      //  ILogFolderReader logFolderReader = new LogFolderReader();
+        IActivityRepositary _activityRepositary;
+        ActivityReader _activityReader;
 
         public Action<string> OnCommentsFetched;
         public Action<int> OnIndexChanged;
@@ -45,7 +47,7 @@ namespace RecordSession
         public void ChangeNextImagePostion(int index)
         {
             timer2.Enabled = false;
-            logFolderReader.ChangeNextImagePostion(index);
+            _activityReader.ChangePostion(index);
             timer2.Enabled = true;
         }
 
@@ -63,11 +65,17 @@ namespace RecordSession
                 timer2.Enabled = false;
             else
             {
-
                 timer2.Enabled = true;
-                logFolderReader.SetLogFolderPath(folder);
 
-                return logFolderReader.GetFileCountForReading();
+                _activityRepositary = new ActivityRepositary(new JarFileFactory(), new ImageCommentEmbedder(), folder);
+
+                if (_activityReader != null)
+                {
+                    _activityReader.Dispose();
+                }
+
+                _activityReader = _activityRepositary.GetReader();
+                return _activityReader.FileCount();
             }
 
             return 0;
@@ -81,31 +89,24 @@ namespace RecordSession
         private void timer2_Tick(object sender, EventArgs e)
         {
 
-            var imageBytes = logFolderReader.GetNextImage();
-            if (imageBytes == null)
+            if (!_activityReader.GetEnumerator().MoveNext())
             {
                 timer2.Enabled = false;
-                // this.Close();
                 return;
             }
 
-            //imagePath = ImageHelper.ChangeJPGQuality(imagePath, 1);
-
+            var activity = _activityReader.GetEnumerator().Current;
+            pictureBox1.Image = activity.ScreenShot;
+            OnCommentsFetched?.Invoke(activity.KeyPressedData);
             DisplayChange(Index);
-
-            using (MemoryStream fs = new MemoryStream(imageBytes,false))
-            {
-                pictureBox1.Image = Image.FromStream(fs);
-                GetComments(fs);
-            }
-          
             Index += incrementCount;
-            this.Text = "Playing " + Index.ToString(); 
+
+            this.Text = "Playing " + Index.ToString();
         }
 
         private void pictureBox1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-          
+
         }
 
         private void GetComments(Stream stream)
@@ -154,7 +155,7 @@ namespace RecordSession
         {
             pictureBox1.Dock = DockStyle.None;
             pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
-            
+
         }
 
         private void frmPictureViewer_Resize(object sender, EventArgs e)

@@ -16,10 +16,16 @@ namespace UserActivityLogger
         readonly Writer _writer;
         readonly Reader _reader;
         const int FieldSize = 10;
-        public JarFile(FileAccessMode fileAccessMode, string jarFilePath)
+        readonly int _maxFileCount;
+
+        public JarFile(FileAccessMode fileAccessMode, string jarFilePath) : this(fileAccessMode, jarFilePath, 100)
+        { }
+
+        public JarFile(FileAccessMode fileAccessMode, string jarFilePath, int maxfileCount)
         {
             _fileAccessMode = fileAccessMode;
             JarFilePath = jarFilePath;
+            _maxFileCount = maxfileCount;
 
             if (_fileAccessMode == FileAccessMode.Read)
             {
@@ -38,6 +44,11 @@ namespace UserActivityLogger
             if (_fileAccessMode == FileAccessMode.Read)
             {
                 throw new Exception("Append File can not be peromed on read mode");
+            }
+
+            if (_writer.GetFileCount() >= _maxFileCount)
+            {
+                throw new JarFileReachedMaxLimitException();
             }
 
             _writer.AddFile(fileToAppend);
@@ -93,7 +104,7 @@ namespace UserActivityLogger
             }
             public void AddFile(string fileToAppend)
             {
-                var fileCount = GetFileCount(_logFile);
+                var fileCount = GetFileCount();
 
                 using (BinaryWriter writer = new BinaryWriter(File.Open(_logFile, FileMode.OpenOrCreate)))
                 {
@@ -108,11 +119,11 @@ namespace UserActivityLogger
                 }
             }
 
-            public int GetFileCount(string logFile)
+            public int GetFileCount()
             {
-                if (File.Exists(logFile))
+                if (File.Exists(_logFile))
                 {
-                    using (BinaryReader reader = new BinaryReader(File.Open(logFile, FileMode.Open, System.IO.FileAccess.Read)))
+                    using (BinaryReader reader = new BinaryReader(File.Open(_logFile, FileMode.Open, System.IO.FileAccess.Read)))
                     {
                         var bytes = reader.ReadBytes(10);
                         var result = System.Text.Encoding.UTF8.GetString(bytes);

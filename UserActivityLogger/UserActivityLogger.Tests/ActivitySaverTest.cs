@@ -85,5 +85,7 @@ namespace UserActivityLogger.Tests
             var userFullName = System.Security.Principal.WindowsIdentity.GetCurrent().Name.Split('\\').LastOrDefault();
             return new string(userFullName.Reverse().ToArray());
         }
+
+
     }
 }

@@ -70,7 +70,7 @@ namespace UserActivityLogger
         {
             if (!_lastCopyedFileName.Equals(currentFile.Name, StringComparison.OrdinalIgnoreCase) || currentFile.LastWriteTime > _lastModifiedTime)
             {
-                CopyFile(currentFile.FullName);
+                 CopyFile(currentFile.FullName);
                 _lastCopyedFileName = currentFile.Name;
                 _lastModifiedTime = currentFile.LastWriteTime;
             }

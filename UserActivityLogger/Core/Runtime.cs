@@ -36,6 +36,11 @@ namespace Core
         {
             return Path.Combine(ExecutionLocation, filePath);
         }
+
+        public static string MapToTempFolder(string filePath)
+        {
+           return Path.Combine(Path.GetTempPath(), filePath);
+        }
       
     }
 }

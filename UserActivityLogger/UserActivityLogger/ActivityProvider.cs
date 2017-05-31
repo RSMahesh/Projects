@@ -35,5 +35,6 @@ namespace UserActivityLogger
             var img = _screenCapture.CaptureScreen();
             return new Activity(img, keyPressedData);
         }
+        
     }
 }

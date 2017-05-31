@@ -64,7 +64,36 @@ namespace TransparentWindow
                 (uint)(m_InitialStyle | (int)WS_EX.Layered | (int)WS_EX.Transparent));
             byte abc = (byte)(255 * ((double)WindowTransparentAlpha / (double)100));
             SetLayeredWindowAttributes(_form.Handle, 0, abc, (uint)LWA.Alpha);
+        }
 
+        public void DecreaseTransparency(int percent)
+        {
+            if (WindowTransparentAlpha < 100)
+            {
+                WindowTransparentAlpha += percent;
+
+                if (WindowTransparentAlpha > 100)
+                {
+                    WindowTransparentAlpha = 100;
+                }
+
+                MakeTranseparent();
+            }
+        }
+
+        public void IncreaseTransparency(int percent)
+        {
+            if (WindowTransparentAlpha > 0)
+            {
+                WindowTransparentAlpha -= percent;
+
+                if (WindowTransparentAlpha < 0)
+                {
+                    WindowTransparentAlpha = 0;
+                }
+
+                MakeTranseparent();
+            }
         }
 
         private bool transParent = false;
