@@ -46,6 +46,7 @@
             this.txtCurrentText = new System.Windows.Forms.TextBox();
             this.btnSearch = new System.Windows.Forms.Button();
             this.txtPassword = new System.Windows.Forms.TextBox();
+            this.txtUnProcessedKey = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.UpDownTimer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.UpDownSilde)).BeginInit();
@@ -244,17 +245,29 @@
             // 
             // txtPassword
             // 
-            this.txtPassword.Location = new System.Drawing.Point(23, 277);
+            this.txtPassword.Location = new System.Drawing.Point(23, 332);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.Size = new System.Drawing.Size(113, 20);
             this.txtPassword.TabIndex = 26;
             this.txtPassword.Text = "Enter Pass";
             // 
+            // txtUnProcessedKey
+            // 
+            this.txtUnProcessedKey.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtUnProcessedKey.Location = new System.Drawing.Point(3, 276);
+            this.txtUnProcessedKey.Multiline = true;
+            this.txtUnProcessedKey.Name = "txtUnProcessedKey";
+            this.txtUnProcessedKey.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtUnProcessedKey.Size = new System.Drawing.Size(577, 50);
+            this.txtUnProcessedKey.TabIndex = 27;
+            this.txtUnProcessedKey.UseSystemPasswordChar = true;
+            // 
             // frmControlBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(630, 295);
+            this.ClientSize = new System.Drawing.Size(674, 358);
+            this.Controls.Add(this.txtUnProcessedKey);
             this.Controls.Add(this.txtPassword);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.txtCurrentText);
@@ -308,5 +321,6 @@
         private System.Windows.Forms.TextBox txtCurrentText;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.TextBox txtPassword;
+        private System.Windows.Forms.TextBox txtUnProcessedKey;
     }
 }

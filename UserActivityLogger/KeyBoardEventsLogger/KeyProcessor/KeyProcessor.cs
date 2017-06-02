@@ -9,6 +9,7 @@ namespace UserActivityLogger
 {
     public class KeyProcessor : IKeyProcessor
     {
+        const string UnProcssedKey = "UnProcssedKey";
 
         List<SpecificKeysProcessor> _specificKeysProcessors = new List<SpecificKeysProcessor>();
 
@@ -24,25 +25,32 @@ namespace UserActivityLogger
         }
 
         const string KEY = "KEY";
-        public string ProcessKeys(string keyBuffer)
+        public ProcessedKeyData ProcessKeys(string keyBuffer)
         {
-          
             var keys = keyBuffer.Split(new string[] { KEY }, StringSplitOptions.None);
 
-            StringBuilder sb = new StringBuilder();
+            var processedData = new StringBuilder();
+            var unProcessedData = new StringBuilder();
 
             for (var i = 1; i < keys.Length; i++)
             {
                 var ch = ProcessLogedKey(keys[i]);
 
-                if (!string.IsNullOrEmpty(ch))
+                if (ch == UnProcssedKey)
                 {
-                    sb.Append(ch);
+                    //TODO: have to think how we make it more meaingful
+                    // as keeping data seperte makes hard to understand whether 
+                    // user has pressed some meta key
+                    // unProcessedData.Append(keys[i]);
+                    processedData.Append(ch);
+                }
+                else if (!string.IsNullOrEmpty(ch))
+                {
+                    processedData.Append(ch);
                 }
             }
 
-            return sb.ToString();
-
+            return new ProcessedKeyData(processedData.ToString(), unProcessedData.ToString());
         }
 
         private string ProcessLogedKey(string loggedKey)
@@ -55,7 +63,7 @@ namespace UserActivityLogger
                 }
             }
 
-            return loggedKey;
+            return UnProcssedKey;
 
         }
     }

@@ -7,7 +7,7 @@ namespace UserActivityLogger
         public Activity(Image screenShot, string keyPressedData)
         {
             ScreenShot = screenShot;
-            keyPressedData = keyPressedData;
+            KeyPressedData = keyPressedData;
         }
         public Image ScreenShot { get; private set; }
         public string KeyPressedData { get; private set; }

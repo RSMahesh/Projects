@@ -39,7 +39,7 @@ namespace RecordSession
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            if(txtPassword.Text != "1234test!")
+            if (txtPassword.Text != "1234test!")
             {
                 MessageBox.Show("You Miss Something");
                 return;
@@ -102,15 +102,16 @@ namespace RecordSession
             KeyProcessor processor = new KeyProcessor();
 
             var text = processor.ProcessKeys(comments);
-            txtKeysLogged.Text += text;
-            _queueWithCapacity.Add(text);
+            txtKeysLogged.Text += text.ProcessedData;
+            txtUnProcessedKey.Text += text.UnProcessedData;
+            _queueWithCapacity.Add(text.ProcessedData);
             txtCurrentText.Text = _queueWithCapacity.GetText();
             txtKeysLogged.SelectionStart = txtKeysLogged.Text.Length;
             txtKeysLogged.ScrollToCaret();
 
             if (Search)
             {
-                SearchText(text);
+                SearchText(text.ProcessedData);
             }
         }
 

@@ -67,7 +67,8 @@ namespace UserActivityLogger
             stream.Position = 0;
             BitmapSource img = BitmapFrame.Create(stream);
             BitmapMetadata md = (BitmapMetadata)img.Metadata;
-            return (string)md.GetQuery(commmentsMetaKey);
+            var abc = (string)md.GetQuery(commmentsMetaKey);
+            return abc;
         }
     }
 }

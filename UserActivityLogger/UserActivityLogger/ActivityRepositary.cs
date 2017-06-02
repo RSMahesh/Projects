@@ -23,7 +23,7 @@ namespace UserActivityLogger
             _jarFileFactory = jarFileFactory;
             _imageCommentEmbedder = imageCommentEmbedder;
             _dataFolder = dataFolder;
-            CreateJarFile();
+            CreateNewJarFile();
         }
 
         public void Add(Activity activity)
@@ -41,7 +41,7 @@ namespace UserActivityLogger
             }
             catch (JarFileReachedMaxLimitException)
             {
-                CreateJarFile();
+                CreateNewJarFile();
                 _jarFile.AddFile(tempFile);
             }
 
@@ -50,10 +50,15 @@ namespace UserActivityLogger
 
         public ActivityReader GetReader()
         {
-            return new ActivityReader(_dataFolder, _jarFileFactory);
+            return new ActivityReader(_dataFolder, _jarFileFactory, null);
         }
 
-        private void CreateJarFile()
+        public ActivityReader GetReader(DateTime startDate, DateTime endDate)
+        {
+            return new ActivityReader(_dataFolder, _jarFileFactory, null);
+        }
+
+        private void CreateNewJarFile()
         {
             var userFullName = RuntimeHelper.GetCurrentUserName().ReverseMe();
             var logFilePath = Path.Combine(_dataFolder, userFullName) + "_" + Guid.NewGuid().ToString() + ".log";

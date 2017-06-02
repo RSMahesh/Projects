@@ -61,7 +61,7 @@ namespace KeyBoardEventsListener.Tests
 
             var keysRecevied = processor.ProcessKeys(keyLogger.GetKeys());
 
-            Assert.AreEqual("h", keysRecevied);
+            Assert.AreEqual("h", keysRecevied.ProcessedData);
         }
 
         [Test]
@@ -71,7 +71,7 @@ namespace KeyBoardEventsListener.Tests
 
             var keysRecevied = processor.ProcessKeys(keyLogger.GetKeys());
 
-            Assert.AreEqual("1", keysRecevied);
+            Assert.AreEqual("1", keysRecevied.ProcessedData);
         }
 
         [Test]
@@ -84,7 +84,7 @@ namespace KeyBoardEventsListener.Tests
             var keysRecevied = processor.ProcessKeys(keyLogger.GetKeys());
 
 
-            Assert.AreEqual("!", keysRecevied);
+            Assert.AreEqual("!", keysRecevied.ProcessedData);
         }
 
         [Test]
@@ -95,14 +95,14 @@ namespace KeyBoardEventsListener.Tests
             var keysRecevied = processor.ProcessKeys(keyLogger.GetKeys());
 
 
-            Assert.AreEqual("hh", keysRecevied);
+            Assert.AreEqual("hh", keysRecevied.ProcessedData);
 
             keyLogger.CleanBuffer();
             PressKeyH();
             keysRecevied = processor.ProcessKeys(keyLogger.GetKeys());
 
 
-            Assert.AreEqual("h", keysRecevied);
+            Assert.AreEqual("h", keysRecevied.ProcessedData);
         }
 
         [Test]
@@ -114,7 +114,7 @@ namespace KeyBoardEventsListener.Tests
             var keysRecevied = processor.ProcessKeys(keyLogger.GetKeys());
 
 
-            Assert.AreEqual("H", keysRecevied);
+            Assert.AreEqual("H", keysRecevied.ProcessedData);
         }
 
         [Test]
@@ -126,7 +126,7 @@ namespace KeyBoardEventsListener.Tests
             var keysRecevied = processor.ProcessKeys(keyLogger.GetKeys());
 
 
-            Assert.AreEqual("H", keysRecevied);
+            Assert.AreEqual("H", keysRecevied.ProcessedData);
         }
 
         [Test]
@@ -140,7 +140,7 @@ namespace KeyBoardEventsListener.Tests
             var keysRecevied = processor.ProcessKeys(keyLogger.GetKeys());
 
 
-            Assert.AreEqual("h", keysRecevied);
+            Assert.AreEqual("h", keysRecevied.ProcessedData);
         }
 
         [Test]
@@ -150,7 +150,7 @@ namespace KeyBoardEventsListener.Tests
             PressKey(Keys.Space);
             PressKeyH();
             var keysRecevied = processor.ProcessKeys(keyLogger.GetKeys());
-            Assert.AreEqual("h h", keysRecevied);
+            Assert.AreEqual("h h", keysRecevied.ProcessedData);
         }
 
         [Test]
@@ -160,7 +160,7 @@ namespace KeyBoardEventsListener.Tests
             var keysRecevied = processor.ProcessKeys(keyLogger.GetKeys());
 
 
-            Assert.AreEqual("", keysRecevied);
+            Assert.AreEqual("", keysRecevied.ProcessedData);
         }
 
         [Test]
@@ -172,7 +172,7 @@ namespace KeyBoardEventsListener.Tests
             var keysRecevied = processor.ProcessKeys(keyLogger.GetKeys());
 
 
-            Assert.AreEqual("", keysRecevied);
+            Assert.AreEqual("", keysRecevied.ProcessedData);
         }
 
         [Test]
@@ -181,7 +181,7 @@ namespace KeyBoardEventsListener.Tests
             PressKey(Keys.OemQuotes);
             var keysRecevied = processor.ProcessKeys(keyLogger.GetKeys());
 
-            Assert.AreEqual("'", keysRecevied);
+            Assert.AreEqual("'", keysRecevied.ProcessedData);
         }
 
         [Test]
@@ -192,7 +192,7 @@ namespace KeyBoardEventsListener.Tests
             PressShiftUp();
             var keysRecevied = processor.ProcessKeys(keyLogger.GetKeys());
 
-            Assert.AreEqual("|", keysRecevied);
+            Assert.AreEqual("|", keysRecevied.ProcessedData);
         }
 
 
@@ -202,7 +202,7 @@ namespace KeyBoardEventsListener.Tests
             PressKey(Keys.Enter);
             var keysRecevied = processor.ProcessKeys(keyLogger.GetKeys());
 
-            Assert.AreEqual(Environment.NewLine, keysRecevied);
+            Assert.AreEqual(Environment.NewLine, keysRecevied.ProcessedData);
         }
 
         public void TestMe()

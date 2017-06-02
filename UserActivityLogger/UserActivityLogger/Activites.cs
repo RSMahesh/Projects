@@ -13,10 +13,11 @@ namespace UserActivityLogger
     public class ActivityReader : IEnumerable<Activity>, IDisposable
     {
         private readonly ActivitesEnum _activityEnum;
-        public ActivityReader(string dataFolder, IJarFileFactory jarFileFactory)
+        public ActivityReader(string dataFolder, IJarFileFactory jarFileFactory, ActivityFilter filter)
         {
-            _activityEnum = new ActivitesEnum(dataFolder, jarFileFactory);
+            _activityEnum = new ActivitesEnum(dataFolder, jarFileFactory, filter);
         }
+
         public IEnumerator<Activity> GetEnumerator()
         {
             return _activityEnum;
@@ -41,16 +42,25 @@ namespace UserActivityLogger
             return GetEnumerator();
         }
 
-        public DateTime? StartDateTime  { private get; set; }
+        public ActivityFilter Filter
+        {
+            set
+            {
+                _activityEnum.Filter = value;
+            }
+        }
 
-        public DateTime? EndDateTime { private get; set; }
     }
 
+    public class ActivityFilter
+    {
+        public DateTime? StartDateTime {  get; set; }
+        public DateTime? EndDateTime {  get; set; }
+    }
     public class ActivitesEnum : IEnumerator<Activity>, IDisposable
     {
         private readonly string _logFolder;
         private readonly IJarFileFactory _jarFileFactory = null;
-
         private List<FileInfo> _fileInfos;
         private int _fileIndex;
         IJarFile _jarFile = null;
@@ -59,7 +69,7 @@ namespace UserActivityLogger
 
         public int FileCount { get; private set; }
 
-        public ActivitesEnum(string logFolderPath, IJarFileFactory jarFileFactory)
+        public ActivitesEnum(string logFolderPath, IJarFileFactory jarFileFactory, ActivityFilter filter)
         {
             _jarFileFactory = jarFileFactory;
             _logFolder = logFolderPath;
@@ -69,8 +79,38 @@ namespace UserActivityLogger
                                                             .ToList();
 
             FileCount = SetFileCount();
+
         }
 
+        private void FilterOutFiles(ActivityFilter filter)
+        {
+            const int FiltersCount = 2;
+            if (filter != null)
+            {
+                var filterPassed = 0;
+                for (var i = 0; i < _fileInfos.Count; i++)
+                {
+                    if (filter.StartDateTime.HasValue &&
+                        _fileInfos[i].LastWriteTime >= filter.StartDateTime.Value)
+                    {
+                        filterPassed++;
+                    }
+
+                    if (filter.EndDateTime.HasValue && 
+                        _fileInfos[i].LastWriteTime <= filter.EndDateTime.Value)
+                    {
+                        filterPassed++;
+                    }
+
+                    if(filterPassed == FiltersCount)
+                    {
+
+                    }
+                }
+            }
+        }
+
+        public ActivityFilter Filter { private get; set; }
         public Activity Current
         {
             get
@@ -154,7 +194,7 @@ namespace UserActivityLogger
 
             if (image == null)
             {
-                if(_fileIndex + 1 >= imagesInLogFiles.Count)
+                if (_fileIndex + 1 >= imagesInLogFiles.Count)
                 {
                     return false;
                 }
