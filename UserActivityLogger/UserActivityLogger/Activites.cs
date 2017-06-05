@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using FileSystem;
+
 namespace UserActivityLogger
 {
     public class ActivityReader : IEnumerable<Activity>, IDisposable
@@ -129,8 +131,7 @@ namespace UserActivityLogger
 
         public bool MoveNext()
         {
-            GetNextImage();
-            return true;
+           return GetNextImage();
         }
 
         public void Reset()

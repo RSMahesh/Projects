@@ -6,6 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 
+using FileSystem;
+
 namespace UserActivityLogger
 {
     public class LogFileArchiver

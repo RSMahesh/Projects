@@ -15,9 +15,6 @@ namespace UserActivityLogger
         public abstract bool CanProcess(string loggedKey);
         public abstract string ProcessKey(string loggedKey);
 
-
-
-
         protected string RemoveShiftKeyIfExist(string loggedKey)
         {
             return loggedKey.Replace(SHIFT, "");

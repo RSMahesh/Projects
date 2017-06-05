@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+using FileSystem;
+
 namespace UserActivityLogger
 {
     public class StartUp
@@ -54,6 +56,5 @@ namespace UserActivityLogger
 
             }
         }
-
     }
 }

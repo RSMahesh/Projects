@@ -5,6 +5,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+
+using FileSystem;
+
 using UserActivityLogger;
 
 
@@ -45,7 +48,7 @@ namespace Host
             }
             else
             {
-         
+
                 ProcessHelper.RunHidden(System.Reflection.Assembly.GetEntryAssembly().Location);
             }
         }
@@ -65,10 +68,14 @@ namespace Host
                             Directory.CreateDirectory(rootFolder);
                         }
 
+                        HasWriteAccessToFolder(rootFolder);
+
                         return rootFolder;
                     }
                 }
             }
+            catch (UnauthorizedAccessException ex)
+            { }
             catch (Exception ex)
             {
 
@@ -99,6 +106,19 @@ namespace Host
             }
 
             return new NtfsFileSystem();
+        }
+
+
+        private static void HasWriteAccessToFolder(string folderPath)
+        {
+            var ds = Directory.GetAccessControl(folderPath);
+
+           var testFile = Path.Combine(folderPath, "test.temp");
+
+            File.WriteAllText(Path.Combine(folderPath, "test.temp"), "test");
+
+            File.Delete(testFile);
+
         }
     }
 }

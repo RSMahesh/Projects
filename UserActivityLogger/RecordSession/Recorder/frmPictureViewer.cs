@@ -10,6 +10,9 @@ using System.Windows.Forms;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Threading;
+
+using FileSystem;
+
 using UserActivityLogger;
 
 namespace RecordSession
@@ -19,10 +22,8 @@ namespace RecordSession
         private int currentImageIndex = 0;
         public Action<int> DisplayChange;
         public int incrementCount = 1;
-      //  ILogFolderReader logFolderReader = new LogFolderReader();
         IActivityRepositary _activityRepositary;
         ActivityReader _activityReader;
-
         public Action<string> OnCommentsFetched;
         public Action<int> OnIndexChanged;
 
@@ -92,6 +93,7 @@ namespace RecordSession
             if (!_activityReader.GetEnumerator().MoveNext())
             {
                 timer2.Enabled = false;
+                _activityReader.Dispose();
                 return;
             }
 

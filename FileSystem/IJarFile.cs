@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UserActivityLogger
+namespace FileSystem
 {
     public interface IJarFile: IDisposable
     {

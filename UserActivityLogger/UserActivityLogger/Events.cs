@@ -8,6 +8,6 @@ namespace UserActivityLogger
 {
     public enum Events
     {
-        LogFileReachedMaxLimit,
+        LogFileReachedMaxLimit
     }
 }

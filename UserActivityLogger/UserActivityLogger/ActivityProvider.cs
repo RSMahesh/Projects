@@ -13,13 +13,14 @@ namespace UserActivityLogger
 
         public ActivityProvider(IKeyLogger keyLogger, IScreenCapturer screenCapture)
         {
-
+            _keyLogger = keyLogger;
+            _screenCapture = screenCapture;
         }
 
         public Activity GetActivity()
         {
             var keysLogged = _keyLogger.GetKeys();
-            if (!string.IsNullOrEmpty(keysLogged))
+            if (string.IsNullOrEmpty(keysLogged))
             {
                 return null;
             }
@@ -35,6 +36,5 @@ namespace UserActivityLogger
             var img = _screenCapture.CaptureScreen();
             return new Activity(img, keyPressedData);
         }
-        
     }
 }

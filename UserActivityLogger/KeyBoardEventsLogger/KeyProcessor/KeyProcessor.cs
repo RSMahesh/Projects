@@ -41,8 +41,8 @@ namespace UserActivityLogger
                     //TODO: have to think how we make it more meaingful
                     // as keeping data seperte makes hard to understand whether 
                     // user has pressed some meta key
-                    // unProcessedData.Append(keys[i]);
-                    processedData.Append(ch);
+                     unProcessedData.Append(keys[i]);
+                    //processedData.Append(ch);
                 }
                 else if (!string.IsNullOrEmpty(ch))
                 {

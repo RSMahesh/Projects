@@ -249,7 +249,7 @@
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.Size = new System.Drawing.Size(113, 20);
             this.txtPassword.TabIndex = 26;
-            this.txtPassword.Text = "Enter Pass";
+            this.txtPassword.Text = "1234test!";
             // 
             // txtUnProcessedKey
             // 

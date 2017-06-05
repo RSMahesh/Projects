@@ -1,5 +1,6 @@
 ﻿using Core;
 using EventPublisher;
+using FileSystem;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
@@ -14,11 +15,11 @@ namespace UserActivityLogger
     {
         private IJarFile _jarFile;
         private IImageCommentEmbedder _imageCommentEmbedder;
-        private readonly JarFileFactory _jarFileFactory;
+        private readonly IJarFileFactory _jarFileFactory;
 
         private string _dataFolder;
 
-        public ActivityRepositary(JarFileFactory jarFileFactory, IImageCommentEmbedder imageCommentEmbedder, string dataFolder)
+        public ActivityRepositary(IJarFileFactory jarFileFactory, IImageCommentEmbedder imageCommentEmbedder, string dataFolder)
         {
             _jarFileFactory = jarFileFactory;
             _imageCommentEmbedder = imageCommentEmbedder;

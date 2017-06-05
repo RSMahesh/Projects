@@ -50,16 +50,9 @@
     <Compile Include="Activity.cs" />
     <Compile Include="ActivityProvider.cs" />
     <Compile Include="ActivityRepositary.cs" />
-    <Compile Include="ActivitySaver.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="Events.cs" />
-    <Compile Include="FileAccessMode.cs" />
     <Compile Include="IActivityProvider.cs" />
     <Compile Include="IActivityRepositary.cs" />
-    <Compile Include="IFileAppender.cs" />
-    <Compile Include="IJarFile.cs" />
-    <Compile Include="FileAppender.cs" />
-    <Compile Include="JarFile.cs" />
     <Compile Include="LogFileArchiver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StartUp.cs" />
@@ -68,6 +61,10 @@
     <ProjectReference Include="..\..\EventPublisher\EventPublisher.csproj">
       <Project>{f1f4fc21-024f-4567-ade5-b18270b65c8c}</Project>
       <Name>EventPublisher</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\FileSystem\FileSystem.csproj">
+      <Project>{93fad5e9-57b5-4676-9372-18ae8facc655}</Project>
+      <Name>FileSystem</Name>
     </ProjectReference>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{8dff7262-975d-4cde-8c55-e42564271b72}</Project>

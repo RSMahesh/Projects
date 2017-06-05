@@ -69,9 +69,7 @@
     <Compile Include="frmPictureViewer.Designer.cs">
       <DependentUpon>frmPictureViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="ILogFolderReader.cs" />
     <Compile Include="ImageHelper.cs" />
-    <Compile Include="LogFolderReader.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueueWithCapacity.cs" />
@@ -105,6 +103,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\FileSystem\FileSystem.csproj">
+      <Project>{93fad5e9-57b5-4676-9372-18ae8facc655}</Project>
+      <Name>FileSystem</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{8dff7262-975d-4cde-8c55-e42564271b72}</Project>
       <Name>Core</Name>

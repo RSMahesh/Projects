@@ -1,14 +1,9 @@
-﻿using Core;
-using EventPublisher;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using UserActivityLogger;
 
-namespace UserActivityLogger
+namespace FileSystem
 {
     public class JarFile : IJarFile
     {
@@ -23,17 +18,17 @@ namespace UserActivityLogger
 
         public JarFile(FileAccessMode fileAccessMode, string jarFilePath, int maxfileCount)
         {
-            _fileAccessMode = fileAccessMode;
-            JarFilePath = jarFilePath;
-            _maxFileCount = maxfileCount;
+            this._fileAccessMode = fileAccessMode;
+            this.JarFilePath = jarFilePath;
+            this._maxFileCount = maxfileCount;
 
-            if (_fileAccessMode == FileAccessMode.Read)
+            if (this._fileAccessMode == FileAccessMode.Read)
             {
-                _reader = new Reader(jarFilePath);
+                this._reader = new Reader(jarFilePath);
             }
             else
             {
-                _writer = new Writer(jarFilePath);
+                this._writer = new Writer(jarFilePath);
             }
         }
 
@@ -41,35 +36,35 @@ namespace UserActivityLogger
 
         public void AddFile(string fileToAppend)
         {
-            if (_fileAccessMode == FileAccessMode.Read)
+            if (this._fileAccessMode == FileAccessMode.Read)
             {
-                throw new Exception("Append File can not be peromed on read mode");
+                throw new InvalidOperationException("Append File can not be peromed on read mode");
             }
 
-            if (_writer.GetFileCount() >= _maxFileCount)
+            if (this._writer.GetFileCount() >= this._maxFileCount)
             {
                 throw new JarFileReachedMaxLimitException();
             }
 
-            _writer.AddFile(fileToAppend);
+            this._writer.AddFile(fileToAppend);
         }
 
         public int FilesCount
         {
             get
             {
-                if (!File.Exists(JarFilePath))
+                if (!File.Exists(this.JarFilePath))
                 {
                     return 0;
                 }
 
-                if (_reader != null)
+                if (this._reader != null)
                 {
-                    return _reader.FileCount;
+                    return this._reader.FileCount;
                 }
                 else
                 {
-                    using (var tempReader = new Reader(JarFilePath))
+                    using (var tempReader = new Reader(this.JarFilePath))
                     {
                         return tempReader.FileCount;
                     }
@@ -79,19 +74,19 @@ namespace UserActivityLogger
 
         public byte[] GetNextFile()
         {
-            if (_fileAccessMode == FileAccessMode.Write)
+            if (this._fileAccessMode == FileAccessMode.Write)
             {
-                throw new Exception("GetNextImage can not be peromed on write mode");
+                throw new InvalidOperationException("GetNextImage can not be peromed on write mode");
             }
 
-            return _reader.GetNextImageBytes();
+            return this._reader.GetNextFileBytes();
         }
 
         public void Dispose()
         {
-            if (_reader != null)
+            if (this._reader != null)
             {
-                _reader.Dispose();
+                this._reader.Dispose();
             }
         }
 
@@ -100,13 +95,13 @@ namespace UserActivityLogger
             private readonly string _logFile;
             public Writer(string logFile)
             {
-                _logFile = logFile;
+                this._logFile = logFile;
             }
             public void AddFile(string fileToAppend)
             {
-                var fileCount = GetFileCount();
+                var fileCount = this.GetFileCount();
 
-                using (BinaryWriter writer = new BinaryWriter(File.Open(_logFile, FileMode.OpenOrCreate)))
+                using (BinaryWriter writer = new BinaryWriter(File.Open(this._logFile, FileMode.OpenOrCreate)))
                 {
                     fileCount++;
                     writer.Seek(0, SeekOrigin.Begin);
@@ -121,9 +116,9 @@ namespace UserActivityLogger
 
             public int GetFileCount()
             {
-                if (File.Exists(_logFile))
+                if (File.Exists(this._logFile))
                 {
-                    using (BinaryReader reader = new BinaryReader(File.Open(_logFile, FileMode.Open, System.IO.FileAccess.Read)))
+                    using (BinaryReader reader = new BinaryReader(File.Open(this._logFile, FileMode.Open, System.IO.FileAccess.Read)))
                     {
                         var bytes = reader.ReadBytes(10);
                         var result = System.Text.Encoding.UTF8.GetString(bytes);
@@ -142,72 +137,59 @@ namespace UserActivityLogger
 
             public Reader(string logFile)
             {
-                _logFile = logFile;
-                FileCount = GetFileCountForReading();
+                this._logFile = logFile;
+                this.FileCount = this.GetFileCountForReading();
             }
 
             public int FileCount { get; private set; }
             private int GetFileCountForReading()
             {
-                _reader = new BinaryReader(File.Open(_logFile, FileMode.Open, System.IO.FileAccess.Read));
+                this._reader = new BinaryReader(File.Open(this._logFile, FileMode.Open, System.IO.FileAccess.Read));
 
-                var bytes = _reader.ReadBytes(FieldSize);
+                var bytes = this._reader.ReadBytes(FieldSize);
                 var fileCount = int.Parse(System.Text.Encoding.UTF8.GetString(bytes));
 
                 return fileCount;
             }
-            public byte[] GetNextImageBytes()
+            public byte[] GetNextFileBytes()
             {
-                var bytes = _reader.ReadBytes(FieldSize);
+                var bytes = this._reader.ReadBytes(FieldSize);
                 if (bytes.Count() == 0)
                 {
                     return null;
                 }
 
                 var result = Encoding.UTF8.GetString(bytes);
-                var imageBytes = _reader.ReadBytes(int.Parse(result.Trim()));
+                var imageBytes = this._reader.ReadBytes(int.Parse(result.Trim()));
                 return imageBytes;
             }
             public void Dispose()
             {
-                Dispose(true);
+                this.Dispose(true);
                 GC.SuppressFinalize(this);
             }
 
             protected virtual void Dispose(bool disposing)
             {
-                if (!disposed)
+                if (!this.disposed)
                 {
                     if (disposing)
                     {
                         // Free other state (managed objects).
                     }
 
-                    if (_reader != null)
+                    if (this._reader != null)
                     {
-                        _reader.Dispose();
+                        this._reader.Dispose();
                     }
 
-                    disposed = true;
+                    this.disposed = true;
                 }
             }
             ~Reader()
             {
-                Dispose(false);
+                this.Dispose(false);
             }
-        }
-    }
-
-    public interface IJarFileFactory
-    {
-        IJarFile GetJarFile(FileAccessMode fileAccess, string logFilePath);
-    }
-
-    public class JarFileFactory : IJarFileFactory
-    {
-        public IJarFile GetJarFile(FileAccessMode fileAccess, string logFilePath)
-        {
-            return new JarFile(fileAccess, logFilePath);
         }
     }
 }

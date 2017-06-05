@@ -101,17 +101,17 @@ namespace RecordSession
 
             KeyProcessor processor = new KeyProcessor();
 
-            var text = processor.ProcessKeys(comments);
-            txtKeysLogged.Text += text.ProcessedData;
-            txtUnProcessedKey.Text += text.UnProcessedData;
-            _queueWithCapacity.Add(text.ProcessedData);
+            var processedKeyData = processor.ProcessKeys(comments);
+            txtKeysLogged.Text += processedKeyData.ProcessedData + processedKeyData.UnProcessedData;
+            txtUnProcessedKey.Text += processedKeyData.UnProcessedData;
+            _queueWithCapacity.Add(processedKeyData.ProcessedData);
             txtCurrentText.Text = _queueWithCapacity.GetText();
             txtKeysLogged.SelectionStart = txtKeysLogged.Text.Length;
             txtKeysLogged.ScrollToCaret();
 
             if (Search)
             {
-                SearchText(text.ProcessedData);
+                SearchText(processedKeyData.ProcessedData);
             }
         }
 

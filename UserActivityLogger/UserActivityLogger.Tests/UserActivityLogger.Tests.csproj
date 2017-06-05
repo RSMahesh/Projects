@@ -53,7 +53,6 @@
   <ItemGroup>
     <Compile Include="ActivitySaverTest.cs" />
     <Compile Include="LogFileArchiverTest.cs" />
-    <Compile Include="FileAppenderTest.cs" />
     <Compile Include="ActivityLoggerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -67,6 +66,10 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\FileSystem\FileSystem.csproj">
+      <Project>{93fad5e9-57b5-4676-9372-18ae8facc655}</Project>
+      <Name>FileSystem</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{8DFF7262-975D-4CDE-8C55-E42564271B72}</Project>
       <Name>Core</Name>

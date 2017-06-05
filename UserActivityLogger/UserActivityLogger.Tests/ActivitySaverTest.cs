@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using FileSystem;
+
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,7 +15,7 @@ namespace UserActivityLogger.Tests
 {
     [TestFixture]
     [Category("Unit")]
-    public class ActivitySaverTest
+    public class ActivityRepositaryTest
     {
         string imageFile = @"D:\Projects\UserActivityLogger\UserActivityLogger.Tests\One.jpg";
         Dictionary<string, List<string>> appendedFilesStore;
@@ -29,14 +31,14 @@ namespace UserActivityLogger.Tests
 
             var imageCommentEmbedder = Mock.Create<IImageCommentEmbedder>();
 
-            var activitySaver = new ActivitySaver(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), jarFactory, imageCommentEmbedder);
+            var activityRepositary = new ActivityRepositary(jarFactory, imageCommentEmbedder, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
 
             var img = Image.FromFile(imageFile);
 
             for (var ind = 0; ind < 190; ind++)
             {
                 Activity activity = new Activity(img, string.Empty);
-                activitySaver.Save(activity);
+                activityRepositary.Add(activity);
             }
 
             Assert.AreEqual(appendedFilesStore.Count(), 2);
@@ -47,8 +49,9 @@ namespace UserActivityLogger.Tests
 
         private IJarFile Factory(string dataFile)
         {
-
             var jarFile = Mock.Create<IJarFile>();
+
+            //we could live with out mock here but learing I am using this comples mocking
 
             Mock.Arrange(() => jarFile.AddFile(Arg.AnyString))
                                 .DoInstead((string fileToAppend) => AppendFile(fileToAppend, dataFile, appendedFilesStore)).OccursAtLeast(100);
@@ -76,8 +79,13 @@ namespace UserActivityLogger.Tests
             }
 
             var list = appendedFilesStore[dataFile];
-            list.Add(fileToAppend);
 
+            if (list.Count >=100)
+            {
+                throw new JarFileReachedMaxLimitException();
+            }
+
+            list.Add(fileToAppend);
         }
 
         private string GetUserNameInReverse()
@@ -85,7 +93,5 @@ namespace UserActivityLogger.Tests
             var userFullName = System.Security.Principal.WindowsIdentity.GetCurrent().Name.Split('\\').LastOrDefault();
             return new string(userFullName.Reverse().ToArray());
         }
-
-
     }
 }

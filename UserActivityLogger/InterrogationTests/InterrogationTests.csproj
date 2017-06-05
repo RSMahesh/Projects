@@ -59,6 +59,10 @@
       <Project>{f1f4fc21-024f-4567-ade5-b18270b65c8c}</Project>
       <Name>EventPublisher</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\FileSystem\FileSystem.csproj">
+      <Project>{93fad5e9-57b5-4676-9372-18ae8facc655}</Project>
+      <Name>FileSystem</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{8dff7262-975d-4cde-8c55-e42564271b72}</Project>
       <Name>Core</Name>
