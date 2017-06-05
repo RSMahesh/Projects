@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace UserActivityLogger
 {
-    public class ActivityProvider : IActivityProvider
+    public class CurrentActivityProvider : ICurrentActivityProvider
     {
         private readonly IKeyLogger _keyLogger;
         private readonly IScreenCapturer _screenCapture;
 
-        public ActivityProvider(IKeyLogger keyLogger, IScreenCapturer screenCapture)
+        public CurrentActivityProvider(IKeyLogger keyLogger, IScreenCapturer screenCapture)
         {
             _keyLogger = keyLogger;
             _screenCapture = screenCapture;
@@ -20,6 +20,7 @@ namespace UserActivityLogger
         public Activity GetActivity()
         {
             var keysLogged = _keyLogger.GetKeys();
+
             if (string.IsNullOrEmpty(keysLogged))
             {
                 return null;

@@ -19,14 +19,14 @@ namespace UserActivityLogger
         private TimeSpan _screenCaptureTimeInterval;
         private readonly IKeyLogger _keyLogger;
         private readonly ImageCommentEmbedder _imageCommentEmbedder;
-        private readonly IActivityProvider _activityProvider;
+        private readonly ICurrentActivityProvider _activityProvider;
         private readonly ActivityRepositary _activityRepositary;
         public StartUp(TimeSpan fulshTimeInterval, string logFolder, IKeyLogger keyLogger)
         {
             _screenCaptureTimeInterval = fulshTimeInterval;
             _keyLogger = keyLogger;
             _imageCommentEmbedder = new ImageCommentEmbedder();
-            _activityProvider = new ActivityProvider(keyLogger, new ScreenCapturer());
+            _activityProvider = new CurrentActivityProvider(keyLogger, new ScreenCapturer());
             _activityRepositary = new ActivityRepositary(new JarFileFactory(), new ImageCommentEmbedder(), logFolder);
         }
 

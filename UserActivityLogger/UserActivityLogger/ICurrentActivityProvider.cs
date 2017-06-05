@@ -1,6 +1,6 @@
 ﻿namespace UserActivityLogger
 {
-    public interface IActivityProvider 
+    public interface ICurrentActivityProvider 
     {
         Activity GetActivity();
         Activity GetActivity(string keyPressedData);
