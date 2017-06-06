@@ -55,7 +55,7 @@ namespace Host.Tests
 
             for (var i = 0; i < numberOfFiles; i++)
             {
-                var filePath = Path.Combine(_logFolder, Guid.NewGuid().ToString() + ".log");
+                var filePath = Path.Combine(_logFolder, Guid.NewGuid().ToString() + "." + Constants.JarFileExtension);
 
                 File.WriteAllText(filePath, "Testing File");
 
@@ -64,7 +64,7 @@ namespace Host.Tests
                 startDateOfLastWrite = startDateOfLastWrite.AddMinutes(minutesToadd);
             }
 
-            var fileInfos = new DirectoryInfo(_logFolder).GetFiles("*.log")
+            var fileInfos = new DirectoryInfo(_logFolder).GetFiles("*." + Constants.JarFileExtension)
                                                                 .OrderBy(f => f.LastWriteTime)
                                                             .ToList();
         }

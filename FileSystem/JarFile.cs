@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Core;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,7 +12,10 @@ namespace FileSystem
         readonly FileAccessMode _fileAccessMode;
         readonly Writer _writer;
         readonly Reader _reader;
-        const int FieldSize = 10;
+        const int FileCountFieldSize = 10;
+        const int FileLengthFieldSize = 10;
+        const int HeaderFieldSize = 500;
+
         readonly int _maxFileCount;
 
         public JarFile(FileAccessMode fileAccessMode, string jarFilePath) : this(fileAccessMode, jarFilePath, 100)
@@ -34,7 +39,7 @@ namespace FileSystem
 
         public string JarFilePath { get; private set; }
 
-        public void AddFile(string fileToAppend)
+        public void AddFileObselete(string fileToAppend)
         {
             if (this._fileAccessMode == FileAccessMode.Read)
             {
@@ -47,6 +52,21 @@ namespace FileSystem
             }
 
             this._writer.AddFile(fileToAppend);
+        }
+
+        public void AddFile(JarFileItem jarFileItem)
+        {
+            if (this._fileAccessMode == FileAccessMode.Read)
+            {
+                throw new InvalidOperationException("Append File can not be peromed on read mode");
+            }
+
+            if (this._writer.GetFileCount() >= this._maxFileCount)
+            {
+                throw new JarFileReachedMaxLimitException();
+            }
+
+            this._writer.AddFile(jarFileItem);
         }
 
         public int FilesCount
@@ -72,16 +92,16 @@ namespace FileSystem
             }
         }
 
-        public byte[] GetNextFile()
+        public JarFileItem GetNextFile()
         {
             if (this._fileAccessMode == FileAccessMode.Write)
             {
                 throw new InvalidOperationException("GetNextImage can not be peromed on write mode");
             }
 
-            return this._reader.GetNextFileBytes();
+            return this._reader.GetNextFileBytes12();
         }
-
+      
         public void Dispose()
         {
             if (this._reader != null)
@@ -105,15 +125,48 @@ namespace FileSystem
                 {
                     fileCount++;
                     writer.Seek(0, SeekOrigin.Begin);
-                    writer.Write(Encoding.ASCII.GetBytes(fileCount.ToString().PadLeft(FieldSize)));
+                    writer.Write(Encoding.ASCII.GetBytes(fileCount.ToString().PadLeft(FileCountFieldSize)));
                     writer.Seek(0, SeekOrigin.End);
 
                     var fileBytes = File.ReadAllBytes(fileToAppend);
-                    writer.Write(Encoding.ASCII.GetBytes(fileBytes.Length.ToString().PadLeft(FieldSize)));
+                    writer.Write(Encoding.ASCII.GetBytes(fileBytes.Length.ToString().PadLeft(FileLengthFieldSize)));
                     writer.Write(fileBytes);
                 }
             }
 
+            public void AddFile(JarFileItem jarFileItem)
+            {
+                var fileCount = this.GetFileCount();
+
+                using (BinaryWriter writer = new BinaryWriter(File.Open(this._logFile, FileMode.OpenOrCreate)))
+                {
+                    fileCount++;
+                    writer.Seek(0, SeekOrigin.Begin);
+                    writer.Write(Encoding.ASCII.GetBytes(fileCount.ToString().PadLeft(FileCountFieldSize)));
+                    writer.Seek(0, SeekOrigin.End);
+
+                    var headerString = DicToString(jarFileItem.Headers);
+
+                    var headerBytes = Encoding.ASCII.GetBytes(headerString.PadLeft(HeaderFieldSize));
+                    if (headerBytes.Count() > HeaderFieldSize)
+                    {
+                        throw new Exception("Header out of limit");
+                    }
+
+                    writer.Write(headerBytes);
+                    writer.Seek(0, SeekOrigin.End);
+
+                    var fileBytes = File.ReadAllBytes(jarFileItem.FilePath);
+                    writer.Write(Encoding.ASCII.GetBytes(fileBytes.Length.ToString().PadLeft(FileLengthFieldSize)));
+                    writer.Write(fileBytes);
+                }
+            }
+
+
+            private string DicToString(Dictionary<string, string> dic)
+            {
+                return string.Join(";", dic.Select(x => x.Key + "=" + x.Value).ToArray());
+            }
             public int GetFileCount()
             {
                 if (File.Exists(this._logFile))
@@ -146,14 +199,14 @@ namespace FileSystem
             {
                 this._reader = new BinaryReader(File.Open(this._logFile, FileMode.Open, System.IO.FileAccess.Read));
 
-                var bytes = this._reader.ReadBytes(FieldSize);
+                var bytes = this._reader.ReadBytes(FileCountFieldSize);
                 var fileCount = int.Parse(System.Text.Encoding.UTF8.GetString(bytes));
 
                 return fileCount;
             }
             public byte[] GetNextFileBytes()
             {
-                var bytes = this._reader.ReadBytes(FieldSize);
+                var bytes = this._reader.ReadBytes(FileCountFieldSize);
                 if (bytes.Count() == 0)
                 {
                     return null;
@@ -162,6 +215,44 @@ namespace FileSystem
                 var result = Encoding.UTF8.GetString(bytes);
                 var imageBytes = this._reader.ReadBytes(int.Parse(result.Trim()));
                 return imageBytes;
+            }
+
+            public JarFileItem GetNextFileBytes12()
+            {
+                var bytes = this._reader.ReadBytes(HeaderFieldSize);
+                if (bytes.Count() == 0)
+                {
+                    return null;
+                }
+
+                var headers = stringToDic(Encoding.UTF8.GetString(bytes).Trim());
+
+                bytes = _reader.ReadBytes(FileLengthFieldSize);
+
+                if (bytes.Count() == 0)
+                {
+                    return null;
+                }
+
+                var imageBytes = _reader.ReadBytes(int.Parse(Encoding.UTF8.GetString(bytes).Trim()));
+
+                return new JarFileItem(headers,string.Empty, imageBytes);
+            }
+
+            private Dictionary<string, string> stringToDic(string text)
+            {
+               var arr = text.Split(';');
+                var dic = new Dictionary<string, string>();
+                foreach (var ar in arr)
+                {
+                   var KeyValue = ar.Split('=');
+
+                    dic[KeyValue[0]] = KeyValue[1];
+                }
+
+
+                return dic;
+                
             }
             public void Dispose()
             {

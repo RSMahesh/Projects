@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSystem", "..\FileSystem
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSystem.Tests", "FileSystem.Tests\FileSystem.Tests.csproj", "{4F69C5BF-2576-4A9B-9E7B-123A002B05A1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JarFileGenerator", "..\JarFileGenerator\JarFileGenerator.csproj", "{EEFA7005-FFB3-4249-8A42-F4972ED1A7FF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +103,10 @@ Global
 		{4F69C5BF-2576-4A9B-9E7B-123A002B05A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F69C5BF-2576-4A9B-9E7B-123A002B05A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F69C5BF-2576-4A9B-9E7B-123A002B05A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEFA7005-FFB3-4249-8A42-F4972ED1A7FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEFA7005-FFB3-4249-8A42-F4972ED1A7FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEFA7005-FFB3-4249-8A42-F4972ED1A7FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEFA7005-FFB3-4249-8A42-F4972ED1A7FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -51,7 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActivitySaverTest.cs" />
+    <Compile Include="ActivityRepositaryTest.cs" />
     <Compile Include="LogFileArchiverTest.cs" />
     <Compile Include="ActivityLoggerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

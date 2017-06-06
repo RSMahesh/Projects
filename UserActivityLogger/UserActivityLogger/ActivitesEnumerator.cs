@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 
 using FileSystem;
+using Core;
 
 namespace UserActivityLogger
 {
@@ -26,7 +27,7 @@ namespace UserActivityLogger
             this._jarFileFactory = jarFileFactory;
             this._logFolder = logFolderPath;
             this._fileIndex = 0;
-            this._fileInfos = new DirectoryInfo(this._logFolder).GetFiles("*.log")
+            this._fileInfos = new DirectoryInfo(this._logFolder).GetFiles("*." + Constants.JarFileExtension)
                 .OrderBy(f => f.LastWriteTime)
                 .ToList();
 
@@ -158,7 +159,7 @@ namespace UserActivityLogger
                 return true;
             }
 
-            this._currentActivity = this.BytesToActivity(image);
+            this._currentActivity = this.BytesToActivity(image.Containt);
             return true;
         }
 

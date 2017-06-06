@@ -28,7 +28,7 @@ namespace Host
             }
 
 
-            if (args.Length > 0 && args[0] == "hidden")
+            if (true || args.Length > 0 && args[0] == "hidden")
             {
                 Logger.LogInforamtion("Running with hidden");
 
@@ -36,7 +36,7 @@ namespace Host
 
                 new UnhandledExceptionHandlercs().Register(Logger.LogError);
 
-                new LogFileArchiver(GetFileSystem(), _archiveLocation).Start(_localLogFolder, TimeSpan.FromMinutes(5));
+                new LogFileArchiver(GetFileSystem(), _archiveLocation).Start(_localLogFolder, TimeSpan.FromMinutes(1));
 
                 //new LogFileArchiver(GetFileSystem(), _archiveLocation).StartPurging(_logFolder, TimeSpan.FromSeconds(5));
 

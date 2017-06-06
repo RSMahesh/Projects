@@ -48,7 +48,7 @@ namespace UserActivityLogger
         private void PurgeFiles(string logFolder)
         {
 
-            var fileInfos = new DirectoryInfo(logFolder).GetFiles("*.log")
+            var fileInfos = new DirectoryInfo(logFolder).GetFiles("*." + Constants.JarFileExtension)
                                                                   .OrderBy(f => f.LastWriteTime)
                                                                   .ToList();
 

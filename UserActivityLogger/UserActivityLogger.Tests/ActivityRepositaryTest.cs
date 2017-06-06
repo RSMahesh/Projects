@@ -53,8 +53,8 @@ namespace UserActivityLogger.Tests
 
             //we could live with out mock here but learing I am using this comples mocking
 
-            Mock.Arrange(() => jarFile.AddFile(Arg.AnyString))
-                                .DoInstead((string fileToAppend) => AppendFile(fileToAppend, dataFile, appendedFilesStore)).OccursAtLeast(100);
+            Mock.Arrange(() => jarFile.AddFile(Arg.IsAny<JarFileItem>()))
+                                .DoInstead((JarFileItem jarFileItem) => AppendFile(jarFileItem.FilePath, dataFile, appendedFilesStore)).OccursAtLeast(100);
 
             Mock.Arrange(() => jarFile.FilesCount).Returns(() => GetFileCount(dataFile, appendedFilesStore));
 

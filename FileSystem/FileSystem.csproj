@@ -76,6 +76,7 @@
     <Compile Include="IFileSystem.cs" />
     <Compile Include="IJarFile.cs" />
     <Compile Include="JarFile.cs" />
+    <Compile Include="JarFileItem.cs" />
     <Compile Include="JarFileReachedMaxLimitException.cs" />
     <Compile Include="NtfsFileSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -83,7 +84,12 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\UserActivityLogger\Core\Core.csproj">
+      <Project>{8DFF7262-975D-4CDE-8C55-E42564271B72}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

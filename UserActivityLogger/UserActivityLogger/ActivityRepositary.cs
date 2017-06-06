@@ -34,16 +34,22 @@ namespace UserActivityLogger
             //TODO: In memory instead saving file
             activity.ScreenShot.Save(tempFile, ImageFormat.Jpeg);
 
+            var headers = new Dictionary<string, string>();
+            headers["FileName"] = tempFile;
+
+
+            JarFileItem item = new JarFileItem(headers, tempFile);
+
             _imageCommentEmbedder.AddComment(tempFile, activity.KeyPressedData);
 
             try
             {
-                _jarFile.AddFile(tempFile);
+                _jarFile.AddFile(item);
             }
             catch (JarFileReachedMaxLimitException)
             {
                 CreateNewJarFile();
-                _jarFile.AddFile(tempFile);
+                _jarFile.AddFile(item);
             }
 
             File.Delete(tempFile);
@@ -62,7 +68,7 @@ namespace UserActivityLogger
         private void CreateNewJarFile()
         {
             var userFullName = RuntimeHelper.GetCurrentUserName().ReverseMe();
-            var logFilePath = Path.Combine(_dataFolder, userFullName) + "_" + Guid.NewGuid().ToString() + ".log";
+            var logFilePath = Path.Combine(_dataFolder, userFullName) + "_" + Guid.NewGuid().ToString() + "." + Constants.JarFileExtension;
             DisposeCurrentJarFile();
             _jarFile = _jarFileFactory.GetJarFile(FileAccessMode.Write, logFilePath);
         }
