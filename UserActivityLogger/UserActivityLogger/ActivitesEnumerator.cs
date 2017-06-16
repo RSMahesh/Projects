@@ -16,7 +16,7 @@ namespace UserActivityLogger
         private readonly IJarFileFactory _jarFileFactory = null;
         private List<FileInfo> _fileInfos;
         private int _fileIndex;
-        IJarFile _jarFile = null;
+        IJarFileReader _jarFile = null;
         List<int> imagesInLogFiles = new List<int>();
         private Activity _currentActivity;
 
@@ -100,7 +100,7 @@ namespace UserActivityLogger
                 this._jarFile.Dispose();
             }
 
-            this._jarFile = this._jarFileFactory.GetJarFile(FileAccessMode.Read, this._fileInfos[this._fileIndex].FullName);
+            this._jarFile = this._jarFileFactory.GetJarFileReader(this._fileInfos[this._fileIndex].FullName);
 
             this.MoveIndexToPostion(imagePositionInFile);
         }
@@ -121,7 +121,7 @@ namespace UserActivityLogger
 
             foreach (var file in this._fileInfos)
             {
-                using (var logFileReader = this._jarFileFactory.GetJarFile(FileAccessMode.Read, file.FullName))
+                using (var logFileReader = this._jarFileFactory.GetJarFileReader(file.FullName))
                 {
                     fileCount += logFileReader.FilesCount;
                     this.imagesInLogFiles.Add(logFileReader.FilesCount);
@@ -140,7 +140,7 @@ namespace UserActivityLogger
 
             if (this._jarFile == null)
             {
-                this._jarFile = this._jarFileFactory.GetJarFile(FileAccessMode.Read, this._fileInfos[this._fileIndex].FullName);
+                this._jarFile = this._jarFileFactory.GetJarFileReader(this._fileInfos[this._fileIndex].FullName);
             }
 
             var image = this._jarFile.GetNextFile();

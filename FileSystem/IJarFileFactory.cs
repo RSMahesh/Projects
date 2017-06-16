@@ -2,5 +2,6 @@
 
 public interface IJarFileFactory
 {
-    IJarFile GetJarFile(FileAccessMode fileAccess, string logFilePath);
+    IJarFileWriter GetJarFileWriter(string logFilePath);
+    IJarFileReader GetJarFileReader(string logFilePath);
 }

@@ -2,19 +2,14 @@
 
 namespace FileSystem
 {
-    public interface IJarFile: IDisposable
+    public interface IJarFileWriter : IDisposable
     {
         void AddFile(JarFileItem jarFileItem);
-        int FilesCount { get;}
-        JarFileItem GetNextFile();
-        string JarFilePath { get;}
     }
 
-    public interface IJarFileWriter
+    public interface IJarFileReader : IDisposable
     {
-        void AddFile(JarFileItem jarFileItem);
         int FilesCount { get; }
         JarFileItem GetNextFile();
-        string JarFilePath { get; }
     }
 }

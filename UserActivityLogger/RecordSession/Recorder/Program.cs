@@ -4,6 +4,8 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Threading;
 using RecordSession;
+using Core;
+using FileSystem;
 
 namespace Recorder
 {
@@ -13,6 +15,7 @@ namespace Recorder
         [STAThread]
         static void Main()
         {
+            new JarFileAssemblyLoader().Register();
             if (mutex.WaitOne(TimeSpan.Zero, true))
             {
                 Application.EnableVisualStyles();

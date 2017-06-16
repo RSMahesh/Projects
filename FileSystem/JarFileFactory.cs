@@ -1,9 +1,15 @@
-﻿using FileSystem;
+﻿using System;
+using FileSystem;
 
 public class JarFileFactory : IJarFileFactory
 {
-    public IJarFile GetJarFile(FileAccessMode fileAccess, string logFilePath)
+    public IJarFileReader GetJarFileReader(string logFilePath)
     {
-        return new JarFile(fileAccess, logFilePath);
+        return new JarFile(FileAccessMode.Read, logFilePath);
+    }
+
+    public IJarFileWriter GetJarFileWriter(string logFilePath)
+    {
+        return new JarFile(FileAccessMode.Write, logFilePath);
     }
 }

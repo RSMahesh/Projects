@@ -27,7 +27,7 @@ namespace UserActivityLogger.Tests
 
             var jarFactory = Mock.Create<IJarFileFactory>();
 
-            Mock.Arrange(() => jarFactory.GetJarFile(FileAccessMode.Write, Arg.AnyString)).Returns((FileAccessMode mode, string dataFile) => Factory(dataFile));
+            Mock.Arrange(() => jarFactory.GetJarFileWriter(Arg.AnyString)).Returns((string dataFile) => Factory(dataFile));
 
             var imageCommentEmbedder = Mock.Create<IImageCommentEmbedder>();
 
@@ -47,18 +47,18 @@ namespace UserActivityLogger.Tests
             Assert.IsTrue(appendedFilesStore.Keys.FirstOrDefault().Contains(GetUserNameInReverse()));
         }
 
-        private IJarFile Factory(string dataFile)
+        private IJarFileWriter Factory(string dataFile)
         {
-            var jarFile = Mock.Create<IJarFile>();
+            var jarFileWriter = Mock.Create<IJarFileWriter>();
 
             //we could live with out mock here but learing I am using this comples mocking
 
-            Mock.Arrange(() => jarFile.AddFile(Arg.IsAny<JarFileItem>()))
+            Mock.Arrange(() => jarFileWriter.AddFile(Arg.IsAny<JarFileItem>()))
                                 .DoInstead((JarFileItem jarFileItem) => AppendFile(jarFileItem.FilePath, dataFile, appendedFilesStore)).OccursAtLeast(100);
 
-            Mock.Arrange(() => jarFile.FilesCount).Returns(() => GetFileCount(dataFile, appendedFilesStore));
+         //   Mock.Arrange(() => jarFile.FilesCount).Returns(() => GetFileCount(dataFile, appendedFilesStore));
 
-            return jarFile;
+            return jarFileWriter;
         }
 
         int GetFileCount(string dataFile, Dictionary<string, List<string>> appendedFilesStore)

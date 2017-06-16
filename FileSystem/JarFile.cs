@@ -7,7 +7,7 @@ using System.Text;
 
 namespace FileSystem
 {
-    public class JarFile : IJarFile
+    public class JarFile : IJarFileWriter, IJarFileReader
     {
         readonly FileAccessMode _fileAccessMode;
         readonly Writer _writer;

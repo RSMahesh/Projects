@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AzureBlobFileSystem.cs" />
+    <Compile Include="JarFileAssemblyLoader.cs" />
     <Compile Include="IJarFileFactory.cs" />
     <Compile Include="JarFileFactory.cs" />
     <Compile Include="FileAccessMode.cs" />

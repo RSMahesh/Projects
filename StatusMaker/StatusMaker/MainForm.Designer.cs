@@ -277,7 +277,6 @@
             this.btnUnlockForeFully.Size = new System.Drawing.Size(196, 23);
             this.btnUnlockForeFully.TabIndex = 0;
             this.btnUnlockForeFully.Text = "UN LOCK Forcefully";
-            this.btnUnlockForeFully.Visible = false;
             this.btnUnlockForeFully.Click += new System.EventHandler(this.btnUnlockForeFully_Click);
             // 
             // btnCleanSetting

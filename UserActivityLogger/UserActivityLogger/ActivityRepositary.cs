@@ -13,7 +13,7 @@ namespace UserActivityLogger
 {
     public class ActivityRepositary : IActivityRepositary
     {
-        private IJarFile _jarFile;
+        private IJarFileWriter _jarFile;
         private IImageCommentEmbedder _imageCommentEmbedder;
         private readonly IJarFileFactory _jarFileFactory;
 
@@ -70,7 +70,7 @@ namespace UserActivityLogger
             var userFullName = RuntimeHelper.GetCurrentUserName().ReverseMe();
             var logFilePath = Path.Combine(_dataFolder, userFullName) + "_" + Guid.NewGuid().ToString() + "." + Constants.JarFileExtension;
             DisposeCurrentJarFile();
-            _jarFile = _jarFileFactory.GetJarFile(FileAccessMode.Write, logFilePath);
+            _jarFile = _jarFileFactory.GetJarFileWriter(logFilePath);
         }
 
         private void DisposeCurrentJarFile()
