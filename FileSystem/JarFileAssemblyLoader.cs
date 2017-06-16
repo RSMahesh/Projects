@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.IO;
-using Core;
+
 
 namespace FileSystem
 {
@@ -17,16 +17,33 @@ namespace FileSystem
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
         }
 
-        private System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            var jarFiles = Directory.GetFiles(ExecutionLocation, "*.jar");
+            Assembly assembly = null;
+            foreach (var jarFile in jarFiles)
+            {
+                assembly = GetAssemblyFromJarFile(jarFile, args);
+                if (assembly != null)
+                {
+                    return assembly;
+                }
+            }
+
+            return null;
+        }
+
+        private System.Reflection.Assembly GetAssemblyFromJarFile(string jarFile, ResolveEventArgs args)
+
         {
             IJarFileFactory jarFileFactory = new JarFileFactory();
 
-            using (var reader = jarFileFactory.GetJarFileReader(RuntimeHelper.MapToCurrentExecutionLocation("Include.jar")))
+            using (var reader = jarFileFactory.GetJarFileReader(jarFile))
             {
 
                 var jarFileItem = reader.GetNextFile();
 
-                string resourceName = new AssemblyName(args.Name).Name + ".dll";
+                string resourceName = new AssemblyName(args.Name).Name;
 
                 File.AppendAllText("Log.txt", "Getting :" + resourceName + Environment.NewLine);
 
@@ -34,7 +51,8 @@ namespace FileSystem
                 {
                     if (jarFileItem.Headers.ContainsKey("FileName"))
                     {
-                        if (jarFileItem.Headers["FileName"] == resourceName)
+                        if (jarFileItem.Headers["FileName"] == resourceName + ".dll" || 
+                            jarFileItem.Headers["FileName"] == resourceName + ".exe"                            )
                         {
                             return Assembly.Load(jarFileItem.Containt);
                         }
@@ -49,17 +67,20 @@ namespace FileSystem
             return null;
         }
 
-        private System.Reflection.Assembly CurrentDomain_AssemblyResolve12(object sender, ResolveEventArgs args)
-        {
-            string resourceName = new AssemblyName(args.Name).Name + ".dll";
-            string resource = Array.Find(this.GetType().Assembly.GetManifestResourceNames(), element => element.EndsWith(resourceName));
+        //Below methods copyed from core.RuntimeHelper to avoid core dll reference
 
-            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resource))
+        public static string MapToCurrentExecutionLocation(string filePath)
+        {
+            return Path.Combine(ExecutionLocation, filePath);
+        }
+
+        public static string ExecutionLocation
+        {
+            get
             {
-                Byte[] assemblyData = new Byte[stream.Length];
-                stream.Read(assemblyData, 0, assemblyData.Length);
-                return Assembly.Load(assemblyData);
+                return Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             }
         }
+
     }
 }

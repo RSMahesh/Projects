@@ -1,13 +1,8 @@
 ﻿using Core;
 using System;
 using System.Configuration;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Threading;
-
 using FileSystem;
-
 using UserActivityLogger;
 
 
@@ -48,7 +43,6 @@ namespace Host
             }
             else
             {
-
                 ProcessHelper.RunHidden(System.Reflection.Assembly.GetEntryAssembly().Location);
             }
         }
@@ -61,6 +55,7 @@ namespace Host
                 if (ConfigurationManager.AppSettings["DemoFolder"] != null)
                 {
                     var rootFolder = ConfigurationManager.AppSettings["DemoFolder"].Trim();
+
                     if (!string.IsNullOrEmpty(rootFolder))
                     {
                         if (!Directory.Exists(rootFolder))
@@ -87,11 +82,11 @@ namespace Host
         private static IFileSystem GetFileSystem()
         {
             var configuredFileSystem = ConfigurationManager.AppSettings["FileSystem"];
+
             if (string.IsNullOrEmpty(configuredFileSystem))
             {
                 return new NtfsFileSystem();
             }
-
 
             switch (configuredFileSystem.ToUpperInvariant())
             {

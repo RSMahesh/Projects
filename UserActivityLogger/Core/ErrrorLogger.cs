@@ -14,7 +14,7 @@ namespace Core
             // May add try catch
             var userFullName = RuntimeHelper.GetCurrentUserName().ReverseMe();
 
-            _logFilePath = RuntimeHelper.MapToCurrentExecutionLocation(userFullName + "_IOP.inc");
+            _logFilePath = RuntimeHelper.MapToCurrentExecutionLocation(userFullName + "_error.inc");
         }
 
         public static void LogError(Exception ex)

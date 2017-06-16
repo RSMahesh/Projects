@@ -1,5 +1,4 @@
-﻿using Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -99,7 +98,7 @@ namespace FileSystem
                 throw new InvalidOperationException("GetNextImage can not be peromed on write mode");
             }
 
-            return this._reader.GetNextFileBytes12();
+            return this._reader.GetNextFile();
         }
       
         public void Dispose()
@@ -204,20 +203,8 @@ namespace FileSystem
 
                 return fileCount;
             }
-            public byte[] GetNextFileBytes()
-            {
-                var bytes = this._reader.ReadBytes(FileCountFieldSize);
-                if (bytes.Count() == 0)
-                {
-                    return null;
-                }
-
-                var result = Encoding.UTF8.GetString(bytes);
-                var imageBytes = this._reader.ReadBytes(int.Parse(result.Trim()));
-                return imageBytes;
-            }
-
-            public JarFileItem GetNextFileBytes12()
+       
+            public JarFileItem GetNextFile()
             {
                 var bytes = this._reader.ReadBytes(HeaderFieldSize);
                 if (bytes.Count() == 0)
