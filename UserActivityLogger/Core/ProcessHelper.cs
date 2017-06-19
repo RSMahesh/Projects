@@ -82,7 +82,7 @@ namespace Core
             return Process.Start(processInfo);
         }
 
-        public static void Watch()
+        public static void RecreateProcessOnExit()
         {
             //Path of the core.exe
             var exePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
@@ -93,7 +93,6 @@ namespace Core
 
         internal static void WatchProcesExit(Process processToWatch, string exePath)
         {
-
             try
             {
 
@@ -126,8 +125,7 @@ namespace Core
             }
 
         }
-
-
+        
         private static bool AbortWatch()
         {
             return File.Exists(RuntimeHelper.MapToCurrentExecutionLocation("abort.txt"));

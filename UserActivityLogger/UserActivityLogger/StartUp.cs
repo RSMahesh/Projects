@@ -21,6 +21,10 @@ namespace UserActivityLogger
         private readonly ImageCommentEmbedder _imageCommentEmbedder;
         private readonly ICurrentActivityProvider _activityProvider;
         private readonly ActivityRepositary _activityRepositary;
+
+
+         
+
         public StartUp(TimeSpan fulshTimeInterval, string logFolder, IKeyLogger keyLogger)
         {
             _screenCaptureTimeInterval = fulshTimeInterval;
@@ -29,6 +33,16 @@ namespace UserActivityLogger
             _activityProvider = new CurrentActivityProvider(keyLogger, new ScreenCapturer());
             _activityRepositary = new ActivityRepositary(new JarFileFactory(), new ImageCommentEmbedder(), logFolder);
         }
+
+
+        public StartUp(IKeyLogger keyLogger, ImageCommentEmbedder imageCommentEmbedder, ICurrentActivityProvider _activityProvider,IActivityRepositary activityRepositary)
+        {
+            _keyLogger = keyLogger;
+            _imageCommentEmbedder = new ImageCommentEmbedder();
+            _activityProvider = new CurrentActivityProvider(keyLogger, new ScreenCapturer());
+        }
+
+
 
         public void Start()
         {

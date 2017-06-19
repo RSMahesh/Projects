@@ -14,13 +14,21 @@ namespace FileSystem
     {
         public void Register()
         {
+            File.AppendAllText("Log.txt", "RestiredesourceName + Environment.NewLine");
+
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+
+            File.AppendAllText("Log.txt", "RestiredesourceName + Environment.NewLine");
+
         }
 
         private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
             var jarFiles = Directory.GetFiles(ExecutionLocation, "*.jar");
             Assembly assembly = null;
+            File.AppendAllText("Log.txt", "::Count:"+ jarFiles.Count().ToString());
+
+
             foreach (var jarFile in jarFiles)
             {
                 assembly = GetAssemblyFromJarFile(jarFile, args);
