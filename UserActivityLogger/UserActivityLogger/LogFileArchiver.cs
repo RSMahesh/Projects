@@ -10,22 +10,33 @@ using FileSystem;
 
 namespace UserActivityLogger
 {
-    public class LogFileArchiver
+    public class LogFileArchiver : ILogFileArchiver
     {
         private readonly string _archiveLocation;
         private readonly IFileSystem _fileSystem;
         private string _lastCopyedFileName;
         private DateTime _lastModifiedTime;
-        public LogFileArchiver(IFileSystem fileSystem, string archiveLocation)
+        //public LogFileArchiver(IFileSystem fileSystem, string archiveLocation)
+        //{
+        //    _archiveLocation = archiveLocation;
+        //    _fileSystem = fileSystem;
+        //    _lastCopyedFileName = string.Empty;
+
+        //    Init();
+
+        //    EventContainer.SubscribeEvent(Events.LogFileReachedMaxLimit.ToString(), OnNewLogFileCreated);
+        //}
+
+        public LogFileArchiver(IFileSystemFactory fileSystemFactory, string archiveLocation,string fileSystemType)
         {
             _archiveLocation = archiveLocation;
-            _fileSystem = fileSystem;
+            _fileSystem = fileSystemFactory.GetFileSystem(fileSystemType);
             _lastCopyedFileName = string.Empty;
-
             Init();
 
             EventContainer.SubscribeEvent(Events.LogFileReachedMaxLimit.ToString(), OnNewLogFileCreated);
         }
+
         public void Start(string logFolder, TimeSpan pollingTimeInterval)
         {
             new Thread(() =>
@@ -72,7 +83,7 @@ namespace UserActivityLogger
         {
             if (!_lastCopyedFileName.Equals(currentFile.Name, StringComparison.OrdinalIgnoreCase) || currentFile.LastWriteTime > _lastModifiedTime)
             {
-                 CopyFile(currentFile.FullName);
+                CopyFile(currentFile.FullName);
                 _lastCopyedFileName = currentFile.Name;
                 _lastModifiedTime = currentFile.LastWriteTime;
             }

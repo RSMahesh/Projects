@@ -7,10 +7,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
-namespace UserActivityLogger
+namespace Core
 {
     public class ImageCommentEmbedder : IImageCommentEmbedder
+        
     {
+        public ImageCommentEmbedder()
+        {
+
+        }
         const string commmentsMetaKey = "/app1/ifd/exif:{uint=40092}";
 
         public void AddComment(string imageFilePath, string comments)

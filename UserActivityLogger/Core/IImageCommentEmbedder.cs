@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace UserActivityLogger
+namespace Core
 {
     public interface IImageCommentEmbedder
     {

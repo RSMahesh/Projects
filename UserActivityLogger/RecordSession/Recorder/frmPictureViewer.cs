@@ -14,6 +14,7 @@ using System.Threading;
 using FileSystem;
 
 using UserActivityLogger;
+using Core;
 
 namespace RecordSession
 {

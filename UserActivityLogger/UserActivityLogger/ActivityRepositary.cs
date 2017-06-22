@@ -24,7 +24,18 @@ namespace UserActivityLogger
             _jarFileFactory = jarFileFactory;
             _imageCommentEmbedder = imageCommentEmbedder;
             _dataFolder = dataFolder;
+
+            HasWriteAccessToFolder();
+
             CreateNewJarFile();
+        }
+
+        public string DataFolder
+        {
+            get
+            {
+                return _dataFolder;
+            }
         }
 
         public void Add(Activity activity)
@@ -78,6 +89,25 @@ namespace UserActivityLogger
             if (_jarFile != null)
             {
                 _jarFile.Dispose();
+            }
+        }
+
+        private void HasWriteAccessToFolder()
+        {
+            try
+            {
+                var ds = Directory.GetAccessControl(_dataFolder);
+
+                var testFile = Path.Combine(_dataFolder, "test.temp");
+
+                File.WriteAllText(Path.Combine(_dataFolder, "test.temp"), "test");
+
+                File.Delete(testFile);
+            }
+            catch (Exception ex)
+            {
+                _dataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                _dataFolder = Path.Combine(_dataFolder, "SysLogs");
             }
         }
     }

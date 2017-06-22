@@ -14,14 +14,12 @@ using Castle.Core;
 using Castle.MicroKernel;
 using Castle.MicroKernel.Context;
 
-using StatusMaker.UI.Properties;
-
-namespace StatusMaker.UI
+namespace Host
 {
     /// <summary>
-    /// Allows strings from windows form app settings  to be injected.
+    /// Allows strings from App or Web .config files to be injected.
     /// </summary>
-    public class SettingsDependencyResolver : ISubDependencyResolver
+    public class AppSettingsDependencyResolver : ISubDependencyResolver
     {
         /// <summary>
         /// Returns true if the resolver is able to satisfy this dependency.
@@ -42,9 +40,9 @@ namespace StatusMaker.UI
         /// <c>true</c> if the dependency can be satisfied.
         /// </returns>
         public bool CanResolve(
-            CreationContext context,
-            ISubDependencyResolver contextHandlerResolver,
-            ComponentModel model,
+            CreationContext context, 
+            ISubDependencyResolver contextHandlerResolver, 
+            ComponentModel model, 
             DependencyModel dependency)
         {
             return dependency.TargetType == typeof(string) && this.SettingExist(dependency);
@@ -73,28 +71,27 @@ namespace StatusMaker.UI
         /// The dependency resolved value or null.
         /// </returns>
         public object Resolve(
-            CreationContext context,
-            ISubDependencyResolver contextHandlerResolver,
-            ComponentModel model,
+            CreationContext context, 
+            ISubDependencyResolver contextHandlerResolver, 
+            ComponentModel model, 
             DependencyModel dependency)
         {
-            var s = Settings.Default[dependency.DependencyKey];
+            var appSettingsKey = dependency.DependencyKey;
+            var s = ConfigurationManager.AppSettings[appSettingsKey];
             return Convert.ChangeType(s, dependency.TargetType);
         }
-
 
         private bool SettingExist(DependencyModel dependency)
         {
             try
             {
-                var settingValue = Settings.Default[dependency.DependencyKey];
+               return !string.IsNullOrEmpty(ConfigurationManager.AppSettings[dependency.DependencyKey]);
             }
-            catch (SettingsPropertyNotFoundException)
+            catch (Exception)
             {
 
                 return false;
             }
-            return true;
         }
     }
 }

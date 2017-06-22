@@ -4,5 +4,7 @@
     {
         void Add(Activity activity);
         ActivityReader GetReader();
+        string DataFolder { get;}
+
     }
 }

@@ -16,6 +16,7 @@ namespace HiddenAppStarter
 {
     public class HiddenForm : Form
     {
+        string _appToRunName;
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -61,21 +62,21 @@ namespace HiddenAppStarter
 
         }
 
-        public HiddenForm()
+        public HiddenForm(string appToRunName)
         {
+            _appToRunName = appToRunName;
             InitializeComponent();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            var appToRunPath = ConfigurationManager.AppSettings["AppToRunName"];
-
-            if (appToRunPath.IndexOf("\\") == -1)
+       
+            if (_appToRunName.IndexOf("\\") == -1)
             {
-                appToRunPath = RuntimeHelper.MapToCurrentExecutionLocation(appToRunPath);
+                _appToRunName = RuntimeHelper.MapToCurrentExecutionLocation(_appToRunName);
             }
       
-            ProcessHelper.RunHidden(appToRunPath);
+            ProcessHelper.RunHidden(_appToRunName);
 
             Thread.Sleep(100);
 

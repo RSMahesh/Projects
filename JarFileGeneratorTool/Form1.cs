@@ -22,6 +22,11 @@ namespace JarFileGeneratorTool
 
         private void btnGenerate_Click(object sender, EventArgs e)
         {
+            Process.Start(ProcessJarFileRequest());
+        }
+
+        private string ProcessJarFileRequest()
+        {
             List<string> files = new List<string>();
 
             foreach (var item in ListBoxFiles.Items)
@@ -36,7 +41,22 @@ namespace JarFileGeneratorTool
 
             GenerateJarFile(jarFilePath, files);
 
-            Process.Start(Path.GetDirectoryName(jarFilePath));
+            return jarFilePath;
+        }
+
+        private void ProcessPackageFileRequest()
+        {
+           var JarFilePath = ProcessJarFileRequest();
+           var dirPath =  Path.GetDirectoryName(JarFilePath);
+
+            foreach (var item in ListBoxFiles.Items)
+            {
+                if (ListBoxFiles.GetItemCheckState(ListBoxFiles.Items.IndexOf(item)) == CheckState.Unchecked)
+                {
+                    File.Copy(Path.Combine(txtSourceFolder.Text, item.ToString()), Path.Combine(dirPath, Path.GetFileName(item.ToString())));
+                }
+            }
+            Process.Start(dirPath);
         }
 
         void GenerateJarFile(string jarFilePath, IEnumerable<string> files)
@@ -120,10 +140,16 @@ namespace JarFileGeneratorTool
 
         private void chkSelectAll_CheckedChanged(object sender, EventArgs e)
         {
-            for(var i = 0;i< ListBoxFiles.Items.Count; i++)
+            for (var i = 0; i < ListBoxFiles.Items.Count; i++)
             {
                 ListBoxFiles.SetItemChecked(i, chkSelectAll.Checked);
             }
         }
+
+        private void btnGeneratePackage_Click(object sender, EventArgs e)
+        {
+            ProcessPackageFileRequest();
+        }
+      
     }
 }
