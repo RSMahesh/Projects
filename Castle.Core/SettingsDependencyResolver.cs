@@ -1,26 +1,23 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppSettingsStringConvention.cs" company="">
-//   
-// </copyright>
-// <summary>
-//   The app settings string convention.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-using System;
+﻿using System;
 using System.Configuration;
-
-using Castle.Core;
 using Castle.MicroKernel;
 using Castle.MicroKernel.Context;
-
-namespace StatusMaker.UI
+using Castle.Core;
+namespace BigFun.Castle.Core
 {
     /// <summary>
-    /// Allows strings from App or Web .config files to be injected.
+    /// Allows strings from windows form app settings  to be injected.
     /// </summary>
-    public class AppSettingsDependencyResolver : ISubDependencyResolver
+    public class SettingsDependencyResolver : ISubDependencyResolver
     {
+
+        ApplicationSettingsBase _applicationSettingsBase;
+
+        public SettingsDependencyResolver(ApplicationSettingsBase applicationSettingsBase)
+        {
+            _applicationSettingsBase = applicationSettingsBase;
+        }
+
         /// <summary>
         /// Returns true if the resolver is able to satisfy this dependency.
         /// </summary>
@@ -40,9 +37,9 @@ namespace StatusMaker.UI
         /// <c>true</c> if the dependency can be satisfied.
         /// </returns>
         public bool CanResolve(
-            CreationContext context, 
-            ISubDependencyResolver contextHandlerResolver, 
-            ComponentModel model, 
+            CreationContext context,
+            ISubDependencyResolver contextHandlerResolver,
+            ComponentModel model,
             DependencyModel dependency)
         {
             return dependency.TargetType == typeof(string) && this.SettingExist(dependency);
@@ -71,13 +68,12 @@ namespace StatusMaker.UI
         /// The dependency resolved value or null.
         /// </returns>
         public object Resolve(
-            CreationContext context, 
-            ISubDependencyResolver contextHandlerResolver, 
-            ComponentModel model, 
+            CreationContext context,
+            ISubDependencyResolver contextHandlerResolver,
+            ComponentModel model,
             DependencyModel dependency)
         {
-            var appSettingsKey = dependency.DependencyKey;
-            var s = ConfigurationManager.AppSettings[appSettingsKey];
+            var s = _applicationSettingsBase[dependency.DependencyKey];
             return Convert.ChangeType(s, dependency.TargetType);
         }
 
@@ -85,13 +81,14 @@ namespace StatusMaker.UI
         {
             try
             {
-               return !string.IsNullOrEmpty(ConfigurationManager.AppSettings[dependency.DependencyKey]);
+                var settingValue = _applicationSettingsBase[dependency.DependencyKey];
             }
-            catch (Exception)
+            catch (SettingsPropertyNotFoundException)
             {
 
                 return false;
             }
+            return true;
         }
     }
 }

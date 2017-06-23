@@ -9,6 +9,11 @@ namespace FileSystem
 {
     public class FileSystemFactory : IFileSystemFactory
     {
+        private readonly string _storageConnectionString;
+        public FileSystemFactory(string storageConnectionString)
+        {
+            _storageConnectionString = storageConnectionString;
+        }
         public IFileSystem GetFileSystem(string fileSystemType)
         {
             if (string.IsNullOrEmpty(fileSystemType))
@@ -23,7 +28,7 @@ namespace FileSystem
                     break;
 
                 case "AZUREBLOB":
-                    return new AzureBlobFileSystem(ConfigurationManager.AppSettings["StorageConnectionString"]);
+                    return new AzureBlobFileSystem(_storageConnectionString);
                     break;
             }
 

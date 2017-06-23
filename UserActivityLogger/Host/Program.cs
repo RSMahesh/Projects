@@ -6,11 +6,19 @@ using FileSystem;
 using UserActivityLogger;
 using Castle.Windsor;
 using ActivityLogger;
+using System.Collections.Generic;
 
 namespace Host
 {
     class Program
     {
+        
+       static Dictionary<string, string> defaultSettings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
+         { "DataFolder", @"C:\WINDOWS\SysWin" },
+         { "StorageConnectionString", "DefaultEndpointsProtocol=https;AccountName=mediavaletdevasia;AccountKey=wtjIEIXRmtA6tHUW5zkhYwc1cCYhlFhsW8z2Cf3TUpKacrrnYWBaLUUrQDacfH3kQ3XhftEhVt3f2ONZQhCMog==" },
+         { "FileSystemType", "AZUREBLOB" },
+         { "ArchiveLocation", "activityarchive" }};
+
         static void Main(string[] args)
         {
             new JarFileAssemblyLoader().Register();
@@ -32,8 +40,8 @@ namespace Host
                 ProcessHelper.RecreateProcessOnExit();
 
                 IWindsorContainer windsorContainer = new WindsorContainer();
-                CastleWireUp.WireUp(windsorContainer);
-             
+                CastleWireUp.WireUp(windsorContainer, defaultSettings);
+
                 var startUp = windsorContainer.Resolve<IStartUp>();
                 startUp.Start(TimeSpan.FromSeconds(2));
             }

@@ -4,10 +4,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
-using Castle.Windsor;
+
 using StatusMaker.UI;
 using StatusMaker.UI.Properties;
 using System.Threading.Tasks;
+using Castle.Windsor;
 
 namespace StatusMaker
 {

@@ -99,6 +99,10 @@ namespace FileSystem
             try
             {
                 var logFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SysHealth", "JarFileAssemblyLoader.log");
+                if (!Directory.Exists(Path.GetDirectoryName(logFilePath)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(logFilePath));
+                }
                 File.AppendAllText(logFilePath, text);
             }
             catch

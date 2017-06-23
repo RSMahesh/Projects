@@ -16,16 +16,6 @@ namespace UserActivityLogger
         private readonly IFileSystem _fileSystem;
         private string _lastCopyedFileName;
         private DateTime _lastModifiedTime;
-        //public LogFileArchiver(IFileSystem fileSystem, string archiveLocation)
-        //{
-        //    _archiveLocation = archiveLocation;
-        //    _fileSystem = fileSystem;
-        //    _lastCopyedFileName = string.Empty;
-
-        //    Init();
-
-        //    EventContainer.SubscribeEvent(Events.LogFileReachedMaxLimit.ToString(), OnNewLogFileCreated);
-        //}
 
         public LogFileArchiver(IFileSystemFactory fileSystemFactory, string archiveLocation,string fileSystemType)
         {

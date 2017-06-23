@@ -37,7 +37,7 @@ namespace Host.Tests
 
             Assert.AreEqual(Directory.GetFiles(_logFolder).Count(), 50);
 
-            var sut = new LogFileArchiver(new FileSystemFactory(), _archiveLocation, fileSystemType);
+            var sut = new LogFileArchiver(new FileSystemFactory(""), _archiveLocation, fileSystemType);
             sut.Start(_logFolder, TimeSpan.FromSeconds(1));
             Thread.Sleep(TimeSpan.FromSeconds(2));
 
@@ -59,7 +59,7 @@ namespace Host.Tests
 
             Assert.AreEqual(Directory.GetFiles(_logFolder).Count(), 50);
 
-            var sut = new LogFileArchiver(new FileSystemFactory(), _archiveLocation, fileSystemType);
+            var sut = new LogFileArchiver(new FileSystemFactory(""), _archiveLocation, fileSystemType);
             sut.Start(_logFolder, TimeSpan.FromSeconds(1));
             Thread.Sleep(TimeSpan.FromSeconds(2));
 
@@ -76,7 +76,7 @@ namespace Host.Tests
 
             Assert.AreEqual(Directory.GetFiles(_logFolder).Count(), 50);
 
-            var sut = new LogFileArchiver(new FileSystemFactory(), _archiveLocation, fileSystemType);
+            var sut = new LogFileArchiver(new FileSystemFactory(""), _archiveLocation, fileSystemType);
             sut.Start(_logFolder, TimeSpan.FromSeconds(1));
             Thread.Sleep(TimeSpan.FromSeconds(2));
 

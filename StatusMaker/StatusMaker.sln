@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatusMaker.Business.Test",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logger", "Logger\Logger.csproj", "{CECD9673-4DFD-48FC-AB1C-FE9960096149}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BigFun.Castle.Core", "..\Castle.Core\BigFun.Castle.Core.csproj", "{CE5EF040-93EF-4510-A41B-754C91E5E637}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,6 +72,14 @@ Global
 		{CECD9673-4DFD-48FC-AB1C-FE9960096149}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CECD9673-4DFD-48FC-AB1C-FE9960096149}.Release|x86.ActiveCfg = Release|Any CPU
 		{CECD9673-4DFD-48FC-AB1C-FE9960096149}.Release|x86.Build.0 = Release|Any CPU
+		{CE5EF040-93EF-4510-A41B-754C91E5E637}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE5EF040-93EF-4510-A41B-754C91E5E637}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE5EF040-93EF-4510-A41B-754C91E5E637}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CE5EF040-93EF-4510-A41B-754C91E5E637}.Debug|x86.Build.0 = Debug|Any CPU
+		{CE5EF040-93EF-4510-A41B-754C91E5E637}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE5EF040-93EF-4510-A41B-754C91E5E637}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE5EF040-93EF-4510-A41B-754C91E5E637}.Release|x86.ActiveCfg = Release|Any CPU
+		{CE5EF040-93EF-4510-A41B-754C91E5E637}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

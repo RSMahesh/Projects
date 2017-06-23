@@ -1,6 +1,8 @@
-﻿using Castle.MicroKernel.Registration;
+﻿using BigFun.Castle.Core;
+using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 using Castle.Windsor;
+
 
 namespace StatusMaker.UI
 {
@@ -9,7 +11,7 @@ namespace StatusMaker.UI
         public static void WireUp(IWindsorContainer container)
         {
             container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel, true));
-            container.Kernel.Resolver.AddSubResolver(new SettingsDependencyResolver());
+            container.Kernel.Resolver.AddSubResolver(new SettingsDependencyResolver(StatusMaker.UI.Properties.Settings.Default));
             container.Kernel.Resolver.AddSubResolver(new AppSettingsDependencyResolver());
             container.Register(
                Classes

@@ -84,7 +84,7 @@
             this.txtFilter.Name = "txtFilter";
             this.txtFilter.Size = new System.Drawing.Size(100, 20);
             this.txtFilter.TabIndex = 6;
-            this.txtFilter.Text = ".dll,.exe,.config";
+            this.txtFilter.Text = ".dll,.exe";
             // 
             // btnBrowse
             // 

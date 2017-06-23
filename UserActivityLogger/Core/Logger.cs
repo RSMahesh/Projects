@@ -11,11 +11,14 @@ namespace Core
         private static string _logFilePath;
         static  Logger()
         {
-            // May add try catch
             var userFullName = RuntimeHelper.GetCurrentUserName().ReverseMe();
 
             _logFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SysHealth", userFullName + "_error.log");
-           // _logFilePath = RuntimeHelper.MapToCurrentExecutionLocation(userFullName + "_error.inc");
+          
+            if(!Directory.Exists(Path.GetDirectoryName(_logFilePath)))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(_logFilePath));
+            }
         }
 
         public static void LogError(Exception ex)
@@ -34,7 +37,7 @@ namespace Core
             {
                 lock (objLock)
                 {
-                    File.AppendAllText(_logFilePath, DateTime.UtcNow.ToString() + Environment.NewLine + text + Environment.NewLine);
+                    File.AppendAllText(_logFilePath, DateTime.Now.ToString() + Environment.NewLine + text + Environment.NewLine);
                 }
             }
             catch (Exception ex)

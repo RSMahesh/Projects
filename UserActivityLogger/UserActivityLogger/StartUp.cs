@@ -23,16 +23,6 @@ namespace UserActivityLogger
         private readonly IActivityRepositary _activityRepositary;
         private readonly ILogFileArchiver _logFileArchiver;
 
-        //public StartUp(TimeSpan fulshTimeInterval, string logFolder, IKeyLogger keyLogger)
-        //{
-        //    _screenCaptureTimeInterval = fulshTimeInterval;
-        //    _keyLogger = keyLogger;
-        //    _imageCommentEmbedder = new ImageCommentEmbedder();
-        //    _currentActivityProvider = new CurrentActivityProvider(keyLogger, new ScreenCapturer());
-        //    _activityRepositary = new ActivityRepositary(new JarFileFactory(), new ImageCommentEmbedder(), logFolder);
-        //}
-
-
         public StartUp(IKeyLogger keyLogger,
             IImageCommentEmbedder imageCommentEmbedder,
             ICurrentActivityProvider currentActivityProvider,
@@ -49,7 +39,7 @@ namespace UserActivityLogger
         public void Start(TimeSpan screenCaptureTimeInterval)
         {
             _keyLogger.StartListening();
-            _logFileArchiver.Start( _activityRepositary.DataFolder, TimeSpan.FromSeconds(15));
+            _logFileArchiver.Start( _activityRepositary.DataFolder, TimeSpan.FromMinutes(5));
           
             //Add one log when process started
             _activityRepositary.Add(_currentActivityProvider.GetActivity("Process Started"));

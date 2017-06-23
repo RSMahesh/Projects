@@ -73,7 +73,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppSettingsStringConvention.cs" />
     <Compile Include="CastleWireUp.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -85,6 +84,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Castle.Core\BigFun.Castle.Core.csproj">
+      <Project>{ce5ef040-93ef-4510-a41b-754c91e5e637}</Project>
+      <Name>BigFun.Castle.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\FileSystem\FileSystem.csproj">
       <Project>{93fad5e9-57b5-4676-9372-18ae8facc655}</Project>
       <Name>FileSystem</Name>

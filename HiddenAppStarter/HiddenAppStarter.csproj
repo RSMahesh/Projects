@@ -7,8 +7,8 @@
     <ProjectGuid>{DFE2DB9F-9BBA-4EE6-9713-473C663C8A0C}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HiddenAppStarter</RootNamespace>
-    <AssemblyName>HiddenAppStarter</AssemblyName>
+    <RootNamespace>BackGroundAppStarter</RootNamespace>
+    <AssemblyName>BackGroundAppStarter</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -76,6 +76,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

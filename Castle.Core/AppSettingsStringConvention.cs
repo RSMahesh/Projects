@@ -1,26 +1,32 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppSettingsStringConvention.cs" company="">
-//   
-// </copyright>
-// <summary>
-//   The app settings string convention.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
+﻿
 using System;
 using System.Configuration;
 
 using Castle.Core;
 using Castle.MicroKernel;
 using Castle.MicroKernel.Context;
+using System.Collections.Generic;
 
-namespace Host
+namespace BigFun.Castle.Core
 {
     /// <summary>
     /// Allows strings from App or Web .config files to be injected.
     /// </summary>
     public class AppSettingsDependencyResolver : ISubDependencyResolver
     {
+        // Dictioanry should be StringComparer.OrdinalIgnoreCase
+        private readonly Dictionary<string, string> _caseInSensitiveDefaultSettings;
+
+        public AppSettingsDependencyResolver()
+        {
+            _caseInSensitiveDefaultSettings = new Dictionary<string, string>();
+        }
+
+        public AppSettingsDependencyResolver(Dictionary<string, string> caseInSensitiveDefaultSettings)
+        {
+            _caseInSensitiveDefaultSettings = caseInSensitiveDefaultSettings;
+        }
+
         /// <summary>
         /// Returns true if the resolver is able to satisfy this dependency.
         /// </summary>
@@ -77,15 +83,26 @@ namespace Host
             DependencyModel dependency)
         {
             var appSettingsKey = dependency.DependencyKey;
-            var s = ConfigurationManager.AppSettings[appSettingsKey];
-            return Convert.ChangeType(s, dependency.TargetType);
+            string value;
+
+            if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings[dependency.DependencyKey]))
+            {
+                 value = ConfigurationManager.AppSettings[appSettingsKey];
+            }
+            else
+            {
+                 value = _caseInSensitiveDefaultSettings[appSettingsKey];
+            }
+
+            return Convert.ChangeType(value, dependency.TargetType);
         }
 
         private bool SettingExist(DependencyModel dependency)
         {
             try
             {
-               return !string.IsNullOrEmpty(ConfigurationManager.AppSettings[dependency.DependencyKey]);
+               return !string.IsNullOrEmpty(ConfigurationManager.AppSettings[dependency.DependencyKey]) ||
+                    !string.IsNullOrEmpty(_caseInSensitiveDefaultSettings[dependency.DependencyKey]) ;
             }
             catch (Exception)
             {
