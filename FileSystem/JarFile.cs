@@ -115,6 +115,14 @@ namespace FileSystem
             public Writer(string logFile)
             {
                 this._logFile = logFile;
+
+                var rootDir = Path.GetDirectoryName(logFile);
+
+                if (!Directory.Exists(rootDir))
+                {
+                    Directory.CreateDirectory(rootDir);
+                }
+
             }
             public void AddFile(string fileToAppend)
             {
@@ -137,7 +145,7 @@ namespace FileSystem
             {
                 var fileCount = this.GetFileCount();
 
-                using (BinaryWriter writer = new BinaryWriter(File.Open(this._logFile, FileMode.OpenOrCreate)))
+                using (BinaryWriter writer = new BinaryWriter(File.Open(this._logFile, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read)))
                 {
                     fileCount++;
                     writer.Seek(0, SeekOrigin.Begin);
@@ -170,7 +178,7 @@ namespace FileSystem
             {
                 if (File.Exists(this._logFile))
                 {
-                    using (BinaryReader reader = new BinaryReader(File.Open(this._logFile, FileMode.Open, System.IO.FileAccess.Read)))
+                    using (BinaryReader reader = new BinaryReader(File.Open(this._logFile, FileMode.Open, System.IO.FileAccess.Read, FileShare.ReadWrite)))
                     {
                         var bytes = reader.ReadBytes(10);
                         var result = System.Text.Encoding.UTF8.GetString(bytes);

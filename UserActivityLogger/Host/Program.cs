@@ -7,6 +7,7 @@ using UserActivityLogger;
 using Castle.Windsor;
 using ActivityLogger;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Host
 {
@@ -21,8 +22,16 @@ namespace Host
 
         static void Main(string[] args)
         {
-            new JarFileAssemblyLoader().Register();
-            Start(args);
+            try
+            {
+                new JarFileAssemblyLoader().Register();
+                Start(args);
+            }
+            catch(Exception ex)
+            {
+                Logger.LogError(ex);
+                System.Environment.Exit(0);
+            }
         }
         private static void Start(string[] args)
         {

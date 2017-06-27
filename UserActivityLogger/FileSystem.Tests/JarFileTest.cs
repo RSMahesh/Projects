@@ -44,7 +44,6 @@ namespace FileSystem.Tests
         [Test]
         public void ShouldAddFiles2()
         {
-            
 
             using (var jarFileWriter = new JarFile(FileAccessMode.Write, jarFiledata))
             {
@@ -68,10 +67,35 @@ namespace FileSystem.Tests
             }
         }
 
+
+        [Test]
+        public void ShouldAllowReadConcurrently()
+        {
+            using (var jarFileWriter = new JarFile(FileAccessMode.Write, jarFiledata))
+            {
+                header["FileName"] = file1;
+                jarFileWriter.AddFile(new JarFileItem(header, file1));
+            }
+
+            using (var sourceStream = new FileStream(
+             jarFiledata,
+             FileMode.Open,
+             FileAccess.Read,
+             FileShare.ReadWrite))
+            {
+                using (var jarFileWriter = new JarFile(FileAccessMode.Write, jarFiledata))
+                {
+                    header["FileName"] = file2;
+                    jarFileWriter.AddFile(new JarFileItem(header, file2));
+
+                }
+            }
+        }
+
         [Test]
         public void ShouldThrowExceptionOnMaxLimit()
         {
-        
+
             using (var jarFileWriter = new JarFile(FileAccessMode.Write, jarFiledata, 2))
             {
                 jarFileWriter.AddFile(new JarFileItem(header, file1));

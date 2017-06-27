@@ -24,6 +24,8 @@ namespace Core
             Exception e = (Exception)args.ExceptionObject;
 
             _logException(e);
+
+            
         }
     }
 }
