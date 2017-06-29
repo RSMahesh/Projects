@@ -20,7 +20,7 @@ namespace Recorder
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new MDIParent1());
+                Application.Run(new frmControlBox());
 
                 //Application.Run(new VideoControlBox());
 

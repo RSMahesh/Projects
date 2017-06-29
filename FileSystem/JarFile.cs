@@ -100,13 +100,22 @@ namespace FileSystem
 
             return this._reader.GetNextFile();
         }
-      
+
+        public long GetNextFileOffset()
+        {
+            return _reader.GetNextFileOffset();
+        }
         public void Dispose()
         {
             if (this._reader != null)
             {
                 this._reader.Dispose();
             }
+        }
+
+        public void MoveFileHeader(long position)
+        {
+             _reader.MoveFileHeader(position);
         }
 
         private class Writer
@@ -211,9 +220,10 @@ namespace FileSystem
 
                 return fileCount;
             }
-       
+
             public JarFileItem GetNextFile()
             {
+                var offset = this._reader.BaseStream.Position;
                 var bytes = this._reader.ReadBytes(HeaderFieldSize);
                 if (bytes.Count() == 0)
                 {
@@ -231,23 +241,53 @@ namespace FileSystem
 
                 var imageBytes = _reader.ReadBytes(int.Parse(Encoding.UTF8.GetString(bytes).Trim()));
 
-                return new JarFileItem(headers,string.Empty, imageBytes);
+                return new JarFileItem(headers, string.Empty, imageBytes, offset);
             }
 
+            public long GetNextFileOffset()
+            {
+                var currentFileOffset = _reader.BaseStream.Position;
+
+                if (_reader.BaseStream.Position >= _reader.BaseStream.Length - 2)
+                {
+                    return -1;
+                }
+
+                this._reader.BaseStream.Position = this._reader.BaseStream.Position + HeaderFieldSize;
+
+                var bytes = _reader.ReadBytes(FileLengthFieldSize);
+
+                if (bytes.Count() == 0)
+                {
+                    return -1;
+                }
+
+                var fileLength = int.Parse(Encoding.UTF8.GetString(bytes).Trim());
+
+                this._reader.BaseStream.Position = this._reader.BaseStream.Position + fileLength;
+
+                return currentFileOffset;
+            }
+
+            public void MoveFileHeader(long position)
+            {
+                _reader.BaseStream.Position = position;
+            }
+      
             private Dictionary<string, string> stringToDic(string text)
             {
-               var arr = text.Split(';');
+                var arr = text.Split(';');
                 var dic = new Dictionary<string, string>();
                 foreach (var ar in arr)
                 {
-                   var KeyValue = ar.Split('=');
+                    var KeyValue = ar.Split('=');
 
                     dic[KeyValue[0]] = KeyValue[1];
                 }
 
 
                 return dic;
-                
+
             }
             public void Dispose()
             {

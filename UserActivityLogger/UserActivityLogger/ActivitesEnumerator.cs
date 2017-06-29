@@ -16,9 +16,11 @@ namespace UserActivityLogger
         private readonly IJarFileFactory _jarFileFactory = null;
         private List<FileInfo> _fileInfos;
         private int _fileIndex;
-        IJarFileReader _jarFile = null;
+        IJarFileReader _jarFileReader = null;
         List<int> imagesInLogFiles = new List<int>();
+
         private Activity _currentActivity;
+        private Dictionary<int, FileItemInfo> _fileOffsetInfoMap = new Dictionary<int, FileItemInfo>();
 
         public int FileCount { get; private set; }
 
@@ -31,37 +33,10 @@ namespace UserActivityLogger
                 .OrderBy(f => f.LastWriteTime)
                 .ToList();
 
-            this.FileCount = this.SetFileCount();
+            this.FileCount = this.GetFileCount();
 
         }
 
-        private void FilterOutFiles(ActivityQueryFilter filter)
-        {
-            const int FiltersCount = 2;
-            if (filter != null)
-            {
-                var filterPassed = 0;
-                for (var i = 0; i < this._fileInfos.Count; i++)
-                {
-                    if (filter.StartDateTime.HasValue &&
-                        this._fileInfos[i].LastWriteTime >= filter.StartDateTime.Value)
-                    {
-                        filterPassed++;
-                    }
-
-                    if (filter.EndDateTime.HasValue && 
-                        this._fileInfos[i].LastWriteTime <= filter.EndDateTime.Value)
-                    {
-                        filterPassed++;
-                    }
-
-                    if(filterPassed == FiltersCount)
-                    {
-
-                    }
-                }
-            }
-        }
 
         public ActivityQueryFilter Filter { private get; set; }
 
@@ -83,7 +58,7 @@ namespace UserActivityLogger
 
         public bool MoveNext()
         {
-            return this.GetNextImage();
+            return this.GetNextFile();
         }
 
         public void Reset()
@@ -95,35 +70,61 @@ namespace UserActivityLogger
         {
             int imagePositionInFile = this.GetImagePositionInLogFileAndSetFileIndex(positionNumber);
 
-            if (this._jarFile != null)
+            if (this._jarFileReader != null)
             {
-                this._jarFile.Dispose();
+                this._jarFileReader.Dispose();
             }
 
-            this._jarFile = this._jarFileFactory.GetJarFileReader(this._fileInfos[this._fileIndex].FullName);
+            this._jarFileReader = this._jarFileFactory.GetJarFileReader(this._fileInfos[this._fileIndex].FullName);
 
             this.MoveIndexToPostion(imagePositionInFile);
         }
 
+        public void ChangePostionEx(int positionNumber)
+        {
+            int imagePositionInFile = this.GetImagePositionInLogFileAndSetFileIndex(positionNumber);
+
+            var fileItemInfo = _fileOffsetInfoMap[positionNumber];
+            
+            if (this._jarFileReader != null && this._jarFileReader.JarFilePath != fileItemInfo.JarFilePath)
+            {
+                this._jarFileReader.Dispose();
+                this._jarFileReader = this._jarFileFactory.GetJarFileReader(fileItemInfo.JarFilePath);
+            }
+
+            _jarFileReader.MoveFileHeader(fileItemInfo.OffSetInJarFile);
+        }
+
         public void Dispose()
         {
-            if (this._jarFile != null)
+            if (this._jarFileReader != null)
             {
-                this._jarFile.Dispose();
+                this._jarFileReader.Dispose();
             }
         }
 
-        private int SetFileCount()
+        private int GetFileCount()
         {
             var fileCount = 0;
 
             this.imagesInLogFiles = new List<int>();
 
+
             foreach (var file in this._fileInfos)
             {
                 using (var logFileReader = this._jarFileFactory.GetJarFileReader(file.FullName))
                 {
-                    fileCount += logFileReader.FilesCount;
+                    //fileCount += logFileReader.FilesCount;
+
+                    var offset = logFileReader.GetNextFileOffset();
+
+                    while (offset != -1)
+                    {
+                        fileCount++;
+                        _fileOffsetInfoMap[fileCount] = new FileItemInfo(file.FullName, offset, fileCount);
+                        offset = logFileReader.GetNextFileOffset();
+                    }
+
                     this.imagesInLogFiles.Add(logFileReader.FilesCount);
                 }
             }
@@ -131,21 +132,21 @@ namespace UserActivityLogger
             return fileCount;
         }
 
-        private bool GetNextImage()
+        private bool GetNextFile()
         {
             if (this._fileIndex >= this._fileInfos.Count)
             {
                 this._currentActivity = null;
             }
 
-            if (this._jarFile == null)
+            if (this._jarFileReader == null)
             {
-                this._jarFile = this._jarFileFactory.GetJarFileReader(this._fileInfos[this._fileIndex].FullName);
+                this._jarFileReader = this._jarFileFactory.GetJarFileReader(this._fileInfos[this._fileIndex].FullName);
             }
 
-            var image = this._jarFile.GetNextFile();
+            var file = this._jarFileReader.GetNextFile();
 
-            if (image == null)
+            if (file == null)
             {
                 if (this._fileIndex + 1 >= this.imagesInLogFiles.Count)
                 {
@@ -153,13 +154,13 @@ namespace UserActivityLogger
                 }
 
                 this._fileIndex++;
-                this._jarFile.Dispose();
-                this._jarFile = null;
-                this.GetNextImage();
+                this._jarFileReader.Dispose();
+                this._jarFileReader = null;
+                this.GetNextFile();
                 return true;
             }
 
-            this._currentActivity = this.BytesToActivity(image.Containt);
+            this._currentActivity = this.BytesToActivity(file.Containt);
             return true;
         }
 
@@ -181,14 +182,13 @@ namespace UserActivityLogger
             return new ImageCommentEmbedder().GetComments(stream);
         }
 
-
         private void MoveIndexToPostion(int imagePositionInFile)
         {
             var ind = 0;
 
             while (ind < imagePositionInFile)
             {
-                this._jarFile.GetNextFile();
+                this._jarFileReader.GetNextFile();
                 ind++;
             }
         }
@@ -210,5 +210,75 @@ namespace UserActivityLogger
             }
             return imagePositionInFile;
         }
+
+        private int GetImagePositionInLogFileAndSetFileIndexExt(int positionNumber)
+        {
+            int count = 0;
+            var imagePositionInFile = -1;
+
+            for (var i = 0; i < this.imagesInLogFiles.Count; i++)
+            {
+                if (count + this.imagesInLogFiles[i] >= positionNumber)
+                {
+                    this._fileIndex = i;
+                    imagePositionInFile = positionNumber - count;
+                    break;
+                }
+                count += this.imagesInLogFiles[i];
+            }
+            return imagePositionInFile;
+        }
+
+        //Future used methods
+        private void FilterOutFiles(ActivityQueryFilter filter)
+        {
+            const int FiltersCount = 2;
+            if (filter != null)
+            {
+                var filterPassed = 0;
+                for (var i = 0; i < this._fileInfos.Count; i++)
+                {
+                    if (filter.StartDateTime.HasValue &&
+                        this._fileInfos[i].LastWriteTime >= filter.StartDateTime.Value)
+                    {
+                        filterPassed++;
+                    }
+
+                    if (filter.EndDateTime.HasValue &&
+                        this._fileInfos[i].LastWriteTime <= filter.EndDateTime.Value)
+                    {
+                        filterPassed++;
+                    }
+
+                    if (filterPassed == FiltersCount)
+                    {
+
+                    }
+                }
+            }
+        }
+
+
+        private class FileItemInfo
+        {
+            public FileItemInfo(string jarFilePath, long offSetInJarFile, int index)
+            {
+                JarFilePath = jarFilePath;
+                OffSetInJarFile = offSetInJarFile;
+                Index = index;
+            }
+            public string JarFilePath { get; private set; }
+            public long OffSetInJarFile { get; private set; }
+            public int Index { get; private set; }
+        }
+
     }
+
+
+
+
+
+
+
+
 }

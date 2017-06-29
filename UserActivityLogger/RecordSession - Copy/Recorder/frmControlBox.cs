@@ -66,32 +66,24 @@ namespace RecordSession
             }
 
             _pictureViewerFrom = new frmPictureViewer();
-           
-            _pictureViewerFrom.MdiParent = this.MdiParent;
             _pictureViewerFrom.timer2.Interval = (int)UpDownTimer.Value;
             _pictureViewerFrom.OnCommentsFetched = OnCommentsFetched;
             _pictureViewerFrom.DisplayChange = new Action<int>(DisplayChange);
             _pictureViewerFrom.OnIndexChanged = new Action<int>(OnIndexChange);
             _pictureViewerFrom.WindowState = FormWindowState.Maximized;
-            _pictureViewerFrom.Dock = DockStyle.Fill;
-            _pictureViewerFrom.FormBorderStyle = FormBorderStyle.None;
-
             _pictureViewerFrom.Show();
 
             trackBar1.Maximum = _pictureViewerFrom.Play(textBox1.Text);
             trackBar1.Minimum = 0;
             lblMaxValue.Text = trackBar1.Maximum.ToString();
 
-           var frmVideoController = new VideoControlBox(_pictureViewerFrom, trackBar1.Maximum);
-          
-            frmVideoController.Show();
-           // frmVideoController.MdiParent = this.MdiParent;
+           //var frmVideoController = new VideoControlBox(_pictureViewerFrom, trackBar1.Maximum);
+           // frmVideoController.Show();
+
 
             SetOpacity();
-            this.WindowState = FormWindowState.Minimized;
+           // this.WindowState = FormWindowState.Minimized;
         }
-
-       
 
         double _Opacity = 1;
         private void SetOpacity()
@@ -146,7 +138,6 @@ namespace RecordSession
 
         private void Form2_Load(object sender, EventArgs e)
         {
-            
             this.TopMost = true;
             Application.ThreadException += new ThreadExceptionEventHandler(MyCommonExceptionHandlingMethod);
         }

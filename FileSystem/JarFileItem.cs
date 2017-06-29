@@ -9,16 +9,17 @@ namespace FileSystem
     public class JarFileItem
     {
         public JarFileItem(Dictionary<string, string> headers, string filePath)
-            : this(headers, filePath, null)
+            : this(headers, filePath, null, -1)
         {
         }
 
-        public JarFileItem(Dictionary<string, string> headers, string filePath, byte[] containt)
+        public JarFileItem(Dictionary<string, string> headers, string filePath, byte[] containt, long offSetInJarFile)
         {
             //To DO: Ensure 
             this.Headers = headers;
             this.FilePath = filePath;
             this.Containt = containt;
+            OffSetInJarFile = offSetInJarFile;
         }
 
         public Dictionary<string, string> Headers { get; private set; }
@@ -26,5 +27,7 @@ namespace FileSystem
         public string FilePath { get; private set; }
 
         public byte[] Containt { get; private set; }
+
+        public long OffSetInJarFile { get; private set; }
     }
 }

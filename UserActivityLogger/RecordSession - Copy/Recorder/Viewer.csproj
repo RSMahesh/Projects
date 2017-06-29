@@ -57,7 +57,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Events.cs" />
     <Compile Include="frmControlBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -122,10 +121,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\EventPublisher\EventPublisher.csproj">
-      <Project>{f1f4fc21-024f-4567-ade5-b18270b65c8c}</Project>
-      <Name>EventPublisher</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\FileSystem\FileSystem.csproj">
       <Project>{93fad5e9-57b5-4676-9372-18ae8facc655}</Project>
       <Name>FileSystem</Name>
@@ -142,9 +137,6 @@
       <Project>{6fe4df64-9e52-4378-ab2e-8b8d332baa9c}</Project>
       <Name>ActivityLogger</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MV3487 %2823%29--1.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

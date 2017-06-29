@@ -11,5 +11,8 @@ namespace FileSystem
     {
         int FilesCount { get; }
         JarFileItem GetNextFile();
+        long GetNextFileOffset();
+        void MoveFileHeader(long position);
+        string JarFilePath { get; }
     }
 }

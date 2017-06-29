@@ -15,7 +15,6 @@ using FileSystem;
 
 using UserActivityLogger;
 using Core;
-using EventPublisher;
 
 namespace RecordSession
 {
@@ -195,16 +194,6 @@ namespace RecordSession
             {
                 this.Text = "Paused " + Index.ToString();
             }
-        }
-
-        private void panel1_Resize(object sender, EventArgs e)
-        {
-            EventContainer.PublishEvent(RecordSession.Events.OnPictureViwerResize.ToString(), new EventArg(Guid.NewGuid(), e));
-        }
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
         }
     }
 }

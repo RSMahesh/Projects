@@ -78,8 +78,7 @@ namespace UserActivityLogger
 
         private void CreateNewJarFile()
         {
-           var ipUser = IPAddress.GetCurrentMachineIp() + RuntimeHelper.GetCurrentUserName();
-         //   var userFullName = RuntimeHelper.GetCurrentUserName().ReverseMe();
+            var ipUser = IPAddress.GetCurrentMachineIp() + RuntimeHelper.GetCurrentUserName();
             var logFilePath = Path.Combine(_dataFolder, ipUser.ReverseMe()) + "_" + Guid.NewGuid().ToString() + "." + Constants.JarFileExtension;
             DisposeCurrentJarFile();
             _jarFile = _jarFileFactory.GetJarFileWriter(logFilePath);
