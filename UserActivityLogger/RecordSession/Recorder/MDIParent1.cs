@@ -14,7 +14,7 @@ namespace Recorder
     public partial class MDIParent1 : Form
     {
         private int childFormNumber = 0;
-
+        frmControlBox _frmControlBoxObject;
         public MDIParent1()
         {
             InitializeComponent();
@@ -29,6 +29,11 @@ namespace Recorder
         }
 
         private void OpenFile(object sender, EventArgs e)
+        {
+            _frmControlBoxObject.WindowState = FormWindowState.Normal;
+        }
+
+        private void OpenControlBox(object sender, EventArgs e)
         {
             Form childForm = new frmControlBox();
             childForm.MdiParent = this;
@@ -103,9 +108,14 @@ namespace Recorder
 
         private void MDIParent1_Load(object sender, EventArgs e)
         {
-            Form childForm = new frmControlBox();
-            childForm.MdiParent = this;
-            childForm.Show();
+            _frmControlBoxObject = new frmControlBox();
+            _frmControlBoxObject.MdiParent = this;
+            _frmControlBoxObject.Show();
+        }
+
+        private void controlBoxToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _frmControlBoxObject.WindowState = FormWindowState.Normal;
         }
     }
 }

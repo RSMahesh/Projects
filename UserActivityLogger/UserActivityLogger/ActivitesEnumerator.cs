@@ -66,7 +66,7 @@ namespace UserActivityLogger
             this.MoveIndexToPostion(0);
         }
 
-        public void ChangePostion(int positionNumber)
+        public void ChangePostionOld(int positionNumber)
         {
             int imagePositionInFile = this.GetImagePositionInLogFileAndSetFileIndex(positionNumber);
 
@@ -80,7 +80,7 @@ namespace UserActivityLogger
             this.MoveIndexToPostion(imagePositionInFile);
         }
 
-        public void ChangePostionEx(int positionNumber)
+        public void ChangePostion(int positionNumber)
         {
             int imagePositionInFile = this.GetImagePositionInLogFileAndSetFileIndex(positionNumber);
 

@@ -28,7 +28,8 @@ namespace RecordSession
         ActivityReader _activityReader;
         public Action<string> OnCommentsFetched;
         public Action<int> OnIndexChanged;
-        
+
+        public bool FastMode { get; set; }
 
         public int Index
         {
@@ -100,11 +101,32 @@ namespace RecordSession
                 return;
             }
 
+            
             var activity = _activityReader.GetEnumerator().Current;
             pictureBox1.Image = activity.ScreenShot;
-            OnCommentsFetched?.Invoke(activity.KeyPressedData);
+            if (!FastMode)
+            {
+                OnCommentsFetched?.Invoke(activity.KeyPressedData);
+            }
             DisplayChange(Index);
             Index += incrementCount;
+
+
+            if (Index <= 0)
+            {
+                timer2.Enabled = false;
+                _activityReader.Dispose();
+                return;
+            }
+
+
+            if (incrementCount == -1)
+            {
+                ChangeNextImagePostion(Index);
+            }
+
+
+            
 
             this.Text = "Playing " + Index.ToString();
         }

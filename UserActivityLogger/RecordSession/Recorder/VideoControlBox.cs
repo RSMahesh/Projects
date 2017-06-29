@@ -1,15 +1,7 @@
 ﻿using EventPublisher;
 using RecordSession;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using TransparentWindow;
 
 namespace Recorder
 {
@@ -29,14 +21,14 @@ namespace Recorder
         }
         private void VideoControlBox_Load(object sender, EventArgs e)
         {
-           // this.BackColor = Color.LimeGreen;
-          //  this.TransparencyKey = Color.LimeGreen;
+            // this.BackColor = Color.LimeGreen;
+            //  this.TransparencyKey = Color.LimeGreen;
             this.TopMost = true;
-           // this.trackBar1.BackColor = Color.LimeGreen;
+            // this.trackBar1.BackColor = Color.LimeGreen;
             this.FormBorderStyle = FormBorderStyle.None;
             this.Top = _pictureViewerFrom.MdiParent.Bottom - this.Height;
-            this.Opacity = 0.5;
-         
+            this.Opacity = 0.8;
+
             // var transpainter = new Transpainter(this);
             // transpainter.MakeTranseparent();
         }
@@ -85,12 +77,12 @@ namespace Recorder
 
         private void OnPictureViwerResize(EventArg eventArg)
         {
-            this.Top = _pictureViewerFrom.MdiParent.Bottom  - this.Height;
+            this.Top = _pictureViewerFrom.MdiParent.Bottom - this.Height;
         }
 
         private void btnForward_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void btnForward_MouseDown(object sender, MouseEventArgs e)
@@ -104,18 +96,42 @@ namespace Recorder
             _pictureViewerFrom.timer2.Interval = originalInterval;
         }
 
+        int fastSpeed = 10;
         private void chkForward_CheckedChanged(object sender, EventArgs e)
         {
-            if(chkForward.Checked)
+            chkBackward.Checked = false;
+
+            if (chkForward.Checked)
             {
                 originalInterval = _pictureViewerFrom.timer2.Interval;
-                _pictureViewerFrom.timer2.Interval = 1;
+                _pictureViewerFrom.FastMode = true;
+                _pictureViewerFrom.timer2.Interval = fastSpeed;
             }
             else
             {
+                _pictureViewerFrom.FastMode = false;
                 _pictureViewerFrom.timer2.Interval = originalInterval;
             }
 
+        }
+
+        private void chkBackward_CheckedChanged(object sender, EventArgs e)
+        {
+            chkForward.Checked = false;
+
+            if (chkBackward.Checked)
+            {
+                _pictureViewerFrom.incrementCount = -1;
+                originalInterval = _pictureViewerFrom.timer2.Interval;
+                _pictureViewerFrom.FastMode = true;
+                _pictureViewerFrom.timer2.Interval = fastSpeed;
+            }
+            else
+            {
+                _pictureViewerFrom.incrementCount = 1;
+                _pictureViewerFrom.FastMode = false;
+                _pictureViewerFrom.timer2.Interval = originalInterval;
+            }
         }
     }
 }

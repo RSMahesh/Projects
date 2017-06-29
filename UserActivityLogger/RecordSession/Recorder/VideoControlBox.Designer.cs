@@ -30,10 +30,10 @@
         {
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.btnBackward = new System.Windows.Forms.Button();
+            this.chkForward = new System.Windows.Forms.CheckBox();
             this.btnPlay = new System.Windows.Forms.Button();
             this.lblCurrentIndex = new System.Windows.Forms.Label();
-            this.chkForward = new System.Windows.Forms.CheckBox();
+            this.chkBackward = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -49,8 +49,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.chkBackward);
             this.groupBox1.Controls.Add(this.chkForward);
-            this.groupBox1.Controls.Add(this.btnBackward);
             this.groupBox1.Controls.Add(this.btnPlay);
             this.groupBox1.Location = new System.Drawing.Point(178, 24);
             this.groupBox1.Name = "groupBox1";
@@ -58,14 +58,17 @@
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             // 
-            // btnBackward
+            // chkForward
             // 
-            this.btnBackward.Location = new System.Drawing.Point(71, 19);
-            this.btnBackward.Name = "btnBackward";
-            this.btnBackward.Size = new System.Drawing.Size(75, 23);
-            this.btnBackward.TabIndex = 1;
-            this.btnBackward.Text = "<<";
-            this.btnBackward.UseVisualStyleBackColor = true;
+            this.chkForward.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkForward.AutoSize = true;
+            this.chkForward.Location = new System.Drawing.Point(287, 19);
+            this.chkForward.Name = "chkForward";
+            this.chkForward.Size = new System.Drawing.Size(29, 23);
+            this.chkForward.TabIndex = 2;
+            this.chkForward.Text = ">>";
+            this.chkForward.UseVisualStyleBackColor = true;
+            this.chkForward.CheckedChanged += new System.EventHandler(this.chkForward_CheckedChanged);
             // 
             // btnPlay
             // 
@@ -85,17 +88,17 @@
             this.lblCurrentIndex.TabIndex = 2;
             this.lblCurrentIndex.Text = "label1";
             // 
-            // chkForward
+            // chkBackward
             // 
-            this.chkForward.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chkForward.AutoSize = true;
-            this.chkForward.Location = new System.Drawing.Point(287, 19);
-            this.chkForward.Name = "chkForward";
-            this.chkForward.Size = new System.Drawing.Size(29, 23);
-            this.chkForward.TabIndex = 2;
-            this.chkForward.Text = ">>";
-            this.chkForward.UseVisualStyleBackColor = true;
-            this.chkForward.CheckedChanged += new System.EventHandler(this.chkForward_CheckedChanged);
+            this.chkBackward.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkBackward.AutoSize = true;
+            this.chkBackward.Location = new System.Drawing.Point(97, 18);
+            this.chkBackward.Name = "chkBackward";
+            this.chkBackward.Size = new System.Drawing.Size(29, 23);
+            this.chkBackward.TabIndex = 3;
+            this.chkBackward.Text = "<<";
+            this.chkBackward.UseVisualStyleBackColor = true;
+            this.chkBackward.CheckedChanged += new System.EventHandler(this.chkBackward_CheckedChanged);
             // 
             // VideoControlBox
             // 
@@ -123,9 +126,9 @@
 
         private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button btnBackward;
         private System.Windows.Forms.Button btnPlay;
         private System.Windows.Forms.Label lblCurrentIndex;
         private System.Windows.Forms.CheckBox chkForward;
+        private System.Windows.Forms.CheckBox chkBackward;
     }
 }
