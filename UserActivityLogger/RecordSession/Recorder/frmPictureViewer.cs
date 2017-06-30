@@ -31,6 +31,7 @@ namespace RecordSession
 
         public bool FastMode { get; set; }
 
+       
         public int Index
         {
             get
@@ -47,6 +48,7 @@ namespace RecordSession
         public frmPictureViewer()
         {
             InitializeComponent();
+            EventContainer.SubscribeEvent(RecordSession.Events.CloseCurrentSession.ToString(), OnCloseCurrentSession);
         }
 
         public void ChangeNextImagePostion(int index)
@@ -97,7 +99,7 @@ namespace RecordSession
             if (!_activityReader.GetEnumerator().MoveNext())
             {
                 timer2.Enabled = false;
-                _activityReader.Dispose();
+                //_activityReader.Dispose();
                 return;
             }
 
@@ -115,7 +117,7 @@ namespace RecordSession
             if (Index <= 0)
             {
                 timer2.Enabled = false;
-                _activityReader.Dispose();
+                //_activityReader.Dispose();
                 return;
             }
 
@@ -124,9 +126,6 @@ namespace RecordSession
             {
                 ChangeNextImagePostion(Index);
             }
-
-
-            
 
             this.Text = "Playing " + Index.ToString();
         }
@@ -187,15 +186,17 @@ namespace RecordSession
 
         private void frmPictureViewer_Resize(object sender, EventArgs e)
         {
-            if (this.WindowState == FormWindowState.Normal)
-            {
-                pictureBox1.Dock = DockStyle.Fill;
-                pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-            }
-            else
+            if (this.MdiParent.WindowState == FormWindowState.Maximized)
             {
                 pictureBox1.Dock = DockStyle.None;
                 pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
+
+              
+            }
+            else
+            {
+                pictureBox1.Dock = DockStyle.Fill;
+                pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             }
         }
 
@@ -222,6 +223,22 @@ namespace RecordSession
         private void panel1_Resize(object sender, EventArgs e)
         {
             EventContainer.PublishEvent(RecordSession.Events.OnPictureViwerResize.ToString(), new EventArg(Guid.NewGuid(), e));
+        }
+
+        private void OnCloseCurrentSession(EventArg eventArg)
+        {
+            timer2.Enabled = false;
+            if (_activityReader != null)
+            {
+                _activityReader.Dispose();
+            }
+            this.Close();
+            this.Dispose();
+        }
+
+        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+            EventContainer.PublishEvent(RecordSession.Events.ShowVideoControlBox.ToString(), new EventArg(Guid.NewGuid(), e));
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)

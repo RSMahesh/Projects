@@ -8,6 +8,8 @@ namespace RecordSession
 {
     public enum Events
     {
-        OnPictureViwerResize
+        OnPictureViwerResize,
+        CloseCurrentSession,
+        ShowVideoControlBox
     }
 }

@@ -1,4 +1,5 @@
-﻿using RecordSession;
+﻿using EventPublisher;
+using RecordSession;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,15 +31,11 @@ namespace Recorder
 
         private void OpenFile(object sender, EventArgs e)
         {
-            _frmControlBoxObject.WindowState = FormWindowState.Normal;
+            OpenControlBox();
+            EventContainer.PublishEvent(RecordSession.Events.CloseCurrentSession.ToString(), new EventArg(Guid.NewGuid(), e));
         }
 
-        private void OpenControlBox(object sender, EventArgs e)
-        {
-            Form childForm = new frmControlBox();
-            childForm.MdiParent = this;
-            childForm.Show();
-        }
+     
 
         private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -56,28 +53,9 @@ namespace Recorder
             this.Close();
         }
 
-        private void CutToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-        }
+       
 
-        private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void PasteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void ToolBarToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            toolStrip.Visible = toolBarToolStripMenuItem.Checked;
-        }
-
-        private void StatusBarToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            statusStrip.Visible = statusBarToolStripMenuItem.Checked;
-        }
-
+      
         private void CascadeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LayoutMdi(MdiLayout.Cascade);
@@ -108,14 +86,33 @@ namespace Recorder
 
         private void MDIParent1_Load(object sender, EventArgs e)
         {
+            OpenControlBox();
+        }
+
+        private void OpenControlBox()
+        {
+            if(_frmControlBoxObject != null)
+            {
+                _frmControlBoxObject.Dispose();
+            }
+
             _frmControlBoxObject = new frmControlBox();
             _frmControlBoxObject.MdiParent = this;
             _frmControlBoxObject.Show();
         }
-
         private void controlBoxToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _frmControlBoxObject.WindowState = FormWindowState.Normal;
+        }
+
+        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EventContainer.PublishEvent(RecordSession.Events.CloseCurrentSession.ToString(), new EventArg(Guid.NewGuid(), e));
+        }
+
+        private void undoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

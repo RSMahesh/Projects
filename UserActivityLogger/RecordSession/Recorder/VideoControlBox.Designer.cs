@@ -29,13 +29,11 @@
         private void InitializeComponent()
         {
             this.trackBar1 = new System.Windows.Forms.TrackBar();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.chkForward = new System.Windows.Forms.CheckBox();
-            this.btnPlay = new System.Windows.Forms.Button();
             this.lblCurrentIndex = new System.Windows.Forms.Label();
-            this.chkBackward = new System.Windows.Forms.CheckBox();
+            this.btnPlay = new System.Windows.Forms.Button();
+            this.btnForward = new System.Windows.Forms.Button();
+            this.btnBackward = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
-            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // trackBar1
@@ -47,66 +45,57 @@
             this.trackBar1.TabIndex = 0;
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll_1);
             // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.chkBackward);
-            this.groupBox1.Controls.Add(this.chkForward);
-            this.groupBox1.Controls.Add(this.btnPlay);
-            this.groupBox1.Location = new System.Drawing.Point(178, 24);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(414, 47);
-            this.groupBox1.TabIndex = 1;
-            this.groupBox1.TabStop = false;
-            // 
-            // chkForward
-            // 
-            this.chkForward.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chkForward.AutoSize = true;
-            this.chkForward.Location = new System.Drawing.Point(287, 19);
-            this.chkForward.Name = "chkForward";
-            this.chkForward.Size = new System.Drawing.Size(29, 23);
-            this.chkForward.TabIndex = 2;
-            this.chkForward.Text = ">>";
-            this.chkForward.UseVisualStyleBackColor = true;
-            this.chkForward.CheckedChanged += new System.EventHandler(this.chkForward_CheckedChanged);
-            // 
-            // btnPlay
-            // 
-            this.btnPlay.Location = new System.Drawing.Point(170, 19);
-            this.btnPlay.Name = "btnPlay";
-            this.btnPlay.Size = new System.Drawing.Size(75, 23);
-            this.btnPlay.TabIndex = 0;
-            this.btnPlay.Text = "Play";
-            this.btnPlay.UseVisualStyleBackColor = true;
-            // 
             // lblCurrentIndex
             // 
             this.lblCurrentIndex.AutoSize = true;
-            this.lblCurrentIndex.Location = new System.Drawing.Point(665, 29);
+            this.lblCurrentIndex.Location = new System.Drawing.Point(667, 29);
             this.lblCurrentIndex.Name = "lblCurrentIndex";
             this.lblCurrentIndex.Size = new System.Drawing.Size(35, 13);
             this.lblCurrentIndex.TabIndex = 2;
             this.lblCurrentIndex.Text = "label1";
             // 
-            // chkBackward
+            // btnPlay
             // 
-            this.chkBackward.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chkBackward.AutoSize = true;
-            this.chkBackward.Location = new System.Drawing.Point(97, 18);
-            this.chkBackward.Name = "chkBackward";
-            this.chkBackward.Size = new System.Drawing.Size(29, 23);
-            this.chkBackward.TabIndex = 3;
-            this.chkBackward.Text = "<<";
-            this.chkBackward.UseVisualStyleBackColor = true;
-            this.chkBackward.CheckedChanged += new System.EventHandler(this.chkBackward_CheckedChanged);
+            this.btnPlay.Location = new System.Drawing.Point(361, 19);
+            this.btnPlay.Name = "btnPlay";
+            this.btnPlay.Size = new System.Drawing.Size(75, 34);
+            this.btnPlay.TabIndex = 4;
+            this.btnPlay.Text = "Pause";
+            this.btnPlay.UseVisualStyleBackColor = true;
+            this.btnPlay.Click += new System.EventHandler(this.btnPlay_Click);
+            // 
+            // btnForward
+            // 
+            this.btnForward.Location = new System.Drawing.Point(432, 19);
+            this.btnForward.Name = "btnForward";
+            this.btnForward.Size = new System.Drawing.Size(75, 34);
+            this.btnForward.TabIndex = 5;
+            this.btnForward.Text = ">>";
+            this.btnForward.UseVisualStyleBackColor = true;
+            this.btnForward.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnForward_MouseDown_1);
+            this.btnForward.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnForward_MouseUp_1);
+            // 
+            // btnBackward
+            // 
+            this.btnBackward.Location = new System.Drawing.Point(292, 19);
+            this.btnBackward.Name = "btnBackward";
+            this.btnBackward.Size = new System.Drawing.Size(75, 34);
+            this.btnBackward.TabIndex = 6;
+            this.btnBackward.Text = "<<";
+            this.btnBackward.UseVisualStyleBackColor = true;
+            this.btnBackward.Click += new System.EventHandler(this.btnBackward_Click);
+            this.btnBackward.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnBackward_MouseDown);
+            this.btnBackward.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnBackward_MouseUp);
             // 
             // VideoControlBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(790, 83);
+            this.ClientSize = new System.Drawing.Size(790, 56);
+            this.Controls.Add(this.btnBackward);
+            this.Controls.Add(this.btnForward);
+            this.Controls.Add(this.btnPlay);
             this.Controls.Add(this.lblCurrentIndex);
-            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.trackBar1);
             this.KeyPreview = true;
             this.Name = "VideoControlBox";
@@ -115,8 +104,6 @@
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.VideoControlBox_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.VideoControlBox_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -125,10 +112,9 @@
         #endregion
 
         private System.Windows.Forms.TrackBar trackBar1;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button btnPlay;
         private System.Windows.Forms.Label lblCurrentIndex;
-        private System.Windows.Forms.CheckBox chkForward;
-        private System.Windows.Forms.CheckBox chkBackward;
+        private System.Windows.Forms.Button btnPlay;
+        private System.Windows.Forms.Button btnForward;
+        private System.Windows.Forms.Button btnBackward;
     }
 }

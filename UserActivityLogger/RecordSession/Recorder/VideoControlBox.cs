@@ -1,6 +1,7 @@
 ﻿using EventPublisher;
 using RecordSession;
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Recorder
@@ -8,7 +9,8 @@ namespace Recorder
     public partial class VideoControlBox : Form
     {
         frmPictureViewer _pictureViewerFrom = null;
-        int originalInterval;
+        int _originalInterval;
+        const int _fastSpeed = 10;
         public VideoControlBox(frmPictureViewer pictureViewerFrom, int count)
         {
             _pictureViewerFrom = pictureViewerFrom;
@@ -17,20 +19,21 @@ namespace Recorder
             InitializeComponent();
             trackBar1.Maximum = count;
             EventContainer.SubscribeEvent(RecordSession.Events.OnPictureViwerResize.ToString(), OnPictureViwerResize);
-
+            EventContainer.SubscribeEvent(RecordSession.Events.CloseCurrentSession.ToString(), OnCloseCurrentSession);
+            EventContainer.SubscribeEvent(RecordSession.Events.ShowVideoControlBox.ToString(), OnShowVideoControlBox);
         }
+
         private void VideoControlBox_Load(object sender, EventArgs e)
         {
-            // this.BackColor = Color.LimeGreen;
-            //  this.TransparencyKey = Color.LimeGreen;
-            this.TopMost = true;
-            // this.trackBar1.BackColor = Color.LimeGreen;
-            this.FormBorderStyle = FormBorderStyle.None;
-            this.Top = _pictureViewerFrom.MdiParent.Bottom - this.Height;
-            this.Opacity = 0.8;
+            this.BackColor = Color.LimeGreen;
+            this.TransparencyKey = Color.LimeGreen;
 
-            // var transpainter = new Transpainter(this);
-            // transpainter.MakeTranseparent();
+            this.TopMost = true;
+            this.FormBorderStyle = FormBorderStyle.None;
+            OnPictureViwerResize(null);
+            this.Opacity = 0.8;
+            this.trackBar1.BackColor = Color.LimeGreen;
+
         }
 
         private void OnIndexChange(int index)
@@ -38,7 +41,6 @@ namespace Recorder
             trackBar1.Value = index;
             _pictureViewerFrom.ChangeNextImagePostion(trackBar1.Value);
         }
-
 
         private void DisplayChange(int index)
         {
@@ -77,61 +79,115 @@ namespace Recorder
 
         private void OnPictureViwerResize(EventArg eventArg)
         {
-            this.Top = _pictureViewerFrom.MdiParent.Bottom - this.Height;
+            if (_pictureViewerFrom.MdiParent != null)
+            {
+                this.Top = _pictureViewerFrom.MdiParent.Bottom - (this.Height + 50);
+                this.Left = _pictureViewerFrom.MdiParent.Left + (_pictureViewerFrom.MdiParent.Width / 2) - (this.Width / 2);
+            }
         }
 
-        private void btnForward_Click(object sender, EventArgs e)
+        private void OnCloseCurrentSession(EventArg eventArg)
         {
-
+            this.Close();
+            this.Dispose();
         }
 
+        private void OnShowVideoControlBox(EventArg eventArg)
+        {
+            //this.WindowState = FormWindowState.Normal;
+            this.Visible = true;
+        }
         private void btnForward_MouseDown(object sender, MouseEventArgs e)
         {
-            originalInterval = _pictureViewerFrom.timer2.Interval;
+            _originalInterval = _pictureViewerFrom.timer2.Interval;
             _pictureViewerFrom.timer2.Interval = 1;
         }
 
         private void btnForward_MouseUp(object sender, MouseEventArgs e)
         {
-            _pictureViewerFrom.timer2.Interval = originalInterval;
+            _pictureViewerFrom.timer2.Interval = _originalInterval;
         }
+        //private void chkForward_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    chkBackward.Checked = false;
 
-        int fastSpeed = 10;
-        private void chkForward_CheckedChanged(object sender, EventArgs e)
+        //    if (chkForward.Checked)
+        //    {
+        //        _originalInterval = _pictureViewerFrom.timer2.Interval;
+        //        _pictureViewerFrom.FastMode = true;
+        //        _pictureViewerFrom.timer2.Interval = _fastSpeed;
+        //    }
+        //    else
+        //    {
+        //        _pictureViewerFrom.FastMode = false;
+        //        _pictureViewerFrom.timer2.Interval = _originalInterval;
+        //    }
+        //}
+
+        //private void chkBackward_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    chkForward.Checked = false;
+
+        //    if (chkBackward.Checked)
+        //    {
+        //        _pictureViewerFrom.incrementCount = -1;
+        //        _originalInterval = _pictureViewerFrom.timer2.Interval;
+        //        _pictureViewerFrom.FastMode = true;
+        //        _pictureViewerFrom.timer2.Interval = _fastSpeed;
+        //    }
+        //    else
+        //    {
+        //        _pictureViewerFrom.incrementCount = 1;
+        //        _pictureViewerFrom.FastMode = false;
+        //        _pictureViewerFrom.timer2.Interval = _originalInterval;
+        //    }
+        //}
+
+        private void btnPlay_Click(object sender, EventArgs e)
         {
-            chkBackward.Checked = false;
-
-            if (chkForward.Checked)
+            if (_pictureViewerFrom.timer2.Enabled)
             {
-                originalInterval = _pictureViewerFrom.timer2.Interval;
-                _pictureViewerFrom.FastMode = true;
-                _pictureViewerFrom.timer2.Interval = fastSpeed;
+                btnPlay.Text = "Play";
             }
             else
             {
-                _pictureViewerFrom.FastMode = false;
-                _pictureViewerFrom.timer2.Interval = originalInterval;
+                btnPlay.Text = "Pause";
             }
+            _pictureViewerFrom.timer2.Enabled = !_pictureViewerFrom.timer2.Enabled;
+        }
+
+        private void btnBackward_MouseDown(object sender, MouseEventArgs e)
+        {
+            _pictureViewerFrom.incrementCount = -1;
+            _originalInterval = _pictureViewerFrom.timer2.Interval;
+            _pictureViewerFrom.FastMode = true;
+            _pictureViewerFrom.timer2.Interval = _fastSpeed;
 
         }
 
-        private void chkBackward_CheckedChanged(object sender, EventArgs e)
+        private void btnBackward_MouseUp(object sender, MouseEventArgs e)
         {
-            chkForward.Checked = false;
+            _pictureViewerFrom.incrementCount = 1;
+            _pictureViewerFrom.FastMode = false;
+            _pictureViewerFrom.timer2.Interval = _originalInterval;
+        }
 
-            if (chkBackward.Checked)
-            {
-                _pictureViewerFrom.incrementCount = -1;
-                originalInterval = _pictureViewerFrom.timer2.Interval;
-                _pictureViewerFrom.FastMode = true;
-                _pictureViewerFrom.timer2.Interval = fastSpeed;
-            }
-            else
-            {
-                _pictureViewerFrom.incrementCount = 1;
-                _pictureViewerFrom.FastMode = false;
-                _pictureViewerFrom.timer2.Interval = originalInterval;
-            }
+        private void btnForward_MouseDown_1(object sender, MouseEventArgs e)
+        {
+            _originalInterval = _pictureViewerFrom.timer2.Interval;
+            _pictureViewerFrom.FastMode = true;
+            _pictureViewerFrom.timer2.Interval = _fastSpeed;
+        }
+
+        private void btnForward_MouseUp_1(object sender, MouseEventArgs e)
+        {
+            _pictureViewerFrom.FastMode = false;
+             _pictureViewerFrom.timer2.Interval = _originalInterval;
+        }
+
+        private void btnBackward_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

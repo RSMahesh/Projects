@@ -23,19 +23,16 @@ namespace RecordSession
         public frmControlBox()
         {
             InitializeComponent();
-          
+
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
-            _pictureViewerFrom.Index = trackBar1.Value;
-            _pictureViewerFrom.ChangeNextImagePostion(trackBar1.Value);
         }
 
         private void OnIndexChange(int index)
         {
-            trackBar1.Value = index;
-            _pictureViewerFrom.ChangeNextImagePostion(trackBar1.Value);
+
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -57,7 +54,6 @@ namespace RecordSession
                 }
                 catch { }
             }
-            trackBar1.Value = 0;
 
             if (!Directory.Exists(textBox1.Text.Trim()))
             {
@@ -66,32 +62,23 @@ namespace RecordSession
             }
 
             _pictureViewerFrom = new frmPictureViewer();
-           
             _pictureViewerFrom.MdiParent = this.MdiParent;
             _pictureViewerFrom.timer2.Interval = (int)UpDownTimer.Value;
             _pictureViewerFrom.OnCommentsFetched = OnCommentsFetched;
-            _pictureViewerFrom.DisplayChange = new Action<int>(DisplayChange);
             _pictureViewerFrom.OnIndexChanged = new Action<int>(OnIndexChange);
             _pictureViewerFrom.WindowState = FormWindowState.Maximized;
             _pictureViewerFrom.Dock = DockStyle.Fill;
             _pictureViewerFrom.FormBorderStyle = FormBorderStyle.None;
-
             _pictureViewerFrom.Show();
+            var frmVideoController = new VideoControlBox(_pictureViewerFrom, _pictureViewerFrom.Play(textBox1.Text));
 
-            trackBar1.Maximum = _pictureViewerFrom.Play(textBox1.Text);
-            trackBar1.Minimum = 0;
-            lblMaxValue.Text = trackBar1.Maximum.ToString();
-
-           var frmVideoController = new VideoControlBox(_pictureViewerFrom, trackBar1.Maximum);
-          
             frmVideoController.Show();
-           // frmVideoController.MdiParent = this.MdiParent;
 
             SetOpacity();
             this.WindowState = FormWindowState.Minimized;
         }
 
-       
+
 
         double _Opacity = 1;
         private void SetOpacity()
@@ -117,7 +104,6 @@ namespace RecordSession
 
             var processedKeyData = processor.ProcessKeys(comments);
             txtKeysLogged.Text += processedKeyData.ProcessedData + processedKeyData.UnProcessedData;
-            txtUnProcessedKey.Text += processedKeyData.UnProcessedData;
             _queueWithCapacity.Add(processedKeyData.ProcessedData);
             txtCurrentText.Text = _queueWithCapacity.GetText();
             txtKeysLogged.SelectionStart = txtKeysLogged.Text.Length;
@@ -144,9 +130,18 @@ namespace RecordSession
             }
         }
 
+        private const int CP_NOCLOSE_BUTTON = 0x200;
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams myCp = base.CreateParams;
+                myCp.ClassStyle = myCp.ClassStyle | CP_NOCLOSE_BUTTON;
+                return myCp;
+            }
+        }
         private void Form2_Load(object sender, EventArgs e)
         {
-            
             this.TopMost = true;
             Application.ThreadException += new ThreadExceptionEventHandler(MyCommonExceptionHandlingMethod);
         }
@@ -156,66 +151,10 @@ namespace RecordSession
             _pictureViewerFrom.timer2.Enabled = false;
         }
 
-        private void DisplayChange(int index)
-        {
-            try
-            {
-                trackBar1.Value = index;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-        }
 
         private void trackBar1_MouseUp(object sender, MouseEventArgs e)
         {
             _pictureViewerFrom.timer2.Enabled = true;
-        }
-
-        private void btnPause_Click(object sender, EventArgs e)
-        {
-            if (_pictureViewerFrom.timer2.Enabled)
-            {
-                btnPause.Text = "Ressume";
-                _pictureViewerFrom.timer2.Enabled = false;
-            }
-            else
-            {
-                btnPause.Text = "Pause";
-                _pictureViewerFrom.timer2.Interval = (int)UpDownTimer.Value;
-                _pictureViewerFrom.timer2.Enabled = true;
-            }
-
-        }
-
-        private void Form2_FormClosing(object sender, FormClosingEventArgs e)
-        {
-
-        }
-
-        private void Form2_KeyDown(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.KeyValue == 39)
-                {
-                    trackBar1.Value += 1;
-                    _pictureViewerFrom.Index = trackBar1.Value;
-
-                }
-                if (e.KeyValue == 37)
-                {
-                    trackBar1.Value -= 1;
-                    _pictureViewerFrom.Index = trackBar1.Value;
-                }
-
-                if (e.KeyCode == Keys.Escape)
-                {
-                    _pictureViewerFrom.MinimizeWindow();
-                }
-            }
-            catch { }
         }
 
         private void UpDownTimer_ValueChanged(object sender, EventArgs e)
@@ -266,29 +205,12 @@ namespace RecordSession
             txtKeysLogged.Text = string.Empty;
         }
 
-        private void trackBar1_ValueChanged(object sender, EventArgs e)
-        {
-            lblCurrentValue.Text = trackBar1.Value.ToString();
-        }
-
-
         private void btnSearch_Click(object sender, EventArgs e)
         {
             Search = true;
             _pictureViewerFrom.timer2.Interval = 5;
             _pictureViewerFrom.timer2.Enabled = true;
             btnSearch.Enabled = false;
-
-            //if (_pictureViewerFrom.timer2.Enabled)
-            //{
-            //    btnPause.Text = "Ressume";
-            //    _pictureViewerFrom.timer2.Enabled = false;
-            //}
-            //else
-            //{
-            //    btnPause.Text = "Pause";
-            //    _pictureViewerFrom.timer2.Enabled = true;
-            //}
         }
     }
 }
