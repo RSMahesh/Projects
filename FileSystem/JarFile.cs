@@ -14,8 +14,8 @@ namespace FileSystem
         const int FileCountFieldSize = 10;
         const int FileLengthFieldSize = 10;
         const int HeaderFieldSize = 500;
-
         readonly int _maxFileCount;
+        bool _oldFormat;
 
         public JarFile(FileAccessMode fileAccessMode, string jarFilePath) : this(fileAccessMode, jarFilePath, 100)
         { }
@@ -26,14 +26,21 @@ namespace FileSystem
             this.JarFilePath = jarFilePath;
             this._maxFileCount = maxfileCount;
 
+            if (Path.GetExtension(jarFilePath) == ".log")
+            {
+                _oldFormat = true;
+            }
+
             if (this._fileAccessMode == FileAccessMode.Read)
             {
-                this._reader = new Reader(jarFilePath);
+                this._reader = new Reader(jarFilePath, _oldFormat);
             }
             else
             {
                 this._writer = new Writer(jarFilePath);
             }
+
+
         }
 
         public string JarFilePath { get; private set; }
@@ -83,7 +90,7 @@ namespace FileSystem
                 }
                 else
                 {
-                    using (var tempReader = new Reader(this.JarFilePath))
+                    using (var tempReader = new Reader(this.JarFilePath, _oldFormat))
                     {
                         return tempReader.FileCount;
                     }
@@ -115,7 +122,7 @@ namespace FileSystem
 
         public void MoveFileHeader(long position)
         {
-             _reader.MoveFileHeader(position);
+            _reader.MoveFileHeader(position);
         }
 
         private class Writer
@@ -202,11 +209,13 @@ namespace FileSystem
         {
             BinaryReader _reader = null;
             private bool disposed = false;
+            private bool _oldFormat;
             private readonly string _logFile;
 
-            public Reader(string logFile)
+            public Reader(string logFile, bool oldFormat)
             {
                 this._logFile = logFile;
+                _oldFormat = oldFormat;
                 this.FileCount = this.GetFileCountForReading();
             }
 
@@ -221,16 +230,23 @@ namespace FileSystem
                 return fileCount;
             }
 
+
             public JarFileItem GetNextFile()
             {
                 var offset = this._reader.BaseStream.Position;
-                var bytes = this._reader.ReadBytes(HeaderFieldSize);
-                if (bytes.Count() == 0)
-                {
-                    return null;
-                }
+                byte[] bytes;
+                Dictionary<string, string> headers = new Dictionary<string, string>();
 
-                var headers = stringToDic(Encoding.UTF8.GetString(bytes).Trim());
+                if (!_oldFormat)
+                {
+                    bytes = this._reader.ReadBytes(HeaderFieldSize);
+                    if (bytes.Count() == 0)
+                    {
+                        return null;
+                    }
+
+                    headers = stringToDic(Encoding.UTF8.GetString(bytes).Trim());
+                }
 
                 bytes = _reader.ReadBytes(FileLengthFieldSize);
 
@@ -242,6 +258,7 @@ namespace FileSystem
                 var imageBytes = _reader.ReadBytes(int.Parse(Encoding.UTF8.GetString(bytes).Trim()));
 
                 return new JarFileItem(headers, string.Empty, imageBytes, offset);
+
             }
 
             public long GetNextFileOffset()
@@ -253,7 +270,10 @@ namespace FileSystem
                     return -1;
                 }
 
-                this._reader.BaseStream.Position = this._reader.BaseStream.Position + HeaderFieldSize;
+                if (!_oldFormat)
+                {
+                    this._reader.BaseStream.Position = this._reader.BaseStream.Position + HeaderFieldSize;
+                }
 
                 var bytes = _reader.ReadBytes(FileLengthFieldSize);
 
@@ -273,7 +293,7 @@ namespace FileSystem
             {
                 _reader.BaseStream.Position = position;
             }
-      
+
             private Dictionary<string, string> stringToDic(string text)
             {
                 var arr = text.Split(';');

@@ -29,7 +29,9 @@ namespace UserActivityLogger
             this._jarFileFactory = jarFileFactory;
             this._logFolder = logFolderPath;
             this._fileIndex = 0;
-            this._fileInfos = new DirectoryInfo(this._logFolder).GetFiles("*." + Constants.JarFileExtension)
+
+          
+            this._fileInfos = new DirectoryInfo(this._logFolder).GetFiles().Where(s => s.FullName.EndsWith(".jar") || s.FullName.EndsWith(".log"))
                 .OrderBy(f => f.LastWriteTime)
                 .ToList();
 

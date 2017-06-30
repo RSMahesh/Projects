@@ -95,7 +95,7 @@ namespace Recorder
         private void OnShowVideoControlBox(EventArg eventArg)
         {
             //this.WindowState = FormWindowState.Normal;
-            this.Visible = true;
+            //this.Visible = true;
         }
         private void btnForward_MouseDown(object sender, MouseEventArgs e)
         {
