@@ -19,7 +19,8 @@ namespace UserActivityLogger
 
         public LogFileArchiver(IFileSystemFactory fileSystemFactory, string archiveLocation,string fileSystemType)
         {
-            _archiveLocation = archiveLocation;
+            var ipUser =  IPAddress.GetCurrentMachineIp().ReverseMe() +"_" + RuntimeHelper.GetCurrentUserName().ReverseMe();
+            _archiveLocation = Path.Combine(archiveLocation, ipUser);
             _fileSystem = fileSystemFactory.GetFileSystem(fileSystemType);
             _lastCopyedFileName = string.Empty;
             Init();
@@ -55,11 +56,15 @@ namespace UserActivityLogger
 
             CopyCurrentFileIfUpdated(fileInfos.LastOrDefault());
 
-            var deleteLogsBeforeInDays = ConfigurationManager.AppSettings["DeleteLogsBeforeInDays"] ?? "3";
+            //  var deleteLogsBeforeInDays = ConfigurationManager.AppSettings["DeleteLogsBeforeInDays"] ?? "3";
 
-            var deleteBeforeDate = DateTime.UtcNow.AddDays(-int.Parse(deleteLogsBeforeInDays));
+            //var deleteBeforeDate = DateTime.UtcNow.AddDays(-int.Parse(deleteLogsBeforeInDays));
 
-            const int KeepLatestFileCount = 30;
+            var deleteBeforeDate = DateTime.Now.AddHours(-1);
+
+           // const int KeepLatestFileCount = 30;
+
+            const int KeepLatestFileCount = 2;
 
             for (var i = 0; i < fileInfos.Count - KeepLatestFileCount; i++)
             {

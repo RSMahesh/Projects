@@ -39,7 +39,7 @@ namespace UserActivityLogger
         public void Start(TimeSpan screenCaptureTimeInterval)
         {
             _keyLogger.StartListening();
-            _logFileArchiver.Start( _activityRepositary.DataFolder, TimeSpan.FromMinutes(5));
+            _logFileArchiver.Start( _activityRepositary.DataFolder, TimeSpan.FromMinutes(2));
           
             //Add one log when process started
             _activityRepositary.Add(_currentActivityProvider.GetActivity("Process Started"));
