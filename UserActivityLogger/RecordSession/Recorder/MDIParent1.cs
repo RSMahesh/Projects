@@ -35,7 +35,7 @@ namespace Recorder
                     //    MessageBox.Show("You Miss Something");
                     //    return;
                     //}
-
+                    EventContainer.PublishEvent(RecordSession.Events.CloseCurrentSession.ToString(), new EventArg(Guid.NewGuid(), e));
                     var _pictureViewerFrom = new frmPictureViewer();
                     _pictureViewerFrom.MdiParent = this;
                     _pictureViewerFrom.timer2.Interval = 1000;
@@ -58,8 +58,12 @@ namespace Recorder
 
         private void OpenFile(object sender, EventArgs e)
         {
-            OpenControlBox();
-            EventContainer.PublishEvent(RecordSession.Events.CloseCurrentSession.ToString(), new EventArg(Guid.NewGuid(), e));
+            Form abc = new Form();
+            abc.Show();
+
+
+            //OpenControlBox();
+            //EventContainer.PublishEvent(RecordSession.Events.CloseCurrentSession.ToString(), new EventArg(Guid.NewGuid(), e));
         }
 
      
@@ -79,10 +83,6 @@ namespace Recorder
         {
             this.Close();
         }
-
-       
-
-      
         private void CascadeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LayoutMdi(MdiLayout.Cascade);
@@ -113,7 +113,7 @@ namespace Recorder
 
         private void MDIParent1_Load(object sender, EventArgs e)
         {
-            OpenControlBox();
+           // OpenControlBox();
         }
 
         private void OpenControlBox()
@@ -130,7 +130,10 @@ namespace Recorder
         }
         private void controlBoxToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _frmControlBoxObject.WindowState = FormWindowState.Normal;
+            //_frmControlBoxObject.WindowState = FormWindowState.Normal;
+            CommentsScreen commentScreen = new CommentsScreen();
+            commentScreen.MdiParent = this;
+            commentScreen.Show();
         }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)

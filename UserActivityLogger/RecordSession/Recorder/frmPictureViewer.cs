@@ -106,6 +106,8 @@ namespace RecordSession
             
             var activity = _activityReader.GetEnumerator().Current;
             pictureBox1.Image = activity.ScreenShot;
+
+
             if (!FastMode)
             {
               // OnCommentsFetched?.Invoke(activity.KeyPressedData);
