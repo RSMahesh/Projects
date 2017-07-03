@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,10 +24,36 @@ namespace Recorder
 
         private void ShowNewForm(object sender, EventArgs e)
         {
-            Form childForm = new Form();
-            childForm.MdiParent = this;
-            childForm.Text = "Window " + childFormNumber++;
-            childForm.Show();
+            try
+            {
+                
+                var rs = openFileDialog1.ShowDialog();
+                if (rs == DialogResult.OK)
+                {
+                    //if (txtPassword.Text != "1234test!")
+                    //{
+                    //    MessageBox.Show("You Miss Something");
+                    //    return;
+                    //}
+
+                    var _pictureViewerFrom = new frmPictureViewer();
+                    _pictureViewerFrom.MdiParent = this;
+                    _pictureViewerFrom.timer2.Interval = 1000;
+                   // _pictureViewerFrom.OnCommentsFetched = OnCommentsFetched;
+               //     _pictureViewerFrom.WindowState = FormWindowState.Maximized;
+                    _pictureViewerFrom.Dock = DockStyle.Fill;
+                  //  _pictureViewerFrom.FormBorderStyle = FormBorderStyle.None;
+                    _pictureViewerFrom.Show();
+                    var frmVideoController = new VideoControlBox(_pictureViewerFrom, _pictureViewerFrom.Play(Path.GetDirectoryName( openFileDialog1.FileName)));
+                    frmVideoController.Show();
+
+                }
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void OpenFile(object sender, EventArgs e)
@@ -98,6 +125,7 @@ namespace Recorder
 
             _frmControlBoxObject = new frmControlBox();
             _frmControlBoxObject.MdiParent = this;
+            _frmControlBoxObject.TopMost = true;
             _frmControlBoxObject.Show();
         }
         private void controlBoxToolStripMenuItem_Click(object sender, EventArgs e)

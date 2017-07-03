@@ -69,6 +69,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(885, 701);
             this.Controls.Add(this.panel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "frmPictureViewer";
             this.Text = "Player";
             this.MaximumSizeChanged += new System.EventHandler(this.frmPictureViewer_MaximumSizeChanged);

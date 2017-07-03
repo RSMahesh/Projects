@@ -9,7 +9,7 @@ namespace Recorder
     public partial class VideoControlBox : Form
     {
         frmPictureViewer _pictureViewerFrom = null;
-        int _originalInterval;
+        int _originalInterval = 1000;
         const int _fastSpeed = 10;
         public VideoControlBox(frmPictureViewer pictureViewerFrom, int count)
         {
@@ -17,10 +17,11 @@ namespace Recorder
             _pictureViewerFrom.OnIndexChanged = new Action<int>(OnIndexChange);
             _pictureViewerFrom.DisplayChange = new Action<int>(DisplayChange);
             InitializeComponent();
+            trackBar1.Minimum = 1;
             trackBar1.Maximum = count;
             EventContainer.SubscribeEvent(RecordSession.Events.OnPictureViwerResize.ToString(), OnPictureViwerResize);
             EventContainer.SubscribeEvent(RecordSession.Events.CloseCurrentSession.ToString(), OnCloseCurrentSession);
-            EventContainer.SubscribeEvent(RecordSession.Events.ShowVideoControlBox.ToString(), OnShowVideoControlBox);
+            EventContainer.SubscribeEvent(RecordSession.Events.VideoPaused.ToString(), SetPlayButtonText);
         }
 
         private void VideoControlBox_Load(object sender, EventArgs e)
@@ -92,10 +93,17 @@ namespace Recorder
             this.Dispose();
         }
 
-        private void OnShowVideoControlBox(EventArg eventArg)
+
+        private void SetPlayButtonText(EventArg eventArg)
         {
-            //this.WindowState = FormWindowState.Normal;
-            //this.Visible = true;
+            if (!_pictureViewerFrom.timer2.Enabled)
+            {
+                btnPlay.Text = "Play";
+            }
+            else
+            {
+                btnPlay.Text = "Pause";
+            }
         }
         private void btnForward_MouseDown(object sender, MouseEventArgs e)
         {
@@ -107,59 +115,19 @@ namespace Recorder
         {
             _pictureViewerFrom.timer2.Interval = _originalInterval;
         }
-        //private void chkForward_CheckedChanged(object sender, EventArgs e)
-        //{
-        //    chkBackward.Checked = false;
-
-        //    if (chkForward.Checked)
-        //    {
-        //        _originalInterval = _pictureViewerFrom.timer2.Interval;
-        //        _pictureViewerFrom.FastMode = true;
-        //        _pictureViewerFrom.timer2.Interval = _fastSpeed;
-        //    }
-        //    else
-        //    {
-        //        _pictureViewerFrom.FastMode = false;
-        //        _pictureViewerFrom.timer2.Interval = _originalInterval;
-        //    }
-        //}
-
-        //private void chkBackward_CheckedChanged(object sender, EventArgs e)
-        //{
-        //    chkForward.Checked = false;
-
-        //    if (chkBackward.Checked)
-        //    {
-        //        _pictureViewerFrom.incrementCount = -1;
-        //        _originalInterval = _pictureViewerFrom.timer2.Interval;
-        //        _pictureViewerFrom.FastMode = true;
-        //        _pictureViewerFrom.timer2.Interval = _fastSpeed;
-        //    }
-        //    else
-        //    {
-        //        _pictureViewerFrom.incrementCount = 1;
-        //        _pictureViewerFrom.FastMode = false;
-        //        _pictureViewerFrom.timer2.Interval = _originalInterval;
-        //    }
-        //}
 
         private void btnPlay_Click(object sender, EventArgs e)
         {
-            if (_pictureViewerFrom.timer2.Enabled)
-            {
-                btnPlay.Text = "Play";
-            }
-            else
-            {
-                btnPlay.Text = "Pause";
-            }
+            _pictureViewerFrom.timer2.Interval = _originalInterval;
             _pictureViewerFrom.timer2.Enabled = !_pictureViewerFrom.timer2.Enabled;
+            SetPlayButtonText(null);
         }
 
         private void btnBackward_MouseDown(object sender, MouseEventArgs e)
         {
             _pictureViewerFrom.incrementCount = -1;
             _originalInterval = _pictureViewerFrom.timer2.Interval;
+
             _pictureViewerFrom.FastMode = true;
             _pictureViewerFrom.timer2.Interval = _fastSpeed;
 
@@ -182,7 +150,7 @@ namespace Recorder
         private void btnForward_MouseUp_1(object sender, MouseEventArgs e)
         {
             _pictureViewerFrom.FastMode = false;
-             _pictureViewerFrom.timer2.Interval = _originalInterval;
+            _pictureViewerFrom.timer2.Interval = _originalInterval;
         }
 
         private void btnBackward_Click(object sender, EventArgs e)

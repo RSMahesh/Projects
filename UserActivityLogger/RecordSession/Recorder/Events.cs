@@ -10,6 +10,8 @@ namespace RecordSession
     {
         OnPictureViwerResize,
         CloseCurrentSession,
-        ShowVideoControlBox
+        ShowVideoControlBox,
+        VideoPaused,
+        OnCommentsFetched
     }
 }

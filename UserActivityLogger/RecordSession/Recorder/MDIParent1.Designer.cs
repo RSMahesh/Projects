@@ -67,6 +67,7 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -219,9 +220,9 @@
             // controlBoxToolStripMenuItem
             // 
             this.controlBoxToolStripMenuItem.Name = "controlBoxToolStripMenuItem";
-            this.controlBoxToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.controlBoxToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F2;
+            this.controlBoxToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.controlBoxToolStripMenuItem.Text = "ControlBox F2";
-            this.controlBoxToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(System.Windows.Forms.Keys.F2 ));
             this.controlBoxToolStripMenuItem.Click += new System.EventHandler(this.controlBoxToolStripMenuItem_Click);
             // 
             // toolsMenu
@@ -235,7 +236,7 @@
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.optionsToolStripMenuItem.Text = "&Options";
             // 
             // helpMenu
@@ -383,6 +384,10 @@
             this.toolStripStatusLabel.Size = new System.Drawing.Size(39, 17);
             this.toolStripStatusLabel.Text = "Status";
             // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
             // MDIParent1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -446,6 +451,7 @@
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.ToolStripMenuItem controlBoxToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }
 

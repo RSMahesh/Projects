@@ -10,6 +10,7 @@ using System.Threading;
 using System.IO;
 using UserActivityLogger;
 using Recorder;
+using EventPublisher;
 
 namespace RecordSession
 {
@@ -23,8 +24,15 @@ namespace RecordSession
         public frmControlBox()
         {
             InitializeComponent();
+            EventContainer.SubscribeEvent(RecordSession.Events.OnCommentsFetched.ToString(), OnCommentsFetched1);
 
         }
+
+        private void OnCommentsFetched1(EventArg eventArg)
+        {
+            OnCommentsFetched(eventArg.Arg.ToString());
+        }
+
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {

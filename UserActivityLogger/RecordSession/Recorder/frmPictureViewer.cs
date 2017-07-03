@@ -108,18 +108,21 @@ namespace RecordSession
             pictureBox1.Image = activity.ScreenShot;
             if (!FastMode)
             {
-                OnCommentsFetched?.Invoke(activity.KeyPressedData);
+              // OnCommentsFetched?.Invoke(activity.KeyPressedData);
+                EventContainer.PublishEvent(RecordSession.Events.OnCommentsFetched.ToString(), new EventArg(Guid.NewGuid(), activity.KeyPressedData));
             }
-            DisplayChange(Index);
+
             Index += incrementCount;
-
-
+         
             if (Index <= 0)
             {
                 timer2.Enabled = false;
+                EventContainer.PublishEvent(RecordSession.Events.VideoPaused.ToString(), new EventArg(Guid.NewGuid(), e));
                 //_activityReader.Dispose();
                 return;
             }
+
+            DisplayChange(Index);
 
 
             if (incrementCount == -1)
@@ -190,8 +193,6 @@ namespace RecordSession
             {
                 pictureBox1.Dock = DockStyle.None;
                 pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
-
-              
             }
             else
             {
