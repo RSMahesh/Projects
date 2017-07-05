@@ -35,10 +35,8 @@ namespace UserActivityLogger
             this.FileCount = this.GetFileCount();
 
         }
-
         public ActivityQueryFilter Filter { private get; set; }
         public Activity Current { get; private set; }
-
         object IEnumerator.Current
         {
             get
@@ -46,17 +44,14 @@ namespace UserActivityLogger
                 return this.Current;
             }
         }
-
         public bool MoveNext()
         {
             return this.GetNextFile();
         }
-
         public void Reset()
         {
-            this.MoveIndexToPostion(0);
+            this.ChangePostion(1);
         }
-
         public void ChangePostion(int positionNumber)
         {
             var fileItemInfo = _fileOffsetInfoMap[positionNumber];
@@ -84,6 +79,11 @@ namespace UserActivityLogger
             var ItemfileCount = 0;
             var jarfileCount = 0;
             var tempDic = new ConcurrentDictionary<string, List<long>>();
+
+            if(_jarFilesInfos.Count ==0)
+            {
+                return 0;
+            }
 
             Parallel.ForEach(this._jarFilesInfos, (file) =>
                 {
@@ -159,11 +159,12 @@ namespace UserActivityLogger
 
         private Activity BytesToActivity(byte[] imageBytes)
         {
-            Activity activity = null;
+            if (imageBytes == null)
+                return null;
 
             using (var fs = new MemoryStream(imageBytes, false))
             {
-                return activity = new Activity(Image.FromStream(fs), this.GetComments(fs));
+                return new Activity(Image.FromStream(fs), this.GetComments(fs));
             }
         }
 
@@ -174,18 +175,6 @@ namespace UserActivityLogger
 
             return new ImageCommentEmbedder().GetComments(stream);
         }
-
-        private void MoveIndexToPostion(int imagePositionInFile)
-        {
-            var ind = 0;
-
-            while (ind < imagePositionInFile)
-            {
-                this._jarFileReader.GetNextFile();
-                ind++;
-            }
-        }
-
 
         //Future used methods
         private void FilterOutFiles(ActivityQueryFilter filter)
