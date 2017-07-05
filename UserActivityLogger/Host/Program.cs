@@ -42,7 +42,7 @@ namespace Host
                 return;
             }
 
-            if (true || args.Length > 0 && args[0] == "hidden")
+            if (args.Length > 0 && args[0] == "hidden")
             {
                 Logger.LogInforamtion("Running with hidden");
                 new UnhandledExceptionHandlercs().Register(Logger.LogError);

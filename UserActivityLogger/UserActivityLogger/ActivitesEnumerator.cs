@@ -7,31 +7,28 @@ using System.Linq;
 
 using FileSystem;
 using Core;
+using System.Threading.Tasks;
+using System.Collections.Concurrent;
 
 namespace UserActivityLogger
 {
     public class ActivitesEnumerator : IEnumerator<Activity>, IDisposable
     {
-        private readonly string _logFolder;
-        private readonly IJarFileFactory _jarFileFactory = null;
-        private List<FileInfo> _fileInfos;
-        private int _fileIndex;
+        private readonly IJarFileFactory _jarFileFactory;
+        private List<FileInfo> _jarFilesInfos;
+        private int _currentJarfileIndex;
         IJarFileReader _jarFileReader = null;
-        List<int> imagesInLogFiles = new List<int>();
-
         private Activity _currentActivity;
-        private Dictionary<int, FileItemInfo> _fileOffsetInfoMap = new Dictionary<int, FileItemInfo>();
+        private ConcurrentDictionary<int, FileItemInfo> _fileOffsetInfoMap = new ConcurrentDictionary<int, FileItemInfo>();
 
         public int FileCount { get; private set; }
 
         public ActivitesEnumerator(string logFolderPath, IJarFileFactory jarFileFactory, ActivityQueryFilter filter)
         {
             this._jarFileFactory = jarFileFactory;
-            this._logFolder = logFolderPath;
-            this._fileIndex = 0;
+            this._currentJarfileIndex = 0;
 
-          
-            this._fileInfos = new DirectoryInfo(this._logFolder).GetFiles().Where(s => s.FullName.EndsWith(".jar") || s.FullName.EndsWith(".log"))
+            this._jarFilesInfos = new DirectoryInfo(logFolderPath).GetFiles().Where(s => s.FullName.EndsWith(".jar") || s.FullName.EndsWith(".log"))
                 .OrderBy(f => f.LastWriteTime)
                 .ToList();
 
@@ -39,16 +36,8 @@ namespace UserActivityLogger
 
         }
 
-
         public ActivityQueryFilter Filter { private get; set; }
-
-        public Activity Current
-        {
-            get
-            {
-                return this._currentActivity;
-            }
-        }
+        public Activity Current { get; private set; }
 
         object IEnumerator.Current
         {
@@ -68,26 +57,11 @@ namespace UserActivityLogger
             this.MoveIndexToPostion(0);
         }
 
-        public void ChangePostionOld(int positionNumber)
-        {
-            int imagePositionInFile = this.GetImagePositionInLogFileAndSetFileIndex(positionNumber);
-
-            if (this._jarFileReader != null)
-            {
-                this._jarFileReader.Dispose();
-            }
-
-            this._jarFileReader = this._jarFileFactory.GetJarFileReader(this._fileInfos[this._fileIndex].FullName);
-
-            this.MoveIndexToPostion(imagePositionInFile);
-        }
-
         public void ChangePostion(int positionNumber)
         {
-            int imagePositionInFile = this.GetImagePositionInLogFileAndSetFileIndex(positionNumber);
-
             var fileItemInfo = _fileOffsetInfoMap[positionNumber];
-            
+            _currentJarfileIndex = fileItemInfo.Index;
+
             if (this._jarFileReader != null && this._jarFileReader.JarFilePath != fileItemInfo.JarFilePath)
             {
                 this._jarFileReader.Dispose();
@@ -107,62 +81,79 @@ namespace UserActivityLogger
 
         private int GetFileCount()
         {
-            var fileCount = 0;
+            var ItemfileCount = 0;
+            var jarfileCount = 0;
+            var tempDic = new ConcurrentDictionary<string, List<long>>();
 
-            this.imagesInLogFiles = new List<int>();
-
-
-            foreach (var file in this._fileInfos)
-            {
-                using (var logFileReader = this._jarFileFactory.GetJarFileReader(file.FullName))
+            Parallel.ForEach(this._jarFilesInfos, (file) =>
                 {
-                    //fileCount += logFileReader.FilesCount;
+                    tempDic[file.FullName] = GetOffSetOfFilesinJar(file.FullName);
+                });
 
-                    var offset = logFileReader.GetNextFileOffset();
 
-                    while (offset != -1)
-                    {
-                        fileCount++;
-                        _fileOffsetInfoMap[fileCount] = new FileItemInfo(file.FullName, offset, fileCount);
-                        offset = logFileReader.GetNextFileOffset();
-                    }
+            foreach (var file in this._jarFilesInfos)
+            {
+                jarfileCount++;
 
-                    this.imagesInLogFiles.Add(logFileReader.FilesCount);
+                var list = tempDic[file.FullName];
+
+                for (var i = 0; i < list.Count; i++)
+                {
+                    ItemfileCount++;
+                    _fileOffsetInfoMap[ItemfileCount] = new FileItemInfo(file.FullName, list[i], jarfileCount);
                 }
             }
 
-            return fileCount;
+            return ItemfileCount;
+        }
+
+        private List<long> GetOffSetOfFilesinJar(string jarFilePath)
+        {
+            var offSetList = new List<long>();
+
+            using (var logFileReader = this._jarFileFactory.GetJarFileReader(jarFilePath))
+            {
+                var offset = logFileReader.GetNextFileOffset();
+
+                while (offset != -1)
+                {
+                    offSetList.Add(offset);
+                    offset = logFileReader.GetNextFileOffset();
+                }
+            }
+
+            return offSetList;
         }
 
         private bool GetNextFile()
         {
-            if (this._fileIndex >= this._fileInfos.Count)
+            if (this._currentJarfileIndex >= _jarFilesInfos.Count)
             {
-                this._currentActivity = null;
+                Current = null;
             }
 
             if (this._jarFileReader == null)
             {
-                this._jarFileReader = this._jarFileFactory.GetJarFileReader(this._fileInfos[this._fileIndex].FullName);
+                this._jarFileReader = this._jarFileFactory.GetJarFileReader(_jarFilesInfos[this._currentJarfileIndex].FullName);
             }
 
             var file = this._jarFileReader.GetNextFile();
 
             if (file == null)
             {
-                if (this._fileIndex + 1 >= this.imagesInLogFiles.Count)
+                if (this._currentJarfileIndex + 1 >= _jarFilesInfos.Count)
                 {
                     return false;
                 }
 
-                this._fileIndex++;
+                this._currentJarfileIndex++;
                 this._jarFileReader.Dispose();
                 this._jarFileReader = null;
                 this.GetNextFile();
                 return true;
             }
 
-            this._currentActivity = this.BytesToActivity(file.Containt);
+            Current = this.BytesToActivity(file.Containt);
             return true;
         }
 
@@ -195,41 +186,6 @@ namespace UserActivityLogger
             }
         }
 
-        private int GetImagePositionInLogFileAndSetFileIndex(int positionNumber)
-        {
-            int count = 0;
-            var imagePositionInFile = -1;
-
-            for (var i = 0; i < this.imagesInLogFiles.Count; i++)
-            {
-                if (count + this.imagesInLogFiles[i] >= positionNumber)
-                {
-                    this._fileIndex = i;
-                    imagePositionInFile = positionNumber - count;
-                    break;
-                }
-                count += this.imagesInLogFiles[i];
-            }
-            return imagePositionInFile;
-        }
-
-        private int GetImagePositionInLogFileAndSetFileIndexExt(int positionNumber)
-        {
-            int count = 0;
-            var imagePositionInFile = -1;
-
-            for (var i = 0; i < this.imagesInLogFiles.Count; i++)
-            {
-                if (count + this.imagesInLogFiles[i] >= positionNumber)
-                {
-                    this._fileIndex = i;
-                    imagePositionInFile = positionNumber - count;
-                    break;
-                }
-                count += this.imagesInLogFiles[i];
-            }
-            return imagePositionInFile;
-        }
 
         //Future used methods
         private void FilterOutFiles(ActivityQueryFilter filter)
@@ -238,16 +194,16 @@ namespace UserActivityLogger
             if (filter != null)
             {
                 var filterPassed = 0;
-                for (var i = 0; i < this._fileInfos.Count; i++)
+                for (var i = 0; i < _jarFilesInfos.Count; i++)
                 {
                     if (filter.StartDateTime.HasValue &&
-                        this._fileInfos[i].LastWriteTime >= filter.StartDateTime.Value)
+                        this._jarFilesInfos[i].LastWriteTime >= filter.StartDateTime.Value)
                     {
                         filterPassed++;
                     }
 
                     if (filter.EndDateTime.HasValue &&
-                        this._fileInfos[i].LastWriteTime <= filter.EndDateTime.Value)
+                        this._jarFilesInfos[i].LastWriteTime <= filter.EndDateTime.Value)
                     {
                         filterPassed++;
                     }
@@ -275,12 +231,4 @@ namespace UserActivityLogger
         }
 
     }
-
-
-
-
-
-
-
-
 }

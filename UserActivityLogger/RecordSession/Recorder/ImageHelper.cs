@@ -12,9 +12,26 @@ namespace RecordSession
     public class ImageHelper
     {
         static ImageCodecInfo jpegCodec = GetEncoderInfo("image/jpeg");
-        public static string  ChangeJPGQuality( Image img, int quality)
+        public static Image  ChangeJPGQuality( Image img, int quality)
         {
           //  var img = Image.FromFile(imagePath);
+            EncoderParameter qualityParam =
+                new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, quality);
+            EncoderParameters encoderParams = new EncoderParameters(1);
+            encoderParams.Param[0] = qualityParam;
+
+            var newPath = Guid.NewGuid().ToString() + ".jpg";
+
+            MemoryStream ms = new MemoryStream();
+
+            img.Save(ms, jpegCodec, encoderParams);
+
+           return Image.FromStream(ms);
+        }
+
+        public static string ChangeJPGQuality_1(Image img, int quality)
+        {
+            //  var img = Image.FromFile(imagePath);
             EncoderParameter qualityParam =
                 new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, quality);
             EncoderParameters encoderParams = new EncoderParameters(1);
@@ -26,6 +43,7 @@ namespace RecordSession
 
             return newPath;
         }
+
 
         private static ImageCodecInfo GetEncoderInfo(string mimeType)
         {

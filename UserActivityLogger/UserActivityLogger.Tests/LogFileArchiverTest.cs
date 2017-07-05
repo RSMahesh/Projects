@@ -53,7 +53,7 @@ namespace Host.Tests
         [Test]
         public void ShouldDeleteFilesIfOldEnough()
         {
-            DateTime startDateOfLastWrite = DateTime.Now.AddDays(-1);
+            DateTime startDateOfLastWrite = DateTime.Now;
 
             CreateLogFiles(startDateOfLastWrite, 1, 50);
 
@@ -68,7 +68,7 @@ namespace Host.Tests
         }
 
         [Test]
-        public void ShouldKeepOnly30Files()
+        public void ShouldKeepOnly2Files()
         {
             DateTime startDateOfLastWrite = DateTime.Now.AddDays(-5);
 
@@ -80,7 +80,7 @@ namespace Host.Tests
             sut.Start(_logFolder, TimeSpan.FromSeconds(1));
             Thread.Sleep(TimeSpan.FromSeconds(2));
 
-            Assert.AreEqual(30, Directory.GetFiles(_logFolder).Count());
+            Assert.AreEqual(2, Directory.GetFiles(_logFolder).Count());
 
         }
         private void CreateLogFiles(DateTime startDateOfLastWrite, int minutesToadd, int numberOfFiles)

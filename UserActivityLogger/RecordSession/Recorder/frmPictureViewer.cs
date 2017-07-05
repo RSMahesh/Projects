@@ -110,7 +110,6 @@ namespace RecordSession
 
             if (!FastMode)
             {
-              // OnCommentsFetched?.Invoke(activity.KeyPressedData);
                 EventContainer.PublishEvent(RecordSession.Events.OnCommentsFetched.ToString(), new EventArg(Guid.NewGuid(), activity.KeyPressedData));
             }
 

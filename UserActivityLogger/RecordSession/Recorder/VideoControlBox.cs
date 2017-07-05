@@ -52,6 +52,7 @@ namespace Recorder
             }
             catch (Exception ex)
             {
+               
                 MessageBox.Show(ex.ToString());
             }
         }
