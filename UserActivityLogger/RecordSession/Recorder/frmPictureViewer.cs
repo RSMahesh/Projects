@@ -66,7 +66,7 @@ namespace RecordSession
         }
 
 
-        public int Play(string folder)
+        public int PlayOLd(string folder)
         {
             if (timer2.Enabled)
                 timer2.Enabled = false;
@@ -81,13 +81,34 @@ namespace RecordSession
                     _activityReader.Dispose();
                 }
 
-                _activityReader = _activityRepositary.GetReader();
+                //_activityReader = _activityRepositary.GetReader();
                 return _activityReader.FileCount();
             }
 
             return 0;
         }
 
+        public int Play(IEnumerable<string> files)
+        {
+            if (timer2.Enabled)
+                timer2.Enabled = false;
+            else
+            {
+                timer2.Enabled = true;
+
+                _activityRepositary = new ActivityRepositary(new JarFileFactory(), new ImageCommentEmbedder());
+
+                if (_activityReader != null)
+                {
+                    _activityReader.Dispose();
+                }
+
+                _activityReader = _activityRepositary.GetReader(files);
+                return _activityReader.FileCount();
+            }
+
+            return 0;
+        }
         public void MinimizeWindow()
         {
             this.WindowState = FormWindowState.Minimized;
@@ -247,5 +268,7 @@ namespace RecordSession
         {
 
         }
+
+       
     }
 }

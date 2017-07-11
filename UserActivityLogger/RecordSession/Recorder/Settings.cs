@@ -12,9 +12,15 @@ namespace Recorder
 {
     public partial class Settings : Form
     {
+        public int FastSpeed { get; set; }
         public Settings()
         {
             InitializeComponent();
+        }
+
+        private void trackBarFastSpeed_Scroll(object sender, EventArgs e)
+        {
+
         }
     }
 }

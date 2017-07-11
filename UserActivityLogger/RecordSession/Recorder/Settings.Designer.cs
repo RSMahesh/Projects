@@ -36,9 +36,13 @@
             // trackBarFastSpeed
             // 
             this.trackBarFastSpeed.Location = new System.Drawing.Point(12, 54);
+            this.trackBarFastSpeed.Maximum = 5000;
+            this.trackBarFastSpeed.Minimum = 1;
             this.trackBarFastSpeed.Name = "trackBarFastSpeed";
             this.trackBarFastSpeed.Size = new System.Drawing.Size(243, 45);
             this.trackBarFastSpeed.TabIndex = 0;
+            this.trackBarFastSpeed.Value = 10;
+            this.trackBarFastSpeed.Scroll += new System.EventHandler(this.trackBarFastSpeed_Scroll);
             // 
             // label1
             // 

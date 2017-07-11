@@ -15,26 +15,22 @@ namespace UserActivityLogger
     public class ActivitesEnumerator : IEnumerator<Activity>, IDisposable
     {
         private readonly IJarFileFactory _jarFileFactory;
-        private List<FileInfo> _jarFilesInfos;
+        private IEnumerable<FileInfo> _jarFilesInfos;
         private int _currentJarfileIndex;
         IJarFileReader _jarFileReader = null;
-        private Activity _currentActivity;
         private ConcurrentDictionary<int, FileItemInfo> _fileOffsetInfoMap = new ConcurrentDictionary<int, FileItemInfo>();
 
         public int FileCount { get; private set; }
-
-        public ActivitesEnumerator(string logFolderPath, IJarFileFactory jarFileFactory, ActivityQueryFilter filter)
+        public ActivitesEnumerator(IEnumerable<FileInfo> fileInfos, IJarFileFactory jarFileFactory, ActivityQueryFilter filter)
         {
             this._jarFileFactory = jarFileFactory;
             this._currentJarfileIndex = 0;
 
-            this._jarFilesInfos = new DirectoryInfo(logFolderPath).GetFiles().Where(s => s.FullName.EndsWith(".jar") || s.FullName.EndsWith(".log"))
-                .OrderBy(f => f.LastWriteTime)
-                .ToList();
+            this._jarFilesInfos = fileInfos;
 
             this.FileCount = this.GetFileCount();
-
         }
+
         public ActivityQueryFilter Filter { private get; set; }
         public Activity Current { get; private set; }
         object IEnumerator.Current
@@ -50,7 +46,7 @@ namespace UserActivityLogger
         }
         public void Reset()
         {
-            this.ChangePostion(1);
+            this.ChangePostion(0);
         }
         public void ChangePostion(int positionNumber)
         {
@@ -80,7 +76,7 @@ namespace UserActivityLogger
             var jarfileCount = 0;
             var tempDic = new ConcurrentDictionary<string, List<long>>();
 
-            if(_jarFilesInfos.Count ==0)
+            if (!_jarFilesInfos.Any())
             {
                 return 0;
             }
@@ -88,20 +84,23 @@ namespace UserActivityLogger
             Parallel.ForEach(this._jarFilesInfos, (file) =>
                 {
                     tempDic[file.FullName] = GetOffSetOfFilesinJar(file.FullName);
+
                 });
 
 
             foreach (var file in this._jarFilesInfos)
             {
-                jarfileCount++;
-
                 var list = tempDic[file.FullName];
+                
 
                 for (var i = 0; i < list.Count; i++)
                 {
-                    ItemfileCount++;
-                    _fileOffsetInfoMap[ItemfileCount] = new FileItemInfo(file.FullName, list[i], jarfileCount);
+                   
+                    _fileOffsetInfoMap[ItemfileCount++] = new FileItemInfo(file.FullName, list[i], jarfileCount);
                 }
+
+                jarfileCount++;
+
             }
 
             return ItemfileCount;
@@ -127,21 +126,17 @@ namespace UserActivityLogger
 
         private bool GetNextFile()
         {
-            if (this._currentJarfileIndex >= _jarFilesInfos.Count)
+          
+            if(! ValidateBeforeGettingNextFile())
             {
-                Current = null;
-            }
-
-            if (this._jarFileReader == null)
-            {
-                this._jarFileReader = this._jarFileFactory.GetJarFileReader(_jarFilesInfos[this._currentJarfileIndex].FullName);
+                return false;
             }
 
             var file = this._jarFileReader.GetNextFile();
 
             if (file == null)
             {
-                if (this._currentJarfileIndex + 1 >= _jarFilesInfos.Count)
+                if (this._currentJarfileIndex + 1 >= _jarFilesInfos.Count())
                 {
                     return false;
                 }
@@ -156,6 +151,30 @@ namespace UserActivityLogger
             Current = this.BytesToActivity(file.Containt);
             return true;
         }
+
+
+
+        private bool ValidateBeforeGettingNextFile()
+        {
+           
+            if (this._currentJarfileIndex >= _jarFilesInfos.Count())
+            {
+                Current = null;
+                return false;
+            }
+
+            if (this._jarFileReader == null)
+            {
+                this._jarFileReader = this._jarFileFactory.GetJarFileReader(_jarFilesInfos.ElementAt(this._currentJarfileIndex).FullName);
+            }
+
+            return true;
+        }
+
+        //private void ReadNewJarFileIfRequired()
+        //{
+        //        this._jarFileReader = this._jarFileFactory.GetJarFileReader(_jarFilesInfos.ElementAt(this._currentJarfileIndex).FullName);
+        //}
 
         private Activity BytesToActivity(byte[] imageBytes)
         {
@@ -175,37 +194,6 @@ namespace UserActivityLogger
 
             return new ImageCommentEmbedder().GetComments(stream);
         }
-
-        //Future used methods
-        private void FilterOutFiles(ActivityQueryFilter filter)
-        {
-            const int FiltersCount = 2;
-            if (filter != null)
-            {
-                var filterPassed = 0;
-                for (var i = 0; i < _jarFilesInfos.Count; i++)
-                {
-                    if (filter.StartDateTime.HasValue &&
-                        this._jarFilesInfos[i].LastWriteTime >= filter.StartDateTime.Value)
-                    {
-                        filterPassed++;
-                    }
-
-                    if (filter.EndDateTime.HasValue &&
-                        this._jarFilesInfos[i].LastWriteTime <= filter.EndDateTime.Value)
-                    {
-                        filterPassed++;
-                    }
-
-                    if (filterPassed == FiltersCount)
-                    {
-
-                    }
-                }
-            }
-        }
-
-
         private class FileItemInfo
         {
             public FileItemInfo(string jarFilePath, long offSetInJarFile, int index)

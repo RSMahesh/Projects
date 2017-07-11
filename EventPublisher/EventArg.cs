@@ -14,9 +14,21 @@ namespace EventPublisher
            Arg = arg;
        }
 
+        private EventArg()
+        {
+
+        }
+
        public Guid EventId { get; private set; }
       
        public object Arg { get; private set; }
-        
+
+
+        public static EventArg Empty
+        {
+            get { return new EventArg(); }
+        }
+
+
     }
 }

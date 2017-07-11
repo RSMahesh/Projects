@@ -51,7 +51,22 @@ namespace StatusMaker.Business
         {
             var itemTempalte = File.ReadAllText(Path.Combine(_tempalteRootPath, templateName));
 
-            return tokens.Keys.Aggregate(itemTempalte, (current, key) => current.Replace("<%" + key + "%>", tokens[key]));
+            string result = itemTempalte;
+
+            foreach (string key in tokens.Keys)
+            {
+                var tokenValue = tokens[key];
+
+                if (tokenValue.IndexOf('\n') !=-1)
+                {
+                    tokenValue = "<Pre class=MsoNormal>" + tokenValue + "</Pre>";
+                }
+
+                result = result.Replace("<%" + key + "%>", tokenValue);
+            }
+            return result;
+
+         
         }
 
 

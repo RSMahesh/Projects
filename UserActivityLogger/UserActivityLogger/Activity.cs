@@ -12,5 +12,6 @@ namespace UserActivityLogger
         public Image ScreenShot { get; private set; }
         public string KeyPressedData { get; private set; }
 
+        //TODO: Apply empty isntance for null anti patern
     }
 }

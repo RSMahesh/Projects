@@ -1,7 +1,6 @@
 ﻿using Core;
 using EventPublisher;
 using System;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -126,8 +125,15 @@ namespace UserActivityLogger
         }
         private void OnNewLogFileCreated(EventArg eventArg)
         {
-            var logFile = eventArg.Arg.ToString();
-            CopyFile(logFile);
+            try
+            {
+                var logFile = eventArg.Arg.ToString();
+                CopyFile(logFile);
+            }
+            catch(Exception ex)
+            {
+                Logger.LogError(ex);
+            }
         }
     }
 }

@@ -53,11 +53,11 @@
     <Compile Include="CurrentActivityProvider.cs" />
     <Compile Include="ActivityRepositary.cs" />
     <Compile Include="Events.cs" />
+    <Compile Include="Filters\DateTimeFilter.cs" />
     <Compile Include="ICurrentActivityProvider.cs" />
     <Compile Include="IActivityRepositary.cs" />
     <Compile Include="ILogFileArchiver.cs" />
     <Compile Include="IStartUp.cs" />
-    <Compile Include="ITest.cs" />
     <Compile Include="LogFileArchiver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StartUp.cs" />

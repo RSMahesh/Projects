@@ -22,7 +22,7 @@ namespace JarFileGeneratorTool
 
         private void btnGenerate_Click(object sender, EventArgs e)
         {
-            Process.Start(ProcessJarFileRequest());
+            Process.Start(Path.GetDirectoryName(ProcessJarFileRequest()));
         }
 
         private string ProcessJarFileRequest()
@@ -46,8 +46,8 @@ namespace JarFileGeneratorTool
 
         private void ProcessPackageFileRequest()
         {
-           var JarFilePath = ProcessJarFileRequest();
-           var dirPath =  Path.GetDirectoryName(JarFilePath);
+            var JarFilePath = ProcessJarFileRequest();
+            var dirPath = Path.GetDirectoryName(JarFilePath);
 
             foreach (var item in ListBoxFiles.Items)
             {
@@ -150,6 +150,6 @@ namespace JarFileGeneratorTool
         {
             ProcessPackageFileRequest();
         }
-      
+
     }
 }

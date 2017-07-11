@@ -22,9 +22,9 @@ namespace UserActivityLogger.Tests
         private int GetNextFileCallCount = 0;
 
         [Test]
-        public void CanCreateInstance()
+        public void AllInOne()
         {
-            var sut = new ActivitesEnumerator(_logFolderPath, _jarFileFactory, _filter);
+            var sut = new ActivitesEnumerator(GetFiles(_logFolderPath), _jarFileFactory, _filter);
             Assert.AreEqual(sut.FileCount, 8);
             var callMoveNextCount = 0;
 
@@ -47,6 +47,8 @@ namespace UserActivityLogger.Tests
             Assert.AreEqual(callMoveNextCount, 4);
 
             sut.Reset();
+
+            callMoveNextCount = 0;
 
             while (sut.MoveNext())
             {
@@ -85,7 +87,7 @@ namespace UserActivityLogger.Tests
 
             Mock.Arrange(() => reader.GetNextFile()).Returns(() => GetNextFile());
 
-       
+
             Mock.Arrange(() => reader.MoveFileHeader(Arg.IsAny<long>())).DoInstead((long position) => MoveFileHeader(position));
 
             return reader;
@@ -120,7 +122,15 @@ namespace UserActivityLogger.Tests
 
         private void MoveFileHeader(long position)
         {
-            GetNextFileCallCount =  0;
+            GetNextFileCallCount = 0;
         }
+
+        private IEnumerable<FileInfo> GetFiles(string dataFolder)
+        {
+            return new DirectoryInfo(dataFolder).GetFiles()
+         .OrderBy(f => f.LastWriteTime)
+         .ToList();
+        }
+
     }
 }

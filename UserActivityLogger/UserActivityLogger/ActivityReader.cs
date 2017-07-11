@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,9 +13,9 @@ namespace UserActivityLogger
     {
         private readonly ActivitesEnumerator _activityEnum;
 
-        public ActivityReader(string dataFolder, IJarFileFactory jarFileFactory, ActivityQueryFilter filter)
+        public ActivityReader(IEnumerable<string> files, IJarFileFactory jarFileFactory, ActivityQueryFilter filter)
         {
-            _activityEnum = new ActivitesEnumerator(dataFolder, jarFileFactory, filter);
+            _activityEnum = new ActivitesEnumerator(GetFiles(files), jarFileFactory, filter);
         }
 
         public IEnumerator<Activity> GetEnumerator()
@@ -48,6 +50,24 @@ namespace UserActivityLogger
             }
         }
 
+        private IEnumerable<FileInfo> GetFiles(string dataFolder)
+        {
+            return new DirectoryInfo(dataFolder).GetFiles().Where(s => s.FullName.EndsWith(".jar") || s.FullName.EndsWith(".log"))
+         .OrderBy(f => f.LastWriteTime)
+         .ToList();
+        }
+
+        private IEnumerable<FileInfo> GetFiles(IEnumerable<string> files)
+        {
+            var lst = new List<FileInfo>();
+
+            foreach (var file in files)
+            {
+                lst.Add(new FileInfo(file));
+            }
+
+            return lst.OrderBy(f => f.LastWriteTime).ToList();
+        }
     }
 }
 

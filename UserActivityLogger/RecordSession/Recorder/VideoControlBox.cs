@@ -17,8 +17,8 @@ namespace Recorder
             _pictureViewerFrom.OnIndexChanged = new Action<int>(OnIndexChange);
             _pictureViewerFrom.DisplayChange = new Action<int>(DisplayChange);
             InitializeComponent();
-            trackBar1.Minimum = 1;
-            trackBar1.Maximum = count;
+            trackBar1.Minimum = 0;
+            trackBar1.Maximum = count-1;
             EventContainer.SubscribeEvent(RecordSession.Events.OnPictureViwerResize.ToString(), OnPictureViwerResize);
             EventContainer.SubscribeEvent(RecordSession.Events.CloseCurrentSession.ToString(), OnCloseCurrentSession);
             EventContainer.SubscribeEvent(RecordSession.Events.VideoPaused.ToString(), SetPlayButtonText);

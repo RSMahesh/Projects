@@ -17,7 +17,7 @@ namespace FileSystem
         readonly int _maxFileCount;
         bool _oldFormat;
 
-        public JarFile(FileAccessMode fileAccessMode, string jarFilePath) : this(fileAccessMode, jarFilePath, 100)
+        public JarFile(FileAccessMode fileAccessMode, string jarFilePath) : this(fileAccessMode, jarFilePath, 50)
         { }
 
         public JarFile(FileAccessMode fileAccessMode, string jarFilePath, int maxfileCount)
@@ -44,21 +44,6 @@ namespace FileSystem
         }
 
         public string JarFilePath { get; private set; }
-
-        public void AddFileObselete(string fileToAppend)
-        {
-            if (this._fileAccessMode == FileAccessMode.Read)
-            {
-                throw new InvalidOperationException("Append File can not be peromed on read mode");
-            }
-
-            if (this._writer.GetFileCount() >= this._maxFileCount)
-            {
-                throw new JarFileReachedMaxLimitException();
-            }
-
-            this._writer.AddFile(fileToAppend);
-        }
 
         public void AddFile(JarFileItem jarFileItem)
         {

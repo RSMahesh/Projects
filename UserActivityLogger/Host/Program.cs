@@ -5,7 +5,7 @@ using System.IO;
 using FileSystem;
 using UserActivityLogger;
 using Castle.Windsor;
-using ActivityLogger;
+
 using System.Collections.Generic;
 using System.Threading;
 

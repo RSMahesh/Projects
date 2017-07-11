@@ -26,6 +26,7 @@ namespace Recorder
         {
             try
             {
+                openFileDialog1.Multiselect = true;
                 
                 var rs = openFileDialog1.ShowDialog();
                 if (rs == DialogResult.OK)
@@ -39,12 +40,9 @@ namespace Recorder
                     var _pictureViewerFrom = new frmPictureViewer();
                     _pictureViewerFrom.MdiParent = this;
                     _pictureViewerFrom.timer2.Interval = 1000;
-                   // _pictureViewerFrom.OnCommentsFetched = OnCommentsFetched;
-               //     _pictureViewerFrom.WindowState = FormWindowState.Maximized;
                     _pictureViewerFrom.Dock = DockStyle.Fill;
-                  //  _pictureViewerFrom.FormBorderStyle = FormBorderStyle.None;
                     _pictureViewerFrom.Show();
-                    var frmVideoController = new VideoControlBox(_pictureViewerFrom, _pictureViewerFrom.Play(Path.GetDirectoryName( openFileDialog1.FileName)));
+                    var frmVideoController = new VideoControlBox(_pictureViewerFrom, _pictureViewerFrom.Play(openFileDialog1.FileNames));
                     frmVideoController.Show();
 
                 }
@@ -58,10 +56,6 @@ namespace Recorder
 
         private void OpenFile(object sender, EventArgs e)
         {
-            Form abc = new Form();
-            abc.Show();
-
-
             //OpenControlBox();
             //EventContainer.PublishEvent(RecordSession.Events.CloseCurrentSession.ToString(), new EventArg(Guid.NewGuid(), e));
         }
@@ -73,6 +67,7 @@ namespace Recorder
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             saveFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
+
             if (saveFileDialog.ShowDialog(this) == DialogResult.OK)
             {
                 string FileName = saveFileDialog.FileName;
@@ -131,6 +126,17 @@ namespace Recorder
         private void undoToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void MDIParent1_Move(object sender, EventArgs e)
+        {
+            EventContainer.PublishEvent(RecordSession.Events.OnPictureViwerResize.ToString(), new EventArg(Guid.NewGuid(), e));
+        }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Settings setting = new Settings();
+            setting.Show();
         }
     }
 }

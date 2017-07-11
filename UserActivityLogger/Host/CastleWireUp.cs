@@ -1,4 +1,4 @@
-﻿using ActivityLogger;
+﻿
 using BigFun.Castle.Core;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.Resolvers.SpecializedResolvers;
