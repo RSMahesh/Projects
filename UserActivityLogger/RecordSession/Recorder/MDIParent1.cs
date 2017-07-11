@@ -16,7 +16,7 @@ namespace Recorder
     public partial class MDIParent1 : Form
     {
         private int childFormNumber = 0;
-      //  frmControlBox _frmControlBoxObject;
+        //  frmControlBox _frmControlBoxObject;
         public MDIParent1()
         {
             InitializeComponent();
@@ -27,7 +27,7 @@ namespace Recorder
             try
             {
                 openFileDialog1.Multiselect = true;
-                
+
                 var rs = openFileDialog1.ShowDialog();
                 if (rs == DialogResult.OK)
                 {
@@ -42,7 +42,7 @@ namespace Recorder
                     _pictureViewerFrom.timer2.Interval = 1000;
                     _pictureViewerFrom.Dock = DockStyle.Fill;
                     _pictureViewerFrom.Show();
-                    var frmVideoController = new VideoControlBox(_pictureViewerFrom, _pictureViewerFrom.Play(openFileDialog1.FileNames));
+                    var frmVideoController = new VideoControlBox(_pictureViewerFrom, _pictureViewerFrom.Play(GetSelectedFiles()));
                     frmVideoController.Show();
 
                 }
@@ -54,13 +54,23 @@ namespace Recorder
             }
         }
 
+        private IEnumerable<string> GetSelectedFiles()
+        {
+            if (openFileDialog1.FileNames.Count() == 1)
+            {
+                return Directory.GetFiles(Path.GetDirectoryName(openFileDialog1.FileNames.FirstOrDefault()));
+            }
+
+            return openFileDialog1.FileNames;
+        }
+
         private void OpenFile(object sender, EventArgs e)
         {
             //OpenControlBox();
             //EventContainer.PublishEvent(RecordSession.Events.CloseCurrentSession.ToString(), new EventArg(Guid.NewGuid(), e));
         }
 
-     
+
 
         private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -108,7 +118,7 @@ namespace Recorder
 
         private void MDIParent1_Load(object sender, EventArgs e)
         {
-           // OpenControlBox();
+            // OpenControlBox();
         }
         private void controlBoxToolStripMenuItem_Click(object sender, EventArgs e)
         {

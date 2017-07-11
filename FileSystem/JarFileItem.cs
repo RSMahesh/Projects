@@ -50,8 +50,6 @@ namespace FileSystem
             get { return BuildOrRetrieveEmptyInstance(); }
         }
 
-
-        //Although this doble check was not neccessary but for learning purpose used.
         private static JarFileItem BuildOrRetrieveEmptyInstance()
         {
             if (_emptyInstance == null)
@@ -68,5 +66,7 @@ namespace FileSystem
 
             return _emptyInstance;
         }
+
+
     }
 }

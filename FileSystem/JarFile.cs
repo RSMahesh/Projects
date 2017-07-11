@@ -227,7 +227,7 @@ namespace FileSystem
                     bytes = this._reader.ReadBytes(HeaderFieldSize);
                     if (bytes.Count() == 0)
                     {
-                        return null;
+                        return JarFileItem.Empty;
                     }
 
                     headers = stringToDic(Encoding.UTF8.GetString(bytes).Trim());
@@ -237,7 +237,7 @@ namespace FileSystem
 
                 if (bytes.Count() == 0)
                 {
-                    return null;
+                    return JarFileItem.Empty;
                 }
 
                 var imageBytes = _reader.ReadBytes(int.Parse(Encoding.UTF8.GetString(bytes).Trim()));

@@ -111,7 +111,7 @@ namespace UserActivityLogger.Tests
             if (GetNextFileCallCount >= 4)
             {
                 GetNextFileCallCount = 0;
-                return null;
+                return JarFileItem.Empty;
             }
             else
             {
