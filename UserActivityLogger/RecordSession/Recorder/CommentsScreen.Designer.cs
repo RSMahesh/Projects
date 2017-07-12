@@ -28,42 +28,42 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.txtCurrentText = new System.Windows.Forms.TextBox();
-            this.txtKeysLogged = new System.Windows.Forms.TextBox();
-            this.SuspendLayout();
+            txtCurrentText = new System.Windows.Forms.TextBox();
+            txtKeysLogged = new System.Windows.Forms.TextBox();
+            SuspendLayout();
             // 
             // txtCurrentText
             // 
-            this.txtCurrentText.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtCurrentText.Location = new System.Drawing.Point(12, 12);
-            this.txtCurrentText.Name = "txtCurrentText";
-            this.txtCurrentText.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtCurrentText.Size = new System.Drawing.Size(577, 22);
-            this.txtCurrentText.TabIndex = 26;
+            txtCurrentText.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            txtCurrentText.Location = new System.Drawing.Point(12, 12);
+            txtCurrentText.Name = "txtCurrentText";
+            txtCurrentText.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            txtCurrentText.Size = new System.Drawing.Size(577, 22);
+            txtCurrentText.TabIndex = 26;
             // 
             // txtKeysLogged
             // 
-            this.txtKeysLogged.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtKeysLogged.Location = new System.Drawing.Point(12, 38);
-            this.txtKeysLogged.Multiline = true;
-            this.txtKeysLogged.Name = "txtKeysLogged";
-            this.txtKeysLogged.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtKeysLogged.Size = new System.Drawing.Size(577, 70);
-            this.txtKeysLogged.TabIndex = 25;
-            this.txtKeysLogged.UseSystemPasswordChar = true;
+            txtKeysLogged.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            txtKeysLogged.Location = new System.Drawing.Point(12, 38);
+            txtKeysLogged.Multiline = true;
+            txtKeysLogged.Name = "txtKeysLogged";
+            txtKeysLogged.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            txtKeysLogged.Size = new System.Drawing.Size(577, 70);
+            txtKeysLogged.TabIndex = 25;
+            txtKeysLogged.UseSystemPasswordChar = true;
             // 
             // CommentsScreen
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(594, 118);
-            this.Controls.Add(this.txtCurrentText);
-            this.Controls.Add(this.txtKeysLogged);
-            this.Name = "CommentsScreen";
-            this.Text = "CommentsScreen";
-            this.Load += new System.EventHandler(this.CommentsScreen_Load);
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(594, 118);
+            Controls.Add(txtCurrentText);
+            Controls.Add(txtKeysLogged);
+            Name = "CommentsScreen";
+            Text = "CommentsScreen";
+            Load += new System.EventHandler(CommentsScreen_Load);
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 

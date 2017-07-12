@@ -62,7 +62,7 @@ namespace RecordSession
         {
             pictureBox1.Dock = DockStyle.Fill;
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.WindowState = FormWindowState.Normal;
+            WindowState = FormWindowState.Normal;
         }
 
 
@@ -111,7 +111,7 @@ namespace RecordSession
         }
         public void MinimizeWindow()
         {
-            this.WindowState = FormWindowState.Minimized;
+            WindowState = FormWindowState.Minimized;
         }
 
         private void timer2_Tick(object sender, EventArgs e)
@@ -152,7 +152,7 @@ namespace RecordSession
                 ChangeNextImagePostion(Index);
             }
 
-            this.Text = "Playing " + Index.ToString();
+            Text = "Playing " + Index.ToString();
         }
 
         private void pictureBox1_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -211,7 +211,7 @@ namespace RecordSession
 
         private void frmPictureViewer_Resize(object sender, EventArgs e)
         {
-            if (this.MdiParent.WindowState == FormWindowState.Maximized)
+            if (MdiParent.WindowState == FormWindowState.Maximized)
             {
                 pictureBox1.Dock = DockStyle.None;
                 pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
@@ -235,11 +235,11 @@ namespace RecordSession
 
             if (timer2.Enabled)
             {
-                this.Text = "Playing" + Index.ToString();
+                Text = "Playing" + Index.ToString();
             }
             else
             {
-                this.Text = "Paused " + Index.ToString();
+                Text = "Paused " + Index.ToString();
             }
         }
 
@@ -255,8 +255,8 @@ namespace RecordSession
             {
                 _activityReader.Dispose();
             }
-            this.Close();
-            this.Dispose();
+            Close();
+            Dispose();
         }
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)

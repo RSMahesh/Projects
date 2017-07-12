@@ -86,7 +86,7 @@ namespace Recorder
 
         private void ExitToolsStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
         private void CascadeToolStripMenuItem_Click(object sender, EventArgs e)
         {

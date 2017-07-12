@@ -24,9 +24,9 @@ namespace FileSystem
         public JarFileItem(Dictionary<string, string> headers, string filePath, byte[] containt, long offSetInJarFile)
         {
             //To DO: Ensure 
-            this.Headers = headers;
-            this.FilePath = filePath;
-            this.Containt = containt;
+            Headers = headers;
+            FilePath = filePath;
+            Containt = containt;
             OffSetInJarFile = offSetInJarFile;
         }
 

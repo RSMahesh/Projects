@@ -26,14 +26,14 @@ namespace Recorder
 
         private void VideoControlBox_Load(object sender, EventArgs e)
         {
-            this.BackColor = Color.LimeGreen;
-            this.TransparencyKey = Color.LimeGreen;
+            BackColor = Color.LimeGreen;
+            TransparencyKey = Color.LimeGreen;
 
-            this.TopMost = true;
-            this.FormBorderStyle = FormBorderStyle.None;
+            TopMost = true;
+            FormBorderStyle = FormBorderStyle.None;
             OnPictureViwerResize(null);
-            this.Opacity = 0.8;
-            this.trackBar1.BackColor = Color.LimeGreen;
+            Opacity = 0.8;
+            trackBar1.BackColor = Color.LimeGreen;
 
         }
 
@@ -67,7 +67,7 @@ namespace Recorder
         {
             if (e.Control)
             {
-                this.FormBorderStyle = FormBorderStyle.Sizable;
+                FormBorderStyle = FormBorderStyle.Sizable;
             }
         }
 
@@ -75,7 +75,7 @@ namespace Recorder
         {
             if (e.KeyCode == Keys.ControlKey)
             {
-                this.FormBorderStyle = FormBorderStyle.None;
+                FormBorderStyle = FormBorderStyle.None;
             }
         }
 
@@ -83,15 +83,15 @@ namespace Recorder
         {
             if (_pictureViewerFrom.MdiParent != null)
             {
-                this.Top = _pictureViewerFrom.MdiParent.Bottom - (this.Height + 50);
-                this.Left = _pictureViewerFrom.MdiParent.Left + (_pictureViewerFrom.MdiParent.Width / 2) - (this.Width / 2);
+                Top = _pictureViewerFrom.MdiParent.Bottom - (Height + 50);
+                Left = _pictureViewerFrom.MdiParent.Left + (_pictureViewerFrom.MdiParent.Width / 2) - (Width / 2);
             }
         }
 
         private void OnCloseCurrentSession(EventArg eventArg)
         {
-            this.Close();
-            this.Dispose();
+            Close();
+            Dispose();
         }
 
 

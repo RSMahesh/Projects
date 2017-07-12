@@ -6,7 +6,7 @@ using System.Text;
 
 namespace FileSystem
 {
-    public class JarFile : IJarFileWriter, IJarFileReader
+    public partial class JarFile : IJarFileWriter, IJarFileReader
     {
         readonly FileAccessMode _fileAccessMode;
         readonly Writer _writer;
@@ -22,24 +22,23 @@ namespace FileSystem
 
         public JarFile(FileAccessMode fileAccessMode, string jarFilePath, int maxfileCount)
         {
-            this._fileAccessMode = fileAccessMode;
-            this.JarFilePath = jarFilePath;
-            this._maxFileCount = maxfileCount;
+            _fileAccessMode = fileAccessMode;
+            JarFilePath = jarFilePath;
+            _maxFileCount = maxfileCount;
 
             if (Path.GetExtension(jarFilePath) == ".log")
             {
                 _oldFormat = true;
             }
 
-            if (this._fileAccessMode == FileAccessMode.Read)
+            if (_fileAccessMode == FileAccessMode.Read)
             {
-                this._reader = new Reader(jarFilePath, _oldFormat);
+                _reader = new Reader(jarFilePath, _oldFormat);
             }
             else
             {
-                this._writer = new Writer(jarFilePath);
+                _writer = new Writer(jarFilePath);
             }
-
 
         }
 
@@ -47,35 +46,35 @@ namespace FileSystem
 
         public void AddFile(JarFileItem jarFileItem)
         {
-            if (this._fileAccessMode == FileAccessMode.Read)
+            if (_fileAccessMode == FileAccessMode.Read)
             {
                 throw new InvalidOperationException("Append File can not be peromed on read mode");
             }
 
-            if (this._writer.GetFileCount() >= this._maxFileCount)
+            if (_writer.GetFileCount() >= _maxFileCount)
             {
                 throw new JarFileReachedMaxLimitException();
             }
 
-            this._writer.AddFile(jarFileItem);
+            _writer.AddFile(jarFileItem);
         }
 
         public int FilesCount
         {
             get
             {
-                if (!File.Exists(this.JarFilePath))
+                if (!File.Exists(JarFilePath))
                 {
                     return 0;
                 }
 
-                if (this._reader != null)
+                if (_reader != null)
                 {
-                    return this._reader.FileCount;
+                    return _reader.FileCount;
                 }
                 else
                 {
-                    using (var tempReader = new Reader(this.JarFilePath, _oldFormat))
+                    using (var tempReader = new Reader(JarFilePath, _oldFormat))
                     {
                         return tempReader.FileCount;
                     }
@@ -85,12 +84,12 @@ namespace FileSystem
 
         public JarFileItem GetNextFile()
         {
-            if (this._fileAccessMode == FileAccessMode.Write)
+            if (_fileAccessMode == FileAccessMode.Write)
             {
                 throw new InvalidOperationException("GetNextImage can not be peromed on write mode");
             }
 
-            return this._reader.GetNextFile();
+            return _reader.GetNextFile();
         }
 
         public long GetNextFileOffset()
@@ -99,9 +98,9 @@ namespace FileSystem
         }
         public void Dispose()
         {
-            if (this._reader != null)
+            if (_reader != null)
             {
-                this._reader.Dispose();
+                _reader.Dispose();
             }
         }
 
@@ -115,7 +114,7 @@ namespace FileSystem
             private readonly string _logFile;
             public Writer(string logFile)
             {
-                this._logFile = logFile;
+                _logFile = logFile;
 
                 var rootDir = Path.GetDirectoryName(logFile);
 
@@ -127,9 +126,9 @@ namespace FileSystem
             }
             public void AddFile(string fileToAppend)
             {
-                var fileCount = this.GetFileCount();
+                var fileCount = GetFileCount();
 
-                using (BinaryWriter writer = new BinaryWriter(File.Open(this._logFile, FileMode.OpenOrCreate)))
+                using (BinaryWriter writer = new BinaryWriter(File.Open(_logFile, FileMode.OpenOrCreate)))
                 {
                     fileCount++;
                     writer.Seek(0, SeekOrigin.Begin);
@@ -144,9 +143,9 @@ namespace FileSystem
 
             public void AddFile(JarFileItem jarFileItem)
             {
-                var fileCount = this.GetFileCount();
+                var fileCount = GetFileCount();
 
-                using (BinaryWriter writer = new BinaryWriter(File.Open(this._logFile, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read)))
+                using (BinaryWriter writer = new BinaryWriter(File.Open(_logFile, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read)))
                 {
                     fileCount++;
                     writer.Seek(0, SeekOrigin.Begin);
@@ -177,9 +176,9 @@ namespace FileSystem
             }
             public int GetFileCount()
             {
-                if (File.Exists(this._logFile))
+                if (File.Exists(_logFile))
                 {
-                    using (BinaryReader reader = new BinaryReader(File.Open(this._logFile, FileMode.Open, System.IO.FileAccess.Read, FileShare.ReadWrite)))
+                    using (BinaryReader reader = new BinaryReader(File.Open(_logFile, FileMode.Open, System.IO.FileAccess.Read, FileShare.ReadWrite)))
                     {
                         var bytes = reader.ReadBytes(10);
                         var result = System.Text.Encoding.UTF8.GetString(bytes);
@@ -199,32 +198,30 @@ namespace FileSystem
 
             public Reader(string logFile, bool oldFormat)
             {
-                this._logFile = logFile;
+                _logFile = logFile;
                 _oldFormat = oldFormat;
-                this.FileCount = this.GetFileCountForReading();
+                FileCount = GetFileCountForReading();
             }
-
             public int FileCount { get; private set; }
             private int GetFileCountForReading()
             {
-                this._reader = new BinaryReader(File.Open(this._logFile, FileMode.Open, System.IO.FileAccess.Read));
+                _reader = new BinaryReader(File.Open(_logFile, FileMode.Open, System.IO.FileAccess.Read));
 
-                var bytes = this._reader.ReadBytes(FileCountFieldSize);
+                var bytes = _reader.ReadBytes(FileCountFieldSize);
                 var fileCount = int.Parse(System.Text.Encoding.UTF8.GetString(bytes));
 
                 return fileCount;
             }
 
-
             public JarFileItem GetNextFile()
             {
-                var offset = this._reader.BaseStream.Position;
+                var offset = _reader.BaseStream.Position;
                 byte[] bytes;
-                Dictionary<string, string> headers = new Dictionary<string, string>();
+                var headers = new Dictionary<string, string>();
 
                 if (!_oldFormat)
                 {
-                    bytes = this._reader.ReadBytes(HeaderFieldSize);
+                    bytes = _reader.ReadBytes(HeaderFieldSize);
                     if (bytes.Count() == 0)
                     {
                         return JarFileItem.Empty;
@@ -257,7 +254,7 @@ namespace FileSystem
 
                 if (!_oldFormat)
                 {
-                    this._reader.BaseStream.Position = this._reader.BaseStream.Position + HeaderFieldSize;
+                    _reader.BaseStream.Position = _reader.BaseStream.Position + HeaderFieldSize;
                 }
 
                 var bytes = _reader.ReadBytes(FileLengthFieldSize);
@@ -269,7 +266,7 @@ namespace FileSystem
 
                 var fileLength = int.Parse(Encoding.UTF8.GetString(bytes).Trim());
 
-                this._reader.BaseStream.Position = this._reader.BaseStream.Position + fileLength;
+                _reader.BaseStream.Position = _reader.BaseStream.Position + fileLength;
 
                 return currentFileOffset;
             }
@@ -296,30 +293,30 @@ namespace FileSystem
             }
             public void Dispose()
             {
-                this.Dispose(true);
+                Dispose(true);
                 GC.SuppressFinalize(this);
             }
 
             protected virtual void Dispose(bool disposing)
             {
-                if (!this.disposed)
+                if (!disposed)
                 {
                     if (disposing)
                     {
                         // Free other state (managed objects).
                     }
 
-                    if (this._reader != null)
+                    if (_reader != null)
                     {
-                        this._reader.Dispose();
+                        _reader.Dispose();
                     }
 
-                    this.disposed = true;
+                    disposed = true;
                 }
             }
             ~Reader()
             {
-                this.Dispose(false);
+                Dispose(false);
             }
         }
     }

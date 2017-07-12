@@ -99,7 +99,7 @@ namespace TransparentWindow
         {
             if (!transParent)
             {
-                this.MakeTranseparent();
+                MakeTranseparent();
             }
             else
             {

@@ -42,7 +42,7 @@ namespace BigFun.Castle.Core
             ComponentModel model,
             DependencyModel dependency)
         {
-            return dependency.TargetType == typeof(string) && this.SettingExist(dependency);
+            return dependency.TargetType == typeof(string) && SettingExist(dependency);
         }
 
         /// <summary>

@@ -15,20 +15,20 @@ namespace UserActivityLogger
     public class ActivitesEnumerator : IEnumerator<Activity>, IDisposable
     {
         private readonly IJarFileFactory _jarFileFactory;
-        private IEnumerable<FileInfo> _jarFilesInfos;
+        private readonly IEnumerable<FileInfo> _jarFilesInfos;
         private int _nextJarfileIndex;
         IJarFileReader _jarFileReader = null;
-        private ConcurrentDictionary<int, FileItemInfo> _fileOffsetInfoMap = new ConcurrentDictionary<int, FileItemInfo>();
+        private ConcurrentDictionary<int, JarItemMetaData> _fileOffsetInfoMap = new ConcurrentDictionary<int, JarItemMetaData>();
 
         public int FileCount { get; private set; }
         public ActivitesEnumerator(IEnumerable<FileInfo> fileInfos, IJarFileFactory jarFileFactory, ActivityQueryFilter filter)
         {
-            this._jarFileFactory = jarFileFactory;
-            this._nextJarfileIndex = 0;
+            _jarFileFactory = jarFileFactory;
+            _nextJarfileIndex = 0;
 
-            this._jarFilesInfos = fileInfos;
+            _jarFilesInfos = fileInfos;
 
-            this.FileCount = this.GetFileCount();
+            PopulateFileOffsetInfoMap();
 
             SetReaderToNextFile();
         }
@@ -39,26 +39,26 @@ namespace UserActivityLogger
         {
             get
             {
-                return this.Current;
+                return Current;
             }
         }
         public bool MoveNext()
         {
-            return this.GetNextFile();
+            return GetNextFile();
         }
         public void Reset()
         {
-            this.ChangePostion(0);
+            ChangePostion(0);
         }
         public void ChangePostion(int positionNumber)
         {
             var fileItemInfo = _fileOffsetInfoMap[positionNumber];
-            _nextJarfileIndex = fileItemInfo.Index + 1;
+            _nextJarfileIndex = fileItemInfo.JarFileIndex + 1;
 
-            if (this._jarFileReader != null && this._jarFileReader.JarFilePath != fileItemInfo.JarFilePath)
+            if (_jarFileReader != null && _jarFileReader.JarFilePath != fileItemInfo.JarFilePath)
             {
-                this._jarFileReader.Dispose();
-                this._jarFileReader = this._jarFileFactory.GetJarFileReader(fileItemInfo.JarFilePath);
+                _jarFileReader.Dispose();
+                _jarFileReader = _jarFileFactory.GetJarFileReader(fileItemInfo.JarFilePath);
             }
 
             _jarFileReader.MoveFileHeader(fileItemInfo.OffSetInJarFile);
@@ -66,53 +66,53 @@ namespace UserActivityLogger
 
         public void Dispose()
         {
-            if (this._jarFileReader != null)
+            if (_jarFileReader != null)
             {
-                this._jarFileReader.Dispose();
+                _jarFileReader.Dispose();
             }
         }
 
-        private int GetFileCount()
+        private void PopulateFileOffsetInfoMap()
         {
-            var ItemfileCount = 0;
-            var jarfileCount = 0;
-            var tempDic = new ConcurrentDictionary<string, List<long>>();
-
             if (!_jarFilesInfos.Any())
             {
-                return 0;
+                return;
             }
 
-            Parallel.ForEach(this._jarFilesInfos, (file) =>
-                {
-                    tempDic[file.FullName] = GetOffSetOfFilesinJar(file.FullName);
+            var jarFileOffSetMapping = GetOffSetOfFilesinAllJar();
+            var itemfileCount = 0;
+            var jarfileCount = 0;
 
-                });
-
-
-            foreach (var file in this._jarFilesInfos)
+            foreach (var file in _jarFilesInfos)
             {
-                var list = tempDic[file.FullName];
-
+                var list = jarFileOffSetMapping[file.FullName];
 
                 for (var i = 0; i < list.Count; i++)
                 {
-
-                    _fileOffsetInfoMap[ItemfileCount++] = new FileItemInfo(file.FullName, list[i], jarfileCount);
+                    _fileOffsetInfoMap[itemfileCount++] = new JarItemMetaData(file.FullName, list[i], jarfileCount);
                 }
 
                 jarfileCount++;
-
             }
 
-            return ItemfileCount;
+            FileCount = itemfileCount;
         }
 
+        private ConcurrentDictionary<string, List<long>> GetOffSetOfFilesinAllJar()
+        {
+            var jarFileOffSetMapping = new ConcurrentDictionary<string, List<long>>();
+
+            Parallel.ForEach(_jarFilesInfos, (file) => {
+                jarFileOffSetMapping[file.FullName] = GetOffSetOfFilesinJar(file.FullName);
+            });
+
+            return jarFileOffSetMapping;
+        }
         private List<long> GetOffSetOfFilesinJar(string jarFilePath)
         {
             var offSetList = new List<long>();
 
-            using (var logFileReader = this._jarFileFactory.GetJarFileReader(jarFilePath))
+            using (var logFileReader = _jarFileFactory.GetJarFileReader(jarFilePath))
             {
                 var offset = logFileReader.GetNextFileOffset();
 
@@ -128,7 +128,7 @@ namespace UserActivityLogger
 
         private bool GetNextFile()
         {
-            var file = this._jarFileReader.GetNextFile();
+            var file = _jarFileReader.GetNextFile();
 
             if (file == JarFileItem.Empty)
             {
@@ -141,19 +141,17 @@ namespace UserActivityLogger
 
                 SetReaderToNextFile();
 
-                this.GetNextFile();
+                GetNextFile();
                 return true;
             }
 
-            Current = this.BytesToActivity(file.Containt);
+            Current = BytesToActivity(file.Containt);
             return true;
         }
 
-
-
         private bool IsEndReached()
         {
-            if (this._nextJarfileIndex >= _jarFilesInfos.Count())
+            if (_nextJarfileIndex >= _jarFilesInfos.Count())
             {
                 Current = Activity.Empty;
                 return true;
@@ -164,8 +162,8 @@ namespace UserActivityLogger
 
         private void SetReaderToNextFile()
         {
-            this._jarFileReader = this._jarFileFactory.GetJarFileReader(_jarFilesInfos.ElementAt(this._nextJarfileIndex).FullName);
-            this._nextJarfileIndex++;
+            _jarFileReader = _jarFileFactory.GetJarFileReader(_jarFilesInfos.ElementAt(_nextJarfileIndex).FullName);
+            _nextJarfileIndex++;
         }
 
         private Activity BytesToActivity(byte[] imageBytes)
@@ -175,7 +173,7 @@ namespace UserActivityLogger
 
             using (var fs = new MemoryStream(imageBytes, false))
             {
-                return new Activity(Image.FromStream(fs), this.GetComments(fs));
+                return new Activity(Image.FromStream(fs), GetComments(fs));
             }
         }
 
@@ -186,18 +184,17 @@ namespace UserActivityLogger
 
             return new ImageCommentEmbedder().GetComments(stream);
         }
-        private class FileItemInfo
+        private class JarItemMetaData
         {
-            public FileItemInfo(string jarFilePath, long offSetInJarFile, int index)
+            public JarItemMetaData(string jarFilePath, long offSetInJarFile, int index)
             {
                 JarFilePath = jarFilePath;
                 OffSetInJarFile = offSetInJarFile;
-                Index = index;
+                JarFileIndex = index;
             }
             public string JarFilePath { get; private set; }
+            public int JarFileIndex { get; private set; }
             public long OffSetInJarFile { get; private set; }
-            public int Index { get; private set; }
         }
-
     }
 }

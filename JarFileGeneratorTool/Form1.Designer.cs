@@ -28,115 +28,115 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.btnGeneratePackage = new System.Windows.Forms.Button();
-            this.chkSelectAll = new System.Windows.Forms.CheckBox();
-            this.txtFilter = new System.Windows.Forms.TextBox();
-            this.btnBrowse = new System.Windows.Forms.Button();
-            this.txtSourceFolder = new System.Windows.Forms.TextBox();
-            this.btnGenerate = new System.Windows.Forms.Button();
-            this.ListBoxFiles = new System.Windows.Forms.CheckedListBox();
-            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.groupBox1.SuspendLayout();
-            this.SuspendLayout();
+            groupBox1 = new System.Windows.Forms.GroupBox();
+            btnGeneratePackage = new System.Windows.Forms.Button();
+            chkSelectAll = new System.Windows.Forms.CheckBox();
+            txtFilter = new System.Windows.Forms.TextBox();
+            btnBrowse = new System.Windows.Forms.Button();
+            txtSourceFolder = new System.Windows.Forms.TextBox();
+            btnGenerate = new System.Windows.Forms.Button();
+            ListBoxFiles = new System.Windows.Forms.CheckedListBox();
+            folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            groupBox1.SuspendLayout();
+            SuspendLayout();
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.btnGeneratePackage);
-            this.groupBox1.Controls.Add(this.chkSelectAll);
-            this.groupBox1.Controls.Add(this.txtFilter);
-            this.groupBox1.Controls.Add(this.btnBrowse);
-            this.groupBox1.Controls.Add(this.txtSourceFolder);
-            this.groupBox1.Controls.Add(this.btnGenerate);
-            this.groupBox1.Controls.Add(this.ListBoxFiles);
-            this.groupBox1.Location = new System.Drawing.Point(5, 5);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(553, 474);
-            this.groupBox1.TabIndex = 2;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "groupBox1";
+            groupBox1.Controls.Add(btnGeneratePackage);
+            groupBox1.Controls.Add(chkSelectAll);
+            groupBox1.Controls.Add(txtFilter);
+            groupBox1.Controls.Add(btnBrowse);
+            groupBox1.Controls.Add(txtSourceFolder);
+            groupBox1.Controls.Add(btnGenerate);
+            groupBox1.Controls.Add(ListBoxFiles);
+            groupBox1.Location = new System.Drawing.Point(5, 5);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new System.Drawing.Size(553, 474);
+            groupBox1.TabIndex = 2;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "groupBox1";
             // 
             // btnGeneratePackage
             // 
-            this.btnGeneratePackage.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGeneratePackage.Location = new System.Drawing.Point(17, 417);
-            this.btnGeneratePackage.Name = "btnGeneratePackage";
-            this.btnGeneratePackage.Size = new System.Drawing.Size(141, 29);
-            this.btnGeneratePackage.TabIndex = 8;
-            this.btnGeneratePackage.Text = "Generate Package";
-            this.btnGeneratePackage.UseVisualStyleBackColor = true;
-            this.btnGeneratePackage.Click += new System.EventHandler(this.btnGeneratePackage_Click);
+            btnGeneratePackage.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            btnGeneratePackage.Location = new System.Drawing.Point(17, 417);
+            btnGeneratePackage.Name = "btnGeneratePackage";
+            btnGeneratePackage.Size = new System.Drawing.Size(141, 29);
+            btnGeneratePackage.TabIndex = 8;
+            btnGeneratePackage.Text = "Generate Package";
+            btnGeneratePackage.UseVisualStyleBackColor = true;
+            btnGeneratePackage.Click += new System.EventHandler(btnGeneratePackage_Click);
             // 
             // chkSelectAll
             // 
-            this.chkSelectAll.AutoSize = true;
-            this.chkSelectAll.Location = new System.Drawing.Point(181, 60);
-            this.chkSelectAll.Name = "chkSelectAll";
-            this.chkSelectAll.Size = new System.Drawing.Size(70, 17);
-            this.chkSelectAll.TabIndex = 7;
-            this.chkSelectAll.Text = "Select All";
-            this.chkSelectAll.UseVisualStyleBackColor = true;
-            this.chkSelectAll.CheckedChanged += new System.EventHandler(this.chkSelectAll_CheckedChanged);
+            chkSelectAll.AutoSize = true;
+            chkSelectAll.Location = new System.Drawing.Point(181, 60);
+            chkSelectAll.Name = "chkSelectAll";
+            chkSelectAll.Size = new System.Drawing.Size(70, 17);
+            chkSelectAll.TabIndex = 7;
+            chkSelectAll.Text = "Select All";
+            chkSelectAll.UseVisualStyleBackColor = true;
+            chkSelectAll.CheckedChanged += new System.EventHandler(chkSelectAll_CheckedChanged);
             // 
             // txtFilter
             // 
-            this.txtFilter.Location = new System.Drawing.Point(17, 48);
-            this.txtFilter.Name = "txtFilter";
-            this.txtFilter.Size = new System.Drawing.Size(100, 20);
-            this.txtFilter.TabIndex = 6;
-            this.txtFilter.Text = ".dll,.exe";
+            txtFilter.Location = new System.Drawing.Point(17, 48);
+            txtFilter.Name = "txtFilter";
+            txtFilter.Size = new System.Drawing.Size(100, 20);
+            txtFilter.TabIndex = 6;
+            txtFilter.Text = ".dll,.exe";
             // 
             // btnBrowse
             // 
-            this.btnBrowse.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnBrowse.Location = new System.Drawing.Point(405, 19);
-            this.btnBrowse.Name = "btnBrowse";
-            this.btnBrowse.Size = new System.Drawing.Size(73, 23);
-            this.btnBrowse.TabIndex = 5;
-            this.btnBrowse.Text = "...";
-            this.btnBrowse.UseVisualStyleBackColor = true;
-            this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
+            btnBrowse.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            btnBrowse.Location = new System.Drawing.Point(405, 19);
+            btnBrowse.Name = "btnBrowse";
+            btnBrowse.Size = new System.Drawing.Size(73, 23);
+            btnBrowse.TabIndex = 5;
+            btnBrowse.Text = "...";
+            btnBrowse.UseVisualStyleBackColor = true;
+            btnBrowse.Click += new System.EventHandler(btnBrowse_Click);
             // 
             // txtSourceFolder
             // 
-            this.txtSourceFolder.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSourceFolder.Location = new System.Drawing.Point(17, 19);
-            this.txtSourceFolder.Name = "txtSourceFolder";
-            this.txtSourceFolder.Size = new System.Drawing.Size(389, 22);
-            this.txtSourceFolder.TabIndex = 4;
-            this.txtSourceFolder.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtSourceFolder_KeyUp);
+            txtSourceFolder.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            txtSourceFolder.Location = new System.Drawing.Point(17, 19);
+            txtSourceFolder.Name = "txtSourceFolder";
+            txtSourceFolder.Size = new System.Drawing.Size(389, 22);
+            txtSourceFolder.TabIndex = 4;
+            txtSourceFolder.KeyUp += new System.Windows.Forms.KeyEventHandler(txtSourceFolder_KeyUp);
             // 
             // btnGenerate
             // 
-            this.btnGenerate.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGenerate.Location = new System.Drawing.Point(192, 417);
-            this.btnGenerate.Name = "btnGenerate";
-            this.btnGenerate.Size = new System.Drawing.Size(141, 29);
-            this.btnGenerate.TabIndex = 3;
-            this.btnGenerate.Text = "Generate Jar File";
-            this.btnGenerate.UseVisualStyleBackColor = true;
-            this.btnGenerate.Click += new System.EventHandler(this.btnGenerate_Click);
+            btnGenerate.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            btnGenerate.Location = new System.Drawing.Point(192, 417);
+            btnGenerate.Name = "btnGenerate";
+            btnGenerate.Size = new System.Drawing.Size(141, 29);
+            btnGenerate.TabIndex = 3;
+            btnGenerate.Text = "Generate Jar File";
+            btnGenerate.UseVisualStyleBackColor = true;
+            btnGenerate.Click += new System.EventHandler(btnGenerate_Click);
             // 
             // ListBoxFiles
             // 
-            this.ListBoxFiles.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ListBoxFiles.FormattingEnabled = true;
-            this.ListBoxFiles.Location = new System.Drawing.Point(17, 83);
-            this.ListBoxFiles.Name = "ListBoxFiles";
-            this.ListBoxFiles.Size = new System.Drawing.Size(461, 327);
-            this.ListBoxFiles.TabIndex = 2;
+            ListBoxFiles.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            ListBoxFiles.FormattingEnabled = true;
+            ListBoxFiles.Location = new System.Drawing.Point(17, 83);
+            ListBoxFiles.Name = "ListBoxFiles";
+            ListBoxFiles.Size = new System.Drawing.Size(461, 327);
+            ListBoxFiles.TabIndex = 2;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(561, 480);
-            this.Controls.Add(this.groupBox1);
-            this.Name = "Form1";
-            this.Text = "Form1";
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(561, 480);
+            Controls.Add(groupBox1);
+            Name = "Form1";
+            Text = "Form1";
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            ResumeLayout(false);
 
         }
 

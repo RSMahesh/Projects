@@ -5,7 +5,19 @@ using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace FileSystem
 {
-    public class AzureBlobFileSystem : IFileSystem
+
+//    PUT https://api.github.com/repos/MaheshBailwal/StatusMakerLastestApp/contents/index3.html HTTP/1.1
+//Host: api.github.com
+//User-Agent: Fiddler
+//Authorization: basic bWFoZXNoYmFpbHdhbDptYkAyNDgwMDE =
+//Content - Length: 85
+
+//{
+//	"path": "index.html",
+//	"message": "test",
+//	"content": "dGVzdGluZyBodG1sIHYy"
+//}
+public class GitFileSystem : IFileSystem
     {
         private string _storageConnectionString = string.Empty;
         private string _currentContainer;
@@ -14,7 +26,7 @@ namespace FileSystem
         /// 
         /// </summary>
         /// <param name="StorageConnectionString"></param>
-        public AzureBlobFileSystem(string StorageConnectionString)
+        public GitFileSystem(string StorageConnectionString)
         {
             _storageConnectionString = StorageConnectionString;
         }

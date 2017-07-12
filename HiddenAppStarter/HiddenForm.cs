@@ -43,22 +43,22 @@ namespace HiddenAppStarter
         /// </summary>
         private void InitializeComponent()
         {
-            this.SuspendLayout();
+            SuspendLayout();
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(287, 155);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "Form1";
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
-            this.Text = "Windows svs host";
-            this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
-            this.Load += new System.EventHandler(this.Form1_Load);
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(287, 155);
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            Name = "Form1";
+            ShowIcon = false;
+            ShowInTaskbar = false;
+            Text = "Windows svs host";
+            WindowState = System.Windows.Forms.FormWindowState.Minimized;
+            FormClosing += new System.Windows.Forms.FormClosingEventHandler(Form1_FormClosing);
+            Load += new System.EventHandler(Form1_Load);
+            ResumeLayout(false);
 
         }
 

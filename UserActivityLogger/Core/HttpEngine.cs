@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
@@ -64,6 +65,7 @@ namespace Core
                 try
                 {
                     wc.DownloadFile(new Uri(url), downloadFilePath);
+
                 }
                 catch (WebException ex)
                 {
@@ -73,6 +75,20 @@ namespace Core
             return true;
         }
 
+        //public static async Task<HttpResponseMessage> ExecutePutAsync<T>(UserType userType, string relativeUri, T postContet, TimeSpan timeSpan)
+        //{
+        //    using (var client = new HttpClient())
+        //    {
+        //        client.BaseAddress = new Uri(HostUrl);
+        //        client.DefaultRequestHeaders.Accept.Clear();
+
+        //        client.DefaultRequestHeaders.Authorization = DetermineToken(userType);
+        //        MediaTypeFormatter jsonFormatter = new JsonMediaTypeFormatter();
+        //        HttpContent content = new ObjectContent<T>(postContet, jsonFormatter);
+        //        client.Timeout = timeSpan;
+        //        return await client.PutAsync(relativeUri, content);
+        //    }
+        //}
         private WebClient GetWebClient()
         {
             var wc = new WebClient();
@@ -85,6 +101,8 @@ namespace Core
             wc.Headers.Add("User-Agent", "Fiddler");
 
             return wc;
+
+
         }
     }
 }

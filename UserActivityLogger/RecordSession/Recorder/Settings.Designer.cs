@@ -28,43 +28,43 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.trackBarFastSpeed = new System.Windows.Forms.TrackBar();
-            this.label1 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarFastSpeed)).BeginInit();
-            this.SuspendLayout();
+            trackBarFastSpeed = new System.Windows.Forms.TrackBar();
+            label1 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(trackBarFastSpeed)).BeginInit();
+            SuspendLayout();
             // 
             // trackBarFastSpeed
             // 
-            this.trackBarFastSpeed.Location = new System.Drawing.Point(12, 54);
-            this.trackBarFastSpeed.Maximum = 5000;
-            this.trackBarFastSpeed.Minimum = 1;
-            this.trackBarFastSpeed.Name = "trackBarFastSpeed";
-            this.trackBarFastSpeed.Size = new System.Drawing.Size(243, 45);
-            this.trackBarFastSpeed.TabIndex = 0;
-            this.trackBarFastSpeed.Value = 10;
-            this.trackBarFastSpeed.Scroll += new System.EventHandler(this.trackBarFastSpeed_Scroll);
+            trackBarFastSpeed.Location = new System.Drawing.Point(12, 54);
+            trackBarFastSpeed.Maximum = 5000;
+            trackBarFastSpeed.Minimum = 1;
+            trackBarFastSpeed.Name = "trackBarFastSpeed";
+            trackBarFastSpeed.Size = new System.Drawing.Size(243, 45);
+            trackBarFastSpeed.TabIndex = 0;
+            trackBarFastSpeed.Value = 10;
+            trackBarFastSpeed.Scroll += new System.EventHandler(trackBarFastSpeed_Scroll);
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(23, 38);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(61, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Fast Speed";
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(23, 38);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(61, 13);
+            label1.TabIndex = 1;
+            label1.Text = "Fast Speed";
             // 
             // Settings
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.trackBarFastSpeed);
-            this.Name = "Settings";
-            this.Text = "Settings";
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarFastSpeed)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(284, 262);
+            Controls.Add(label1);
+            Controls.Add(trackBarFastSpeed);
+            Name = "Settings";
+            Text = "Settings";
+            ((System.ComponentModel.ISupportInitialize)(trackBarFastSpeed)).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 

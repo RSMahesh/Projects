@@ -70,6 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AzureBlobFileSystem - Copy.cs" />
     <Compile Include="AzureBlobFileSystem.cs" />
     <Compile Include="FileSystemFactory.cs" />
     <Compile Include="IFileSystemFactory.cs" />
@@ -86,6 +87,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="JarFile.Reader.cs" />
+    <Compile Include="JarFile.Writer.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
