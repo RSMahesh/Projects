@@ -58,6 +58,7 @@
     <Compile Include="AppWatcher.cs" />
     <Compile Include="BinarySerializer.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="ImageExtensions.cs" />
     <Compile Include="IPAddress.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="HiddenApp.cs" />

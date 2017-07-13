@@ -32,7 +32,7 @@ namespace UserActivityLogger.Tests
 
             var imageCommentEmbedder = Mock.Create<IImageCommentEmbedder>();
 
-            var activityRepositary = new ActivityRepositary(jarFactory, imageCommentEmbedder, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
+            var activityRepositary = new ActivityRepositary(jarFactory, imageCommentEmbedder);
 
             var img = Image.FromFile(imageFile);
 
@@ -52,10 +52,10 @@ namespace UserActivityLogger.Tests
         {
             var jarFileWriter = Mock.Create<IJarFileWriter>();
 
-            //we could live with out mock here but learing I am using this comples mocking
+            //we could live with out mock here but  I am learing using this complex mocking
 
             Mock.Arrange(() => jarFileWriter.AddFile(Arg.IsAny<JarFileItem>()))
-                                .DoInstead((JarFileItem jarFileItem) => AppendFile(jarFileItem.FilePath, dataFile, appendedFilesStore)).OccursAtLeast(100);
+                                .DoInstead((JarFileItem jarFileItem) => AppendFile(jarFileItem, dataFile, appendedFilesStore)).OccursAtLeast(100);
 
          //   Mock.Arrange(() => jarFile.FilesCount).Returns(() => GetFileCount(dataFile, appendedFilesStore));
 
@@ -72,7 +72,7 @@ namespace UserActivityLogger.Tests
             return appendedFilesStore[dataFile].Count();
         }
 
-        void AppendFile(string fileToAppend, string dataFile, Dictionary<string, List<string>> appendedFilesStore)
+        void AppendFile(JarFileItem jarFileItem, string dataFile, Dictionary<string, List<string>> appendedFilesStore)
         {
             if (!appendedFilesStore.ContainsKey(dataFile))
             {
@@ -86,7 +86,7 @@ namespace UserActivityLogger.Tests
                 throw new JarFileReachedMaxLimitException();
             }
 
-            list.Add(fileToAppend);
+            list.Add(jarFileItem.Headers.ToString());
         }
 
         private string GetUserNameInReverse()

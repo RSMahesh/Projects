@@ -13,26 +13,14 @@ namespace UserActivityLogger
         private IJarFileWriter _jarFileWriter;
         private IImageCommentEmbedder _imageCommentEmbedder;
         private readonly IJarFileFactory _jarFileFactory;
-
         private string _dataFolder;
 
         //TODO: one consturctor only inject only dependencies  
-        public ActivityRepositary(IJarFileFactory jarFileFactory, IImageCommentEmbedder imageCommentEmbedder, string dataFolder)
-        {
-            _jarFileFactory = jarFileFactory;
-            _imageCommentEmbedder = imageCommentEmbedder;
-            _dataFolder = dataFolder;
-
-            HasWriteAccessToFolder();
-
-            CreateNewJarFile();
-        }
-
-        //This constructor for reading (waty too bad)
         public ActivityRepositary(IJarFileFactory jarFileFactory, IImageCommentEmbedder imageCommentEmbedder)
         {
             _jarFileFactory = jarFileFactory;
             _imageCommentEmbedder = imageCommentEmbedder;
+            _dataFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SysLogs");
         }
 
         public string DataFolder
@@ -45,18 +33,13 @@ namespace UserActivityLogger
 
         public void Add(Activity activity)
         {
-            var tempFile = RuntimeHelper.MapToTempFolder(Guid.NewGuid().ToString() + ".jpg");
-
-            //TODO: In memory instead saving file
-            activity.ScreenShot.Save(tempFile, ImageFormat.Jpeg);
+            CreateNewJarFileWriterIfRequired();
 
             var headers = new Dictionary<string, string>();
-            headers["FileName"] = tempFile;
+            var screenShotBytes = activity.ScreenShot.ToByteArray();
+            var item = new JarFileItem(headers, screenShotBytes, -1);
 
-
-            JarFileItem item = new JarFileItem(headers, tempFile);
-
-            _imageCommentEmbedder.AddComment(tempFile, activity.KeyPressedData);
+            _imageCommentEmbedder.AddComment(new MemoryStream(screenShotBytes), activity.KeyPressedData);
 
             try
             {
@@ -65,32 +48,36 @@ namespace UserActivityLogger
             catch (JarFileReachedMaxLimitException)
             {
                 //TO DO: move this event to appropiate class or remove
-                EventContainer.PublishEvent(Events.LogFileReachedMaxLimit.ToString(), new EventArg(Guid.NewGuid(), _jarFileWriter.JarFilePath));
+                EventContainer.PublishEvent(
+                    Events.LogFileReachedMaxLimit.ToString(),
+                    new EventArg(Guid.NewGuid(), _jarFileWriter.JarFilePath));
 
-                CreateNewJarFile();
+                CreateNewJarFileWriter();
+
                 _jarFileWriter.AddFile(item);
             }
-
-            File.Delete(tempFile);
         }
-
-        //public ActivityReader GetReader()
-        //{
-        //    return new ActivityReader(_dataFolder, _jarFileFactory, null);
-        //}
-
         public ActivityReader GetReader(IEnumerable<string> files)
         {
             return new ActivityReader(files, _jarFileFactory, null);
         }
-
-  
-        private void CreateNewJarFile()
+        private void CreateNewJarFileWriter()
         {
             var ipUser = IPAddress.GetCurrentMachineIp() + RuntimeHelper.GetCurrentUserName();
-            var logFilePath = Path.Combine(_dataFolder, ipUser.ReverseMe()) + "_" + Guid.NewGuid().ToString() + "." + Constants.JarFileExtension;
+
+            var logFilePath = Path.Combine(_dataFolder, ipUser.ReverseMe()) + "_" + Guid.NewGuid() + "."
+                              + Constants.JarFileExtension;
             DisposeCurrentJarFile();
+
             _jarFileWriter = _jarFileFactory.GetJarFileWriter(logFilePath);
+        }
+
+        private void CreateNewJarFileWriterIfRequired()
+        {
+            if (_jarFileWriter == null)
+            {
+                CreateNewJarFileWriter();
+            }
         }
 
         private void DisposeCurrentJarFile()
@@ -98,25 +85,6 @@ namespace UserActivityLogger
             if (_jarFileWriter != null)
             {
                 _jarFileWriter.Dispose();
-            }
-        }
-
-        private void HasWriteAccessToFolder()
-        {
-            try
-            {
-                var ds = Directory.GetAccessControl(_dataFolder);
-
-                var testFile = Path.Combine(_dataFolder, "test.temp");
-
-                File.WriteAllText(Path.Combine(_dataFolder, "test.temp"), "test");
-
-                File.Delete(testFile);
-            }
-            catch (Exception ex)
-            {
-                _dataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                _dataFolder = Path.Combine(_dataFolder, "SysLogs");
             }
         }
     }

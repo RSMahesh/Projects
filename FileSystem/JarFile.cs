@@ -163,7 +163,8 @@ namespace FileSystem
                     writer.Write(headerBytes);
                     writer.Seek(0, SeekOrigin.End);
 
-                    var fileBytes = File.ReadAllBytes(jarFileItem.FilePath);
+                    //var fileBytes = File.ReadAllBytes(jarFileItem.FilePath);
+                    var fileBytes = jarFileItem.Containt;
                     writer.Write(Encoding.ASCII.GetBytes(fileBytes.Length.ToString().PadLeft(FileLengthFieldSize)));
                     writer.Write(fileBytes);
                 }
@@ -239,7 +240,7 @@ namespace FileSystem
 
                 var imageBytes = _reader.ReadBytes(int.Parse(Encoding.UTF8.GetString(bytes).Trim()));
 
-                return new JarFileItem(headers, string.Empty, imageBytes, offset);
+                return new JarFileItem(headers, imageBytes, offset);
 
             }
 

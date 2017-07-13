@@ -70,7 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AzureBlobFileSystem - Copy.cs" />
+    <Compile Include="GitFileSystem.cs" />
     <Compile Include="AzureBlobFileSystem.cs" />
     <Compile Include="FileSystemFactory.cs" />
     <Compile Include="IFileSystemFactory.cs" />

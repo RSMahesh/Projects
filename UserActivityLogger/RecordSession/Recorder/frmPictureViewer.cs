@@ -65,29 +65,6 @@ namespace RecordSession
             WindowState = FormWindowState.Normal;
         }
 
-
-        public int PlayOLd(string folder)
-        {
-            if (timer2.Enabled)
-                timer2.Enabled = false;
-            else
-            {
-                timer2.Enabled = true;
-
-                _activityRepositary = new ActivityRepositary(new JarFileFactory(), new ImageCommentEmbedder(), folder);
-
-                if (_activityReader != null)
-                {
-                    _activityReader.Dispose();
-                }
-
-                //_activityReader = _activityRepositary.GetReader();
-                return _activityReader.FileCount();
-            }
-
-            return 0;
-        }
-
         public int Play(IEnumerable<string> files)
         {
             if (timer2.Enabled)

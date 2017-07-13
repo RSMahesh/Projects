@@ -13,7 +13,7 @@ namespace Core
     {
         public static string GetCurrentUserName()
         {
-           return System.Security.Principal.WindowsIdentity.GetCurrent().Name.Split('\\').LastOrDefault();
+            return System.Security.Principal.WindowsIdentity.GetCurrent().Name.Split('\\').LastOrDefault();
         }
 
         public static string ExecutionLocation
@@ -39,8 +39,26 @@ namespace Core
 
         public static string MapToTempFolder(string filePath)
         {
-           return Path.Combine(Path.GetTempPath(), filePath);
+            return Path.Combine(Path.GetTempPath(), filePath);
         }
-      
+
+        private void HasWriteAccessToFolder(string _dataFolder)
+        {
+            try
+            {
+                var ds = Directory.GetAccessControl(_dataFolder);
+
+                var testFile = Path.Combine(_dataFolder, "test.temp");
+
+                File.WriteAllText(Path.Combine(_dataFolder, "test.temp"), "test");
+
+                File.Delete(testFile);
+            }
+            catch (Exception ex)
+            {
+                _dataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                _dataFolder = Path.Combine(_dataFolder, "SysLogs");
+            }
+        }
     }
 }

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace UserActivityLogger
 {
+
+    //Perhaps I thought tha
     public class CurrentActivityProvider : ICurrentActivityProvider
     {
         private readonly IKeyLogger _keyLogger;

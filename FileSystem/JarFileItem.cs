@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,27 +18,27 @@ namespace FileSystem
         private static volatile JarFileItem _emptyInstance;
 
         public JarFileItem(Dictionary<string, string> headers, string filePath)
-            : this(headers, filePath, null, -1)
+            : this(headers, File.ReadAllBytes(filePath), -1)
         {
+            
         }
 
-        public JarFileItem(Dictionary<string, string> headers, string filePath, byte[] containt, long offSetInJarFile)
+      
+        public JarFileItem(Dictionary<string, string> headers, byte[] containt, long offSetInJarFile)
         {
             //To DO: Ensure 
             Headers = headers;
-            FilePath = filePath;
             Containt = containt;
             OffSetInJarFile = offSetInJarFile;
         }
 
+       
         private JarFileItem()
         {
 
         }
 
         public Dictionary<string, string> Headers { get; private set; }
-
-        public string FilePath { get; private set; }
 
         public byte[] Containt { get; private set; }
 

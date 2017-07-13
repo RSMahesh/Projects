@@ -116,7 +116,7 @@ namespace UserActivityLogger.Tests
             else
             {
                 GetNextFileCallCount++;
-                return new JarFileItem(new Dictionary<string, string>(), string.Empty, null, GetNextFileCallCount);
+                return new JarFileItem(new Dictionary<string, string>(), null, GetNextFileCallCount);
             }
         }
 

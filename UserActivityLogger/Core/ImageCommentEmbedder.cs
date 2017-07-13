@@ -10,7 +10,7 @@ using System.Windows.Media.Imaging;
 namespace Core
 {
     public class ImageCommentEmbedder : IImageCommentEmbedder
-        
+
     {
         public ImageCommentEmbedder()
         {
@@ -20,53 +20,63 @@ namespace Core
 
         public void AddComment(string imageFilePath, string comments)
         {
-            string jpegDirectory = Path.GetDirectoryName(imageFilePath);
-            string jpegFileName = Path.GetFileNameWithoutExtension(imageFilePath);
+            MemoryStream outStream = null;
+            var originalImage = new FileInfo(imageFilePath);
 
+            using (Stream jpegStreamIn = File.Open(imageFilePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
+            {
+                outStream = AddComment(jpegStreamIn, comments);
+            }
+
+            // Delete the original
+            originalImage.Delete();
+
+            File.WriteAllBytes(imageFilePath, outStream.ToArray());
+        }
+
+        public MemoryStream AddComment(Stream jpegStreamIn, string comments)
+        {
             BitmapDecoder decoder = null;
             BitmapFrame bitmapFrame = null;
             BitmapMetadata metadata = null;
-            FileInfo originalImage = new FileInfo(imageFilePath);
 
-            if (File.Exists(imageFilePath))
+            decoder = new JpegBitmapDecoder(jpegStreamIn, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
+
+            bitmapFrame = decoder.Frames[0];
+            metadata = (BitmapMetadata)bitmapFrame.Metadata;
+
+            if (bitmapFrame != null)
             {
-                // load the jpg file with a JpegBitmapDecoder    
-                using (Stream jpegStreamIn = File.Open(imageFilePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
-                {
+                BitmapMetadata metaData = (BitmapMetadata)bitmapFrame.Metadata.Clone();
 
-                    decoder = new JpegBitmapDecoder(jpegStreamIn, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
+                if (metaData != null)
+                {
+                    // modify the metadata   
+                    metaData.SetQuery(commmentsMetaKey, comments);
+
+                    // get an encoder to create a new jpg file with the new metadata.      
+                    JpegBitmapEncoder encoder = new JpegBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(bitmapFrame, bitmapFrame.Thumbnail, metaData, bitmapFrame.ColorContexts));
+
+                    var jpegStreamOut = new MemoryStream();
+
+                    encoder.Save(jpegStreamOut);
+
+                    return jpegStreamOut;
                 }
 
-                bitmapFrame = decoder.Frames[0];
-                metadata = (BitmapMetadata)bitmapFrame.Metadata;
-
-                if (bitmapFrame != null)
-                {
-                    BitmapMetadata metaData = (BitmapMetadata)bitmapFrame.Metadata.Clone();
-
-                    if (metaData != null)
-                    {
-                        // modify the metadata   
-                        metaData.SetQuery(commmentsMetaKey, comments);
-
-                        // get an encoder to create a new jpg file with the new metadata.      
-                        JpegBitmapEncoder encoder = new JpegBitmapEncoder();
-                        encoder.Frames.Add(BitmapFrame.Create(bitmapFrame, bitmapFrame.Thumbnail, metaData, bitmapFrame.ColorContexts));
-                        //string jpegNewFileName = Path.Combine(jpegDirectory, "JpegTemp.jpg");
-
-                        // Delete the original
-                        originalImage.Delete();
-
-                        // Save the new image 
-                        using (Stream jpegStreamOut = File.Open(imageFilePath, FileMode.CreateNew, FileAccess.ReadWrite))
-                        {
-                            encoder.Save(jpegStreamOut);
-                        }
-                    }
-                }
             }
+
+            throw new Exception("AddComment Failed In Image");
         }
 
+        public string GetComments(string imagePath)
+        {
+            using (var stream = File.Open(imagePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                return GetComments(stream);
+            }
+        }
         public string GetComments(Stream stream)
         {
             stream.Position = 0;
