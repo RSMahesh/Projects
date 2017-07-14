@@ -7,7 +7,6 @@ public class JarFileFactory : IJarFileFactory
     {
         return new JarFile(FileAccessMode.Read, logFilePath);
     }
-
     public IJarFileWriter GetJarFileWriter(string logFilePath)
     {
         return new JarFile(FileAccessMode.Write, logFilePath);

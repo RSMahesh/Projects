@@ -63,7 +63,6 @@ namespace UserActivityLogger
 
             _jarFileReader.MoveFileHeader(fileItemInfo.OffSetInJarFile);
         }
-
         public void Dispose()
         {
             if (_jarFileReader != null)
@@ -184,6 +183,7 @@ namespace UserActivityLogger
 
             return new ImageCommentEmbedder().GetComments(stream);
         }
+
         private class JarItemMetaData
         {
             public JarItemMetaData(string jarFilePath, long offSetInJarFile, int index)

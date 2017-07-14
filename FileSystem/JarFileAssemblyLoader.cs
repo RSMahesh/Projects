@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Reflection;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using System.IO;
-
 
 namespace FileSystem
 {
@@ -31,7 +25,6 @@ namespace FileSystem
 
             return LoadAssembly(new AssemblyName(args.Name).Name);
         }
-
         public Assembly LoadAssembly(string assemblyName)
         {
             var jarFiles = Directory.GetFiles(ExecutionLocation, "*.jar");
@@ -80,7 +73,6 @@ namespace FileSystem
         }
 
         //Below methods copyed from core.RuntimeHelper to avoid core dll reference
-
         public static string MapToCurrentExecutionLocation(string filePath)
         {
             return Path.Combine(ExecutionLocation, filePath);

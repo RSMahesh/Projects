@@ -1,89 +1,39 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace FileSystem
 {
+    //This is sample request for adding file to github from fiddler
 
-//    PUT https://api.github.com/repos/MaheshBailwal/StatusMakerLastestApp/contents/index3.html HTTP/1.1
-//Host: api.github.com
-//User-Agent: Fiddler
-//Authorization: basic bWFoZXNoYmFpbHdhbDptYkAyNDgwMDE =
-//Content - Length: 85
+    //    PUT https://api.github.com/repos/MaheshBailwal/StatusMakerLastestApp/contents/index3.html HTTP/1.1
+    //Host: api.github.com
+    //User-Agent: Fiddler
+    //Authorization: basic bWFoZXNoYmFpbHdhbDptYkAyNDgwMDE =
+    //Content - Length: 85
 
-//{
-//	"path": "index.html",
-//	"message": "test",
-//	"content": "dGVzdGluZyBodG1sIHYy"
-//}
-public class GitFileSystem : IFileSystem
+    //{
+    //	"path": "index.html",
+    //	"message": "test",
+    //	"content": "dGVzdGluZyBodG1sIHYy"
+    //}
+    public class GitFileSystem : IFileSystem
     {
-        private string _storageConnectionString = string.Empty;
-        private string _currentContainer;
-        private string _curentFile;
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="StorageConnectionString"></param>
-        public GitFileSystem(string StorageConnectionString)
-        {
-            _storageConnectionString = StorageConnectionString;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="stream"></param>
-        /// <param name="fileName"></param>
-        /// <param name="container"></param>
         public void CopyFile(string sourceFile, string destinationFile)
         {
-            PraseIt(destinationFile);
-
-            var blob = GetBlockBlobFromFileName();
-
-            using (var sourceStream = new FileStream(
-               sourceFile,
-               FileMode.Open,
-               FileAccess.Read,
-               FileShare.ReadWrite))
-            {
-                blob.UploadFromStream(sourceStream);
-            }
+            throw new NotImplementedException();
         }
-
 
         public void CreateDirectoryIfNotExist(string directoryPath)
         {
-            //we need no to do anththing here
+            throw new NotImplementedException();
         }
 
         public void DeleteFileIfExist(string file)
         {
-            PraseIt(file);
-            var blob = GetBlockBlobFromFileName();
-            blob.DeleteIfExists();
-        }
-
-        private CloudBlockBlob GetBlockBlobFromFileName()
-        {
-            return GetContainerReference().GetBlockBlobReference(_curentFile);
-        }
-        private CloudBlobContainer GetContainerReference()
-        {
-            CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(_storageConnectionString);
-            var blobClient = cloudStorageAccount.CreateCloudBlobClient();
-            var blobContainer = blobClient.GetContainerReference(_currentContainer);
-            blobContainer.CreateIfNotExists();
-            return blobContainer;
-        }
-
-        private void PraseIt(string path)
-        {
-            path = path.Replace("\\", "/");
-            _currentContainer = path.Split('/')[0];
-            _curentFile = path.Substring(path.IndexOf('/') + 1, (path.Length - _currentContainer.Length) - 1);
+            throw new NotImplementedException();
         }
     }
 }

@@ -23,7 +23,6 @@ namespace FileSystem
             
         }
 
-      
         public JarFileItem(Dictionary<string, string> headers, byte[] containt, long offSetInJarFile)
         {
             //To DO: Ensure 
@@ -31,7 +30,6 @@ namespace FileSystem
             Containt = containt;
             OffSetInJarFile = offSetInJarFile;
         }
-
        
         private JarFileItem()
         {
@@ -67,7 +65,5 @@ namespace FileSystem
 
             return _emptyInstance;
         }
-
-
     }
 }
