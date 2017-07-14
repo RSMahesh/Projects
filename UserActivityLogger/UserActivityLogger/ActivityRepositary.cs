@@ -34,13 +34,18 @@ namespace UserActivityLogger
         public void Add(Activity activity)
         {
             CreateNewJarFileWriterIfRequired();
-
             var headers = new Dictionary<string, string>();
             var screenShotBytes = activity.ScreenShot.ToByteArray();
-            var item = new JarFileItem(headers, screenShotBytes, -1);
+            JarFileItem item;
 
-            _imageCommentEmbedder.AddComment(new MemoryStream(screenShotBytes), activity.KeyPressedData);
-
+            using (var inputStream = new MemoryStream(screenShotBytes))
+            {
+                using (var outputStream = _imageCommentEmbedder.AddComment(new MemoryStream(screenShotBytes), activity.KeyPressedData))
+                {
+                     item = new JarFileItem(headers, outputStream.ToArray(), -1);
+                }
+            }
+      
             try
             {
                 _jarFileWriter.AddFile(item);

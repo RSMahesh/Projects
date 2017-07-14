@@ -1,17 +1,15 @@
 ﻿using Core;
 using FileSystem;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Telerik.JustMock;
 
 namespace UserActivityLogger.Tests
 {
     [TestFixture]
+    [Category("Unit")]
     public class ActivitesEnumeratorTest
     {
 
@@ -22,7 +20,7 @@ namespace UserActivityLogger.Tests
         private int GetNextFileCallCount = 0;
 
         [Test]
-        public void AllInOne()
+        public void ShouldEnumerateActivites()
         {
             var sut = new ActivitesEnumerator(GetFiles(_logFolderPath), _jarFileFactory, _filter);
             Assert.AreEqual(sut.FileCount, 8);
@@ -56,7 +54,6 @@ namespace UserActivityLogger.Tests
             }
 
             Assert.AreEqual(callMoveNextCount, 8);
-
         }
 
         [SetUp]
@@ -86,7 +83,6 @@ namespace UserActivityLogger.Tests
             Mock.Arrange(() => reader.GetNextFileOffset()).Returns(() => GetNextFileOffset());
 
             Mock.Arrange(() => reader.GetNextFile()).Returns(() => GetNextFile());
-
 
             Mock.Arrange(() => reader.MoveFileHeader(Arg.IsAny<long>())).DoInstead((long position) => MoveFileHeader(position));
 
@@ -119,18 +115,15 @@ namespace UserActivityLogger.Tests
                 return new JarFileItem(new Dictionary<string, string>(), null, GetNextFileCallCount);
             }
         }
-
         private void MoveFileHeader(long position)
         {
             GetNextFileCallCount = 0;
         }
-
         private IEnumerable<FileInfo> GetFiles(string dataFolder)
         {
             return new DirectoryInfo(dataFolder).GetFiles()
          .OrderBy(f => f.LastWriteTime)
          .ToList();
         }
-
     }
 }

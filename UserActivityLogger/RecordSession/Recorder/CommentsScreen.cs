@@ -27,7 +27,10 @@ namespace Recorder
 
         private void OnCommentsFetched(EventArg eventArg)
         {
-            string comments = eventArg.Arg.ToString();
+            if (eventArg.Arg == null)
+                return;
+
+            string comments =eventArg.Arg.ToString();
 
             if (String.IsNullOrEmpty(comments))
             {

@@ -54,7 +54,6 @@
     <Compile Include="ActivitesEnumeratorTest.cs" />
     <Compile Include="ActivityRepositaryTest.cs" />
     <Compile Include="LogFileArchiverTest.cs" />
-    <Compile Include="ActivityLoggerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -9,12 +9,13 @@ using System.Threading.Tasks;
 namespace Core.Tests
 {
     [TestFixture]
+    [Category("Unit")]
     public class ImageCommentEmbedderTests
     {
         string imgPath = @"D:\Projects\UserActivityLogger\Core.Tests\dogi.jpg";
 
         [Test]
-        public void Test2()
+        public void ShouldAddCommentsToImage()
         {
             var sut = new ImageCommentEmbedder();
             sut.AddComment(imgPath, "Test");
@@ -27,7 +28,7 @@ namespace Core.Tests
         }
 
         [Test]
-        public void Test23()
+        public void ShouldAddCommentsToStream()
         {
             var sut = new ImageCommentEmbedder();
             string comments = string.Empty;

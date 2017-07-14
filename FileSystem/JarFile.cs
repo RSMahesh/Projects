@@ -281,13 +281,17 @@ namespace FileSystem
             {
                 var arr = text.Split(';');
                 var dic = new Dictionary<string, string>();
-                foreach (var ar in arr)
+
+                if (arr.Length > 1)
                 {
-                    var KeyValue = ar.Split('=');
 
-                    dic[KeyValue[0]] = KeyValue[1];
+                    foreach (var ar in arr)
+                    {
+                        var KeyValue = ar.Split('=');
+
+                        dic[KeyValue[0]] = KeyValue[1];
+                    }
                 }
-
 
                 return dic;
 

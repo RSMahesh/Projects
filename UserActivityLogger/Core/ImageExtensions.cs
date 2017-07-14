@@ -9,7 +9,7 @@ namespace Core
         public static byte[] ToByteArray(this Image image)
         {
             MemoryStream ms = new MemoryStream();
-            image.Save(ms, System.Drawing.Imaging.ImageFormat.Gif);
+            image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
             return ms.ToArray();
         }
     }
