@@ -82,6 +82,7 @@
     <Compile Include="IJarFile.cs" />
     <Compile Include="JarFile.cs" />
     <Compile Include="JarFileItem.cs" />
+    <Compile Include="JarFileReachedMaxLimitException - Copy.cs" />
     <Compile Include="JarFileReachedMaxLimitException.cs" />
     <Compile Include="NtfsFileSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

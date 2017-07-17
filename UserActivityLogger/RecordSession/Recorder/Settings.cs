@@ -12,15 +12,19 @@ namespace Recorder
 {
     public partial class Settings : Form
     {
-        public int FastSpeed { get; set; }
+        public static int FastSpeed = 10;
+       
         public Settings()
         {
             InitializeComponent();
+            lblVal.Text = FastSpeed.ToString();
+            trackBarFastSpeed.Value = FastSpeed;
         }
 
         private void trackBarFastSpeed_Scroll(object sender, EventArgs e)
         {
-
+            FastSpeed = trackBarFastSpeed.Value;
+            lblVal.Text = FastSpeed.ToString();
         }
     }
 }

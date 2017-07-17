@@ -24,6 +24,7 @@ namespace UserActivityLogger
         public ActivitesEnumerator(IEnumerable<FileInfo> fileInfos, IJarFileFactory jarFileFactory, ActivityQueryFilter filter)
         {
             _jarFileFactory = jarFileFactory;
+
             _nextJarfileIndex = 0;
 
             _jarFilesInfos = fileInfos;
@@ -101,7 +102,8 @@ namespace UserActivityLogger
         {
             var jarFileOffSetMapping = new ConcurrentDictionary<string, List<long>>();
 
-            Parallel.ForEach(_jarFilesInfos, (file) => {
+            Parallel.ForEach(_jarFilesInfos, (file) =>
+            {
                 jarFileOffSetMapping[file.FullName] = GetOffSetOfFilesinJar(file.FullName);
             });
 
@@ -127,25 +129,24 @@ namespace UserActivityLogger
 
         private bool GetNextFile()
         {
-            var file = _jarFileReader.GetNextFile();
-
-            if (file == JarFileItem.Empty)
+            try
+            {
+                var file = _jarFileReader.GetNextFile();
+                Current = BytesToActivity(file.Containt);
+                return true;
+            }
+            catch (EndOfJarFileException)
             {
                 if (IsEndReached())
                 {
                     return false;
                 }
-
                 _jarFileReader.Dispose();
-
                 SetReaderToNextFile();
-
                 GetNextFile();
+
                 return true;
             }
-
-            Current = BytesToActivity(file.Containt);
-            return true;
         }
 
         private bool IsEndReached()

@@ -2,9 +2,9 @@
 
 namespace FileSystem
 {
-    public class JarFileReachedMaxLimitException : Exception
+    public class EndOfJarFileException : Exception
     {
-        public JarFileReachedMaxLimitException()
+        public EndOfJarFileException()
         {
         }
     }

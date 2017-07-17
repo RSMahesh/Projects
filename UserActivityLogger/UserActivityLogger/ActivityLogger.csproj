@@ -61,6 +61,7 @@
     <Compile Include="LogFileArchiver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StartUp.cs" />
+    <Compile Include="ValueObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\EventPublisher\EventPublisher.csproj">

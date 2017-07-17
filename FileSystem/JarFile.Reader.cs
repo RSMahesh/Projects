@@ -32,34 +32,42 @@ namespace FileSystem
 
                 return fileCount;
             }
+      
             public JarFileItem GetNextFile()
             {
                 var offset = _reader.BaseStream.Position;
                 byte[] bytes;
-                var headers = new Dictionary<string, string>();
-
-                if (!_oldFormat)
-                {
-                    bytes = _reader.ReadBytes(HeaderFieldSize);
-                    if (bytes.Count() == 0)
-                    {
-                        return JarFileItem.Empty;
-                    }
-
-                    headers = stringToDic(Encoding.UTF8.GetString(bytes).Trim());
-                }
+                var headers = ReadHeaders();
 
                 bytes = _reader.ReadBytes(FileLengthFieldSize);
 
                 if (bytes.Count() == 0)
                 {
-                    return JarFileItem.Empty;
+                    throw new EndOfJarFileException();
                 }
 
                 var imageBytes = _reader.ReadBytes(int.Parse(Encoding.UTF8.GetString(bytes).Trim()));
 
                 return new JarFileItem(headers, imageBytes, offset);
+            }
 
+            private Dictionary<string, string> ReadHeaders()
+            {
+                var headers = new Dictionary<string, string>();
+
+                if (!_oldFormat)
+                {
+                    var bytes = _reader.ReadBytes(HeaderFieldSize);
+
+                    if (bytes.Count() == 0)
+                    {
+                        throw new EndOfJarFileException();
+                    }
+
+                    headers = stringToDic(Encoding.UTF8.GetString(bytes).Trim());
+                }
+
+                return headers;
             }
 
             public long GetNextFileOffset()

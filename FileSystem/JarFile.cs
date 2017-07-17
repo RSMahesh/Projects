@@ -39,7 +39,6 @@ namespace FileSystem
             {
                 _writer = new Writer(jarFilePath);
             }
-
         }
 
         public string JarFilePath { get; private set; }
@@ -91,7 +90,6 @@ namespace FileSystem
 
             return _reader.GetNextFile();
         }
-
         public long GetNextFileOffset()
         {
             return _reader.GetNextFileOffset();
@@ -103,13 +101,9 @@ namespace FileSystem
                 _reader.Dispose();
             }
         }
-
         public void MoveFileHeader(long position)
         {
             _reader.MoveFileHeader(position);
         }
-
-   
-   
     }
 }

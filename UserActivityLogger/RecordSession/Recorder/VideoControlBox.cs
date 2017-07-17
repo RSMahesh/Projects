@@ -10,7 +10,7 @@ namespace Recorder
     {
         frmPictureViewer _pictureViewerFrom = null;
         int _originalInterval = 1000;
-        const int _fastSpeed = 10;
+       
         public VideoControlBox(frmPictureViewer pictureViewerFrom, int count)
         {
             _pictureViewerFrom = pictureViewerFrom;
@@ -22,6 +22,7 @@ namespace Recorder
             EventContainer.SubscribeEvent(RecordSession.Events.OnPictureViwerResize.ToString(), OnPictureViwerResize);
             EventContainer.SubscribeEvent(RecordSession.Events.CloseCurrentSession.ToString(), OnCloseCurrentSession);
             EventContainer.SubscribeEvent(RecordSession.Events.VideoPaused.ToString(), SetPlayButtonText);
+            
         }
 
         private void VideoControlBox_Load(object sender, EventArgs e)
@@ -130,7 +131,7 @@ namespace Recorder
             _originalInterval = _pictureViewerFrom.timer2.Interval;
 
             _pictureViewerFrom.FastMode = true;
-            _pictureViewerFrom.timer2.Interval = _fastSpeed;
+            _pictureViewerFrom.timer2.Interval = Settings.FastSpeed;
 
         }
 
@@ -145,7 +146,7 @@ namespace Recorder
         {
             _originalInterval = _pictureViewerFrom.timer2.Interval;
             _pictureViewerFrom.FastMode = true;
-            _pictureViewerFrom.timer2.Interval = _fastSpeed;
+            _pictureViewerFrom.timer2.Interval = Settings.FastSpeed;
         }
 
         private void btnForward_MouseUp_1(object sender, MouseEventArgs e)
@@ -155,6 +156,11 @@ namespace Recorder
         }
 
         private void btnBackward_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnForward_Click(object sender, EventArgs e)
         {
 
         }
