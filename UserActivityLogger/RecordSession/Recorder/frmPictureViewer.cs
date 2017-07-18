@@ -16,6 +16,7 @@ using FileSystem;
 using UserActivityLogger;
 using Core;
 using EventPublisher;
+using ActivityLogger;
 
 namespace RecordSession
 {
@@ -25,7 +26,7 @@ namespace RecordSession
         public Action<int> DisplayChange;
         public int incrementCount = 1;
         IActivityRepositary _activityRepositary;
-        ActivityReader _activityReader;
+        IActivityReader _activityReader;
         public Action<string> OnCommentsFetched;
         public Action<int> OnIndexChanged;
 
@@ -73,7 +74,7 @@ namespace RecordSession
             {
                 timer2.Enabled = true;
 
-                _activityRepositary = new ActivityRepositary(new JarFileFactory(), new ImageCommentEmbedder());
+                _activityRepositary = new ActivityRepositary(new JarFileFactory(), new ImageCommentEmbedder(), new ActivityReaderFactory(new JarFileFactory()));
 
                 if (_activityReader != null)
                 {

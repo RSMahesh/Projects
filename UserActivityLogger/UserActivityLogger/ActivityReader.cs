@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace UserActivityLogger
 {
-    public class ActivityReader : IEnumerable<Activity>, IDisposable
+    public class ActivityReader :  IActivityReader
     {
         private readonly ActivitesEnumerator _activityEnum;
 
-        public ActivityReader(IEnumerable<string> files, IJarFileFactory jarFileFactory, ActivityQueryFilter filter)
+        public ActivityReader(IEnumerable<string> files, IJarFileFactory jarFileFactory)
         {
-            _activityEnum = new ActivitesEnumerator(GetFiles(files), jarFileFactory, filter);
+            _activityEnum = new ActivitesEnumerator(GetFiles(files), jarFileFactory);
         }
 
         public IEnumerator<Activity> GetEnumerator()
@@ -23,6 +23,7 @@ namespace UserActivityLogger
             return _activityEnum;
         }
 
+    
         public int FileCount()
         {
             return _activityEnum.FileCount;
@@ -40,14 +41,6 @@ namespace UserActivityLogger
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
-        }
-
-        public ActivityQueryFilter Filter
-        {
-            set
-            {
-                _activityEnum.Filter = value;
-            }
         }
 
         private IEnumerable<FileInfo> GetFiles(string dataFolder)

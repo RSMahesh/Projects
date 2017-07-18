@@ -47,13 +47,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActivitesEnumerator.cs" />
-    <Compile Include="ActivityFilter.cs" />
     <Compile Include="ActivityReader.cs" />
     <Compile Include="Activity.cs" />
+    <Compile Include="ActivityReaderFactory.cs" />
     <Compile Include="CurrentActivityProvider.cs" />
     <Compile Include="ActivityRepositary.cs" />
     <Compile Include="Events.cs" />
-    <Compile Include="Filters\DateTimeFilter.cs" />
+    <Compile Include="IActivitesEnumerator.cs" />
+    <Compile Include="IActivityReader.cs" />
+    <Compile Include="IActivityReaderFactory.cs" />
     <Compile Include="ICurrentActivityProvider.cs" />
     <Compile Include="IActivityRepositary.cs" />
     <Compile Include="ILogFileArchiver.cs" />
@@ -84,7 +86,9 @@
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Filters\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

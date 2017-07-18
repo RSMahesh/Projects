@@ -12,7 +12,7 @@ using System.Collections.Concurrent;
 
 namespace UserActivityLogger
 {
-    public class ActivitesEnumerator : IEnumerator<Activity>, IDisposable
+    public class ActivitesEnumerator :  IActivitesEnumerator, IEnumerator<Activity>
     {
         private readonly IJarFileFactory _jarFileFactory;
         private readonly IEnumerable<FileInfo> _jarFilesInfos;
@@ -21,7 +21,7 @@ namespace UserActivityLogger
         private ConcurrentDictionary<int, JarItemMetaData> _fileOffsetInfoMap = new ConcurrentDictionary<int, JarItemMetaData>();
 
         public int FileCount { get; private set; }
-        public ActivitesEnumerator(IEnumerable<FileInfo> fileInfos, IJarFileFactory jarFileFactory, ActivityQueryFilter filter)
+        public ActivitesEnumerator(IEnumerable<FileInfo> fileInfos, IJarFileFactory jarFileFactory)
         {
             _jarFileFactory = jarFileFactory;
 
@@ -34,7 +34,6 @@ namespace UserActivityLogger
             SetReaderToNextFile();
         }
 
-        public ActivityQueryFilter Filter { private get; set; }
         public Activity Current { get; private set; }
         object IEnumerator.Current
         {

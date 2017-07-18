@@ -1,4 +1,5 @@
-﻿using Core;
+﻿using ActivityLogger;
+using Core;
 using FileSystem;
 
 using NUnit.Framework;
@@ -32,7 +33,7 @@ namespace UserActivityLogger.Tests
 
             var imageCommentEmbedder = Mock.Create<IImageCommentEmbedder>();
 
-            var activityRepositary = new ActivityRepositary(jarFactory, imageCommentEmbedder);
+            var activityRepositary = new ActivityRepositary(jarFactory, imageCommentEmbedder, Mock.Create<IActivityReaderFactory>());
 
             var img = Image.FromFile(imageFile);
 

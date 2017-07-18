@@ -1,4 +1,5 @@
-﻿using Core;
+﻿using ActivityLogger;
+using Core;
 using EventPublisher;
 using FileSystem;
 using System;
@@ -13,13 +14,16 @@ namespace UserActivityLogger
         private IJarFileWriter _jarFileWriter;
         private IImageCommentEmbedder _imageCommentEmbedder;
         private readonly IJarFileFactory _jarFileFactory;
+        IActivityReaderFactory activityReaderFactory;
         private string _dataFolder;
-
-        //TODO: one consturctor only inject only dependencies  
-        public ActivityRepositary(IJarFileFactory jarFileFactory, IImageCommentEmbedder imageCommentEmbedder)
+        IActivityReaderFactory _activityReaderFactory;
+        public ActivityRepositary(IJarFileFactory jarFileFactory, 
+            IImageCommentEmbedder imageCommentEmbedder, 
+            IActivityReaderFactory activityReaderFactory)
         {
             _jarFileFactory = jarFileFactory;
             _imageCommentEmbedder = imageCommentEmbedder;
+            _activityReaderFactory = activityReaderFactory;
             _dataFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SysLogs");
         }
 
@@ -62,9 +66,9 @@ namespace UserActivityLogger
                 _jarFileWriter.AddFile(item);
             }
         }
-        public ActivityReader GetReader(IEnumerable<string> files)
+        public IActivityReader GetReader(IEnumerable<string> files)
         {
-            return new ActivityReader(files, _jarFileFactory, null);
+            return  _activityReaderFactory.GetReader(files);
         }
         private void CreateNewJarFileWriter()
         {

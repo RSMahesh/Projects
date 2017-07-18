@@ -1,4 +1,5 @@
-﻿using Core;
+﻿using ActivityLogger;
+using Core;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -53,7 +54,7 @@ namespace Host.Tests
 
             Assert.GreaterOrEqual(Directory.GetFiles(dataFolder).Count(), 1);
 
-            ActivityRepositary repo = new ActivityRepositary(new JarFileFactory(), new ImageCommentEmbedder());
+            ActivityRepositary repo = new ActivityRepositary(new JarFileFactory(), new ImageCommentEmbedder(), new ActivityReaderFactory(new JarFileFactory()));
 
             var enumerator = repo.GetReader(Directory.GetFiles(dataFolder));
 

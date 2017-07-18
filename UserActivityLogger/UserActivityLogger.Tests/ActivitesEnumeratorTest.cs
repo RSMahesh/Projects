@@ -12,17 +12,15 @@ namespace UserActivityLogger.Tests
     [Category("Unit")]
     public class ActivitesEnumeratorTest
     {
-
         string _logFolderPath;
         IJarFileFactory _jarFileFactory;
-        ActivityQueryFilter _filter = new ActivityQueryFilter();
         private int GetNextFileOffsetCallCount = 0;
         private int GetNextFileCallCount = 0;
 
         [Test]
         public void ShouldEnumerateActivites()
         {
-            var sut = new ActivitesEnumerator(GetFiles(_logFolderPath), _jarFileFactory, _filter);
+            var sut = new ActivitesEnumerator(GetFiles(_logFolderPath), _jarFileFactory);
             Assert.AreEqual(sut.FileCount, 8);
             var callMoveNextCount = 0;
 
