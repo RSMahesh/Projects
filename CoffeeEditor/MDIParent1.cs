@@ -22,8 +22,6 @@ using System.Windows.Forms;
 
 using EventPublisher;
 
-using MediaProcessor.ServiceLibrary.Common;
-
 using Microsoft.Win32;
 
 #endregion
@@ -38,7 +36,6 @@ namespace CoffeeEditor
 
         private string _openedFileName;
         private int childFormNumber;
-        private Form1 form1;
         private Editor _editor;
         private DirectoryTreeView directoryTreeView;
         string tempFileName = Path.Combine(Path.GetTempPath(), "CoffeEditor.menu");
@@ -46,7 +43,7 @@ namespace CoffeeEditor
 
         private string startPage = string.Empty;
         private Process webServerProcess;
-
+        ICompiler compiler = new TypeScriptCompiler();
         /// <summary>
         /// Initializes a new instance of the <see cref="MDIParent1"/> class.
         /// </summary>
@@ -75,8 +72,7 @@ namespace CoffeeEditor
         private void OnNewClick(object sender, EventArgs e)
         {
             _openedFileName = string.Empty;
-            this.NewFile();
-
+            this.NewFile("dsds","");
         }
 
 
@@ -95,23 +91,22 @@ namespace CoffeeEditor
         private void MDIParent1_Load(object sender, EventArgs e)
         {
             LastOpenFolder();
-            NewFile();
+            NewFile("","");
             ShowRecentFolder();
         }
 
-        private void NewFile()
+        private void NewFile(string title, string tag )
         {
             if (_editor == null || !_editor.Visible)
             {
                 _editor = new Editor();
                 _editor.MdiParent = this;
                 _editor.Show();
-
             }
+
             _editor.OpenNewPage("New file", "", "");
 
             OnResize();
-
         }
 
         private void LastOpenFolder()
@@ -306,14 +301,14 @@ namespace CoffeeEditor
             var eventArg = new EventArg(_leftTextBoxChangedEventArg.EventId, _leftTextBoxChangedEventArg.Arg);
             try
             {
-                var javaScript = Compiler.Complie(eventArg.Arg.ToString());
+                var javaScript = compiler.Complie(eventArg.Arg.ToString());
                 var arg = new EventArg(eventArg.EventId, javaScript);
                 EventPublisher.EventContainer.PublishEvent(EventPublisher.Events.SetRightTextBoxText.ToString(), arg);
 
                 var clearErrorArg = new EventArg(eventArg.EventId, "");
                 EventPublisher.EventContainer.PublishEvent(EventPublisher.Events.SetBottomTextBoxText.ToString(), clearErrorArg);
             }
-            catch (ExeExecutionException ex)
+            catch (CompileException ex)
             {
                 var arg = new EventArg(eventArg.EventId, ex.ExeErrorMessage);
                 EventPublisher.EventContainer.PublishEvent(EventPublisher.Events.SetBottomTextBoxText.ToString(), arg);
@@ -405,7 +400,7 @@ namespace CoffeeEditor
                         files,
                         (file) =>
                         {
-                            var javaScript = Compiler.Complie(File.ReadAllText(file));
+                            var javaScript = compiler.Complie(File.ReadAllText(file));
                             var jsFile = file.Replace(".coffee", ".js");
                             File.WriteAllText(jsFile, javaScript);
 
@@ -418,6 +413,11 @@ namespace CoffeeEditor
             {
                 Cursor.Current = Cursors.Default;
             }
+        }
+
+        private void newTypeScriptToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 

@@ -141,8 +141,6 @@
             // chkValidateJiraStatus
             // 
             this.chkValidateJiraStatus.AutoSize = true;
-            this.chkValidateJiraStatus.Checked = true;
-            this.chkValidateJiraStatus.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkValidateJiraStatus.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkValidateJiraStatus.Location = new System.Drawing.Point(32, 74);
             this.chkValidateJiraStatus.Name = "chkValidateJiraStatus";
@@ -295,7 +293,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1487, 728);
+            this.ClientSize = new System.Drawing.Size(1020, 728);
             this.Controls.Add(this.btnCleanSetting);
             this.Controls.Add(this.btnUnlockForeFully);
             this.Controls.Add(this.groupBox1);

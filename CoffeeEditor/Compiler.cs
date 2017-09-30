@@ -5,17 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using MediaProcessor.ServiceLibrary.Common;
+
 
 namespace CoffeeEditor
 {
-    public static class Compiler
+    public class CoffeCompiler : ICompiler
     {
-   //     static string tempFile = Path.Combine(Directory.GetCurrentDirectory(), "temp.coffee");
-        /// <summary>
-        /// The complie.
-        /// </summary>
-        public static string Complie(string coffeText)
+        public string Complie(string coffeText)
         {
             string javaScriptText;
             string tempFile = Path.Combine(Directory.GetCurrentDirectory(), Guid.NewGuid()+"temp.coffee");

@@ -15,7 +15,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
 
-using MediaProcessor.ServiceLibrary.Common;
+
 
 #endregion
 
@@ -144,7 +144,7 @@ namespace CoffeeEditor
                 BeginInvoke((Action)(() => txtJavaScript.Text = JavaScriptText));
                 BeginInvoke((Action)(() => txtErrors.Text = string.Empty));
             }
-            catch (ExeExecutionException ex)
+            catch (CompileException ex)
             {
                 BeginInvoke((Action)(() => txtErrors.Text = ex.ExeErrorMessage));
             }

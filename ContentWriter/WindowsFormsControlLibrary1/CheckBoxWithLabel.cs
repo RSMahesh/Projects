@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace WindowsFormsControlLibrary1
 {
-    public partial class UserControl1: UserControl
+    public partial class CheckBoxWithLabel : UserControl
     {
-        public UserControl1()
+        public CheckBoxWithLabel()
         {
             InitializeComponent();
         }

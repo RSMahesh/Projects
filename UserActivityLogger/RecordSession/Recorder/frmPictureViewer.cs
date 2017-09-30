@@ -48,6 +48,7 @@ namespace RecordSession
 
         public frmPictureViewer()
         {
+            _activityRepositary = new ActivityRepositary(new JarFileFactory(), new ImageCommentEmbedder(), new ActivityReaderFactory(new JarFileFactory()));
             InitializeComponent();
             EventContainer.SubscribeEvent(RecordSession.Events.CloseCurrentSession.ToString(), OnCloseCurrentSession);
         }
@@ -74,8 +75,7 @@ namespace RecordSession
             {
                 timer2.Enabled = true;
 
-                _activityRepositary = new ActivityRepositary(new JarFileFactory(), new ImageCommentEmbedder(), new ActivityReaderFactory(new JarFileFactory()));
-
+             
                 if (_activityReader != null)
                 {
                     _activityReader.Dispose();
@@ -137,7 +137,6 @@ namespace RecordSession
         {
 
         }
-
         private void GetComments(Stream stream)
         {
             if (stream == null)
@@ -147,7 +146,6 @@ namespace RecordSession
 
             OnCommentsFetched?.Invoke(comments);
         }
-
 
         private void frmPictureViewer_KeyDown(object sender, KeyEventArgs e)
         {

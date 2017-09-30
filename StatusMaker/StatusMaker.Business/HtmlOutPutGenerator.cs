@@ -33,7 +33,6 @@ namespace StatusMaker.Business
                 " <p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p> <p class=MsoNormal><span style='color:#1F497D'>"
                 + heading + ":</span></p>";
 
-
             return heading1 + tableTempalte;
         }
 

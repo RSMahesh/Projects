@@ -143,7 +143,7 @@ namespace Test.Api.Handler
 
             var ticketWM = _objectFactory.Create<TicketWM>(ticket);
 
-
+            
             var operationBases = changes as IList<PatchOperationBase> ?? changes.ToList();
 
             //Todo This logic will be changed when rest of PatchOperation will be decided.

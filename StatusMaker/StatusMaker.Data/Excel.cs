@@ -10,9 +10,9 @@ namespace StatusMaker.Data
             switch (Path.GetExtension(filePath).ToUpperInvariant())
             {
                 case ".XLS":
-                    return string.Format(@"Provider=Microsoft.Jet.OLEDB.4.0; Data Source={0};Extended Properties='Excel 8.0;HDR=Yes;IMEX=1'", filePath);
+                    return string.Format(@"Provider=Microsoft.Jet.OLEDB.4.0; Data Source={0};Extended Properties='Excel 8.0;HDR=Yes;'", filePath);
                 case ".XLSX":
-                    return string.Format(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties='Excel 12.0;HDR=Yes;IMEX=1'", filePath);
+                    return string.Format(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties='Excel 12.0;HDR=Yes;'", filePath);
             }
 
             throw new Exception("Invalid Excel file extension" + Path.GetExtension(filePath));

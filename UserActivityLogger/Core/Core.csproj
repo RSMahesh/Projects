@@ -61,7 +61,6 @@
     <Compile Include="ImageExtensions.cs" />
     <Compile Include="IPAddress.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="HiddenApp.cs" />
     <Compile Include="HttpEngine.cs" />
     <Compile Include="IHttpEngine.cs" />
     <Compile Include="IImageCommentEmbedder.cs" />

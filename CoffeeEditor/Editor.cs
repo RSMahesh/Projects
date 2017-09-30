@@ -66,8 +66,13 @@ namespace CoffeeEditor
 
         private void LeftTextBoxChanged(EventArg eventArg)
         {
+            this.Invoke(new MethodInvoker(() => SetNotSavedSymbol(eventArg)));
+        }
+
+        private void SetNotSavedSymbol(EventArg eventArg)
+        {
             if (!tabControl1.SelectedTab.Text.EndsWith(notSavedSymbol)
-                && tabControl1.TabPages[tabControl1.SelectedIndex].Controls.Count > 0)
+               && tabControl1.TabPages[tabControl1.SelectedIndex].Controls.Count > 0)
             {
                 var editorUserCon =
                     (WindowsFormsControlLibrary1.Editor)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
@@ -93,7 +98,6 @@ namespace CoffeeEditor
                 return;
             }
 
-
             tabControl1.TabPages.Add(fileName);
             var tabPage2 = tabControl1.TabPages.OfType<TabPage>().Last();
             tabPage2.Tag = fileName;
@@ -107,12 +111,11 @@ namespace CoffeeEditor
             tabPage2.Text = fileName;
             tabPage2.UseVisualStyleBackColor = true;
             tabPage2.Dock = DockStyle.Fill;
-            WindowsFormsControlLibrary1.Editor ed = new WindowsFormsControlLibrary1.Editor(leftText, rightText);
+            WindowsFormsControlLibrary1.Editor ed = new WindowsFormsControlLibrary1.Editor(leftText, rightText, fileName);
             ed.Dock = DockStyle.Fill;
             tabPage2.Controls.Add(ed);
             tabControl1.SelectTab(tabPage2);
         }
-
 
         private TabPage GetTabByFileName(string fileName)
         {
@@ -128,8 +131,12 @@ namespace CoffeeEditor
             return null;
         }
 
-
         private void tabControl1_MouseDown(object sender, MouseEventArgs e)
+        {
+            CloseTab(e);
+        }
+
+        private void CloseTab(MouseEventArgs e)
         {
             for (int i = 0; i < this.tabControl1.TabPages.Count; i++)
             {
@@ -160,6 +167,7 @@ namespace CoffeeEditor
             for (int i = 0; i < tabControl1.TabPages.Count; i++)
             {
                 var page = tabControl1.TabPages[i];
+
                 SaveFile(page, eventArg.Arg.ToString());
             }
         }
@@ -184,7 +192,6 @@ namespace CoffeeEditor
                 {
                     return;
                 }
-
             }
 
             if (!string.IsNullOrEmpty(fileName))
@@ -196,11 +203,9 @@ namespace CoffeeEditor
             page.Tag = fileName;
             page.Text = fileName + closeSymbol;
         }
-
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
-
     }
 }

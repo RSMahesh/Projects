@@ -23,7 +23,7 @@ namespace StatusMaker.Data
 
         public DataTable GetInProgessDataTable(DateTime statusDate, string memberName)
         {
-            var excelDt = ExecuteDatatable("Select * from [Progress$]");
+            var excelDt = ExecuteDatatable("Select * from [Sheet1$]");
 
             var query = GetStatuDateFilter(statusDate);
 
@@ -34,6 +34,7 @@ namespace StatusMaker.Data
             }
             var dataRows = excelDt.Select(query);
 
+         
             if (dataRows.Length < 1)
             {
                 throw new NoDataFoundException();
@@ -44,18 +45,18 @@ namespace StatusMaker.Data
 
         public DataTable GetAhocDataTable(DateTime statusDate, string memberName)
         {
-            var excelDt = ExecuteDatatable("Select * from [Ad-Hoc$]");
+            //var excelDt = ExecuteDatatable("Select * from [Ad-Hoc$]");
 
-            var query = GetStatuDateFilter(statusDate);
+            //var query = GetStatuDateFilter(statusDate);
 
-            if (!string.IsNullOrEmpty(memberName))
-            {
-                query += " and Author='" + memberName + "'";
-            }
+            //if (!string.IsNullOrEmpty(memberName))
+            //{
+            //    query += " and Author='" + memberName + "'";
+            //}
 
-            excelDt.DefaultView.RowFilter = query;
+            //excelDt.DefaultView.RowFilter = query;
 
-            return excelDt;
+            return new DataTable();
         }
 
         public IEnumerable<DataRow> GetInProgessRowsExcludingRegression(DateTime statusDate, string memberName)
@@ -92,7 +93,7 @@ namespace StatusMaker.Data
 
         private OleDbConnection GetConnnction()
         {
-            var connection = Excel.GetExcelConnectionString(_excelDownloadFilePath);
+            var connection = Excel.GetExcelConnectionString(@"C:\Users\mahesh.bailwal\Documents\11.xlsx");
             var conn = new OleDbConnection(connection);
             conn.Open();
             return conn;
@@ -101,15 +102,75 @@ namespace StatusMaker.Data
 
         private DataTable ExecuteDatatable(string sql)
         {
-            using (var conn = this.GetConnnction())
+            lock (this)
             {
-                var dt = new DataTable();
-                var adap = new OleDbDataAdapter(sql, conn);
-                adap.Fill(dt);
-                adap.FillSchema(dt, SchemaType.Source);
-                return dt;
+                using (var conn = this.GetConnnction())
+                {
+                    var dt = new DataTable();
+                    dt.TableName = "Sheet1";
+                    var adap = new OleDbDataAdapter(sql, conn);
+
+                    // adap.SelectCommand = new OleDbCommand(sql,conn); // cmd1 is your SELECT command
+                    //  OleDbCommandBuilder cb = new OleDbCommandBuilder(adap);
+
+                    adap.UpdateCommand = new OleDbCommand("UPDATE [Sheet1$] SET SKU = ? where ID=?", conn);
+
+                    adap.UpdateCommand.Parameters.Add("@SKU", OleDbType.Char, 255).SourceColumn = "SKU";
+
+                    adap.UpdateCommand.Parameters.Add("@ID", OleDbType.Char, 255).SourceColumn = "ID";
+
+
+                    // adp1.Update(dt);
+
+
+                    DataColumn column = new DataColumn("ID");
+                    column.DataType = System.Type.GetType("System.Int32");
+                    column.AutoIncrement = true;
+                    column.AutoIncrementSeed = 1;
+                    column.AutoIncrementStep = 1;
+                    column.Unique = true;
+
+                    // dt.Columns.Add(column);
+
+
+
+                    adap.Fill(dt);
+
+                    //adap.FillSchema(dt, SchemaType.Source);
+                    dt.Rows[2][1] = "444";
+
+                     //dt.AcceptChanges();
+
+
+                    // adap.UpdateCommand = cb.GetUpdateCommand();
+
+                    adap.Update(dt);
+                    return dt;
+                }
             }
         }
+
+        //private DataTable Save(DataTable dt)
+        //{
+        //    using (var conn = this.GetConnnction())
+        //    {
+        //        var adap = new OleDbDataAdapter(sql, conn);
+
+        //        DataColumn column = new DataColumn("ID");
+        //        column.DataType = System.Type.GetType("System.Int32");
+        //        column.AutoIncrement = true;
+        //        column.AutoIncrementSeed = 1;
+        //        column.AutoIncrementStep = 1;
+
+        //        dt.Columns.Add(column);
+
+        //        adap.Fill(dt);
+        //        adap.FillSchema(dt, SchemaType.Source);
+
+
+        //        return dt;
+        //    }
+        //}
 
     }
 }

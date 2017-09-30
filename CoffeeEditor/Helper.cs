@@ -22,7 +22,7 @@ namespace CoffeeEditor
         /// </returns>
         public static string GetCoffeePath()
         {
-            return @"C:\Users\mahesh.bailwal\AppData\Roaming\npm\coffee.cmd";
+            return @"C:\Users\mahesh.bailwal\AppData\Roaming\npm\tsc.cmd";
         }
     }
 }
