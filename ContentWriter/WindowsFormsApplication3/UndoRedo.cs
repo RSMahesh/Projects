@@ -10,8 +10,8 @@ namespace WindowsFormsApplication3
 
     public interface ICommand<T>
     {
-        void Do(T input);
-        void Undo(T input);
+        T Do(T input);
+        T Undo(T input);
     }
 
     public class SetCellDataCommand : ICommand<CellData>
@@ -38,18 +38,25 @@ namespace WindowsFormsApplication3
 
         private void Set(CellData cellData)
         {
-            //_dataGridView.CurrentCell = _dataGridView.Rows[cellData.Location.Y].Cells[cellData.Location.X];
+            _dataGridView.CurrentCell = _dataGridView.Rows[cellData.Location.Y].Cells[cellData.Location.X];
             _dataGridView.EndEdit();
+            
             _dataGridView.Rows[cellData.Location.Y].Cells[cellData.Location.X].Value = cellData.Value;
         }
 
-        public void Do(CellData cellData)
+      
+
+        public CellData Do(CellData cellData)
         {
+            var oldData = new CellData(_dataGridView.Rows[cellData.Location.Y].Cells[cellData.Location.X].Value, cellData.Location);
             Set(cellData);
+            return oldData;
         }
-        public void Undo(CellData cellData)
+        public CellData Undo(CellData cellData)
         {
+            var oldData = new CellData(_dataGridView.Rows[cellData.Location.Y].Cells[cellData.Location.X].Value, cellData.Location);
             Set(cellData);
+            return oldData;
         }
 
     }
@@ -97,8 +104,8 @@ namespace WindowsFormsApplication3
             if (_Undo.Count > 0)
             {
                 T input = _Undo.Pop();
-                _command.Undo(input);
-                _Redo.Push(input);
+                var stateBefore = _command.Undo(input);
+                _Redo.Push(stateBefore);
             }
         }
         public void Redo()
@@ -106,8 +113,8 @@ namespace WindowsFormsApplication3
             if (_Redo.Count > 0)
             {
                 T input = _Redo.Pop();
-                _command.Do(input);
-                _Undo.Push(input);
+                var stateBefore =_command.Do(input);
+                _Undo.Push(stateBefore);
             }
         }
     }

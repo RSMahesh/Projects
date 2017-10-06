@@ -16,7 +16,7 @@ namespace WindowsFormsApplication3
 {
     public class CellData
     {
-        public CellData(string value, Point location)
+        public CellData(object value, Point location)
         {
             Value = value;
             Location = location;
@@ -36,9 +36,6 @@ namespace WindowsFormsApplication3
         ContextMenu contextMenu = new ContextMenu();
         UndoRedoStack<CellData> _undoRedo;
         bool _importBackUp;
-
-
-
 
         public Form1(string filePath, bool importBackUp = false)
         {
@@ -61,7 +58,8 @@ namespace WindowsFormsApplication3
             dataGridView1.CellPainting += dataGridView1_CellPainting;
             dataGridView1.CellLeave += dataGridView1_CellLeave;
             dataGridView1.EditingControlShowing += DataGridView1_EditingControlShowing;
-
+            dataGridView1.RowHeaderMouseClick += DataGridView1_RowHeaderMouseClick;
+            dataGridView1.CellValidating += DataGridView1_CellValidating;
 
             contextMenu.MenuItems.Add("Copy", OnCopy);
             contextMenu.MenuItems.Add("Past", OnPast);
@@ -80,6 +78,42 @@ namespace WindowsFormsApplication3
             }
 
             dataGridView1.ContextMenu = contextMenu;
+        }
+
+
+        private void DataGridView1_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+
+            int maxLength = 0;
+
+            if ((ModifierKeys & Keys.Control) == Keys.Control)
+            {
+                dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.CadetBlue;
+                return;
+            }
+           
+
+            foreach (DataGridViewCell cell in dataGridView1.Rows[e.RowIndex].Cells)
+            {
+                if (!(dataGridView1.Columns[cell.ColumnIndex] is DataGridViewImageColumn))
+                {
+                    maxLength = cell.Value.ToString().Length > maxLength ? cell.Value.ToString().Length : maxLength;
+
+                    if (cell.Value.ToString().Length > 100)
+                    {
+                        dataGridView1.Columns[cell.ColumnIndex].Width = dataGridView1.Columns[cell.ColumnIndex].Width < 400 ? 400 : dataGridView1.Columns[cell.ColumnIndex].Width;
+                    }
+                }
+            }
+
+            dataGridView1.Rows[e.RowIndex].Height = dataGridView1.Rows[e.RowIndex].Height > 100 ? 100 : GetRowHeightBasedOnLength(maxLength);
+
+
+        }
+
+        private int GetRowHeightBasedOnLength(int maxColumnTextLength)
+        {
+            return (int)Math.Abs(maxColumnTextLength / 2.5) + 10;
         }
 
         #region UndoRedo
@@ -102,7 +136,43 @@ namespace WindowsFormsApplication3
                 return;
 
             DataGridViewTextBoxEditingControl tb = (DataGridViewTextBoxEditingControl)sender;
-            _undoRedo.Do(new CellData(tb.Text, new Point(dataGridView1.CurrentCell.ColumnIndex, dataGridView1.CurrentCell.RowIndex)));
+            object value = ConvertTo(dataGridView1.CurrentCell.ValueType, tb.Text);
+
+            // for now skipping key level undo may be in future
+            //   _undoRedo.Do(new CellData(value, new Point(dataGridView1.CurrentCell.ColumnIndex, dataGridView1.CurrentCell.RowIndex)));
+        }
+
+        private void DataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            if (!imageColumnLoaded)
+                return;
+
+            if (dataGridView1.Columns[e.ColumnIndex] is DataGridViewImageColumn)
+            {
+                return;
+            }
+
+            if (dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() != e.FormattedValue.ToString())
+            {
+                _undoRedo.Do(new CellData(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value, new Point(dataGridView1.CurrentCell.ColumnIndex, dataGridView1.CurrentCell.RowIndex)));
+            }
+        }
+
+        private object ConvertTo(Type type, string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return value;
+            }
+
+            switch (Type.GetTypeCode(type))
+            {
+                case TypeCode.Double:
+                    return double.Parse(value);
+                default:
+                    return value;
+            }
+
         }
 
         private void UnDo(EventPublisher.EventArg arg)
@@ -112,7 +182,7 @@ namespace WindowsFormsApplication3
 
         private void ReDo(EventPublisher.EventArg arg)
         {
-            _undoRedo.Undo();
+            _undoRedo.Redo();
         }
 
         #endregion
@@ -215,6 +285,7 @@ namespace WindowsFormsApplication3
         {
             for (var indx = 0; indx < targetCells.Count; indx++)
             {
+                _undoRedo.Do(new CellData(dataGridView1.Rows[targetCells[indx].Location.Y].Cells[targetCells[indx].Location.X].Value, targetCells[indx].Location));
                 dataGridView1.Rows[targetCells[indx].Location.Y].Cells[targetCells[indx].Location.X].Value =
                    copyedText;
             }
@@ -244,9 +315,10 @@ namespace WindowsFormsApplication3
                 targetCells = targetCells.OrderBy(x => x.Location.Y).ToList();
             }
 
-
             for (var indx = 0; indx < sourceCells.Count; indx++)
             {
+                _undoRedo.Do(new CellData(dataGridView1.Rows[targetCells[indx].Location.Y].Cells[targetCells[indx].Location.X].Value, targetCells[indx].Location));
+
                 dataGridView1.Rows[targetCells[indx].Location.Y].Cells[targetCells[indx].Location.X].Value =
                     sourceCells[indx].Value;
             }
@@ -275,7 +347,6 @@ namespace WindowsFormsApplication3
 
         private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-
             // Load context menu on right mouse click
             DataGridView.HitTestInfo hitTestInfo;
             if (e.Button == MouseButtons.Right)
@@ -297,7 +368,6 @@ namespace WindowsFormsApplication3
 
         private void Save(EventArg obj)
         {
-
             if (!this.Visible)
             {
                 return;
@@ -307,7 +377,6 @@ namespace WindowsFormsApplication3
             {
                 MessageBox.Show("Can not save backup file", "Save Error",
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
-
                 return;
             }
 
@@ -318,15 +387,12 @@ namespace WindowsFormsApplication3
             dataGridView1.CurrentCell = dataGridView1.Rows[index + 1].Cells[0];
 
             var tbl = ((DataView)dataGridView1.DataSource).Table;
-
             _dataConnection.SetUpdateCommand(tbl.Columns);
 
             MessageBox.Show("Saved");
 
             dataGridView1.CurrentCell = dataGridView1.Rows[index].Cells[0];
-
             dataGridView1.Rows[index].Selected = true;
-
             RaiseEventForChange();
         }
 
@@ -399,8 +465,6 @@ namespace WindowsFormsApplication3
                 //MessageBox.Show("Mahesh" + dataGridView1.CurrentCell.Value.ToString());
 
             });
-
-
         }
         private void MoveToNextRecord(EventArg obj)
         {
@@ -443,9 +507,15 @@ namespace WindowsFormsApplication3
             dataGridView1.AllowUserToResizeRows = true;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.CellSelect;
             dataGridView1.MultiSelect = true;
+            dataGridView1.RowHeadersWidth = 60;
+            dataGridView1.RowHeadersDefaultCellStyle.Font = new System.Drawing.Font("Verdana", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridView1.RowHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.White;
 
 
-            //  dataGridView1.CellBorderStyle = DataGridViewCellBorderStyle.F;
+            if (dataGridView1.Columns.Contains("ID"))
+            {
+                dataGridView1.Columns["ID"].Visible = false;
+            }
 
             foreach (DataGridViewColumn col in dataGridView1.Columns)
             {
@@ -517,10 +587,12 @@ namespace WindowsFormsApplication3
             foreach (var cell in imageColIndexs)
             {
                 DataGridViewImageColumn imgColumn = new DataGridViewImageColumn();
-                imgColumn.HeaderText = "Image Column";
+                imgColumn.HeaderText = "Image";
                 imgColumn.Width = _imageSize + 20;
+               
                 dataGridView1.Columns.Insert(1, imgColumn);
                 imgcolumns.Add(imgColumn);
+                imgColumn.Frozen = true;
             }
 
         }
@@ -530,6 +602,7 @@ namespace WindowsFormsApplication3
             WebClient wc = new WebClient();
             for (int rowIndex = 0; rowIndex < dataGridView1.Rows.Count; rowIndex++)
             {
+                dataGridView1.Rows[rowIndex].HeaderCell.Value = (rowIndex + 1).ToString();
                 for (var i = 0; i < imageColIndexs.Count; i++)
                 {
                     if (dataGridView1.Rows[rowIndex].Cells[imageColIndexs[i]].Value != null)
