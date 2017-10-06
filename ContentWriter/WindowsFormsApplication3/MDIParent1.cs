@@ -273,5 +273,19 @@ namespace WindowsFormsApplication3
 (EventPublisher.Events.StartDataImport.ToString(), new EventArg(Guid.NewGuid(), null));
 
         }
+
+        private void undoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EventContainer.PublishEvent
+(EventPublisher.Events.Undo.ToString(), new EventArg(Guid.NewGuid(), null));
+
+        }
+
+        private void redoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            EventContainer.PublishEvent
+(EventPublisher.Events.ReDo.ToString(), new EventArg(Guid.NewGuid(), null));
+        }
     }
 }

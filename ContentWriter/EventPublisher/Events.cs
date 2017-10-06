@@ -22,6 +22,8 @@ namespace EventPublisher
         ShowFilter,
         ShowFilterDone,
         DataImportSelectionCompleted,
-        StartDataImport
+        StartDataImport,
+        Undo,
+        ReDo
     }
 }

@@ -58,6 +58,7 @@
             this.mSWordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.filterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importBackUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.newWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cascadeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -74,7 +75,6 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.importBackUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -219,6 +219,7 @@
             this.undoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
             this.undoToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.undoToolStripMenuItem.Text = "&Undo";
+            this.undoToolStripMenuItem.Click += new System.EventHandler(this.undoToolStripMenuItem_Click);
             // 
             // redoToolStripMenuItem
             // 
@@ -228,6 +229,7 @@
             this.redoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
             this.redoToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.redoToolStripMenuItem.Text = "&Redo";
+            this.redoToolStripMenuItem.Click += new System.EventHandler(this.redoToolStripMenuItem_Click);
             // 
             // toolStripSeparator6
             // 
@@ -323,6 +325,13 @@
             this.filterToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.filterToolStripMenuItem.Text = "Filter";
             this.filterToolStripMenuItem.Click += new System.EventHandler(this.filterToolStripMenuItem_Click);
+            // 
+            // importBackUpToolStripMenuItem
+            // 
+            this.importBackUpToolStripMenuItem.Name = "importBackUpToolStripMenuItem";
+            this.importBackUpToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.importBackUpToolStripMenuItem.Text = "Import BackUp";
+            this.importBackUpToolStripMenuItem.Click += new System.EventHandler(this.importBackUpToolStripMenuItem_Click);
             // 
             // windowsMenu
             // 
@@ -441,13 +450,6 @@
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
             this.toolStripStatusLabel.Size = new System.Drawing.Size(39, 17);
             this.toolStripStatusLabel.Text = "Status";
-            // 
-            // importBackUpToolStripMenuItem
-            // 
-            this.importBackUpToolStripMenuItem.Name = "importBackUpToolStripMenuItem";
-            this.importBackUpToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
-            this.importBackUpToolStripMenuItem.Text = "Import BackUp";
-            this.importBackUpToolStripMenuItem.Click += new System.EventHandler(this.importBackUpToolStripMenuItem_Click);
             // 
             // MDIParent1
             // 

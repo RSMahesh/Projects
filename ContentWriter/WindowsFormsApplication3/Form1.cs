@@ -14,6 +14,18 @@ using System.Linq;
 
 namespace WindowsFormsApplication3
 {
+    public class CellData
+    {
+        public CellData(string value, Point location)
+        {
+            Value = value;
+            Location = location;
+        }
+
+        public CellData() { }
+        public object Value { get; set; }
+        public Point Location { get; set; }
+    }
     public partial class Form1 : Form
     {
         string _excelFilePath;
@@ -22,14 +34,19 @@ namespace WindowsFormsApplication3
         bool IsXmlFile;
         bool imageColumnLoaded = false;
         ContextMenu contextMenu = new ContextMenu();
+        UndoRedoStack<CellData> _undoRedo;
         bool _importBackUp;
+
+
 
 
         public Form1(string filePath, bool importBackUp = false)
         {
 
             InitializeComponent();
+
             _importBackUp = importBackUp;
+            _undoRedo = new UndoRedoStack<CellData>(new SetCellDataCommand(dataGridView1));
             EventContainer.SubscribeEvent(EventPublisher.Events.MoveToNextRecord.ToString(), MoveToNextRecord);
             EventContainer.SubscribeEvent(EventPublisher.Events.MoveToPriviousRecord.ToString(), MoveToPriviousRecord);
             EventContainer.SubscribeEvent(EventPublisher.Events.RecordUpdated.ToString(), RecordUpdated);
@@ -39,24 +56,244 @@ namespace WindowsFormsApplication3
             EventContainer.SubscribeEvent(EventPublisher.Events.DescriptionCount.ToString(), DescriptionCount);
             EventContainer.SubscribeEvent(EventPublisher.Events.ShowFilter.ToString(), ShowFilter);
             EventContainer.SubscribeEvent(EventPublisher.Events.ShowFilterDone.ToString(), FilterDone);
-        
+            EventContainer.SubscribeEvent(EventPublisher.Events.Undo.ToString(), UnDo);
+            EventContainer.SubscribeEvent(EventPublisher.Events.ReDo.ToString(), ReDo);
+            dataGridView1.CellPainting += dataGridView1_CellPainting;
+            dataGridView1.CellLeave += dataGridView1_CellLeave;
+            dataGridView1.EditingControlShowing += DataGridView1_EditingControlShowing;
+
+
+            contextMenu.MenuItems.Add("Copy", OnCopy);
+            contextMenu.MenuItems.Add("Past", OnPast);
+
 
             _excelFilePath = filePath;
 
             if (Path.GetExtension(_excelFilePath) == ".xml")
             {
                 IsXmlFile = true;
-            }else
+            }
+            else
             {
                 EventContainer.SubscribeEvent(EventPublisher.Events.StartDataImport.ToString(), StartBackUpImport);
 
             }
 
-            contextMenu.MenuItems.Add(new MenuItem("Cut"));
-            contextMenu.MenuItems.Add(new MenuItem("Copy"));
-            contextMenu.MenuItems.Add(new MenuItem("Paste"));
             dataGridView1.ContextMenu = contextMenu;
         }
+
+        #region UndoRedo
+
+        bool attachedEventFroKepUp = false;
+        private void DataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            if (!attachedEventFroKepUp)
+            {
+                DataGridViewTextBoxEditingControl tb = (DataGridViewTextBoxEditingControl)e.Control;
+                tb.KeyDown += Tb_KeyDown;
+                attachedEventFroKepUp = true;
+            }
+        }
+
+        private void Tb_KeyDown(object sender, KeyEventArgs e)
+        {
+            //skip if Ctrl+Z
+            if (e.Control)
+                return;
+
+            DataGridViewTextBoxEditingControl tb = (DataGridViewTextBoxEditingControl)sender;
+            _undoRedo.Do(new CellData(tb.Text, new Point(dataGridView1.CurrentCell.ColumnIndex, dataGridView1.CurrentCell.RowIndex)));
+        }
+
+        private void UnDo(EventPublisher.EventArg arg)
+        {
+            _undoRedo.Undo();
+        }
+
+        private void ReDo(EventPublisher.EventArg arg)
+        {
+            _undoRedo.Undo();
+        }
+
+        #endregion
+
+        #region MltiCopy
+
+        void dataGridView1_CellLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            this.dataGridView1.Invalidate();
+        }
+
+
+        private void dataGridView1_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+
+            if (IsCellSelected(e.ColumnIndex, e.RowIndex))
+            {
+                e.Paint(e.CellBounds, DataGridViewPaintParts.All
+ & ~DataGridViewPaintParts.Border);
+                using (Pen p = new Pen(Color.White, 2))
+                {
+                    p.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+                    Rectangle rect = e.CellBounds;
+                    rect.Width -= 1;
+                    rect.Height -= 1;
+                    e.Graphics.DrawRectangle(p, rect);
+                }
+                e.Handled = true;
+            }
+
+        }
+
+        private bool IsCellSelected(int col, int row)
+        {
+            foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
+            {
+                if (cell.ColumnIndex == col && cell.RowIndex == row)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private void OnCopy(object sender, EventArgs e)
+        {
+            var listSelectedCells = new List<CellData>();
+
+            foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
+            {
+                listSelectedCells.Add(new CellData(cell.Value.ToString(), new Point(cell.ColumnIndex, cell.RowIndex)));
+            }
+
+            var selctionInfo = GetSelectedRowAndColumnCount(listSelectedCells);
+
+            if (selctionInfo.X > 1 && selctionInfo.Y > 1)
+            {
+                MessageBox.Show("Invalid Selection Only One Row or One Column can be selected." +
+                  Environment.NewLine + "Selected Row :" + selctionInfo.Y.ToString() + " Selected Columns :" + selctionInfo.X.ToString());
+                return;
+            }
+
+            var serializer = new JavaScriptSerializer();
+            var serializedResult = serializer.Serialize(listSelectedCells);
+            Clipboard.SetText(serializedResult);
+        }
+
+        private void OnPast(object sender, EventArgs e)
+        {
+            var text = Clipboard.GetText();
+            var pastCells = new List<CellData>();
+            List<CellData> copyedCells;
+
+            if (string.IsNullOrEmpty(text))
+            {
+                return;
+            }
+
+            foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
+            {
+                pastCells.Add(new CellData(string.Empty, new Point(cell.ColumnIndex, cell.RowIndex)));
+            }
+
+            try
+            {
+                var serializer = new JavaScriptSerializer();
+                copyedCells = serializer.Deserialize<List<CellData>>(text);
+            }
+            catch (ArgumentException ex)
+            {
+                PasteSingleCellData(text, pastCells);
+                return;
+            }
+
+            PastCellData(copyedCells, pastCells);
+        }
+
+        private void PasteSingleCellData(string copyedText, List<CellData> targetCells)
+        {
+            for (var indx = 0; indx < targetCells.Count; indx++)
+            {
+                dataGridView1.Rows[targetCells[indx].Location.Y].Cells[targetCells[indx].Location.X].Value =
+                   copyedText;
+            }
+        }
+
+
+        private void PastCellData(List<CellData> sourceCells, List<CellData> targetCells)
+        {
+            var sourceInfo = GetSelectedRowAndColumnCount(sourceCells);
+            var targetInfo = GetSelectedRowAndColumnCount(targetCells);
+
+            if (sourceInfo != targetInfo)
+            {
+                MessageBox.Show("Invalid Selection for Past"
+                    + Environment.NewLine + "Correct Row :" + sourceInfo.Y.ToString() + " Correct Columns :" + sourceInfo.X.ToString());
+                return;
+            }
+
+            if (sourceInfo.X > 1 && targetInfo.X > 1)
+            {
+                sourceCells = sourceCells.OrderBy(x => x.Location.X).ToList();
+                targetCells = targetCells.OrderBy(x => x.Location.X).ToList();
+            }
+            else if (sourceInfo.Y > 1 && targetInfo.Y > 1)
+            {
+                sourceCells = sourceCells.OrderBy(x => x.Location.Y).ToList();
+                targetCells = targetCells.OrderBy(x => x.Location.Y).ToList();
+            }
+
+
+            for (var indx = 0; indx < sourceCells.Count; indx++)
+            {
+                dataGridView1.Rows[targetCells[indx].Location.Y].Cells[targetCells[indx].Location.X].Value =
+                    sourceCells[indx].Value;
+            }
+        }
+
+        private Point GetSelectedRowAndColumnCount(List<CellData> cellsData)
+        {
+            var listColumns = new List<int>();
+            var listRows = new List<int>();
+
+            foreach (var p in cellsData)
+            {
+                if (!listColumns.Contains(p.Location.X))
+                {
+                    listColumns.Add(p.Location.X);
+                }
+
+                if (!listRows.Contains(p.Location.Y))
+                {
+                    listRows.Add(p.Location.Y);
+                }
+            }
+
+            return new Point(listColumns.Count, listRows.Count);
+        }
+
+        private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+
+            // Load context menu on right mouse click
+            DataGridView.HitTestInfo hitTestInfo;
+            if (e.Button == MouseButtons.Right)
+            {
+                // contextMenu.Show(dataGridView1, e.Location);
+                hitTestInfo = dataGridView1.HitTest(e.X, e.Y);
+                Rectangle r = dataGridView1.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false);
+                Point p = new Point(r.X + e.X, r.Y + e.Y);
+
+
+                if (dataGridView1.SelectedCells.Count > 1)
+                {
+                    contextMenu.Show(dataGridView1, p);
+                }
+            }
+        }
+
+        #endregion
 
         private void Save(EventArg obj)
         {
@@ -68,8 +305,8 @@ namespace WindowsFormsApplication3
 
             if (IsXmlFile)
             {
-              MessageBox.Show("Can not save backup file", "Save Error",
-              MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Can not save backup file", "Save Error",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 return;
             }
@@ -98,10 +335,10 @@ namespace WindowsFormsApplication3
             dataGridView1.CurrentCell = dataGridView1.Rows[0].Cells[0];
 
             var allCheckedRows = dataGridView1.Rows.Cast<DataGridViewRow>()
-                            .Where(row => (bool?)row.Cells[dataGridView1.Columns.Count-1].Value == true)
+                            .Where(row => (bool?)row.Cells[dataGridView1.Columns.Count - 1].Value == true)
                             .ToList();
 
-           var dt = ((DataView)dataGridView1.DataSource).Table;
+            var dt = ((DataView)dataGridView1.DataSource).Table;
             var dt2 = dt.Clone();
 
             allCheckedRows.ForEach(row =>
@@ -199,16 +436,20 @@ namespace WindowsFormsApplication3
             _dataConnection = new OLDBConnection12(_excelFilePath);
             var dt = _dataConnection.ExecuteDatatable("Select * from [Sheet1$]").DefaultView;
             dataGridView1.DataSource = dt;
-            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            //  dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.Dock = DockStyle.Fill;
             dataGridView1.AllowUserToOrderColumns = true;
             dataGridView1.AllowUserToResizeColumns = true;
             dataGridView1.AllowUserToResizeRows = true;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            dataGridView1.MultiSelect = true;
+
+
+            //  dataGridView1.CellBorderStyle = DataGridViewCellBorderStyle.F;
 
             foreach (DataGridViewColumn col in dataGridView1.Columns)
             {
-             //   col.SortMode = DataGridViewColumnSortMode.NotSortable;
+                //   col.SortMode = DataGridViewColumnSortMode.NotSortable;
             }
 
             if (IsXmlFile)
@@ -216,10 +457,12 @@ namespace WindowsFormsApplication3
                 dataGridView1.RowTemplate.DefaultCellStyle.BackColor = Color.White;
                 dataGridView1.RowTemplate.DefaultCellStyle.ForeColor = Color.Black;
 
-               // dataGridView1.ReadOnly = true;
+                // dataGridView1.ReadOnly = true;
             }
 
             this.Text = _excelFilePath;
+
+
         }
 
 
@@ -249,7 +492,7 @@ namespace WindowsFormsApplication3
 
         private void GetImageColumns()
         {
-       
+
             for (var i = 0; i < dataGridView1.Columns.Count; i++)
             {
                 try
@@ -270,7 +513,7 @@ namespace WindowsFormsApplication3
         }
         private void AddImageColumn()
         {
- 
+
             foreach (var cell in imageColIndexs)
             {
                 DataGridViewImageColumn imgColumn = new DataGridViewImageColumn();
@@ -280,7 +523,7 @@ namespace WindowsFormsApplication3
                 imgcolumns.Add(imgColumn);
             }
 
-         }
+        }
 
         private void LoadImageInCell()
         {
@@ -333,7 +576,7 @@ namespace WindowsFormsApplication3
         {
             var tt = _excelFilePath.Split(new string[] { "_dataBackup" }, StringSplitOptions.None)[0];
             return Path.GetDirectoryName(tt) + "\\" +
-                       Path.GetFileNameWithoutExtension(tt)+ "-images"
+                       Path.GetFileNameWithoutExtension(tt) + "-images"
                        + uri.LocalPath.Replace("/", "\\");
         }
 
@@ -456,22 +699,22 @@ namespace WindowsFormsApplication3
             catch (System.Runtime.InteropServices.COMException)
             {
                 alreadyOpend = false;
-               
+
                 OutProcessDocument.Close();
                 MessageBox.Show("Try Again");
             }
 
         }
 
-        
+
 
         private void DescriptionCount(EventPublisher.EventArg arg)
         {
             var count = 0;
             for (int i = 0; i < dataGridView1.Rows.Count; i++)
             {
-               if(dataGridView1.Rows[i].Cells["Description"].Value != null &&
-                    ! string.IsNullOrEmpty(dataGridView1.Rows[i].Cells["Description"].Value.ToString()))
+                if (dataGridView1.Rows[i].Cells["Description"].Value != null &&
+                     !string.IsNullOrEmpty(dataGridView1.Rows[i].Cells["Description"].Value.ToString()))
                 {
                     count++;
 
@@ -488,7 +731,7 @@ namespace WindowsFormsApplication3
             filter.WindowState = FormWindowState.Normal;
             filter.Show();
 
-     
+
         }
 
         private void FilterDone(EventPublisher.EventArg arg)
@@ -505,7 +748,7 @@ namespace WindowsFormsApplication3
         {
             if (_importBackUp)
             {
-               // MarkAllDirty();
+                // MarkAllDirty();
                 var dt = MarkAllDirty();
                 EventContainer.PublishEvent(EventPublisher.Events.DataImportSelectionCompleted.ToString(), new EventArg(Guid.NewGuid(), dt));
 
@@ -524,7 +767,7 @@ namespace WindowsFormsApplication3
             openFileDialog.Filter = "XML (*.xml)|*.xml";
             if (openFileDialog.ShowDialog(this) == DialogResult.OK)
             {
-                EventContainer.SubscribeEvent(EventPublisher.Events.DataImportSelectionCompleted.ToString(),OnDataImportSelectionCompleted);
+                EventContainer.SubscribeEvent(EventPublisher.Events.DataImportSelectionCompleted.ToString(), OnDataImportSelectionCompleted);
 
                 var form1 = new Form1(openFileDialog.FileName, true);
                 form1.MdiParent = this.MdiParent;
@@ -539,12 +782,12 @@ namespace WindowsFormsApplication3
 
             var currentDt = ((DataView)dataGridView1.DataSource).Table;
 
-            foreach(DataRow backUpdataRow in backUpDt.Rows)
+            foreach (DataRow backUpdataRow in backUpDt.Rows)
             {
-               var row = int.Parse(backUpdataRow[0].ToString());
-                var currentDataRow = currentDt.Rows[--row ];
+                var row = int.Parse(backUpdataRow[0].ToString());
+                var currentDataRow = currentDt.Rows[--row];
                 //Start from one to avoiid ID column
-                for (var i=1; i < backUpDt.Columns.Count; i++)
+                for (var i = 1; i < backUpDt.Columns.Count; i++)
                 {
                     currentDataRow[i] = backUpdataRow[i];
                 }
@@ -582,26 +825,9 @@ namespace WindowsFormsApplication3
 
         private void dataGridView1_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
         {
-          
+
         }
 
-        private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            return;
-
-            // Load context menu on right mouse click
-            DataGridView.HitTestInfo hitTestInfo;
-            if (e.Button == MouseButtons.Right)
-            {
-               // contextMenu.Show(dataGridView1, e.Location);
-                hitTestInfo = dataGridView1.HitTest(e.X, e.Y);
-                if (hitTestInfo.Type == DataGridViewHitTestType.Cell)
-                {
-                    contextMenu.Show(dataGridView1, e.Location);
-                }
-
-            }
-        }
 
         private void dataGridView1_Sorted(object sender, EventArgs e)
         {
