@@ -26,6 +26,12 @@ namespace WindowsFormsApplication3
         public object Value { get; set; }
         public Point Location { get; set; }
     }
+
+    public class RowInfo
+    {
+        public int RowId { get; set; }
+        public bool Highlighted { get; set; }
+    }
     public partial class Form1 : Form
     {
         string _excelFilePath;
@@ -36,6 +42,7 @@ namespace WindowsFormsApplication3
         ContextMenu contextMenu = new ContextMenu();
         UndoRedoStack<CellData> _undoRedo;
         bool _importBackUp;
+        List<RowInfo> rowsInfo = new List<RowInfo>();
 
         public Form1(string filePath, bool importBackUp = false)
         {
@@ -60,6 +67,8 @@ namespace WindowsFormsApplication3
             dataGridView1.EditingControlShowing += DataGridView1_EditingControlShowing;
             dataGridView1.RowHeaderMouseClick += DataGridView1_RowHeaderMouseClick;
             dataGridView1.CellValidating += DataGridView1_CellValidating;
+            dataGridView1.CellBeginEdit += DataGridView1_CellBeginEdit;
+            dataGridView1.Sorted += DataGridView1_Sorted;
 
             contextMenu.MenuItems.Add("Copy", OnCopy);
             contextMenu.MenuItems.Add("Past", OnPast);
@@ -78,6 +87,58 @@ namespace WindowsFormsApplication3
             }
 
             dataGridView1.ContextMenu = contextMenu;
+
+        }
+
+        private void DataGridView1_Sorted(object sender, EventArgs e)
+        {
+            ApplyRowInfo();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            dataGridView1.DataError += DataGridView1_DataError;
+            dataGridView1.RowTemplate.Height = 100;
+            dataGridView1.RowTemplate.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+
+            _dataConnection = new OLDBConnection12(_excelFilePath);
+            var dt = _dataConnection.ExecuteDatatable("Select * from [Sheet1$]").DefaultView;
+            dataGridView1.DataSource = dt;
+            //  dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView1.Dock = DockStyle.Fill;
+            dataGridView1.AllowUserToOrderColumns = true;
+            dataGridView1.AllowUserToResizeColumns = true;
+            dataGridView1.AllowUserToResizeRows = true;
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            dataGridView1.MultiSelect = true;
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.RowHeadersWidth = 30;
+            dataGridView1.RowHeadersDefaultCellStyle.Font = new System.Drawing.Font("Verdana", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridView1.RowHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.White;
+
+
+            if (dataGridView1.Columns.Contains("ID"))
+            {
+                dataGridView1.Columns["ID"].ReadOnly = true;
+                dataGridView1.Columns["ID"].Width = 45;
+            }
+
+            foreach (DataGridViewColumn col in dataGridView1.Columns)
+            {
+                //   col.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+
+            if (IsXmlFile)
+            {
+                dataGridView1.RowTemplate.DefaultCellStyle.BackColor = Color.White;
+                dataGridView1.RowTemplate.DefaultCellStyle.ForeColor = Color.Black;
+
+                // dataGridView1.ReadOnly = true;
+            }
+
+            this.Text = _excelFilePath;
+
+
         }
 
 
@@ -88,12 +149,57 @@ namespace WindowsFormsApplication3
 
             if ((ModifierKeys & Keys.Control) == Keys.Control)
             {
-                dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.CadetBlue;
+                HighLightRow(int.Parse(dataGridView1.Rows[e.RowIndex].Cells["ID"].Value.ToString()));
                 return;
             }
-           
 
-            foreach (DataGridViewCell cell in dataGridView1.Rows[e.RowIndex].Cells)
+            IncreaseRowHeight(e.RowIndex, e.ColumnIndex);
+
+        }
+
+        private void HighLightRow(int rowId)
+        {
+            var rowIndex = GetRowWithId(rowId);
+
+            if (dataGridView1.Rows[rowIndex].DefaultCellStyle.BackColor == Color.CadetBlue)
+            {
+                dataGridView1.Rows[rowIndex].DefaultCellStyle.BackColor = Color.LightGray;
+                rowsInfo.Remove(rowsInfo.FirstOrDefault(x => x.RowId == rowIndex));
+            }
+            else
+            {
+                ChaneRowColorToCadetBlue(rowIndex);
+                RowInfo rowInfo = new RowInfo();
+                rowInfo.Highlighted = true;
+                rowInfo.RowId = rowId;
+                rowsInfo.Add(rowInfo);
+            }
+        }
+
+        private int GetRowWithId(int rowId)
+        {
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (int.Parse(row.Cells["ID"].Value.ToString()) == rowId)
+                {
+                    return row.Index;
+                }
+            }
+
+            return -1;
+        }
+
+        private void ChaneRowColorToCadetBlue(int rowIndex)
+        {
+            dataGridView1.Rows[rowIndex].DefaultCellStyle.BackColor = Color.CadetBlue;
+        }
+
+
+        private void IncreaseRowHeight(int row, int col, bool toogle = true)
+        {
+            int maxLength = 0;
+
+            foreach (DataGridViewCell cell in dataGridView1.Rows[row].Cells)
             {
                 if (!(dataGridView1.Columns[cell.ColumnIndex] is DataGridViewImageColumn))
                 {
@@ -106,17 +212,37 @@ namespace WindowsFormsApplication3
                 }
             }
 
-            dataGridView1.Rows[e.RowIndex].Height = dataGridView1.Rows[e.RowIndex].Height > 100 ? 100 : GetRowHeightBasedOnLength(maxLength);
-
-
+            dataGridView1.Rows[row].Height = dataGridView1.Rows[row].Height > GetRowHeightBasedOnLength(maxLength) ? dataGridView1.Rows[row].Height : GetRowHeightBasedOnLength(maxLength);
         }
+
 
         private int GetRowHeightBasedOnLength(int maxColumnTextLength)
         {
+
             return (int)Math.Abs(maxColumnTextLength / 2.5) + 10;
         }
 
         #region UndoRedo
+
+        private void DataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            IncreaseRowHeight(e.RowIndex, e.ColumnIndex);
+            //  var newHeight =   GetRowHeightBasedOnLength(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString().Length);
+
+            //   dataGridView1.Rows[e.RowIndex].Height = dataGridView1.Rows[e.RowIndex].Height > newHeight ? dataGridView1.Rows[e.RowIndex].Height : newHeight;
+            //using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(new Bitmap(1, 1)))
+            //{
+            //    var text = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+            //    SizeF size = graphics.MeasureString(text, new Font("Verdana", 10, FontStyle.Regular, GraphicsUnit.Point));
+
+            //  TextRenderer.MeasureText(text, arialBold);
+
+
+            //    dataGridView1.Rows[e.RowIndex].Height =(int) size.Height;
+            //    dataGridView1.Columns[e.ColumnIndex].Width = (int)size.Width;
+            //}
+        }
+
 
         bool attachedEventFroKepUp = false;
         private void DataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
@@ -124,19 +250,35 @@ namespace WindowsFormsApplication3
             if (!attachedEventFroKepUp)
             {
                 DataGridViewTextBoxEditingControl tb = (DataGridViewTextBoxEditingControl)e.Control;
-                tb.KeyDown += Tb_KeyDown;
+                //tb.KeyDown += Tb_KeyDown;
+                //tb.KeyUp += Tb_KeyUp;
                 attachedEventFroKepUp = true;
+            }
+        }
+
+        private void Tb_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == (Keys.Control | Keys.Z))
+            {
+                DataGridViewTextBoxEditingControl tb = (DataGridViewTextBoxEditingControl)sender;
+                tb.Undo();
+                // dataGridView1.EndEdit();
+                return;
             }
         }
 
         private void Tb_KeyDown(object sender, KeyEventArgs e)
         {
             //skip if Ctrl+Z
-            if (e.Control)
-                return;
 
-            DataGridViewTextBoxEditingControl tb = (DataGridViewTextBoxEditingControl)sender;
-            object value = ConvertTo(dataGridView1.CurrentCell.ValueType, tb.Text);
+            //if (e.KeyData == (Keys.Control | Keys.Z))
+            //{
+            //    dataGridView1.EndEdit();
+            //    return;
+            //}
+            //DataGridViewTextBoxEditingControl tb = (DataGridViewTextBoxEditingControl)sender;
+            //object value = ConvertTo(dataGridView1.CurrentCell.ValueType, tb.Text);
+
 
             // for now skipping key level undo may be in future
             //   _undoRedo.Do(new CellData(value, new Point(dataGridView1.CurrentCell.ColumnIndex, dataGridView1.CurrentCell.RowIndex)));
@@ -172,11 +314,17 @@ namespace WindowsFormsApplication3
                 default:
                     return value;
             }
-
         }
 
         private void UnDo(EventPublisher.EventArg arg)
         {
+            if (dataGridView1.IsCurrentCellInEditMode)
+            {
+                var currentValue = dataGridView1.CurrentCell.Value;
+                dataGridView1.EndEdit();
+                dataGridView1.CurrentCell.Value = currentValue;
+                return;
+            }
             _undoRedo.Undo();
         }
 
@@ -212,7 +360,6 @@ namespace WindowsFormsApplication3
                 }
                 e.Handled = true;
             }
-
         }
 
         private bool IsCellSelected(int col, int row)
@@ -381,19 +528,66 @@ namespace WindowsFormsApplication3
             }
 
             var index = dataGridView1.CurrentRow.Index;
+            var Colindex = dataGridView1.CurrentCell.ColumnIndex;
+
             dataGridView1.CommitEdit(DataGridViewDataErrorContexts.Commit);
 
             dataGridView1.CurrentRow.Selected = false;
-            dataGridView1.CurrentCell = dataGridView1.Rows[index + 1].Cells[0];
+
+            if (dataGridView1.Rows.Count == index + 1)
+            {
+                dataGridView1.CurrentCell = dataGridView1.Rows[index - 1].Cells[1];
+            }
+            else
+            {
+                dataGridView1.CurrentCell = dataGridView1.Rows[index + 1].Cells[1];
+            }
 
             var tbl = ((DataView)dataGridView1.DataSource).Table;
             _dataConnection.SetUpdateCommand(tbl.Columns);
 
-            MessageBox.Show("Saved");
 
-            dataGridView1.CurrentCell = dataGridView1.Rows[index].Cells[0];
+
+            dataGridView1.CurrentCell = dataGridView1.Rows[index].Cells[Colindex];
             dataGridView1.Rows[index].Selected = true;
+            MessageBox.Show("Saved");
+            SaveRowInfo();
+
             RaiseEventForChange();
+        }
+
+        private void SaveRowInfo()
+        {
+            if (!rowsInfo.Any())
+            {
+                // return;
+            }
+            var serializer = new JavaScriptSerializer();
+            var serializedResult = serializer.Serialize(rowsInfo);
+            var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FreeLance", Path.GetFileNameWithoutExtension(_excelFilePath) + "_style.txt");
+            File.WriteAllText(filePath, serializedResult);
+
+        }
+
+        private void ReadRowInfo()
+        {
+            var serializer = new JavaScriptSerializer();
+            var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FreeLance", Path.GetFileNameWithoutExtension(_excelFilePath) + "_style.txt");
+
+            if (File.Exists(filePath))
+            {
+                rowsInfo = serializer.Deserialize<List<RowInfo>>(File.ReadAllText(filePath));
+                ApplyRowInfo();
+            }
+        }
+
+        private void ApplyRowInfo()
+        {
+            foreach (var info in rowsInfo)
+            {
+                var rowIndex = GetRowWithId(info.RowId);
+                ChaneRowColorToCadetBlue(rowIndex);
+            }
         }
 
         private DataTable MarkAllDirty()
@@ -491,49 +685,7 @@ namespace WindowsFormsApplication3
             dataGridView1.CurrentCell = dataGridView1.Rows[index].Cells[0];
             RaiseEventForChange();
         }
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            dataGridView1.DataError += DataGridView1_DataError;
-            dataGridView1.RowTemplate.Height = 100;
-            dataGridView1.RowTemplate.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
 
-            _dataConnection = new OLDBConnection12(_excelFilePath);
-            var dt = _dataConnection.ExecuteDatatable("Select * from [Sheet1$]").DefaultView;
-            dataGridView1.DataSource = dt;
-            //  dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.Dock = DockStyle.Fill;
-            dataGridView1.AllowUserToOrderColumns = true;
-            dataGridView1.AllowUserToResizeColumns = true;
-            dataGridView1.AllowUserToResizeRows = true;
-            dataGridView1.SelectionMode = DataGridViewSelectionMode.CellSelect;
-            dataGridView1.MultiSelect = true;
-            dataGridView1.RowHeadersWidth = 60;
-            dataGridView1.RowHeadersDefaultCellStyle.Font = new System.Drawing.Font("Verdana", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridView1.RowHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.White;
-
-
-            if (dataGridView1.Columns.Contains("ID"))
-            {
-                dataGridView1.Columns["ID"].Visible = false;
-            }
-
-            foreach (DataGridViewColumn col in dataGridView1.Columns)
-            {
-                //   col.SortMode = DataGridViewColumnSortMode.NotSortable;
-            }
-
-            if (IsXmlFile)
-            {
-                dataGridView1.RowTemplate.DefaultCellStyle.BackColor = Color.White;
-                dataGridView1.RowTemplate.DefaultCellStyle.ForeColor = Color.Black;
-
-                // dataGridView1.ReadOnly = true;
-            }
-
-            this.Text = _excelFilePath;
-
-
-        }
 
 
         private void addCheckBox()
@@ -589,7 +741,7 @@ namespace WindowsFormsApplication3
                 DataGridViewImageColumn imgColumn = new DataGridViewImageColumn();
                 imgColumn.HeaderText = "Image";
                 imgColumn.Width = _imageSize + 20;
-               
+
                 dataGridView1.Columns.Insert(1, imgColumn);
                 imgcolumns.Add(imgColumn);
                 imgColumn.Frozen = true;
@@ -599,10 +751,11 @@ namespace WindowsFormsApplication3
 
         private void LoadImageInCell()
         {
+            return;
             WebClient wc = new WebClient();
             for (int rowIndex = 0; rowIndex < dataGridView1.Rows.Count; rowIndex++)
             {
-                dataGridView1.Rows[rowIndex].HeaderCell.Value = (rowIndex + 1).ToString();
+                // dataGridView1.Rows[rowIndex].HeaderCell.Value = (rowIndex + 1).ToString();
                 for (var i = 0; i < imageColIndexs.Count; i++)
                 {
                     if (dataGridView1.Rows[rowIndex].Cells[imageColIndexs[i]].Value != null)
@@ -737,6 +890,7 @@ namespace WindowsFormsApplication3
             AddImageColumn();
             LoadImageInCell();
             LoadColumnOrder();
+            ReadRowInfo();
 
             if (_importBackUp)
             {
