@@ -180,12 +180,7 @@ namespace WindowsFormsApplication3
             //}
             //InputControl.Words = lst;
 
-            var lastOpenedFile = GetLastOpenedFile();
-
-            if (!string.IsNullOrEmpty(lastOpenedFile))
-            {
-                OpenFile(lastOpenedFile);
-            }
+           
 
             // OpenFile(@"D:\11.xlsx");
         }
@@ -252,9 +247,9 @@ namespace WindowsFormsApplication3
 
         private void fullBackUpToolStripMenuItem_Click(object sender, EventArgs e)
         {
-             var backUpFolder = Path.GetDirectoryName(lastFileName) + "\\" +
-                       Path.GetFileNameWithoutExtension(lastFileName)
-                       + "_dataBackup\\Full";
+            var backUpFolder = Path.GetDirectoryName(lastFileName) + "\\" +
+                      Path.GetFileNameWithoutExtension(lastFileName)
+                      + "_dataBackup\\Full";
 
             var files = Directory.GetFiles(backUpFolder, "*.xml").OrderByDescending(x => x.ToString());
             OpenFile(files.FirstOrDefault());
@@ -286,6 +281,30 @@ namespace WindowsFormsApplication3
 
             EventContainer.PublishEvent
 (EventPublisher.Events.ReDo.ToString(), new EventArg(Guid.NewGuid(), null));
+        }
+
+        private void statToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EventContainer.PublishEvent
+(EventPublisher.Events.Statistics.ToString(), new EventArg(Guid.NewGuid(), null));
+
+
+        }
+
+        bool lasteFileLaoded;
+        private void MDIParent1_Activated(object sender, EventArgs e)
+        {
+            if (!lasteFileLaoded)
+            {
+                lasteFileLaoded = true;
+
+                var lastOpenedFile = GetLastOpenedFile();
+
+                if (!string.IsNullOrEmpty(lastOpenedFile))
+                {
+                    OpenFile(lastOpenedFile);
+                }
+            }
         }
     }
 }

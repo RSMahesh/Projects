@@ -11,6 +11,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Web.Script.Serialization;
 using System.Linq;
+using System.ComponentModel;
 
 namespace WindowsFormsApplication3
 {
@@ -62,9 +63,6 @@ namespace WindowsFormsApplication3
             EventContainer.SubscribeEvent(EventPublisher.Events.ShowFilterDone.ToString(), FilterDone);
             EventContainer.SubscribeEvent(EventPublisher.Events.Undo.ToString(), UnDo);
             EventContainer.SubscribeEvent(EventPublisher.Events.ReDo.ToString(), ReDo);
-            EventContainer.SubscribeEvent(EventPublisher.Events.Statistics.ToString(), ShowStatics);
-
-
             dataGridView1.CellPainting += dataGridView1_CellPainting;
             dataGridView1.CellLeave += dataGridView1_CellLeave;
             dataGridView1.EditingControlShowing += DataGridView1_EditingControlShowing;
@@ -157,7 +155,7 @@ namespace WindowsFormsApplication3
             }
 
             IncreaseRowHeight(e.RowIndex, e.ColumnIndex);
-    
+
         }
 
         private void HighLightRow(int rowId)
@@ -195,6 +193,10 @@ namespace WindowsFormsApplication3
         private void ChaneRowColorToCadetBlue(int rowIndex)
         {
             dataGridView1.Rows[rowIndex].DefaultCellStyle.BackColor = Color.CadetBlue;
+            dataGridView1.Rows[rowIndex].Cells["ColorCode"].Style.BackColor = Color.White;
+            dataGridView1.Rows[rowIndex].Cells["ColorCode"].Style.ForeColor = Color.CadetBlue;
+            dataGridView1.Rows[rowIndex].Cells["ColorCode"].Value = Color.CadetBlue.Name;
+           
         }
 
 
@@ -230,8 +232,7 @@ namespace WindowsFormsApplication3
         private void DataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
             IncreaseRowHeight(e.RowIndex, e.ColumnIndex);
-            //dataGridView1.Columns[e.ColumnIndex].SortMode = DataGridViewColumnSortMode.NotSortable;
-
+        dataGridView1.CurrentCell =    dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex];
             //  var newHeight =   GetRowHeightBasedOnLength(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString().Length);
 
             //   dataGridView1.Rows[e.RowIndex].Height = dataGridView1.Rows[e.RowIndex].Height > newHeight ? dataGridView1.Rows[e.RowIndex].Height : newHeight;
@@ -291,7 +292,6 @@ namespace WindowsFormsApplication3
 
         private void DataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
-
             if (!imageColumnLoaded)
                 return;
 
@@ -302,7 +302,6 @@ namespace WindowsFormsApplication3
 
             if (dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() != e.FormattedValue.ToString())
             {
-                // MessageBox.Show(e.FormattedValue.ToString());
                 _undoRedo.Do(new CellData(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value, new Point(dataGridView1.CurrentCell.ColumnIndex, dataGridView1.CurrentCell.RowIndex)));
             }
         }
@@ -367,6 +366,8 @@ namespace WindowsFormsApplication3
                 }
                 e.Handled = true;
             }
+
+
         }
 
         private bool IsCellSelected(int col, int row)
@@ -522,6 +523,9 @@ namespace WindowsFormsApplication3
 
         private void Save(EventArg obj)
         {
+           // this.dataGridView1.Sort(this.dataGridView1.Columns["ColorCode"], ListSortDirection.Ascending);
+           // return;
+
             if (!this.Visible)
             {
                 return;
@@ -595,6 +599,19 @@ namespace WindowsFormsApplication3
                 var rowIndex = GetRowWithId(info.RowId);
                 ChaneRowColorToCadetBlue(rowIndex);
             }
+        }
+
+        private void AddColorColumn()
+        {
+            return;
+
+            DataGridViewColumn colorColumn = new DataGridViewTextBoxColumn();
+            colorColumn.HeaderText = "ColorCode";
+            colorColumn.Name = "ColorCode";
+            colorColumn.Width = 50;
+            colorColumn.SortMode = DataGridViewColumnSortMode.Automatic;
+            //colorColumn.CellType = 
+            dataGridView1.Columns.Add(colorColumn);
         }
 
         private DataTable MarkAllDirty()
@@ -758,7 +775,7 @@ namespace WindowsFormsApplication3
 
         private void LoadImageInCell()
         {
-           
+         
             WebClient wc = new WebClient();
             for (int rowIndex = 0; rowIndex < dataGridView1.Rows.Count; rowIndex++)
             {
@@ -897,6 +914,7 @@ namespace WindowsFormsApplication3
             AddImageColumn();
             LoadImageInCell();
             LoadColumnOrder();
+            AddColorColumn();
             ReadRowInfo();
 
             if (_importBackUp)
@@ -1065,55 +1083,7 @@ namespace WindowsFormsApplication3
 
         private void dataGridView1_Sorted(object sender, EventArgs e)
         {
-
             LoadImageInCell();
-        }
-
-        private void ShowStatics(EventArg arg)
-        {
-            Dictionary<int, int> statics = new Dictionary<int, int>();
-            foreach (DataGridViewRow row in dataGridView1.Rows)
-            {
-                foreach (DataGridViewCell cell in row.Cells)
-                {
-                    if (!(dataGridView1.Columns[cell.ColumnIndex] is DataGridViewImageColumn))
-                    {
-
-                        if (cell.Value != null && !string.IsNullOrEmpty(cell.Value.ToString()))
-                        {
-                            if (statics.ContainsKey(cell.ColumnIndex))
-                            {
-                                statics[cell.ColumnIndex]++;
-                            }
-                            else
-                            {
-                                statics[cell.ColumnIndex] = 1;
-                            }
-
-                        }
-                    }
-                }
-            }
-
-            var tt = "";
-            foreach (DataGridViewColumn col in dataGridView1.Columns)
-            {
-                if (!(col is DataGridViewImageColumn) )
-                {
-                    if (statics.ContainsKey(col.Index))
-                    {
-
-                        tt += Environment.NewLine + col.Name + ": " + statics[col.Index];
-                    }
-                    else
-                    {
-                        tt += Environment.NewLine + col.Name + " : 0";
-                    }
-                }
-               
-            }
-
-            MessageBox.Show(tt);
         }
     }
 }

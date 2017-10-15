@@ -24,6 +24,7 @@ namespace EventPublisher
         DataImportSelectionCompleted,
         StartDataImport,
         Undo,
-        ReDo
+        ReDo,
+        Statistics
     }
 }

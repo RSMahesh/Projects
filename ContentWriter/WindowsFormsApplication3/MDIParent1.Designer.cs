@@ -75,6 +75,7 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.statToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -283,6 +284,7 @@
             this.viewMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.backUpDataToolStripMenuItem,
             this.fullBackUpToolStripMenuItem,
+            this.statToolStripMenuItem,
             this.mSWordToolStripMenuItem});
             this.viewMenu.Name = "viewMenu";
             this.viewMenu.Size = new System.Drawing.Size(44, 20);
@@ -451,6 +453,13 @@
             this.toolStripStatusLabel.Size = new System.Drawing.Size(39, 17);
             this.toolStripStatusLabel.Text = "Status";
             // 
+            // statToolStripMenuItem
+            // 
+            this.statToolStripMenuItem.Name = "statToolStripMenuItem";
+            this.statToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.statToolStripMenuItem.Text = "Statistics";
+            this.statToolStripMenuItem.Click += new System.EventHandler(this.statToolStripMenuItem_Click);
+            // 
             // MDIParent1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -462,6 +471,7 @@
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MDIParent1";
             this.Text = "MDIParent1";
+            this.Activated += new System.EventHandler(this.MDIParent1_Activated);
             this.Load += new System.EventHandler(this.MDIParent1_Load);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
@@ -519,6 +529,7 @@
         private System.Windows.Forms.ToolStripMenuItem fullBackUpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem filterToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importBackUpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem statToolStripMenuItem;
     }
 }
 

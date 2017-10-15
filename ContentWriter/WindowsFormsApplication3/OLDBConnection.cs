@@ -14,10 +14,13 @@ namespace StatusMaker.Data
         OleDbDataAdapter _adap;
         OleDbConnection _connection;
         DataTable _dt = new DataTable();
+        List<string> addtionalCoumns = new List<string>( new []{"ColorCode"});
         public OLDBConnection12(string filePath)
         {
             _filePath = filePath;
         }
+
+
         public void CloseConnection()
         {
             if (_connection.State == ConnectionState.Open)
@@ -47,6 +50,11 @@ namespace StatusMaker.Data
                 _adap.Fill(_dt);
                _adap.FillSchema(_dt, SchemaType.Source);
 
+                foreach (var col in addtionalCoumns)
+                {
+                    _dt.Columns.Add(new DataColumn(col));
+                }
+
                 this.CloseConnection();
                 return _dt;
                
@@ -74,9 +82,11 @@ namespace StatusMaker.Data
 
             foreach (DataColumn column in dataColumns)
             {
-
-                updateStatement +=" ["+ column.ColumnName + "] = ?  ,";
-                command.Parameters.Add("@" + column.ColumnName, OleDbType.Char, 5000).SourceColumn = column.ColumnName;
+                if (!addtionalCoumns.Contains(column.ColumnName))
+                {
+                    updateStatement += " [" + column.ColumnName + "] = ?  ,";
+                    command.Parameters.Add("@" + column.ColumnName, OleDbType.Char, 5000).SourceColumn = column.ColumnName;
+                }
             }
 
             updateStatement = updateStatement.Substring(0, updateStatement.Length - 2);
@@ -86,7 +96,7 @@ namespace StatusMaker.Data
 
             command.CommandText = updateStatement;
             _adap.UpdateCommand = command;
-            _adap.Update(_dt);
+          var updateCount =  _adap.Update(_dt);
             this.CloseConnection();
            
         }
