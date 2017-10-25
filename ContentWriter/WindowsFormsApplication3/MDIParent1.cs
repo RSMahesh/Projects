@@ -74,24 +74,27 @@ namespace WindowsFormsApplication3
 
         string lastFileName = "";
         Form1 form1 = null;
-        void OpenFile(string fileName)
+        void OpenFile(string filePath)
         {
+
+
+            if (SingleInstance.IsFileAlreadyOpen(filePath)) 
+            {
+                MessageBox.Show("File :" + filePath + " is already opend");
+                return;
+            }
+
             this.Cursor = Cursors.WaitCursor;
 
-            ////if (form1 != null)
-            ////{
-            ////    form1.Dispose();
-            ////}
-
-            form1 = new Form1(fileName);
+            form1 = new Form1(filePath);
             form1.MdiParent = this;
             form1.FormClosed += Form1_FormClosed;
             form1.Show();
 
-            if (Path.GetExtension(fileName) != ".xml")
+            if (Path.GetExtension(filePath) != ".xml")
             {
-                SaveFileLastOpenFilePath(fileName);
-                lastFileName = fileName;
+                SaveFileLastOpenFilePath(filePath);
+                lastFileName = filePath;
             }
             this.Cursor = Cursors.Default;
         }
@@ -305,6 +308,13 @@ namespace WindowsFormsApplication3
                     OpenFile(lastOpenedFile);
                 }
             }
+        }
+
+        private void formulaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            EventContainer.PublishEvent
+(EventPublisher.Events.Formula.ToString(), new EventArg(Guid.NewGuid(), null));
         }
     }
 }

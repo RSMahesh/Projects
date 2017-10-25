@@ -25,6 +25,7 @@ namespace EventPublisher
         StartDataImport,
         Undo,
         ReDo,
-        Statistics
+        Statistics,
+        Formula
     }
 }

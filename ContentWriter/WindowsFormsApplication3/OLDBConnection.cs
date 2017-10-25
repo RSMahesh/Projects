@@ -14,7 +14,15 @@ namespace StatusMaker.Data
         OleDbDataAdapter _adap;
         OleDbConnection _connection;
         DataTable _dt = new DataTable();
-        List<string> addtionalCoumns = new List<string>( new []{"ColorCode"});
+        //List<string> addtionalCoumns = new List<string>( new []{"ColorCode", "TextSortData", "NumberSortData"});
+
+
+        List<DataColumn> addtionalCoumns = new List<DataColumn>(new[] { new DataColumn("ColorCode", typeof(string)),
+           // new DataColumn("TextSortData", typeof(string)),
+            //new DataColumn("NumberSortData", typeof(double))
+        });
+
+
         public OLDBConnection12(string filePath)
         {
             _filePath = filePath;
@@ -52,7 +60,8 @@ namespace StatusMaker.Data
 
                 foreach (var col in addtionalCoumns)
                 {
-                    _dt.Columns.Add(new DataColumn(col));
+                    
+                    _dt.Columns.Add(col);
                 }
 
                 this.CloseConnection();
@@ -82,7 +91,7 @@ namespace StatusMaker.Data
 
             foreach (DataColumn column in dataColumns)
             {
-                if (!addtionalCoumns.Contains(column.ColumnName))
+                if (!addtionalCoumns.Contains(column))
                 {
                     updateStatement += " [" + column.ColumnName + "] = ?  ,";
                     command.Parameters.Add("@" + column.ColumnName, OleDbType.Char, 5000).SourceColumn = column.ColumnName;

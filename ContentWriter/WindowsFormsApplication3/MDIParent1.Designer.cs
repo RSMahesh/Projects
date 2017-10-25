@@ -55,6 +55,7 @@
             this.viewMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.backUpDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fullBackUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mSWordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.filterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -75,7 +76,7 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.statToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.formulaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -304,6 +305,13 @@
             this.fullBackUpToolStripMenuItem.Text = "Full BackUp";
             this.fullBackUpToolStripMenuItem.Click += new System.EventHandler(this.fullBackUpToolStripMenuItem_Click);
             // 
+            // statToolStripMenuItem
+            // 
+            this.statToolStripMenuItem.Name = "statToolStripMenuItem";
+            this.statToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.statToolStripMenuItem.Text = "Statistics";
+            this.statToolStripMenuItem.Click += new System.EventHandler(this.statToolStripMenuItem_Click);
+            // 
             // mSWordToolStripMenuItem
             // 
             this.mSWordToolStripMenuItem.Name = "mSWordToolStripMenuItem";
@@ -315,6 +323,7 @@
             // toolsMenu
             // 
             this.toolsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.formulaToolStripMenuItem,
             this.filterToolStripMenuItem,
             this.importBackUpToolStripMenuItem});
             this.toolsMenu.Name = "toolsMenu";
@@ -351,42 +360,42 @@
             // newWindowToolStripMenuItem
             // 
             this.newWindowToolStripMenuItem.Name = "newWindowToolStripMenuItem";
-            this.newWindowToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.newWindowToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.newWindowToolStripMenuItem.Text = "&New Window";
             this.newWindowToolStripMenuItem.Click += new System.EventHandler(this.ShowNewForm);
             // 
             // cascadeToolStripMenuItem
             // 
             this.cascadeToolStripMenuItem.Name = "cascadeToolStripMenuItem";
-            this.cascadeToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.cascadeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.cascadeToolStripMenuItem.Text = "&Cascade";
             this.cascadeToolStripMenuItem.Click += new System.EventHandler(this.CascadeToolStripMenuItem_Click);
             // 
             // tileVerticalToolStripMenuItem
             // 
             this.tileVerticalToolStripMenuItem.Name = "tileVerticalToolStripMenuItem";
-            this.tileVerticalToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.tileVerticalToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.tileVerticalToolStripMenuItem.Text = "Tile &Vertical";
             this.tileVerticalToolStripMenuItem.Click += new System.EventHandler(this.TileVerticalToolStripMenuItem_Click);
             // 
             // tileHorizontalToolStripMenuItem
             // 
             this.tileHorizontalToolStripMenuItem.Name = "tileHorizontalToolStripMenuItem";
-            this.tileHorizontalToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.tileHorizontalToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.tileHorizontalToolStripMenuItem.Text = "Tile &Horizontal";
             this.tileHorizontalToolStripMenuItem.Click += new System.EventHandler(this.TileHorizontalToolStripMenuItem_Click);
             // 
             // closeAllToolStripMenuItem
             // 
             this.closeAllToolStripMenuItem.Name = "closeAllToolStripMenuItem";
-            this.closeAllToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.closeAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.closeAllToolStripMenuItem.Text = "C&lose All";
             this.closeAllToolStripMenuItem.Click += new System.EventHandler(this.CloseAllToolStripMenuItem_Click);
             // 
             // arrangeIconsToolStripMenuItem
             // 
             this.arrangeIconsToolStripMenuItem.Name = "arrangeIconsToolStripMenuItem";
-            this.arrangeIconsToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.arrangeIconsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.arrangeIconsToolStripMenuItem.Text = "&Arrange Icons";
             this.arrangeIconsToolStripMenuItem.Click += new System.EventHandler(this.ArrangeIconsToolStripMenuItem_Click);
             // 
@@ -453,12 +462,12 @@
             this.toolStripStatusLabel.Size = new System.Drawing.Size(39, 17);
             this.toolStripStatusLabel.Text = "Status";
             // 
-            // statToolStripMenuItem
+            // formulaToolStripMenuItem
             // 
-            this.statToolStripMenuItem.Name = "statToolStripMenuItem";
-            this.statToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
-            this.statToolStripMenuItem.Text = "Statistics";
-            this.statToolStripMenuItem.Click += new System.EventHandler(this.statToolStripMenuItem_Click);
+            this.formulaToolStripMenuItem.Name = "formulaToolStripMenuItem";
+            this.formulaToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.formulaToolStripMenuItem.Text = "Formula";
+            this.formulaToolStripMenuItem.Click += new System.EventHandler(this.formulaToolStripMenuItem_Click);
             // 
             // MDIParent1
             // 
@@ -530,6 +539,7 @@
         private System.Windows.Forms.ToolStripMenuItem filterToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importBackUpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem statToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem formulaToolStripMenuItem;
     }
 }
 
