@@ -18,7 +18,7 @@ namespace StatusMaker.Data
 
 
         List<DataColumn> addtionalCoumns = new List<DataColumn>(new[] { new DataColumn("ColorCode", typeof(string)),
-           // new DataColumn("TextSortData", typeof(string)),
+           //new DataColumn("TextSortData", typeof(string)),
             //new DataColumn("NumberSortData", typeof(double))
         });
 

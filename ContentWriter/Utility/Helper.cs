@@ -33,7 +33,7 @@ namespace Utility
                             found = MSWordDocReader.Find(file, (object)searchText);
                             break;
                         case ".PDF":
-                            found = PDFReader.Find(file, searchText);
+                           // found = PDFReader.Find(file, searchText);
                             break;
                         case ".TXT":
                         case ".CS":

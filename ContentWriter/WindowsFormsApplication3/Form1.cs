@@ -75,9 +75,11 @@ namespace WindowsFormsApplication3
             dataGridView1.CellValidating += DataGridView1_CellValidating;
             dataGridView1.CellBeginEdit += DataGridView1_CellBeginEdit;
             dataGridView1.Sorted += DataGridView1_Sorted;
+            dataGridView1.CellValueChanged += DataGridView1_CellValueChanged;
 
             contextMenu.MenuItems.Add("Copy", OnCopy);
             contextMenu.MenuItems.Add("Past", OnPast);
+            contextMenu.MenuItems.Add("Delete", OnDelete);
             contextMenu.MenuItems.Add("ApplyFormula", OnApplyFormula);
 
 
@@ -95,6 +97,12 @@ namespace WindowsFormsApplication3
 
             dataGridView1.ContextMenu = contextMenu;
 
+        }
+
+        private void DataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            SaveUnSavedData(new CellData(dataGridView1[e.ColumnIndex, e.RowIndex].Value, new Point(e.ColumnIndex, e.RowIndex)));
+            //  MessageBox.Show(dataGridView1[e.ColumnIndex, e.RowIndex].Value.ToString());
         }
 
         private void DataGridView1_Sorted(object sender, EventArgs e)
@@ -132,8 +140,8 @@ namespace WindowsFormsApplication3
 
             foreach (DataGridViewColumn col in dataGridView1.Columns)
             {
-                  col.SortMode = DataGridViewColumnSortMode.Automatic;
-                
+                col.SortMode = DataGridViewColumnSortMode.Automatic;
+
             }
 
             if (IsXmlFile)
@@ -170,15 +178,15 @@ namespace WindowsFormsApplication3
                     }
                 }
 
-              //  HighLightRow(int.Parse(dataGridView1.Rows[e.RowIndex].Cells["ID"].Value.ToString()));
+                //  HighLightRow(int.Parse(dataGridView1.Rows[e.RowIndex].Cells["ID"].Value.ToString()));
                 return;
             }
 
-         
+
 
 
             IncreaseRowHeight(e.RowIndex, e.ColumnIndex);
-    
+
         }
 
         private void HighLightRow(int rowId)
@@ -297,22 +305,6 @@ namespace WindowsFormsApplication3
             }
         }
 
-        private void Tb_KeyDown(object sender, KeyEventArgs e)
-        {
-            //skip if Ctrl+Z
-
-            //if (e.KeyData == (Keys.Control | Keys.Z))
-            //{
-            //    dataGridView1.EndEdit();
-            //    return;
-            //}
-            //DataGridViewTextBoxEditingControl tb = (DataGridViewTextBoxEditingControl)sender;
-            //object value = ConvertTo(dataGridView1.CurrentCell.ValueType, tb.Text);
-
-
-            // for now skipping key level undo may be in future
-            //   _undoRedo.Do(new CellData(value, new Point(dataGridView1.CurrentCell.ColumnIndex, dataGridView1.CurrentCell.RowIndex)));
-        }
 
         private void DataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
@@ -328,10 +320,19 @@ namespace WindowsFormsApplication3
             if (dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() != e.FormattedValue.ToString())
             {
                 // MessageBox.Show(e.FormattedValue.ToString());
-                _undoRedo.Do(new CellData(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value, new Point(dataGridView1.CurrentCell.ColumnIndex, dataGridView1.CurrentCell.RowIndex)));
+                var cellData = new CellData(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value, new Point(dataGridView1.CurrentCell.ColumnIndex, dataGridView1.CurrentCell.RowIndex));
+                _undoRedo.Do(cellData);
+
+
             }
         }
 
+        private void CellDataChanged(CellData cellData)
+        {
+            _undoRedo.Do(cellData);
+
+            SaveUnSavedData(cellData);
+        }
         private object ConvertTo(Type type, string value)
         {
             if (string.IsNullOrEmpty(value))
@@ -410,7 +411,7 @@ namespace WindowsFormsApplication3
 
         private void OnApplyFormula(object sender, EventArgs e)
         {
-            if(string.IsNullOrEmpty(FormulaWindow.Formula))
+            if (string.IsNullOrEmpty(FormulaWindow.Formula))
             {
                 MessageBox.Show("No Fromula Found");
                 return;
@@ -422,13 +423,13 @@ namespace WindowsFormsApplication3
             foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
             {
                 var formulaOutPut = FormulaWindow.Formula;
-                foreach (Match match in matches) 
+                foreach (Match match in matches)
                 {
                     var columnName = match.Value.Replace("{", "").Replace("}", "");
                     var replaceValue = dataGridView1.Rows[cell.RowIndex].Cells[columnName].Value.ToString();
                     formulaOutPut = formulaOutPut.Replace("{" + columnName + "}", replaceValue);
                 }
-                  _undoRedo.Do(new CellData(cell.Value, new Point(cell.ColumnIndex, cell.RowIndex)));
+                _undoRedo.Do(new CellData(cell.Value, new Point(cell.ColumnIndex, cell.RowIndex)));
 
                 cell.Value = formulaOutPut;
             }
@@ -485,6 +486,18 @@ namespace WindowsFormsApplication3
             }
 
             PastCellData(copyedCells, pastCells);
+        }
+        private void OnDelete(object sender, EventArgs e)
+        {
+            var listSelectedCells = new List<CellData>();
+
+            foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
+            {
+                _undoRedo.Do(new CellData(dataGridView1[cell.ColumnIndex,cell.RowIndex].Value, new Point(cell.ColumnIndex,cell.RowIndex)));
+
+                cell.Value = string.Empty;
+            }
+
         }
 
         private void PasteSingleCellData(string copyedText, List<CellData> targetCells)
@@ -605,13 +618,119 @@ namespace WindowsFormsApplication3
             var tbl = ((DataView)dataGridView1.DataSource).Table;
             _dataConnection.SetUpdateCommand(tbl.Columns);
 
-
             dataGridView1.CurrentCell = dataGridView1.Rows[index].Cells[Colindex];
             dataGridView1.Rows[index].Selected = true;
             MessageBox.Show("Saved");
             SaveRowInfo();
+            DeleteUnSavedDataFile();
+
+
 
             RaiseEventForChange();
+        }
+
+        string UnSavedDelimiter = Environment.NewLine + "_;;;_";
+        private void SaveUnSavedData(CellData cellData)
+        {
+            if(!imageColumnLoaded)
+            {
+                return;
+            }
+            var serializer = new JavaScriptSerializer();
+            var serializedResult = serializer.Serialize(cellData);
+            File.AppendAllText(UnSavedDataFile, serializedResult + UnSavedDelimiter);
+
+        }
+
+        private void SaveUnSavedDataCurrentCell(string value)
+        {
+            if (!imageColumnLoaded)
+            {
+                return;
+            }
+
+            var cellData = new CellData(value, new Point(
+                dataGridView1.CurrentCell.ColumnIndex,
+                dataGridView1.CurrentCell.RowIndex
+                ));
+            var serializer = new JavaScriptSerializer();
+            var serializedResult = serializer.Serialize(cellData);
+            File.AppendAllText(UnSavedDataCurrentCellFile, serializedResult);
+
+        }
+
+        private void LoadUnSavedData()
+        {
+
+            if (!File.Exists(UnSavedDataFile) && !File.Exists(UnSavedDataCurrentCellFile))
+            {
+                return;
+
+            }
+
+            DialogResult dialogResult = MessageBox.Show("Do you want to laod unsaved data", "UnSaved Data Found", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.No)
+            {
+                return;
+            }
+
+
+            if (File.Exists(UnSavedDataFile))
+            {
+                var data = File.ReadAllText(UnSavedDataFile);
+                string[] stringSeparators = new string[] { UnSavedDelimiter };
+
+                var result = data.Split(stringSeparators, StringSplitOptions.None);
+                var serializer = new JavaScriptSerializer();
+
+
+                foreach (string cellInfo in result)
+                {
+                    if (!string.IsNullOrEmpty(cellInfo))
+                    {
+                        var cellData = serializer.Deserialize<CellData>(cellInfo);
+                        _undoRedo.Do(new CellData(dataGridView1[cellData.Location.X, cellData.Location.Y].Value, cellData.Location));
+                        dataGridView1[cellData.Location.X, cellData.Location.Y].Value = cellData.Value;
+                    }
+                }
+            }
+
+            if (File.Exists(UnSavedDataCurrentCellFile))
+            {
+                var data = File.ReadAllText(UnSavedDataCurrentCellFile);
+                var serializer = new JavaScriptSerializer();
+                var cellData = serializer.Deserialize<CellData>(data);
+                dataGridView1[cellData.Location.X, cellData.Location.Y].Value = cellData.Value;
+            }
+
+        }
+
+        private void DeleteUnSavedDataFile()
+        {
+            if (File.Exists(UnSavedDataFile))
+            {
+                File.Delete(UnSavedDataFile);
+            }
+
+            if (File.Exists(UnSavedDataCurrentCellFile))
+            {
+                File.Delete(UnSavedDataCurrentCellFile);
+            }
+        }
+
+        private string UnSavedDataFile
+        {
+            get
+            {
+                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FreeLance", Path.GetFileNameWithoutExtension(_excelFilePath) + "_unsaved.txt");
+            }
+        }
+        private string UnSavedDataCurrentCellFile
+        {
+            get
+            {
+                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FreeLance", Path.GetFileNameWithoutExtension(_excelFilePath) + "_unsaved_currentcell.txt");
+            }
         }
 
         private void SaveRowInfo()
@@ -810,13 +929,12 @@ namespace WindowsFormsApplication3
 
         private void LoadImageInCell()
         {
-           // return;
-           
+            // return;
+
             WebClient wc = new WebClient();
             for (int rowIndex = 0; rowIndex < dataGridView1.Rows.Count; rowIndex++)
             {
-               // return;
-                // dataGridView1.Rows[rowIndex].HeaderCell.Value = (rowIndex + 1).ToString();
+               
                 for (var i = 0; i < imageColIndexs.Count; i++)
                 {
                     if (dataGridView1.Rows[rowIndex].Cells[imageColIndexs[i]].Value != null)
@@ -916,11 +1034,11 @@ namespace WindowsFormsApplication3
 
         }
 
-   
+
         private void dataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             //Leave sorting for now
-           //Sort2(e);
+            //Sort2(e);
         }
 
         private SortOrder _lastSortOrder;
@@ -931,14 +1049,14 @@ namespace WindowsFormsApplication3
 
             if (dataGridView1.Columns[e.ColumnIndex].ValueType == typeof(string))
             {
-                 SORT_ORDER = dataGridView1.Columns["TextSortData"];
+                SORT_ORDER = dataGridView1.Columns["TextSortData"];
             }
 
             else
             {
-                 SORT_ORDER = dataGridView1.Columns["NumberSortData"];
+                SORT_ORDER = dataGridView1.Columns["NumberSortData"];
             }
-           
+
             if (dataGridView1.Columns[e.ColumnIndex].Name != "ID")
             {
                 dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Ascending);
@@ -959,7 +1077,7 @@ namespace WindowsFormsApplication3
                 //}
             }
 
-           // return;
+            // return;
             switch (_lastSortOrder)
             {
                 case System.Windows.Forms.SortOrder.None:
@@ -975,7 +1093,7 @@ namespace WindowsFormsApplication3
 
             _lastSortOrder = dataGridView1.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection = dataGridView1.SortOrder;
 
-          //  dataGridView1.Refresh();
+            //  dataGridView1.Refresh();
 
             dataGridView1.CurrentCell = dataGridView1.Rows[1].Cells[e.ColumnIndex];
             var val = dataGridView1.CurrentCell.Value;
@@ -983,7 +1101,7 @@ namespace WindowsFormsApplication3
             dataGridView1.EndEdit();
         }
 
-  
+
 
         private void Form1_Activated(object sender, EventArgs e)
         {
@@ -995,6 +1113,7 @@ namespace WindowsFormsApplication3
             LoadImageInCell();
             LoadColumnOrder();
             ReadRowInfo();
+            LoadUnSavedData();
 
             if (_importBackUp)
             {
@@ -1185,7 +1304,7 @@ namespace WindowsFormsApplication3
                     highLighted++;
                 }
 
-                    foreach (DataGridViewCell cell in row.Cells)
+                foreach (DataGridViewCell cell in row.Cells)
                 {
                     if (!(dataGridView1.Columns[cell.ColumnIndex] is DataGridViewImageColumn))
                     {
@@ -1207,11 +1326,11 @@ namespace WindowsFormsApplication3
             }
 
             var tt = "";
-            tt += Environment.NewLine + "HighLighted : " + highLighted.ToString() ;
+            tt += Environment.NewLine + "HighLighted : " + highLighted.ToString();
 
             foreach (DataGridViewColumn col in dataGridView1.Columns)
             {
-                if (!(col is DataGridViewImageColumn) )
+                if (!(col is DataGridViewImageColumn))
                 {
                     if (statics.ContainsKey(col.Index))
                     {
@@ -1223,7 +1342,7 @@ namespace WindowsFormsApplication3
                         tt += Environment.NewLine + col.Name + " : 0";
                     }
                 }
-               
+
             }
 
             MessageBox.Show(tt);
