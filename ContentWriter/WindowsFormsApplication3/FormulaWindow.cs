@@ -57,15 +57,30 @@ namespace WindowsFormsApplication3
             {
                 var columnName = match.Value.Replace("{", "").Replace("}", "");
 
-                if (!_gridView.Columns.Contains(columnName))
+                if (!DoesColumnExist(columnName))
                 {
-                    MessageBox.Show("Column :" + columnName + " does not exist");
+                    MessageBox.Show("Column :" + columnName + " does not exist."+ 
+                       Environment.NewLine +
+                       "Please make sure column name does not conatin space at start and end");
                     return false;
                 }
 
             }
 
             return true;
+        }
+
+        private bool DoesColumnExist(string colName)
+        {
+            foreach(DataGridViewColumn col in _gridView.Columns)
+            {
+              if( col.Name.Equals(colName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

@@ -19,10 +19,7 @@ namespace SimpleWebServer
         private readonly HttpListener _listener = new HttpListener();
         private readonly IHttpHandler _httpHandler;
         Encoding enc = new UTF8Encoding(true, true);
-
         private readonly string _webSitePhysicalPath;
-
-
         public WebServer(string[] prefixes, string webSitePhysicalPath)
         {
             _webSitePhysicalPath = webSitePhysicalPath;
@@ -33,14 +30,10 @@ namespace SimpleWebServer
             if (prefixes == null || prefixes.Length == 0)
                 throw new ArgumentException("prefixes");
 
-            //// A httpHandler is required
-            //if (httpHandler == null)
-            //    throw new ArgumentException("HttpHandler");
-
+     
             foreach (string s in prefixes)
                 _listener.Prefixes.Add(s);
 
-           // _httpHandler = httpHandler;
             _listener.Start();
         }
 
@@ -98,10 +91,7 @@ namespace SimpleWebServer
                 return new ExecuteExeHttpHandler();
             }
 
-
-
             return new HttpHandlers.StaticFileHttpHandler(_webSitePhysicalPath);
-            //return new SimpleWebServer.WebServer(new string[] { rootUrl }, httpHandler);
         }
 
         public void StopServer()

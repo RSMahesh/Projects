@@ -417,23 +417,90 @@ namespace WindowsFormsApplication3
                 return;
             }
 
-            var regex = new Regex("{.*?}");
-            var matches = regex.Matches(FormulaWindow.Formula);
+          
 
             foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
             {
-                var formulaOutPut = FormulaWindow.Formula;
-                foreach (Match match in matches)
-                {
-                    var columnName = match.Value.Replace("{", "").Replace("}", "");
-                    var replaceValue = dataGridView1.Rows[cell.RowIndex].Cells[columnName].Value.ToString();
-                    formulaOutPut = formulaOutPut.Replace("{" + columnName + "}", replaceValue);
-                }
-                _undoRedo.Do(new CellData(cell.Value, new Point(cell.ColumnIndex, cell.RowIndex)));
+                var formulaOutPut = ExecuteFromula(cell);
+
+                  _undoRedo.Do(new CellData(cell.Value, new Point(cell.ColumnIndex, cell.RowIndex)));
 
                 cell.Value = formulaOutPut;
             }
         }
+
+        private string ExecuteFromula(DataGridViewCell cell)
+        {
+          var replaceOutPut =  ReplacePlaceHolders(cell);
+            return MakeProperCase( RemoveIfRequired(replaceOutPut));
+        }
+
+        private string MakeProperCase(string replaceOutPut)
+        {
+            const string remove = "%p%";
+            var indx = replaceOutPut.IndexOf(remove, StringComparison.OrdinalIgnoreCase);
+
+           
+
+            var arr = replaceOutPut.Split(new string[] { remove }, StringSplitOptions.None);
+            if (arr.Length > 2)
+            {
+             var one =   FirstCharToUpper(arr[1].ToLowerInvariant());
+
+                replaceOutPut = one + arr[2];
+                //arr[0].Replace(arr[1], string.Empty);
+
+              //  replaceOutPut = Regex.Replace(arr[0], arr[1], string.Empty, RegexOptions.IgnoreCase);
+            }
+            return replaceOutPut;
+        }
+
+        string FirstCharToUpper(string input)
+        {
+            switch (input)
+            {
+                case null: throw new ArgumentNullException(nameof(input));
+                case "": throw new ArgumentException($"{nameof(input)} cannot be empty", nameof(input));
+                default: return input.First().ToString().ToUpper() + input.Substring(1);
+            }
+        }
+        private string RemoveIfRequired(string replaceOutPut)
+        {
+            const string remove = "%-%";
+            var indx = replaceOutPut.IndexOf(remove, StringComparison.OrdinalIgnoreCase);
+
+            if (indx > 0)
+            {
+                var arr = replaceOutPut.Split(new string[] { remove }, StringSplitOptions.None);
+                if (arr.Length > 1)
+                {
+                  //arr[0].Replace(arr[1], string.Empty);
+
+                    replaceOutPut = Regex.Replace(arr[0], arr[1], string.Empty, RegexOptions.IgnoreCase);
+                }
+            }
+
+            return replaceOutPut;
+        }
+
+
+        private string ReplacePlaceHolders(DataGridViewCell cell)
+        {
+            var regex = new Regex("{.*?}");
+            var matches = regex.Matches(FormulaWindow.Formula);
+         //  var formula = FormulaWindow.Formula;
+            string formulaOutPut = FormulaWindow.Formula;
+
+            foreach (Match match in matches)
+            {
+                var columnName = match.Value.Replace("{", "").Replace("}", "");
+                var replaceValue = dataGridView1.Rows[cell.RowIndex].Cells[columnName].Value.ToString();
+                formulaOutPut = formulaOutPut.Replace("{" + columnName + "}", replaceValue);
+            }
+
+            return formulaOutPut;
+        }
+
 
         private void OnCopy(object sender, EventArgs e)
         {
@@ -493,7 +560,7 @@ namespace WindowsFormsApplication3
 
             foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
             {
-                _undoRedo.Do(new CellData(dataGridView1[cell.ColumnIndex,cell.RowIndex].Value, new Point(cell.ColumnIndex,cell.RowIndex)));
+                _undoRedo.Do(new CellData(dataGridView1[cell.ColumnIndex, cell.RowIndex].Value, new Point(cell.ColumnIndex, cell.RowIndex)));
 
                 cell.Value = string.Empty;
             }
@@ -632,7 +699,7 @@ namespace WindowsFormsApplication3
         string UnSavedDelimiter = Environment.NewLine + "_;;;_";
         private void SaveUnSavedData(CellData cellData)
         {
-            if(!imageColumnLoaded)
+            if (!imageColumnLoaded)
             {
                 return;
             }
@@ -913,6 +980,7 @@ namespace WindowsFormsApplication3
         }
         private void AddImageColumn()
         {
+            List<DataGridViewImageColumn> lst = new List<DataGridViewImageColumn>();
 
             foreach (var cell in imageColIndexs)
             {
@@ -922,24 +990,35 @@ namespace WindowsFormsApplication3
 
                 dataGridView1.Columns.Insert(1, imgColumn);
                 imgcolumns.Add(imgColumn);
-                imgColumn.Frozen = true;
+                lst.Add(imgColumn);
+              // imgColumn.Frozen = true;
+            }
+
+            foreach(DataGridViewImageColumn col in lst)
+            {
+                col.Frozen = true;
             }
 
         }
 
         private void LoadImageInCell()
         {
-            // return;
+           //return;
 
             WebClient wc = new WebClient();
             for (int rowIndex = 0; rowIndex < dataGridView1.Rows.Count; rowIndex++)
             {
-               
+
                 for (var i = 0; i < imageColIndexs.Count; i++)
                 {
                     if (dataGridView1.Rows[rowIndex].Cells[imageColIndexs[i]].Value != null)
                     {
                         var url = dataGridView1.Rows[rowIndex].Cells[imageColIndexs[i] + imageColIndexs.Count].Value.ToString();
+
+                        if(string.IsNullOrEmpty(url))
+                        {
+                            continue;
+                        }
 
                         var uri = new Uri(url);
                         var filePAth = GetLocalImagePath(uri);
@@ -974,7 +1053,6 @@ namespace WindowsFormsApplication3
                     }
                 }
             }
-
         }
 
         private string GetLocalImagePath(Uri uri)
