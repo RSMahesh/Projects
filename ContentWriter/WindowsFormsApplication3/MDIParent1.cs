@@ -316,5 +316,12 @@ namespace WindowsFormsApplication3
             EventContainer.PublishEvent
 (EventPublisher.Events.Formula.ToString(), new EventArg(Guid.NewGuid(), null));
         }
+
+        private void sentenceCountToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EventContainer.PublishEvent
+(EventPublisher.Events.SetenceCount.ToString(), new EventArg(Guid.NewGuid(), null));
+        }
+    
     }
 }

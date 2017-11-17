@@ -26,6 +26,7 @@ namespace EventPublisher
         Undo,
         ReDo,
         Statistics,
-        Formula
+        Formula,
+        SetenceCount
     }
 }

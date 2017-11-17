@@ -66,6 +66,7 @@ namespace WindowsFormsApplication3
             EventContainer.SubscribeEvent(EventPublisher.Events.ReDo.ToString(), ReDo);
             EventContainer.SubscribeEvent(EventPublisher.Events.Statistics.ToString(), ShowStatistics);
             EventContainer.SubscribeEvent(EventPublisher.Events.Formula.ToString(), Formula);
+            EventContainer.SubscribeEvent(EventPublisher.Events.SetenceCount.ToString(), SetenceCount);
 
 
             dataGridView1.CellPainting += dataGridView1_CellPainting;
@@ -195,8 +196,7 @@ namespace WindowsFormsApplication3
 
             if (dataGridView1.Rows[rowIndex].DefaultCellStyle.BackColor == Color.CadetBlue)
             {
-                dataGridView1.Rows[rowIndex].DefaultCellStyle.BackColor = Color.LightGray;
-                rowsInfo.Remove(rowsInfo.FirstOrDefault(x => x.RowId == rowIndex));
+               UnHighlightRow( rowId);
             }
             else
             {
@@ -206,6 +206,13 @@ namespace WindowsFormsApplication3
                 rowInfo.RowId = rowId;
                 rowsInfo.Add(rowInfo);
             }
+        }
+
+        private void UnHighlightRow(int rowId)
+        {
+            var rowIndex = GetRowWithId(rowId);
+            dataGridView1.Rows[rowIndex].DefaultCellStyle.BackColor = Color.LightGray;
+            rowsInfo.Remove(rowsInfo.FirstOrDefault(x => x.RowId == rowId));
         }
 
         private int GetRowWithId(int rowId)
@@ -417,13 +424,13 @@ namespace WindowsFormsApplication3
                 return;
             }
 
-          
+
 
             foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
             {
                 var formulaOutPut = ExecuteFromula(cell);
 
-                  _undoRedo.Do(new CellData(cell.Value, new Point(cell.ColumnIndex, cell.RowIndex)));
+                _undoRedo.Do(new CellData(cell.Value, new Point(cell.ColumnIndex, cell.RowIndex)));
 
                 cell.Value = formulaOutPut;
             }
@@ -431,8 +438,8 @@ namespace WindowsFormsApplication3
 
         private string ExecuteFromula(DataGridViewCell cell)
         {
-          var replaceOutPut =  ReplacePlaceHolders(cell);
-            return MakeProperCase( RemoveIfRequired(replaceOutPut));
+            var replaceOutPut = ReplacePlaceHolders(cell);
+            return MakeProperCase(RemoveIfRequired(replaceOutPut));
         }
 
         private string MakeProperCase(string replaceOutPut)
@@ -440,17 +447,17 @@ namespace WindowsFormsApplication3
             const string remove = "%p%";
             var indx = replaceOutPut.IndexOf(remove, StringComparison.OrdinalIgnoreCase);
 
-           
+
 
             var arr = replaceOutPut.Split(new string[] { remove }, StringSplitOptions.None);
             if (arr.Length > 2)
             {
-             var one =   FirstCharToUpper(arr[1].ToLowerInvariant());
+                var one = FirstCharToUpper(arr[1].ToLowerInvariant());
 
                 replaceOutPut = one + arr[2];
                 //arr[0].Replace(arr[1], string.Empty);
 
-              //  replaceOutPut = Regex.Replace(arr[0], arr[1], string.Empty, RegexOptions.IgnoreCase);
+                //  replaceOutPut = Regex.Replace(arr[0], arr[1], string.Empty, RegexOptions.IgnoreCase);
             }
             return replaceOutPut;
         }
@@ -474,7 +481,7 @@ namespace WindowsFormsApplication3
                 var arr = replaceOutPut.Split(new string[] { remove }, StringSplitOptions.None);
                 if (arr.Length > 1)
                 {
-                  //arr[0].Replace(arr[1], string.Empty);
+                    //arr[0].Replace(arr[1], string.Empty);
 
                     replaceOutPut = Regex.Replace(arr[0], arr[1], string.Empty, RegexOptions.IgnoreCase);
                 }
@@ -488,7 +495,7 @@ namespace WindowsFormsApplication3
         {
             var regex = new Regex("{.*?}");
             var matches = regex.Matches(FormulaWindow.Formula);
-         //  var formula = FormulaWindow.Formula;
+            //  var formula = FormulaWindow.Formula;
             string formulaOutPut = FormulaWindow.Formula;
 
             foreach (Match match in matches)
@@ -810,6 +817,7 @@ namespace WindowsFormsApplication3
             var serializer = new JavaScriptSerializer();
             var serializedResult = serializer.Serialize(rowsInfo);
             var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FreeLance", Path.GetFileNameWithoutExtension(_excelFilePath) + "_style.txt");
+          //  MessageBox.Show(serializedResult);
             File.WriteAllText(filePath, serializedResult);
 
         }
@@ -991,10 +999,10 @@ namespace WindowsFormsApplication3
                 dataGridView1.Columns.Insert(1, imgColumn);
                 imgcolumns.Add(imgColumn);
                 lst.Add(imgColumn);
-              // imgColumn.Frozen = true;
+                // imgColumn.Frozen = true;
             }
 
-            foreach(DataGridViewImageColumn col in lst)
+            foreach (DataGridViewImageColumn col in lst)
             {
                 col.Frozen = true;
             }
@@ -1003,7 +1011,7 @@ namespace WindowsFormsApplication3
 
         private void LoadImageInCell()
         {
-           //return;
+           // return;
 
             WebClient wc = new WebClient();
             for (int rowIndex = 0; rowIndex < dataGridView1.Rows.Count; rowIndex++)
@@ -1015,7 +1023,7 @@ namespace WindowsFormsApplication3
                     {
                         var url = dataGridView1.Rows[rowIndex].Cells[imageColIndexs[i] + imageColIndexs.Count].Value.ToString();
 
-                        if(string.IsNullOrEmpty(url))
+                        if (string.IsNullOrEmpty(url))
                         {
                             continue;
                         }
@@ -1368,6 +1376,27 @@ namespace WindowsFormsApplication3
         {
             FormulaWindow win = new FormulaWindow(dataGridView1);
             win.ShowDialog();
+        }
+
+
+        private void SetenceCount(EventArg arg)
+        {
+           
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                UnHighlightRow(int.Parse(row.Cells["ID"].Value.ToString()));
+
+                if (GetSetenceCount(row.Cells["Description"].Value.ToString()) < 3)
+                {
+                    HighLightRow(int.Parse(row.Cells["ID"].Value.ToString()));
+                }
+            }
+        }
+
+        private int GetSetenceCount(string text)
+        {
+            var c= text.Count(f => f == '.');
+            return c;
         }
 
         private void ShowStatistics(EventArg arg)
