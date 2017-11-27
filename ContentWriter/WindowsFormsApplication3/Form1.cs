@@ -212,6 +212,8 @@ namespace WindowsFormsApplication3
         {
             var rowIndex = GetRowWithId(rowId);
             dataGridView1.Rows[rowIndex].DefaultCellStyle.BackColor = Color.LightGray;
+            dataGridView1.Rows[rowIndex].Cells["ColorCode"].Value = string.Empty;
+
             rowsInfo.Remove(rowsInfo.FirstOrDefault(x => x.RowId == rowId));
         }
 
@@ -231,6 +233,7 @@ namespace WindowsFormsApplication3
         private void ChaneRowColorToCadetBlue(int rowIndex)
         {
             dataGridView1.Rows[rowIndex].DefaultCellStyle.BackColor = Color.CadetBlue;
+            dataGridView1.Rows[rowIndex].Cells ["ColorCode"].Value = Color.CadetBlue.ToString();
         }
 
 
@@ -1011,7 +1014,7 @@ namespace WindowsFormsApplication3
 
         private void LoadImageInCell()
         {
-           // return;
+            return;
 
             WebClient wc = new WebClient();
             for (int rowIndex = 0; rowIndex < dataGridView1.Rows.Count; rowIndex++)
@@ -1381,17 +1384,28 @@ namespace WindowsFormsApplication3
 
         private void SetenceCount(EventArg arg)
         {
-           
+
+            var rowsWithLessSentenceCount = 0;
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 UnHighlightRow(int.Parse(row.Cells["ID"].Value.ToString()));
 
-                if (GetSetenceCount(row.Cells["Description"].Value.ToString()) < 3)
+
+                var count = GetSetenceCount(row.Cells["Description"].Value.ToString());
+
+                if (count < 3)
                 {
                     HighLightRow(int.Parse(row.Cells["ID"].Value.ToString()));
+                    rowsWithLessSentenceCount++;
                 }
+
+               
             }
+
+            MessageBox.Show("Description with less then 3 sentence are :" + rowsWithLessSentenceCount);
         }
+
+       
 
         private int GetSetenceCount(string text)
         {
@@ -1405,8 +1419,8 @@ namespace WindowsFormsApplication3
             var highLighted = 0;
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
+          
                 if (row.DefaultCellStyle.BackColor == Color.CadetBlue)
-
                 {
                     highLighted++;
                 }
