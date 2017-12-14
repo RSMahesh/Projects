@@ -1,0 +1,27 @@
+  {
+    "component": {
+      "name": "cagtegoryPage",
+      "slots": [
+        {
+          "contentType": "freeStyleHtml",
+          "content": "<h3 class=\"centeredText\"><span style=\"text-decoration: underline; color: #e34f26;\">Click here<\/span> to edit this demo<\/h3>\r\n<!-- This comment is visible only in the source editor -->\r\n<p><img class=\"imageRight\" style=\"width: 53px; height: 60px;\" src=\"http:\/\/htmleditor.tools\/img\/html-editor-tools.png\" alt=\"HTML editor tools\" \/>This is a demo text where you can experiment with the <strong class=\"orangeText\">HTML Editor&nbsp;<\/strong>features. See how the visual and source editors are instantly changing each other.<\/p>\r\n<p>Test the cleaning options and the toolbars of the two editors.<\/p>\r\n<p>&nbsp;<\/p>\r\n<table style=\"height: 164px;\" width=\"378\">\r\n<tbody>\r\n<tr>\r\n<td colspan=\"2\"><strong>This is a table.<\/strong><\/td>\r\n<\/tr>\r\n<tr>\r\n<td>HTML <span style=\"text-decoration: underline;\">image<\/span>:<\/td>\r\n<td style=\"text-align: center; width: 266px;\"><img src=\"http:\/\/htmleditor.tools\/img\/smiley.png\" alt=\"smiley\" \/>&nbsp;<em>Hi, I am &Ouml;d&ouml;nke!<\/em><\/td>\r\n<\/tr>\r\n<tr>\r\n<td>A text link:<\/td>\r\n<td>&nbsp; &nbsp; <a href=\"https:\/\/htmlg.com\/\">Click here<\/a> for more features!&nbsp;<\/td>\r\n<\/tr>\r\n<\/tbody>\r\n<\/table>\r\n<p>Copy-paste any document in the WYSIWYG editor to <span class=\"orangeText\">convert<\/span> it to HTML code.<\/p>",
+          "slotId": "freeHtml"
+        },
+        {
+          "contentType": "freeStyleHtml",
+          "content": "<img src=\"http:\/\/www.lifeinfourthirds.co.uk\/wp-content\/uploads\/2014\/09\/kit-banner.jpg\"  width=\"850px\"\/>",
+          "slotId": "catlogBanner"
+        },
+        {
+          "contentType": "component",
+          "content": "CategoryNavigationComponent",
+          "slotId": "navigationSlot"
+        }
+      ],
+      "header": {
+        "contentType": "component",
+        "content": "HeaderComponent2",
+        "slotId": "headerSlot"
+      }
+    }
+  }

@@ -9,74 +9,69 @@ namespace WebServer.Host
     class Program
     {
         static string webSitePhysicalPath;
-        static string rootUrl = "http://localhost:";
         static string startPage = string.Empty;
-
+        static CommandLineParser _commandLineParser;
 
         static void Main(string[] args)
         {
-            rootUrl += ConfigurationManager.AppSettings["port"] + "/";
+            _commandLineParser = new CommandLineParser(args);
 
-            GetWebSiteRootPath(args);
+            var rootPath = "http://10.131.60.58:" + GetPort() + "/";
 
-            WebServer.Interface.IWebServer webServer = GetWebServerInstant();
+            var webServer = new WebServer(new string[] { rootPath }, GetRootDirectory());
 
             webServer.StartServer();
 
             Console.WriteLine("A simple webserver at " + ConfigurationManager.AppSettings["port"] + ". Press a key to quit.");
 
-            OpenDefaultPage();
+            OpenDefaultPage(rootPath);
 
             Console.ReadKey();
 
             webServer.StopServer();
         }
-
-       static void GetWebSiteRootPath(string[] args)
+        static void OpenDefaultPage(string rootPath)
         {
+            Console.WriteLine("Root Path:" + rootPath);
+            Process.Start(rootPath + "index.html");
+        }
 
-            if (args != null && args.Count() > 0)
+        private static string GetPort()
+        {
+            var port = _commandLineParser.GetParameterValue("-port");
+
+            if (string.IsNullOrEmpty(port) && ConfigurationManager.AppSettings["port"] != null && !string.IsNullOrEmpty(ConfigurationManager.AppSettings["port"]))
             {
-                webSitePhysicalPath = args[0];
-
-                if (args.Count() > 1)
-                {
-                    startPage = args[1];
-                }
+                port = ConfigurationManager.AppSettings["port"];
             }
-            else
+
+
+            if (string.IsNullOrEmpty(port))
             {
-                webSitePhysicalPath =
-                    Directory.GetParent(
+                port = "8180";
+            }
+
+            return port;
+        }
+
+        private static string GetRootDirectory()
+        {
+            var rootDir = _commandLineParser.GetParameterValue("-rootDir");
+
+            if (string.IsNullOrEmpty(rootDir) && ConfigurationManager.AppSettings["rootDir"] != null && !string.IsNullOrEmpty(ConfigurationManager.AppSettings["rootDir"]))
+            {
+                rootDir = ConfigurationManager.AppSettings["rootDir"];
+            }
+
+
+            if (string.IsNullOrEmpty(rootDir))
+            {
+                rootDir = Directory.GetParent(
                         System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location))
                         .ToString();
             }
-        }
 
-
-       static void OpenDefaultPage()
-        {
-            Console.WriteLine("Root Path:" + rootUrl);
-
-           //To Do: need to implement later
-            //if (startPage != string.Empty)
-            //{
-            //    Process.Start(rootUrl + startPage);
-            //}
-
-            if (File.Exists(rootUrl + "index.htm"))
-            {
-                Process.Start(rootUrl + "index.htm");
-            }
-            else
-            {
-                Process.Start(rootUrl + "index.html");
-            }
-        }
-
-        static WebServer.Interface.IWebServer GetWebServerInstant()
-        {
-            return new SimpleWebServer.WebServer(new string[] { rootUrl }, webSitePhysicalPath);
+            return rootDir;
         }
     }
 }

@@ -1,0 +1,17 @@
+  {
+    "component": {
+      "name": "appPage",
+      "slots": [
+        {
+          "contentType": "freeStyleHtml",
+          "content": "<h1><span style=\"color: #808080;\"><strong>Free Style Custom Header<\/strong><\/span><\/h1>",
+          "slotId": "headerSlot1"
+        },
+          {
+          "contentType": "component",
+          "content": "HeaderComponent",
+          "slotId": "headerSlot"
+        }
+      ]
+    }
+  }

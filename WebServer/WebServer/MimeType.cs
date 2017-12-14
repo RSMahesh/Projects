@@ -8,7 +8,7 @@ namespace WebServer
 {
     public static class MimeType
     {
-      
+
         public static string GetMimeType(string extension)
         {
             if (extension == null)

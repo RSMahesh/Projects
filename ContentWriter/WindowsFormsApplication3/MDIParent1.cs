@@ -320,8 +320,21 @@ namespace WindowsFormsApplication3
         private void sentenceCountToolStripMenuItem_Click(object sender, EventArgs e)
         {
             EventContainer.PublishEvent
-(EventPublisher.Events.SetenceCount.ToString(), new EventArg(Guid.NewGuid(), null));
+(EventPublisher.Events.SetenceCountInDescription.ToString(), new EventArg(Guid.NewGuid(), null));
         }
-    
+
+        private void sentenceCountInBulletToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EventContainer.PublishEvent
+(EventPublisher.Events.SetenceCountInBullet.ToString(), new EventArg(Guid.NewGuid(), null));
+
+        }
+
+        private void findToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FindText frm = new FindText();
+            frm.TopMost = true;
+            frm.Show();
+        }
     }
 }

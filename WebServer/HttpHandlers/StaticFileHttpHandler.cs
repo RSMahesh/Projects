@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WebServer.Interface;
 
 namespace HttpHandlers
@@ -28,7 +24,6 @@ namespace HttpHandlers
             var contentString = File.ReadAllBytes(filePathOnServer);
             Console.WriteLine(request.Url);
             return contentString;
-
         }
     }
 }

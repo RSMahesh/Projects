@@ -1,0 +1,15 @@
+  {
+    "Page": {
+      "Name": "Component",
+      "Slots": [
+        {
+          "component": "BComponent",
+          "SlotId": "TopSlot"
+        },
+        {
+          "component": "BComponent",
+          "SlotId": "BottomSlot"
+        }
+      ]
+    }
+  }

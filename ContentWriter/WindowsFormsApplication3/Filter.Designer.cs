@@ -31,6 +31,7 @@
             this.cmbFields = new System.Windows.Forms.ComboBox();
             this.txtFilterValue = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.cmbOpreator = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // cmbFields
@@ -45,14 +46,15 @@
             // txtFilterValue
             // 
             this.txtFilterValue.Font = new System.Drawing.Font("Verdana", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtFilterValue.Location = new System.Drawing.Point(341, 12);
+            this.txtFilterValue.Location = new System.Drawing.Point(430, 12);
+            this.txtFilterValue.Multiline = true;
             this.txtFilterValue.Name = "txtFilterValue";
-            this.txtFilterValue.Size = new System.Drawing.Size(277, 26);
+            this.txtFilterValue.Size = new System.Drawing.Size(277, 84);
             this.txtFilterValue.TabIndex = 1;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(167, 54);
+            this.button1.Location = new System.Drawing.Point(167, 102);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(318, 35);
             this.button1.TabIndex = 2;
@@ -60,11 +62,24 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // cmbOpreator
+            // 
+            this.cmbOpreator.Font = new System.Drawing.Font("Verdana", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbOpreator.FormattingEnabled = true;
+            this.cmbOpreator.Items.AddRange(new object[] {
+            "Equal",
+            "Not Equal"});
+            this.cmbOpreator.Location = new System.Drawing.Point(330, 12);
+            this.cmbOpreator.Name = "cmbOpreator";
+            this.cmbOpreator.Size = new System.Drawing.Size(94, 26);
+            this.cmbOpreator.TabIndex = 3;
+            // 
             // Filter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(630, 102);
+            this.ClientSize = new System.Drawing.Size(724, 147);
+            this.Controls.Add(this.cmbOpreator);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.txtFilterValue);
             this.Controls.Add(this.cmbFields);
@@ -81,5 +96,6 @@
         private System.Windows.Forms.ComboBox cmbFields;
         private System.Windows.Forms.TextBox txtFilterValue;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ComboBox cmbOpreator;
     }
 }

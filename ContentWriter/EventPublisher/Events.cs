@@ -27,6 +27,8 @@ namespace EventPublisher
         ReDo,
         Statistics,
         Formula,
-        SetenceCount
+        SetenceCountInDescription,
+        SetenceCountInBullet,
+        FindText
     }
 }

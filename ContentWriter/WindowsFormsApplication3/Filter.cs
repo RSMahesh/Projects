@@ -23,6 +23,7 @@ namespace WindowsFormsApplication3
 
         private void Filter_Load(object sender, EventArgs e)
         {
+            cmbOpreator.SelectedIndex = 0;
             foreach(DataColumn col in _dataView.Table.Columns)
             {
                 cmbFields.Items.Add(col.ColumnName);
@@ -36,7 +37,60 @@ namespace WindowsFormsApplication3
                 _dataView.RowFilter = "";
                 return;
             }
-            _dataView.RowFilter = "[" + cmbFields.SelectedItem + "] ='" + txtFilterValue.Text +"'";
+
+
+            _dataView.RowFilter = getFilterData(txtFilterValue.Text);
+
+          //  _dataView.RowFilter += " or [" + cmbFields.SelectedItem + "] ='SGB-12179-01'";
+
+
+         //   _dataView.RowFilter += " or [" + cmbFields.SelectedItem + "] ='" + txtFilterValue.Text + "'";
+
+
+
+        }
+
+
+        private string  getFilterData(string filter)
+        {
+         filter =   filter.Replace(Environment.NewLine, "");
+          var arr =  filter.Split(',');
+            var query = "";
+
+            string opreator = "";
+
+            if(cmbOpreator.SelectedItem.ToString() == "Equal")
+            {
+                opreator = "=";
+
+            }
+            else
+            {
+                opreator = "<>";
+            }
+
+
+            foreach (string item in arr)
+            {
+
+                // query += " or [" + cmbFields.SelectedItem + "] "+opreator+"'" + item + "'";
+
+
+                if (cmbOpreator.SelectedItem.ToString() == "Equal")
+                {
+                    query += " or [" + cmbFields.SelectedItem + "] ='" + item + "'";
+
+                }
+                else
+                {
+                    query += "and [" + cmbFields.SelectedItem + "] <>'" + item + "' ";
+
+
+                }
+
+            }
+
+            return  query.Substring(3);
         }
 
         private void button1_Click(object sender, EventArgs e)

@@ -8,18 +8,15 @@ using WebServer.Interface;
 
 namespace HttpHandlers
 {
+    /// <summary>
+    /// Executes exe defenied in parmaters
+    /// </summary>
     public class ExecuteExeHttpHandler : IHttpHandler
     {
-        public ExecuteExeHttpHandler()
-        {
-         
-        }
-
         public byte[] ProcessRequest(System.Net.HttpListenerRequest request)
         {
-            if (request.QueryString["exe"] == null) return null;
-            var qq = request.QueryString["exe"];
-            return Encoding.ASCII.GetBytes(ExeRunner.Execute(qq, ""));
+            if (request.QueryString["runexe"] == null) return null;
+            return Encoding.ASCII.GetBytes(ExeRunner.Execute(request.QueryString["runexe"], ""));
         }
     }
 }

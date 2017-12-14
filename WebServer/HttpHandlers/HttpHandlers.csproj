@@ -40,8 +40,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExeRunner.cs" />
+    <Compile Include="PostRequestHttpHandler - Copy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExecuteExeHttpHandler.cs" />
+    <Compile Include="PostRequestHttpHandler.cs" />
     <Compile Include="StaticFileHttpHandler.cs" />
   </ItemGroup>
   <ItemGroup>

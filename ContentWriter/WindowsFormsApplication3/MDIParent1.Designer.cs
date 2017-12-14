@@ -59,8 +59,10 @@
             this.mSWordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.formulaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sentenceCountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.filterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importBackUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sentenceCountInBulletToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.newWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cascadeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -77,7 +79,7 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.sentenceCountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.findToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -209,7 +211,8 @@
             this.copyToolStripMenuItem,
             this.pasteToolStripMenuItem,
             this.toolStripSeparator7,
-            this.selectAllToolStripMenuItem});
+            this.selectAllToolStripMenuItem,
+            this.findToolStripMenuItem});
             this.editMenu.Name = "editMenu";
             this.editMenu.Size = new System.Drawing.Size(39, 20);
             this.editMenu.Text = "&Edit";
@@ -327,7 +330,8 @@
             this.formulaToolStripMenuItem,
             this.sentenceCountToolStripMenuItem,
             this.filterToolStripMenuItem,
-            this.importBackUpToolStripMenuItem});
+            this.importBackUpToolStripMenuItem,
+            this.sentenceCountInBulletToolStripMenuItem});
             this.toolsMenu.Name = "toolsMenu";
             this.toolsMenu.Size = new System.Drawing.Size(48, 20);
             this.toolsMenu.Text = "&Tools";
@@ -335,23 +339,37 @@
             // formulaToolStripMenuItem
             // 
             this.formulaToolStripMenuItem.Name = "formulaToolStripMenuItem";
-            this.formulaToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.formulaToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
             this.formulaToolStripMenuItem.Text = "Formula";
             this.formulaToolStripMenuItem.Click += new System.EventHandler(this.formulaToolStripMenuItem_Click);
+            // 
+            // sentenceCountToolStripMenuItem
+            // 
+            this.sentenceCountToolStripMenuItem.Name = "sentenceCountToolStripMenuItem";
+            this.sentenceCountToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.sentenceCountToolStripMenuItem.Text = "Sentence Count in Description";
+            this.sentenceCountToolStripMenuItem.Click += new System.EventHandler(this.sentenceCountToolStripMenuItem_Click);
             // 
             // filterToolStripMenuItem
             // 
             this.filterToolStripMenuItem.Name = "filterToolStripMenuItem";
-            this.filterToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.filterToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
             this.filterToolStripMenuItem.Text = "Filter";
             this.filterToolStripMenuItem.Click += new System.EventHandler(this.filterToolStripMenuItem_Click);
             // 
             // importBackUpToolStripMenuItem
             // 
             this.importBackUpToolStripMenuItem.Name = "importBackUpToolStripMenuItem";
-            this.importBackUpToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.importBackUpToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
             this.importBackUpToolStripMenuItem.Text = "Import BackUp";
             this.importBackUpToolStripMenuItem.Click += new System.EventHandler(this.importBackUpToolStripMenuItem_Click);
+            // 
+            // sentenceCountInBulletToolStripMenuItem
+            // 
+            this.sentenceCountInBulletToolStripMenuItem.Name = "sentenceCountInBulletToolStripMenuItem";
+            this.sentenceCountInBulletToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.sentenceCountInBulletToolStripMenuItem.Text = "Sentence Count in Bullet";
+            this.sentenceCountInBulletToolStripMenuItem.Click += new System.EventHandler(this.sentenceCountInBulletToolStripMenuItem_Click);
             // 
             // windowsMenu
             // 
@@ -471,12 +489,14 @@
             this.toolStripStatusLabel.Size = new System.Drawing.Size(39, 17);
             this.toolStripStatusLabel.Text = "Status";
             // 
-            // sentenceCountToolStripMenuItem
+            // findToolStripMenuItem
             // 
-            this.sentenceCountToolStripMenuItem.Name = "sentenceCountToolStripMenuItem";
-            this.sentenceCountToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
-            this.sentenceCountToolStripMenuItem.Text = "Sentence Count";
-            this.sentenceCountToolStripMenuItem.Click += new System.EventHandler(this.sentenceCountToolStripMenuItem_Click);
+            this.findToolStripMenuItem.Name = "findToolStripMenuItem";
+            this.findToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.findToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
+
+            this.findToolStripMenuItem.Text = "Find";
+            this.findToolStripMenuItem.Click += new System.EventHandler(this.findToolStripMenuItem_Click);
             // 
             // MDIParent1
             // 
@@ -550,6 +570,8 @@
         private System.Windows.Forms.ToolStripMenuItem statToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem formulaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sentenceCountToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sentenceCountInBulletToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem findToolStripMenuItem;
     }
 }
 

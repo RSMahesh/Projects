@@ -20,7 +20,7 @@ namespace HaveABreak
         [DllImport("user32")]
         public static extern void LockWorkStation();
 
-        private int breakkIntervalInSeconds = 60 * 20;
+        private int breakkIntervalInSeconds = 60 * 30;
 
         private int reminderIntervalInSeconds = 60*2;
         public Form1()
@@ -30,7 +30,10 @@ namespace HaveABreak
 
         private void Form1_Load(object sender, EventArgs e)
         {
-           
+            btnNotNow.Enabled = btnOK.Enabled = false;
+            btnNotNow.Visible = false;
+            textBox2.Visible = false;
+
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -84,13 +87,15 @@ namespace HaveABreak
             var ss = (int)60 * double.Parse(textBox1.Text);
             breakkIntervalInSeconds = Convert.ToInt32(ss);
 
+                /*
             MessageBox.Show(
                 "BreakkIntervalInSeconds :" + breakkIntervalInSeconds.ToString() + Environment.NewLine
                 + "reminderIntervalInSeconds" + reminderIntervalInSeconds.ToString());
+                */
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.ToString());
+           // MessageBox.Show(ex.ToString());
 
         }
     }
@@ -101,15 +106,12 @@ namespace HaveABreak
         {
             var ss = (int)60 * double.Parse(textBox2.Text);
             reminderIntervalInSeconds = Convert.ToInt32(ss);
-            MessageBox.Show(
-        "BreakkIntervalInSeconds :" + breakkIntervalInSeconds.ToString() + Environment.NewLine
-        + "reminderIntervalInSeconds" + reminderIntervalInSeconds.ToString());
-    
+         
     
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.ToString());
+          //  MessageBox.Show(ex.ToString());
            
         }
     }
@@ -122,9 +124,20 @@ namespace HaveABreak
             timer2.Enabled = true;
             this.timer1.Interval = 1000 * breakkIntervalInSeconds;
             this.timer1.Enabled = true;
-           
+            btnNotNow.Enabled = btnOK.Enabled = true;
+            btnStart.Enabled = false;
             this.Hide();
     }
 
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+       
     }
 }
