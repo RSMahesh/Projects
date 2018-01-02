@@ -31,8 +31,8 @@ namespace HaveABreak
         private void Form1_Load(object sender, EventArgs e)
         {
             btnNotNow.Enabled = btnOK.Enabled = false;
-            btnNotNow.Visible = false;
-            textBox2.Visible = false;
+          //  btnNotNow.Visible = false;
+          //  textBox2.Visible = false;
 
         }
 

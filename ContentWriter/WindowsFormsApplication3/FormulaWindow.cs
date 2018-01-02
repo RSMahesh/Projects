@@ -13,7 +13,7 @@ namespace WindowsFormsApplication3
 {
     public partial class FormulaWindow : Form
     {
-        public static string Formula;
+        public static string Formula123;
         DataGridView _gridView;
         Regex regex = new Regex("{.*?}");
 
@@ -21,7 +21,7 @@ namespace WindowsFormsApplication3
         {
             InitializeComponent();
             _gridView = gridView;
-            textBox1.Text = Formula;
+            textBox1.Text = Formula123;
         }
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
@@ -29,12 +29,12 @@ namespace WindowsFormsApplication3
         }
         private void textBox1_KeyUp(object sender, KeyEventArgs e)
         {
-            Formula = textBox1.Text;
+            Formula123 = textBox1.Text;
         }
 
         private void FormulaWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Formula = textBox1.Text;
+            Formula123 = textBox1.Text;
 
             if (!Validate())
             {
@@ -46,12 +46,12 @@ namespace WindowsFormsApplication3
 
         bool Validate()
         {
-            if (string.IsNullOrEmpty(Formula))
+            if (string.IsNullOrEmpty(Formula123))
             {
                 return true;
             }
 
-            var matches = regex.Matches(FormulaWindow.Formula);
+            var matches = regex.Matches(FormulaWindow.Formula123);
 
             foreach (Match match in matches)
             {

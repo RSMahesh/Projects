@@ -10,7 +10,13 @@ namespace EventPublisher
            EventId = eventId;
            Arg = arg;
        }
-       public Guid EventId { get; private set; }
+
+        public EventArg(object arg):this(Guid.Empty,arg)
+        {
+            
+           
+        }
+        public Guid EventId { get; private set; }
       
        public object Arg { get; private set; }
     }

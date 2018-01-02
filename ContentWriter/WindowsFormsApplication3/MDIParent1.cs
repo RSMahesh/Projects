@@ -183,9 +183,10 @@ namespace WindowsFormsApplication3
             //}
             //InputControl.Words = lst;
 
-           
+
 
             // OpenFile(@"D:\11.xlsx");
+
         }
 
         private void MDIParent1_DragDrop(object sender, DragEventArgs e)
@@ -334,6 +335,12 @@ namespace WindowsFormsApplication3
         {
             FindText frm = new FindText();
             frm.TopMost = true;
+            frm.Show();
+        }
+
+        private void themeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ThemeScreen frm = new ThemeScreen();
             frm.Show();
         }
     }

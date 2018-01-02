@@ -38,18 +38,9 @@ namespace WindowsFormsApplication3
                 return;
             }
 
-
             _dataView.RowFilter = getFilterData(txtFilterValue.Text);
 
-          //  _dataView.RowFilter += " or [" + cmbFields.SelectedItem + "] ='SGB-12179-01'";
-
-
-         //   _dataView.RowFilter += " or [" + cmbFields.SelectedItem + "] ='" + txtFilterValue.Text + "'";
-
-
-
         }
-
 
         private string  getFilterData(string filter)
         {
@@ -72,9 +63,6 @@ namespace WindowsFormsApplication3
 
             foreach (string item in arr)
             {
-
-                // query += " or [" + cmbFields.SelectedItem + "] "+opreator+"'" + item + "'";
-
 
                 if (cmbOpreator.SelectedItem.ToString() == "Equal")
                 {

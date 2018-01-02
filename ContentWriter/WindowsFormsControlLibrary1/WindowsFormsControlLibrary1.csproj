@@ -41,6 +41,10 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="ThemeColorPicker, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>ThridParty\ThemeColorPicker.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
@@ -51,6 +55,12 @@
       <DependentUpon>CheckBoxWithLabel.cs</DependentUpon>
     </Compile>
     <Compile Include="Class1.cs" />
+    <Compile Include="ColorPicker.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ColorPicker.Designer.cs">
+      <DependentUpon>ColorPicker.cs</DependentUpon>
+    </Compile>
     <Compile Include="InputControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -77,6 +87,9 @@
     <EmbeddedResource Include="CheckBoxWithLabel.resx">
       <DependentUpon>CheckBoxWithLabel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ColorPicker.resx">
+      <DependentUpon>ColorPicker.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="InputControl.resx">
       <DependentUpon>InputControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -92,6 +105,9 @@
       <Project>{f1f4fc21-024f-4567-ade5-b18270b65c8c}</Project>
       <Name>EventPublisher</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ThridParty\ThemeColorPicker.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

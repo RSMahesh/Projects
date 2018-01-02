@@ -27,6 +27,8 @@ namespace WindowsFormsApplication3
 
         private void btnReplace_Click(object sender, EventArgs e)
         {
+            EventContainer.PublishEvent
+    (EventPublisher.Events.Relace.ToString(), new EventArg(Guid.NewGuid(), txtReplaceText.Text));
 
         }
     }

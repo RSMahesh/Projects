@@ -29,6 +29,8 @@ namespace EventPublisher
         Formula,
         SetenceCountInDescription,
         SetenceCountInBullet,
-        FindText
+        FindText,
+        Relace,
+        LoadTheme,
     }
 }

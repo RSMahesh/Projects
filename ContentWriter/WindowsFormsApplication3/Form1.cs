@@ -17,24 +17,6 @@ using System.Configuration;
 
 namespace WindowsFormsApplication3
 {
-    public class CellData
-    {
-        public CellData(object value, Point location)
-        {
-            Value = value;
-            Location = location;
-        }
-
-        public CellData() { }
-        public object Value { get; set; }
-        public Point Location { get; set; }
-    }
-
-    public class RowInfo
-    {
-        public int RowId { get; set; }
-        public bool Highlighted { get; set; }
-    }
     public partial class Form1 : Form
     {
         string _excelFilePath;
@@ -46,6 +28,8 @@ namespace WindowsFormsApplication3
         UndoRedoStack<CellData> _undoRedo;
         bool _importBackUp;
         List<RowInfo> rowsInfo = new List<RowInfo>();
+        Theme _theme = new Theme();
+        const string HighLighted = "highlighted";
 
         public Form1(string filePath, bool importBackUp = false)
         {
@@ -68,11 +52,10 @@ namespace WindowsFormsApplication3
             EventContainer.SubscribeEvent(EventPublisher.Events.Statistics.ToString(), ShowStatistics);
             EventContainer.SubscribeEvent(EventPublisher.Events.Formula.ToString(), Formula);
             EventContainer.SubscribeEvent(EventPublisher.Events.SetenceCountInDescription.ToString(), SetenceCountInDescription);
-
             EventContainer.SubscribeEvent(EventPublisher.Events.SetenceCountInBullet.ToString(), SetenceCountInBullets);
-
             EventContainer.SubscribeEvent(EventPublisher.Events.FindText.ToString(), FindText);
-
+            EventContainer.SubscribeEvent(EventPublisher.Events.Relace.ToString(), ReplaceText);
+            EventContainer.SubscribeEvent(EventPublisher.Events.LoadTheme.ToString(), LoadTheme);
 
             dataGridView1.CellPainting += dataGridView1_CellPainting;
             dataGridView1.CellLeave += dataGridView1_CellLeave;
@@ -88,7 +71,6 @@ namespace WindowsFormsApplication3
             contextMenu.MenuItems.Add("Delete", OnDelete);
             contextMenu.MenuItems.Add("ApplyFormula", OnApplyFormula);
 
-
             _excelFilePath = filePath;
 
             if (Path.GetExtension(_excelFilePath) == ".xml")
@@ -103,11 +85,37 @@ namespace WindowsFormsApplication3
 
             dataGridView1.ContextMenu = contextMenu;
 
+            LoadTheme(new EventArg(Theme.GetDefaultTheme()));
+        }
+
+        void LoadTheme(EventArg arg)
+        {
+            _theme = (Theme) arg.Arg;
+            this.dataGridView1.RowTemplate.DefaultCellStyle.BackColor = _theme.BackGroundColor;
+            this.dataGridView1.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Verdana", 11F);
+            this.dataGridView1.RowTemplate.DefaultCellStyle.ForeColor = _theme.ForeColor;
+            this.dataGridView1.RowTemplate.DefaultCellStyle.SelectionBackColor = _theme.SelectionBackColor;
+            this.dataGridView1.RowTemplate.DefaultCellStyle.SelectionForeColor = _theme.SelectionForeColor;
+           
+            foreach(DataGridViewRow row in dataGridView1.Rows)
+            {
+                row.DefaultCellStyle.BackColor = _theme.BackGroundColor;
+                row.DefaultCellStyle.ForeColor = _theme.ForeColor;
+
+               if( row.Tag == HighLighted)
+                {
+                    row.DefaultCellStyle.BackColor = _theme.HighlightedRowColor;
+                }
+
+            }
         }
 
         private void DataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            SaveUnSavedData(new CellData(dataGridView1[e.ColumnIndex, e.RowIndex].Value, new Point(e.ColumnIndex, e.RowIndex)));
+            if (!(dataGridView1[e.ColumnIndex, e.RowIndex] is DataGridViewImageCell))
+            {
+                SaveUnSavedData(new CellData(dataGridView1[e.ColumnIndex, e.RowIndex].Value, new Point(e.ColumnIndex, e.RowIndex)));
+            }
             //  MessageBox.Show(dataGridView1[e.ColumnIndex, e.RowIndex].Value.ToString());
         }
 
@@ -119,7 +127,7 @@ namespace WindowsFormsApplication3
         private void Form1_Load(object sender, EventArgs e)
         {
             dataGridView1.DataError += DataGridView1_DataError;
-            dataGridView1.RowTemplate.Height = 100;
+            dataGridView1.RowTemplate.Height = _imageSize;
             dataGridView1.RowTemplate.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
 
             _dataConnection = new OLDBConnection12(_excelFilePath);
@@ -152,14 +160,17 @@ namespace WindowsFormsApplication3
 
             if (IsXmlFile)
             {
-                dataGridView1.RowTemplate.DefaultCellStyle.BackColor = Color.White;
-                dataGridView1.RowTemplate.DefaultCellStyle.ForeColor = Color.Black;
-
+                dataGridView1.RowTemplate.DefaultCellStyle.BackColor = _theme.XmlBackGroundColor;
+                dataGridView1.RowTemplate.DefaultCellStyle.ForeColor = _theme.XmlForeColor;
                 // dataGridView1.ReadOnly = true;
             }
 
-            this.Text = _excelFilePath;
+            //this done because when user clicks on cell first time
+            // its moves the cell focus to start as columns width get adusted
+            // to avoid that work around is to call IncreaseRowHeight on load
+            IncreaseRowHeight(1, 4);
 
+            this.Text = _excelFilePath;
 
         }
 
@@ -188,9 +199,6 @@ namespace WindowsFormsApplication3
                 return;
             }
 
-
-
-
             IncreaseRowHeight(e.RowIndex, e.ColumnIndex);
 
         }
@@ -199,13 +207,13 @@ namespace WindowsFormsApplication3
         {
             var rowIndex = GetRowWithId(rowId);
 
-            if (dataGridView1.Rows[rowIndex].DefaultCellStyle.BackColor == Color.CadetBlue)
+            if (dataGridView1.Rows[rowIndex].DefaultCellStyle.BackColor == _theme.HighlightedRowColor)
             {
                 UnHighlightRow(rowId);
             }
             else
             {
-                ChaneRowColorToCadetBlue(rowIndex);
+                HighLightRowColor(rowIndex);
                 RowInfo rowInfo = new RowInfo();
                 rowInfo.Highlighted = true;
                 rowInfo.RowId = rowId;
@@ -216,9 +224,9 @@ namespace WindowsFormsApplication3
         private void UnHighlightRow(int rowId)
         {
             var rowIndex = GetRowWithId(rowId);
-            dataGridView1.Rows[rowIndex].DefaultCellStyle.BackColor = Color.LightGray;
+            dataGridView1.Rows[rowIndex].DefaultCellStyle.BackColor = _theme.BackGroundColor;
+            dataGridView1.Rows[rowIndex].Tag = string.Empty;
             dataGridView1.Rows[rowIndex].Cells["ColorCode"].Value = string.Empty;
-
             rowsInfo.Remove(rowsInfo.FirstOrDefault(x => x.RowId == rowId));
         }
 
@@ -235,14 +243,16 @@ namespace WindowsFormsApplication3
             return -1;
         }
 
-        private void ChaneRowColorToCadetBlue(int rowIndex)
+        private void HighLightRowColor(int rowIndex)
         {
-            dataGridView1.Rows[rowIndex].DefaultCellStyle.BackColor = Color.CadetBlue;
-            dataGridView1.Rows[rowIndex].Cells["ColorCode"].Value = Color.CadetBlue.ToString();
+            dataGridView1.Rows[rowIndex].DefaultCellStyle.BackColor = _theme.HighlightedRowColor;
+            dataGridView1.Rows[rowIndex].Tag = HighLighted;
+            dataGridView1.Rows[rowIndex].Cells["ColorCode"].Value = _theme.HighlightedRowColor.ToString();
         }
 
         private void IncreaseRowHeight(int row, int col, bool toogle = true)
         {
+            //  return;
             int maxLength = 0;
 
             foreach (DataGridViewCell cell in dataGridView1.Rows[row].Cells)
@@ -276,6 +286,8 @@ namespace WindowsFormsApplication3
             if ((ModifierKeys & Keys.Control) != Keys.Control)
             {
                 IncreaseRowHeight(e.RowIndex, e.ColumnIndex);
+                dataGridView1.Columns[e.ColumnIndex].Width = dataGridView1.Columns[e.ColumnIndex].Width + 1;
+                dataGridView1[e.ColumnIndex, e.RowIndex].Selected = true;
             }
             //dataGridView1.Columns[e.ColumnIndex].SortMode = DataGridViewColumnSortMode.NotSortable;
 
@@ -320,7 +332,6 @@ namespace WindowsFormsApplication3
             }
         }
 
-
         private void DataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
             if (!imageColumnLoaded)
@@ -348,21 +359,7 @@ namespace WindowsFormsApplication3
 
             SaveUnSavedData(cellData);
         }
-        private object ConvertTo(Type type, string value)
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                return value;
-            }
-
-            switch (Type.GetTypeCode(type))
-            {
-                case TypeCode.Double:
-                    return double.Parse(value);
-                default:
-                    return value;
-            }
-        }
+    
 
         private void UnDo(EventPublisher.EventArg arg)
         {
@@ -398,7 +395,7 @@ namespace WindowsFormsApplication3
             {
                 e.Paint(e.CellBounds, DataGridViewPaintParts.All
  & ~DataGridViewPaintParts.Border);
-                using (Pen p = new Pen(Color.White, 2))
+                using (Pen p = new Pen(_theme.CurrentCellBorderColor, 2))
                 {
                     p.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
                     Rectangle rect = e.CellBounds;
@@ -406,6 +403,39 @@ namespace WindowsFormsApplication3
                     rect.Height -= 1;
                     e.Graphics.DrawRectangle(p, rect);
                 }
+                e.Handled = true;
+            }
+            else if (dataGridView1.CurrentRow.Index == e.RowIndex)
+            {
+                return;
+                e.Paint(e.CellBounds, DataGridViewPaintParts.All
+ & ~DataGridViewPaintParts.Border);
+
+
+                using (Pen p = new Pen(dataGridView1.GridColor, 1))
+                {
+                    p.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
+                    Rectangle rect = e.CellBounds;
+                    rect.X -= 1;
+                    // rect.Width += 1;
+                    //  rect.Height -= 1;
+
+                    e.Graphics.DrawLine(p, new Point(rect.Left, rect.Top), new Point(rect.Left, rect.Bottom));
+                    e.Graphics.DrawLine(p, new Point(rect.Right, rect.Top), new Point(rect.Right, rect.Bottom));
+                }
+
+                using (Pen p = new Pen(Color.Red, 1))
+                {
+                    p.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
+                    Rectangle rect = e.CellBounds;
+                    //rect.Y -= 1;
+                    rect.Width -= 1;
+                    rect.Height -= 1;
+                    //  e.Graphics.DrawRectangle(p, rect);
+                    e.Graphics.DrawLine(p, new Point(rect.Left, rect.Top), new Point(rect.Right, rect.Top));
+                    e.Graphics.DrawLine(p, new Point(rect.Left, rect.Bottom), new Point(rect.Right, rect.Bottom));
+                }
+
                 e.Handled = true;
             }
         }
@@ -423,16 +453,20 @@ namespace WindowsFormsApplication3
             return false;
         }
 
-
+        string _currentFormula = "";
         private void OnApplyFormula(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(FormulaWindow.Formula))
+            FormulaList frm = new FormulaList(dataGridView1);
+            frm.ShowDialog();
+
+
+            if (string.IsNullOrEmpty(frm.CurrentFormula))
             {
                 MessageBox.Show("No Fromula Found");
                 return;
             }
 
-
+            _currentFormula = frm.CurrentFormula;
 
             foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
             {
@@ -450,8 +484,11 @@ namespace WindowsFormsApplication3
             return MakeProperCase(RemoveIfRequired(replaceOutPut));
         }
 
+
+
         private string MakeProperCase(string replaceOutPut)
         {
+            //TODO:This formula will fail if text got mutiple %p%. Need to get fixed.
             const string remove = "%p%";
             var indx = replaceOutPut.IndexOf(remove, StringComparison.OrdinalIgnoreCase);
 
@@ -467,6 +504,7 @@ namespace WindowsFormsApplication3
 
                 //  replaceOutPut = Regex.Replace(arr[0], arr[1], string.Empty, RegexOptions.IgnoreCase);
             }
+
             return replaceOutPut;
         }
 
@@ -502,9 +540,9 @@ namespace WindowsFormsApplication3
         private string ReplacePlaceHolders(DataGridViewCell cell)
         {
             var regex = new Regex("{.*?}");
-            var matches = regex.Matches(FormulaWindow.Formula);
+            var matches = regex.Matches(_currentFormula);
             //  var formula = FormulaWindow.Formula;
-            string formulaOutPut = FormulaWindow.Formula;
+            string formulaOutPut = _currentFormula;
 
             foreach (Match match in matches)
             {
@@ -847,7 +885,7 @@ namespace WindowsFormsApplication3
             foreach (var info in rowsInfo)
             {
                 var rowIndex = GetRowWithId(info.RowId);
-                ChaneRowColorToCadetBlue(rowIndex);
+                HighLightRowColor(rowIndex);
             }
         }
 
@@ -1224,9 +1262,6 @@ namespace WindowsFormsApplication3
 
 
         PictureViewer frmPrectiureViwer = null;
-        private void dataGridView1_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-        }
 
         bool alreadyOpend = false;
 
@@ -1285,8 +1320,21 @@ namespace WindowsFormsApplication3
             LoadImageInCell();
         }
 
+        DataGridViewRow lastCurrentRow;
+        Color lastCurrentRowColor;
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+
+            if (lastCurrentRow != null)
+            {
+                lastCurrentRow.DefaultCellStyle.BackColor = lastCurrentRowColor;
+            }
+
+            lastCurrentRow = dataGridView1.CurrentRow;
+            lastCurrentRowColor = lastCurrentRow.DefaultCellStyle.BackColor;
+            dataGridView1.CurrentRow.DefaultCellStyle.BackColor = _theme.CurrentRowColor;
+            // row.DefaultCellStyle.BackColor = Color.CadetBlue;
+
             dataGridView1.BeginEdit(false);
         }
 
@@ -1384,7 +1432,10 @@ namespace WindowsFormsApplication3
 
         private void Formula(EventArg arg)
         {
-            FormulaWindow win = new FormulaWindow(dataGridView1);
+            //FormulaWindow win = new FormulaWindow(dataGridView1);
+            //win.ShowDialog();
+
+            FormulaList win = new FormulaList(null);
             win.ShowDialog();
         }
 
@@ -1491,7 +1542,7 @@ namespace WindowsFormsApplication3
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
 
-                if (row.DefaultCellStyle.BackColor == Color.CadetBlue)
+                if (row.DefaultCellStyle.BackColor == _theme.HighlightedRowColor)
                 {
                     highLighted++;
                 }
@@ -1577,7 +1628,7 @@ namespace WindowsFormsApplication3
                                 startingColumnToFind = colIndex;
 
                                 indx = cell.Value.ToString().IndexOf(textToFind, indx + textToFind.Length, StringComparison.OrdinalIgnoreCase);
-                                
+
                                 if (indx != -1)
                                 {
                                     startingIndexInCellToFindText = indx;
@@ -1606,6 +1657,14 @@ namespace WindowsFormsApplication3
 
             MessageBox.Show("All Match Found");
             startingColumnToFind = startingRowToFind = startingIndexInCellToFindText = 0;
+        }
+        private void ReplaceText(EventArg arg)
+        {
+            var textToReplace = arg.Arg.ToString();
+            if (editingTextBox.SelectedText.Length > 0)
+            {
+                editingTextBox.Text = editingTextBox.Text.Replace(editingTextBox.Text.Substring(editingTextBox.SelectionStart, editingTextBox.SelectionLength), textToReplace);
+            }
         }
 
         public void HighlightText(DataGridViewTextBoxEditingControl myRtb, string word, int startIndex)

@@ -134,6 +134,11 @@ namespace WindowsFormsApplication3
         {
 
         }
+
+        private void btnMoveLeft_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
     public class ControlPostion

@@ -48,6 +48,7 @@
             this.btnMoveLeft.TabIndex = 2;
             this.btnMoveLeft.Text = "button1";
             this.btnMoveLeft.UseVisualStyleBackColor = true;
+            this.btnMoveLeft.Click += new System.EventHandler(this.btnMoveLeft_Click);
             // 
             // btnMoveDown
             // 

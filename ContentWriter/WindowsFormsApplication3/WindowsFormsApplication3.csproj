@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WindowsFormsApplication3</RootNamespace>
     <AssemblyName>WindowsFormsApplication3</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -47,8 +48,15 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="ThemeColorPicker, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\WindowsFormsControlLibrary1\ThridParty\ThemeColorPicker.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CellData.cs" />
+    <Compile Include="RowInfo.cs" />
+    <Compile Include="Theme.cs" />
     <Compile Include="ColumnsOrder.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,6 +100,12 @@
     <Compile Include="FormSys.Designer.cs">
       <DependentUpon>FormSys.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormulaList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormulaList.Designer.cs">
+      <DependentUpon>FormulaList.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormulaWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -122,6 +136,12 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SingleInstance.cs" />
+    <Compile Include="ThemeScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ThemeScreen.Designer.cs">
+      <DependentUpon>ThemeScreen.cs</DependentUpon>
+    </Compile>
     <Compile Include="UndoRedo.cs" />
     <Compile Include="WordEditor.cs">
       <SubType>Form</SubType>
@@ -150,6 +170,9 @@
     <EmbeddedResource Include="FormSys.resx">
       <DependentUpon>FormSys.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormulaList.resx">
+      <DependentUpon>FormulaList.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormulaWindow.resx">
       <DependentUpon>FormulaWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -170,7 +193,11 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="ThemeScreen.resx">
+      <DependentUpon>ThemeScreen.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="WordEditor.resx">
       <DependentUpon>WordEditor.cs</DependentUpon>
     </EmbeddedResource>

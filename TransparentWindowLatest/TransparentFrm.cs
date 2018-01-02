@@ -247,7 +247,7 @@ namespace TransparentWindow
                     }
                     escapedKepPressed = true;
                     _attachedWindow.MinizeAttachWindow();
-                    MinimizeAll();
+                    //MinimizeAll();
                     MiniZeAllForms();
                     _attachedWindow.MinizeAttachWindow();
                     escapedKepPressed = false;
