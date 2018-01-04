@@ -32,5 +32,6 @@ namespace EventPublisher
         FindText,
         Relace,
         LoadTheme,
+        WordsFrequency
     }
 }

@@ -343,5 +343,11 @@ namespace WindowsFormsApplication3
             ThemeScreen frm = new ThemeScreen();
             frm.Show();
         }
+
+        private void wordsFrequencyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EventContainer.PublishEvent
+(EventPublisher.Events.WordsFrequency.ToString(), new EventArg(Guid.NewGuid(), null));
+        }
     }
 }

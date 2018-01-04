@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CellData.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="RowInfo.cs" />
     <Compile Include="Theme.cs" />
     <Compile Include="ColumnsOrder.cs">
@@ -143,6 +144,7 @@
       <DependentUpon>ThemeScreen.cs</DependentUpon>
     </Compile>
     <Compile Include="UndoRedo.cs" />
+    <Compile Include="Utility.cs" />
     <Compile Include="WordEditor.cs">
       <SubType>Form</SubType>
     </Compile>

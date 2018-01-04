@@ -5,6 +5,7 @@ using System.Data.OleDb;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using WindowsFormsApplication3;
 
 namespace StatusMaker.Data
 {
@@ -18,7 +19,7 @@ namespace StatusMaker.Data
 
 
         List<DataColumn> addtionalCoumns = new List<DataColumn>(new[] { new DataColumn("ColorCode", typeof(string)),
-           //new DataColumn("TextSortData", typeof(string)),
+           new DataColumn(Constants.WordFrequencyColumnName, typeof(string)),
             //new DataColumn("NumberSortData", typeof(double))
         });
 

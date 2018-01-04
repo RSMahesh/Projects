@@ -10,16 +10,11 @@ namespace WindowsFormsApplication3
     public class Theme
     {
         public string Name { get; set; }
-
         public bool Default { get; set; }
         public Color BackGroundColor { get; set; }
-
         public Color ForeColor { get; set; }
-
         public Color CurrentRowColor { get; set; }
-
         public Color HighlightedRowColor { get; set; }
-
         public Color SelectionBackColor { get; set; }
 
         public Color SelectionForeColor { get; set; }
@@ -37,7 +32,7 @@ namespace WindowsFormsApplication3
             theme.ForeColor = Color.Black;
             theme.SelectionBackColor = Color.LightGray;
             theme.SelectionForeColor = Color.Black;
-            theme.CurrentRowColor = Color.Cornsilk;
+            theme.CurrentRowColor = Color.LightGray;
             theme.HighlightedRowColor = Color.CadetBlue;
             theme.CurrentCellBorderColor = Color.White;
 

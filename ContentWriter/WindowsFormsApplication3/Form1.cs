@@ -38,6 +38,71 @@ namespace WindowsFormsApplication3
 
             _importBackUp = importBackUp;
             _undoRedo = new UndoRedoStack<CellData>(new SetCellDataCommand(dataGridView1));
+
+            AddEventsHandlersOfUIControls();
+            SubScribeEvents();
+            richTextBox1.Visible = false;
+
+            _excelFilePath = filePath;
+
+            if (Path.GetExtension(_excelFilePath) == ".xml")
+            {
+                IsXmlFile = true;
+            }
+            else
+            {
+                EventContainer.SubscribeEvent(EventPublisher.Events.StartDataImport.ToString(), StartBackUpImport);
+            }
+
+            AddContextMenu();
+
+            LoadTheme(new EventArg(Theme.GetDefaultTheme()));
+        }
+
+        private void AddEventsHandlersOfUIControls()
+        {
+            dataGridView1.CellPainting += dataGridView1_CellPainting;
+            dataGridView1.CellLeave += dataGridView1_CellLeave;
+            dataGridView1.EditingControlShowing += DataGridView1_EditingControlShowing;
+            dataGridView1.RowHeaderMouseClick += DataGridView1_RowHeaderMouseClick;
+            dataGridView1.CellValidating += DataGridView1_CellValidating;
+            dataGridView1.CellBeginEdit += DataGridView1_CellBeginEdit;
+            dataGridView1.Sorted += DataGridView1_Sorted;
+            dataGridView1.CellValueChanged += DataGridView1_CellValueChanged;
+
+            dataGridView1.ColumnWidthChanged += DataGridView1_ColumnWidthChanged;
+
+            //      dataGridView1.RowHeightChanged += DataGridView1_RowHeightChanged;
+
+            richTextBox1.KeyUp += RichTextBox1_KeyUp;
+            richTextBox1.ScrollBars = RichTextBoxScrollBars.None;
+
+        }
+
+        //private void DataGridView1_RowHeightChanged(object sender, DataGridViewRowEventArgs e)
+        //{
+        //    ShowRichTextBox();
+        //}
+
+        private void DataGridView1_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e)
+        {
+            if (e.Column.Name == Constants.WordFrequencyColumnName)
+            {
+                if (e.Column.Width < 30)
+                {
+                    e.Column.Visible = false;
+                }
+            }
+        }
+
+
+        private void RichTextBox1_KeyUp(object sender, KeyEventArgs e)
+        {
+            dataGridView1.CurrentCell.Value = richTextBox1.Text;
+        }
+
+        private void SubScribeEvents()
+        {
             EventContainer.SubscribeEvent(EventPublisher.Events.MoveToNextRecord.ToString(), MoveToNextRecord);
             EventContainer.SubscribeEvent(EventPublisher.Events.MoveToPriviousRecord.ToString(), MoveToPriviousRecord);
             EventContainer.SubscribeEvent(EventPublisher.Events.RecordUpdated.ToString(), RecordUpdated);
@@ -56,53 +121,32 @@ namespace WindowsFormsApplication3
             EventContainer.SubscribeEvent(EventPublisher.Events.FindText.ToString(), FindText);
             EventContainer.SubscribeEvent(EventPublisher.Events.Relace.ToString(), ReplaceText);
             EventContainer.SubscribeEvent(EventPublisher.Events.LoadTheme.ToString(), LoadTheme);
+            EventContainer.SubscribeEvent(EventPublisher.Events.WordsFrequency.ToString(), ShowSetenceCount);
+        }
 
-            dataGridView1.CellPainting += dataGridView1_CellPainting;
-            dataGridView1.CellLeave += dataGridView1_CellLeave;
-            dataGridView1.EditingControlShowing += DataGridView1_EditingControlShowing;
-            dataGridView1.RowHeaderMouseClick += DataGridView1_RowHeaderMouseClick;
-            dataGridView1.CellValidating += DataGridView1_CellValidating;
-            dataGridView1.CellBeginEdit += DataGridView1_CellBeginEdit;
-            dataGridView1.Sorted += DataGridView1_Sorted;
-            dataGridView1.CellValueChanged += DataGridView1_CellValueChanged;
-
+        void AddContextMenu()
+        {
             contextMenu.MenuItems.Add("Copy", OnCopy);
             contextMenu.MenuItems.Add("Past", OnPast);
             contextMenu.MenuItems.Add("Delete", OnDelete);
             contextMenu.MenuItems.Add("ApplyFormula", OnApplyFormula);
-
-            _excelFilePath = filePath;
-
-            if (Path.GetExtension(_excelFilePath) == ".xml")
-            {
-                IsXmlFile = true;
-            }
-            else
-            {
-                EventContainer.SubscribeEvent(EventPublisher.Events.StartDataImport.ToString(), StartBackUpImport);
-
-            }
-
             dataGridView1.ContextMenu = contextMenu;
-
-            LoadTheme(new EventArg(Theme.GetDefaultTheme()));
         }
-
         void LoadTheme(EventArg arg)
         {
-            _theme = (Theme) arg.Arg;
+            _theme = (Theme)arg.Arg;
             this.dataGridView1.RowTemplate.DefaultCellStyle.BackColor = _theme.BackGroundColor;
             this.dataGridView1.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Verdana", 11F);
             this.dataGridView1.RowTemplate.DefaultCellStyle.ForeColor = _theme.ForeColor;
             this.dataGridView1.RowTemplate.DefaultCellStyle.SelectionBackColor = _theme.SelectionBackColor;
             this.dataGridView1.RowTemplate.DefaultCellStyle.SelectionForeColor = _theme.SelectionForeColor;
-           
-            foreach(DataGridViewRow row in dataGridView1.Rows)
+
+            foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 row.DefaultCellStyle.BackColor = _theme.BackGroundColor;
                 row.DefaultCellStyle.ForeColor = _theme.ForeColor;
 
-               if( row.Tag == HighLighted)
+                if (row.Tag == HighLighted)
                 {
                     row.DefaultCellStyle.BackColor = _theme.HighlightedRowColor;
                 }
@@ -169,9 +213,7 @@ namespace WindowsFormsApplication3
             // its moves the cell focus to start as columns width get adusted
             // to avoid that work around is to call IncreaseRowHeight on load
             IncreaseRowHeight(1, 4);
-
             this.Text = _excelFilePath;
-
         }
 
 
@@ -315,10 +357,105 @@ namespace WindowsFormsApplication3
             if (!attachedEventFroKepUp)
             {
                 editingTextBox = (DataGridViewTextBoxEditingControl)e.Control;
-                //tb.KeyDown += Tb_KeyDown;
-                //tb.KeyUp += Tb_KeyUp;
+                editingTextBox.MouseDoubleClick += EditingTextBox_MouseDoubleClick;
+                editingTextBox.MouseClick += EditingTextBox_MouseClick;
                 attachedEventFroKepUp = true;
             }
+
+            richTextBox1.Visible = false;
+        }
+
+        private void EditingTextBox_MouseClick(object sender, MouseEventArgs e)
+        {
+            StartHighlightingWords();
+        }
+
+        private void ShowRichTextBox()
+        {
+            var rec = dataGridView1.GetCellDisplayRectangle(dataGridView1.CurrentCell.ColumnIndex, dataGridView1.CurrentCell.RowIndex, true);
+
+            richTextBox1 = new RichTextBox();
+            SetNewRichTextBox();
+
+            this.richTextBox1.Name = Guid.NewGuid().ToString();
+            this.Controls.Add(richTextBox1);
+            richTextBox1.BringToFront();
+           
+
+
+            richTextBox1.KeyUp += RichTextBox1_KeyUp;
+            richTextBox1.ScrollBars = RichTextBoxScrollBars.None;
+
+
+            richTextBox1.Size = rec.Size;
+            richTextBox1.Location = rec.Location;
+            richTextBox1.Text = editingTextBox.Text;
+            richTextBox1.Visible = true;
+        }
+
+        private void SetNewRichTextBox()
+        {
+            this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.richTextBox1.Font = new System.Drawing.Font("Verdana", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.richTextBox1.Location = new System.Drawing.Point(845, 69);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(100, 96);
+            this.richTextBox1.TabIndex = 1;
+            this.richTextBox1.Text = "";
+        }
+
+        private void EditingTextBox_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+        }
+
+        private void StartHighlightingWords()
+        {
+            try
+            {
+                if (dataGridView1.Columns[dataGridView1.CurrentCell.ColumnIndex].Name == Constants.WordFrequencyColumnName)
+                {
+                    int start = 0;
+
+                    if (editingTextBox.SelectionStart > 0)
+                    {
+                        start = editingTextBox.Text.LastIndexOf(Environment.NewLine, editingTextBox.SelectionStart);
+                        if (start == -1)
+                        {
+                            start = 0;
+                        }
+                    }
+
+                    var end = editingTextBox.Text.IndexOf(' ', start);
+
+                    var searchText = editingTextBox.Text.Substring(start, (end - start) + 1);
+
+                    searchText = searchText.Replace(Environment.NewLine, string.Empty);
+
+
+
+                    var colIndex = dataGridView1.Columns[dataGridView1.CurrentCell.ColumnIndex].DisplayIndex - 1;
+                    var cell = dataGridView1[colIndex, dataGridView1.CurrentCell.RowIndex];
+                    dataGridView1.CurrentCell = cell;
+                    dataGridView1.BeginEdit(false);
+                    ShowRichTextBox();
+
+
+                    //if (!searchText.StartsWith(" "))
+                    //{
+                    //    searchText = " " + searchText;
+                    //}
+
+                    HighlightTextWithOccuranceNumber(richTextBox1, searchText, 0);
+
+
+                    //// serch with word incase if its ends with comma like beauty,
+                    //searchText = searchText.TrimEnd(' ') + ",";
+                    //HighlightTextWithOccuranceNumber(richTextBox1, searchText, 0);
+                }
+            }
+            catch (Exception ex)
+            { }
+
         }
 
         private void Tb_KeyUp(object sender, KeyEventArgs e)
@@ -359,7 +496,7 @@ namespace WindowsFormsApplication3
 
             SaveUnSavedData(cellData);
         }
-    
+
 
         private void UnDo(EventPublisher.EventArg arg)
         {
@@ -405,7 +542,7 @@ namespace WindowsFormsApplication3
                 }
                 e.Handled = true;
             }
-            else if (dataGridView1.CurrentRow.Index == e.RowIndex)
+            else if (dataGridView1.CurrentRow != null && dataGridView1.CurrentRow.Index == e.RowIndex)
             {
                 return;
                 e.Paint(e.CellBounds, DataGridViewPaintParts.All
@@ -743,9 +880,6 @@ namespace WindowsFormsApplication3
             MessageBox.Show("Saved");
             SaveRowInfo();
             DeleteUnSavedDataFile();
-
-
-
             RaiseEventForChange();
         }
 
@@ -852,6 +986,7 @@ namespace WindowsFormsApplication3
                 return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FreeLance", Path.GetFileNameWithoutExtension(_excelFilePath) + "_unsaved_currentcell.txt");
             }
         }
+
 
         private void SaveRowInfo()
         {
@@ -1324,17 +1459,18 @@ namespace WindowsFormsApplication3
         Color lastCurrentRowColor;
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-
             if (lastCurrentRow != null)
             {
                 lastCurrentRow.DefaultCellStyle.BackColor = lastCurrentRowColor;
             }
 
+
             lastCurrentRow = dataGridView1.CurrentRow;
             lastCurrentRowColor = lastCurrentRow.DefaultCellStyle.BackColor;
-            dataGridView1.CurrentRow.DefaultCellStyle.BackColor = _theme.CurrentRowColor;
-            // row.DefaultCellStyle.BackColor = Color.CadetBlue;
 
+           if(dataGridView1.CurrentRow.DefaultCellStyle.BackColor != _theme.HighlightedRowColor)
+            dataGridView1.CurrentRow.DefaultCellStyle.BackColor = _theme.CurrentRowColor;
+         
             dataGridView1.BeginEdit(false);
         }
 
@@ -1458,15 +1594,41 @@ namespace WindowsFormsApplication3
                 }
 
             }
-
-
-
             MessageBox.Show("Description with less then 3 sentence are :" + rowsWithLessSentenceCount);
         }
 
+        private void ShowSetenceCount()
+        {
+            var colIndex = dataGridView1.CurrentCell.ColumnIndex;
+            dataGridView1.Columns[Constants.WordFrequencyColumnName].Visible = true;
+            dataGridView1.Columns[Constants.WordFrequencyColumnName].DisplayIndex = colIndex + 1;
+
+            dataGridView1.Columns[Constants.WordFrequencyColumnName].Width = 200;
+
+            var dir = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+
+            var exludeWordsFrequencyCheckFile = Path.Combine(dir, "ExludeWordsFrequencyCheck.txt");
+            IEnumerable<string> exludeWords = new List<string>();
+            if (File.Exists(exludeWordsFrequencyCheckFile))
+            {
+                exludeWords = File.ReadAllText(exludeWordsFrequencyCheckFile).Replace(Environment.NewLine, "").Split(',');
+            }
+
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+
+                row.Cells[Constants.WordFrequencyColumnName].Value = Utility.CountWordsInString(row.Cells[colIndex].Value.ToString(), exludeWords);
+            }
+        }
+
+        private void ShowSetenceCount(EventArg arg)
+        {
+            ShowSetenceCount();
+        }
 
         private void SetenceCountInBullets(EventArg arg)
         {
+
             int threshold = 0;
 
             var columsToCheck = GetColumsToCheckForSentenceCount();
@@ -1477,7 +1639,6 @@ namespace WindowsFormsApplication3
             {
                 UnHighlightRow(int.Parse(row.Cells["ID"].Value.ToString()));
 
-
                 foreach (var columnName in columsToCheck)
                 {
                     var cell = row.Cells[columnName];
@@ -1486,7 +1647,6 @@ namespace WindowsFormsApplication3
                     {
                         continue;
                     }
-
 
                     var count = GetSetenceCount(cell.Value.ToString());
 
@@ -1497,7 +1657,6 @@ namespace WindowsFormsApplication3
                         continue;
                     }
 
-
                     if (count > threshold)
                     {
                         HighLightRow(int.Parse(row.Cells["ID"].Value.ToString()));
@@ -1507,6 +1666,7 @@ namespace WindowsFormsApplication3
                 }
 
             }
+
             var msg = "Bullets with more then 0 sentence are :" + rowsWithLessSentenceCount;
             msg += Environment.NewLine + "Fixed Bullets : " + fixedCell;
 
@@ -1515,7 +1675,6 @@ namespace WindowsFormsApplication3
 
         private IEnumerable<string> GetColumsToCheckForSentenceCount()
         {
-
             List<string> lst = new List<string>();
 
             foreach (DataGridViewColumn column in dataGridView1.Columns)
@@ -1551,7 +1710,6 @@ namespace WindowsFormsApplication3
                 {
                     if (!(dataGridView1.Columns[cell.ColumnIndex] is DataGridViewImageColumn))
                     {
-
                         if (cell.Value != null && !string.IsNullOrEmpty(cell.Value.ToString()))
                         {
                             if (statics.ContainsKey(cell.ColumnIndex))
@@ -1678,6 +1836,23 @@ namespace WindowsFormsApplication3
                 myRtb.Select(index, word.Length);
 
             }
+        }
+
+        public void HighlightTextWithOccuranceNumber(RichTextBox myRtb, string word, int occuranceNumber)
+        {
+            if (word == string.Empty)
+                return;
+
+            word = word.Trim();
+
+            var wordPattern = new Regex(@"\b" + word + "\\b", RegexOptions.IgnoreCase);
+
+            foreach (Match match in wordPattern.Matches(myRtb.Text))
+            {
+                myRtb.Select(match.Index, match.Length);
+                myRtb.SelectionBackColor = Color.YellowGreen;
+            }
+            
         }
     }
 }
