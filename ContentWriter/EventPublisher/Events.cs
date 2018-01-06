@@ -10,10 +10,7 @@ namespace EventPublisher
     {
         RowSelectionChange,
         SetRightTextBoxText,
-        MoveToPriviousRecord,
-        MoveToNextRecord,
         ReOrder,
-        RecordUpdated,
         Save,
         WordDocClosed,
         WordDocSaved,
@@ -32,6 +29,7 @@ namespace EventPublisher
         FindText,
         Relace,
         LoadTheme,
-        WordsFrequency
+        WordsFrequency,
+        RichTextBoxTextChanged
     }
 }

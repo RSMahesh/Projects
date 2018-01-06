@@ -9,5 +9,6 @@ namespace WindowsFormsApplication3
     class Constants
     {
      public const string  WordFrequencyColumnName = "Word Frequency";
+        public const int ImageIconSize = 100;
     }
 }
