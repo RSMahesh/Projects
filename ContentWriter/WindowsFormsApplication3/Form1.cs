@@ -21,10 +21,10 @@ namespace WindowsFormsApplication3
     {
         string _excelFilePath;
         OLDBConnection12 _dataConnection;
-        
-        bool IsXmlFile;
+
+        bool IsReadOnlyFile;
         bool imageColumnLoaded = false;
-        ContextMenu contextMenu = new ContextMenu();
+        // ContextMenu contextMenu = new ContextMenu();
         UndoRedoStack<CellData> _undoRedo;
         bool _importBackUp;
         List<RowInfo> rowsInfo = new List<RowInfo>();
@@ -33,38 +33,47 @@ namespace WindowsFormsApplication3
         WpfRichTextBox wpfRichText;
         ImageLoader imageLoader;
         ContextMenueHanler contextMenueHanler;
+        FindAndReplace findAndReplace;
+        PictureViewer frmPrectiureViwer = null;
 
-        public Form1(string filePath, bool importBackUp = false)
+
+        public Form1(string filePath, bool importBackUp = false, bool isReadOnly = false)
         {
 
             InitializeComponent();
-            wpfRichText = new WpfRichTextBox(richTextBoxPanel);
+            wpfRichText = new WpfRichTextBox(wpfRichTextBoxPanel);
 
             _importBackUp = importBackUp;
             _undoRedo = new UndoRedoStack<CellData>(new SetCellDataCommand(dataGridView1));
 
             AddEventsHandlersOfUIControls();
-            SubScribeEvents();
 
             contextMenueHanler = new ContextMenueHanler(dataGridView1, _undoRedo);
-            richTextBox1.Visible = false;
 
             _excelFilePath = filePath;
 
             imageLoader = new ImageLoader(dataGridView1, _excelFilePath);
+            findAndReplace = new FindAndReplace(dataGridView1, wpfRichText, ShowWpfRichTextBox);
+
+            wpfRichTextBoxPanel.Visible = false;
+
+            IsReadOnlyFile = isReadOnly;
 
             if (Path.GetExtension(_excelFilePath) == ".xml")
             {
-                IsXmlFile = true;
+                IsReadOnlyFile = true;
             }
             else
             {
                 EventContainer.SubscribeEvent(EventPublisher.Events.StartDataImport.ToString(), StartBackUpImport);
             }
+            SubScribeEvents();
 
-            AddContextMenu();
+            if (!IsReadOnlyFile)
+            {
+                Utility.CheckDataSavedProperly(_excelFilePath);
+            }
 
-            LoadTheme(new EventArg(Theme.GetDefaultTheme()));
         }
 
         private void AddEventsHandlersOfUIControls()
@@ -79,16 +88,66 @@ namespace WindowsFormsApplication3
             dataGridView1.Sorted += DataGridView1_Sorted;
             dataGridView1.CellValueChanged += DataGridView1_CellValueChanged;
             dataGridView1.ColumnWidthChanged += DataGridView1_ColumnWidthChanged;
+            dataGridView1.RowHeightChanged += DataGridView1_RowHeightChanged;
             dataGridView1.Scroll += DataGridView1_Scroll;
+            dataGridView1.ColumnHeaderMouseClick += DataGridView1_ColumnHeaderMouseClick;
+        }
 
-            richTextBox1.KeyUp += RichTextBox1_KeyUp;
-            richTextBox1.ScrollBars = RichTextBoxScrollBars.None;
+        private void DataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                if (dataGridView1.Columns[e.ColumnIndex] is DataGridViewImageColumn ||
+                dataGridView1.Columns[e.ColumnIndex].Name == "ID")
+                {
+                    return;
+                }
+
+                if (dataGridView1.Columns[e.ColumnIndex].Frozen)
+                {
+                    dataGridView1.Columns[e.ColumnIndex].Frozen = false;
+                    dataGridView1.Columns[e.ColumnIndex].DisplayIndex = (int)dataGridView1.Columns[e.ColumnIndex].Tag;
+               //   dataGridView1.Columns[e.ColumnIndex].HeaderCell.Style.BackColor = Color.Black;
+                }
+                else
+                {
+
+                    dataGridView1.Columns[e.ColumnIndex].Tag = dataGridView1.Columns[e.ColumnIndex].DisplayIndex;
+
+                    dataGridView1.Columns[e.ColumnIndex].DisplayIndex = GetNextForzenIndex();
+             //       dataGridView1.Columns[e.ColumnIndex].HeaderCell.Style.BackColor = Color.AliceBlue;
+                    dataGridView1.Columns[e.ColumnIndex].Frozen = true;
+
+                }
+
+                //dataGridView1.Columns[e.ColumnIndex].Frozen = !dataGridView1.Columns[e.ColumnIndex].Frozen;
+            }
+        }
+
+        private int GetNextForzenIndex()
+        {
+            int index = 0;
+            foreach (DataGridViewColumn col in dataGridView1.Columns)
+            {
+                if (col.Frozen)
+                {
+                    index++;
+                }
+            }
+
+            return index;
+
 
         }
 
         private void DataGridView1_Scroll(object sender, ScrollEventArgs e)
         {
-            richTextBoxPanel.Visible = false;
+            wpfRichTextBoxPanel.Visible = false;
+
+            if (_importBackUp)
+            {
+                ResetCheckBoxLocation();
+            }
         }
 
         private void DataGridView1_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e)
@@ -100,40 +159,43 @@ namespace WindowsFormsApplication3
                     e.Column.Visible = false;
                 }
             }
+
+            // ShowWpfRichTextBox();
         }
 
-        private void RichTextBox1_KeyUp(object sender, KeyEventArgs e)
+        private void DataGridView1_RowHeightChanged(object sender, DataGridViewRowEventArgs e)
         {
-            dataGridView1.CurrentCell.Value = richTextBox1.Text;
+            //ShowWpfRichTextBox();
         }
+
 
         private void SubScribeEvents()
         {
-            EventContainer.SubscribeEvent(EventPublisher.Events.Save.ToString(), Save);
-            EventContainer.SubscribeEvent(EventPublisher.Events.DescriptionCount.ToString(), DescriptionCount);
-            EventContainer.SubscribeEvent(EventPublisher.Events.ShowFilter.ToString(), ShowFilter);
-            EventContainer.SubscribeEvent(EventPublisher.Events.ShowFilterDone.ToString(), FilterDone);
-            EventContainer.SubscribeEvent(EventPublisher.Events.Undo.ToString(), UnDo);
-            EventContainer.SubscribeEvent(EventPublisher.Events.ReDo.ToString(), ReDo);
-            EventContainer.SubscribeEvent(EventPublisher.Events.Statistics.ToString(), ShowStatistics);
-            EventContainer.SubscribeEvent(EventPublisher.Events.Formula.ToString(), Formula);
-            EventContainer.SubscribeEvent(EventPublisher.Events.SetenceCountInDescription.ToString(), SetenceCountInDescription);
-            EventContainer.SubscribeEvent(EventPublisher.Events.SetenceCountInBullet.ToString(), SetenceCountInBullets);
-            EventContainer.SubscribeEvent(EventPublisher.Events.FindText.ToString(), FindText);
-            EventContainer.SubscribeEvent(EventPublisher.Events.Relace.ToString(), ReplaceText);
-            EventContainer.SubscribeEvent(EventPublisher.Events.LoadTheme.ToString(), LoadTheme);
-            EventContainer.SubscribeEvent(EventPublisher.Events.WordsFrequency.ToString(), ShowSetenceCount);
-            EventContainer.SubscribeEvent(EventPublisher.Events.RichTextBoxTextChanged.ToString(), RichTextBoxTextChanged);
+
+            if (!IsReadOnlyFile)
+            {
+
+                EventContainer.SubscribeEvent(EventPublisher.Events.Save.ToString(), Save);
+                EventContainer.SubscribeEvent(EventPublisher.Events.DescriptionCount.ToString(), DescriptionCount);
+                EventContainer.SubscribeEvent(EventPublisher.Events.ShowFilter.ToString(), ShowFilter);
+                EventContainer.SubscribeEvent(EventPublisher.Events.ShowFilterDone.ToString(), FilterDone);
+                EventContainer.SubscribeEvent(EventPublisher.Events.Undo.ToString(), UnDo);
+                EventContainer.SubscribeEvent(EventPublisher.Events.ReDo.ToString(), ReDo);
+                EventContainer.SubscribeEvent(EventPublisher.Events.Statistics.ToString(), ShowStatistics);
+                EventContainer.SubscribeEvent(EventPublisher.Events.Formula.ToString(), Formula);
+                EventContainer.SubscribeEvent(EventPublisher.Events.SetenceCountInDescription.ToString(), SetenceCountInDescription);
+                EventContainer.SubscribeEvent(EventPublisher.Events.SetenceCountInBullet.ToString(), SetenceCountInBullets);
+                EventContainer.SubscribeEvent(EventPublisher.Events.FindText.ToString(), findAndReplace.FindText);
+                EventContainer.SubscribeEvent(EventPublisher.Events.Relace.ToString(), findAndReplace.ReplaceText);
+                EventContainer.SubscribeEvent(EventPublisher.Events.LoadTheme.ToString(), LoadTheme);
+                EventContainer.SubscribeEvent(EventPublisher.Events.WordsFrequency.ToString(), ShowSetenceCount);
+                EventContainer.SubscribeEvent(EventPublisher.Events.RichTextBoxTextChanged.ToString(), RichTextBoxTextChanged);
+                EventContainer.SubscribeEvent(EventPublisher.Events.SearchTextInBackUp.ToString(), SearchText);
+
+            }
+
         }
 
-        void AddContextMenu()
-        {
-            contextMenu.MenuItems.Add("Copy", contextMenueHanler.OnCopy);
-            contextMenu.MenuItems.Add("Past", contextMenueHanler.OnPast);
-            contextMenu.MenuItems.Add("Delete", contextMenueHanler.OnDelete);
-            contextMenu.MenuItems.Add("ApplyFormula", contextMenueHanler.OnApplyFormula);
-            dataGridView1.ContextMenu = contextMenu;
-        }
         void LoadTheme(EventArg arg)
         {
             _theme = (Theme)arg.Arg;
@@ -154,6 +216,10 @@ namespace WindowsFormsApplication3
                 }
 
             }
+
+            wpfRichText.BackgroundColor = Utility.ToMediaColor(_theme.BackGroundColor);
+            wpfRichText.BorderColor = Utility.ToMediaColor(_theme.CurrentCellBorderColor);
+            wpfRichText.ForegroundColor = Utility.ToMediaColor(_theme.ForeColor);
         }
 
         private void DataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -171,6 +237,8 @@ namespace WindowsFormsApplication3
 
         private void Form1_Load(object sender, EventArgs e)
         {
+
+
             dataGridView1.RowTemplate.Height = Constants.ImageIconSize;
             dataGridView1.RowTemplate.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
 
@@ -202,12 +270,16 @@ namespace WindowsFormsApplication3
 
             }
 
-            if (IsXmlFile)
+
+
+            if (IsReadOnlyFile)
             {
                 dataGridView1.RowTemplate.DefaultCellStyle.BackColor = _theme.XmlBackGroundColor;
                 dataGridView1.RowTemplate.DefaultCellStyle.ForeColor = _theme.XmlForeColor;
                 // dataGridView1.ReadOnly = true;
             }
+
+            LoadTheme(new EventArg(IsReadOnlyFile ? Theme.GetReadOnlyTheme() : Theme.GetDefaultTheme()));
 
             //this done because when user clicks on cell first time
             // its moves the cell focus to start as columns width get adusted
@@ -343,7 +415,7 @@ namespace WindowsFormsApplication3
                 attachedEventFroKepUp = true;
             }
 
-            ShowRichTextBox();
+            wpfRichTextBoxPanel.Visible = false;
         }
 
         private void EditingTextBox_MouseClick(object sender, MouseEventArgs e)
@@ -351,13 +423,15 @@ namespace WindowsFormsApplication3
             StartHighlightingWords();
         }
 
-        private void ShowRichTextBox()
+        private void ShowWpfRichTextBox()
         {
+            if (!imageColumnLoaded || editingTextBox == null || dataGridView1.Columns[dataGridView1.CurrentCell.ColumnIndex].Name == Constants.WordFrequencyColumnName)
+                return;
             var rec = dataGridView1.GetCellDisplayRectangle(dataGridView1.CurrentCell.ColumnIndex, dataGridView1.CurrentCell.RowIndex, true);
             wpfRichText.AddText(editingTextBox.Text);
-            richTextBoxPanel.Size = rec.Size;
-            richTextBoxPanel.Location = rec.Location;
-            richTextBoxPanel.Visible = true;
+            wpfRichTextBoxPanel.Size = rec.Size;
+            wpfRichTextBoxPanel.Location = rec.Location;
+            wpfRichTextBoxPanel.Visible = true;
         }
 
 
@@ -390,7 +464,7 @@ namespace WindowsFormsApplication3
                     var cell = dataGridView1[colIndex, dataGridView1.CurrentCell.RowIndex];
                     dataGridView1.CurrentCell = cell;
                     dataGridView1.BeginEdit(false);
-                    ShowRichTextBox();
+                    ShowWpfRichTextBox();
 
                     wpfRichText.HighlightWholeWordAll(searchText);
 
@@ -421,7 +495,7 @@ namespace WindowsFormsApplication3
                 return;
             }
 
-            if (IsXmlFile)
+            if (IsReadOnlyFile)
                 return;
 
             if (dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() != e.FormattedValue.ToString())
@@ -467,6 +541,10 @@ namespace WindowsFormsApplication3
 
         private void dataGridView1_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
+            //if(dataGridView1.SelectedCells.Count < 2)
+            // {
+            //     return;
+            // }
 
             if (IsCellSelected(e.ColumnIndex, e.RowIndex))
             {
@@ -544,7 +622,7 @@ namespace WindowsFormsApplication3
 
                 if (dataGridView1.SelectedCells.Count > 1)
                 {
-                    contextMenu.Show(dataGridView1, p);
+                    contextMenueHanler.ShowMenu(p);
                 }
             }
         }
@@ -558,10 +636,10 @@ namespace WindowsFormsApplication3
                 return;
             }
 
-            if (IsXmlFile)
+            if (IsReadOnlyFile)
             {
-                MessageBox.Show("Can not save backup file", "Save Error",
-                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show("Can not save backup file", "Save Error",
+                //MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -582,7 +660,7 @@ namespace WindowsFormsApplication3
             }
 
             var tbl = ((DataView)dataGridView1.DataSource).Table;
-            _dataConnection.SetUpdateCommand(tbl.Columns);
+            _dataConnection.SaveData(tbl.Columns);
 
             dataGridView1.CurrentCell = dataGridView1.Rows[index].Cells[Colindex];
             dataGridView1.Rows[index].Selected = true;
@@ -624,8 +702,7 @@ namespace WindowsFormsApplication3
 
         private void LoadUnSavedData()
         {
-
-            if (!File.Exists(UnSavedDataFile) && !File.Exists(UnSavedDataCurrentCellFile))
+            if ((!File.Exists(UnSavedDataFile) && !File.Exists(UnSavedDataCurrentCellFile)) || IsReadOnlyFile)
             {
                 return;
 
@@ -757,13 +834,54 @@ namespace WindowsFormsApplication3
             return dt2;
         }
 
+        CheckBox HeaderCheckBox;
         private void addCheckBox()
         {
             DataGridViewCheckBoxColumn dgvCmb = new DataGridViewCheckBoxColumn();
             dgvCmb.ValueType = typeof(bool);
             dgvCmb.Name = "Chk";
-            dgvCmb.HeaderText = "CheckBox";
+            dgvCmb.HeaderText = "";
+            dgvCmb.Width = 60;
             dataGridView1.Columns.Add(dgvCmb);
+
+            HeaderCheckBox = new CheckBox();
+
+            HeaderCheckBox.Size = new Size(15, 15);
+
+            HeaderCheckBox.CheckedChanged += HeaderCheckBox_CheckedChanged;
+
+            //Add the CheckBox into the DataGridView
+            dataGridView1.Controls.Add(HeaderCheckBox);
+
+            ResetCheckBoxLocation();
+        }
+
+        private void HeaderCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow Row in dataGridView1.Rows)
+            {
+                ((DataGridViewCheckBoxCell)Row.Cells[dataGridView1.Columns.Count - 1]).Value = HeaderCheckBox.Checked;
+
+            }
+        }
+
+        private void ResetCheckBoxLocation()
+        {
+            //Get the column header cell bounds
+            Rectangle oRectangle =
+             dataGridView1.GetCellDisplayRectangle(dataGridView1.Columns.Count - 1, -1, true);
+            Point oPoint = new Point();
+
+            oPoint.X = oRectangle.Location.X + (oRectangle.Width - HeaderCheckBox.Width) / 2 + 1;
+            oPoint.Y = oRectangle.Location.Y + (oRectangle.Height - HeaderCheckBox.Height) / 2 + 1;
+
+            if (oPoint.X < 1)
+            {
+                return;
+            }
+
+            //Change the location of the CheckBox to make it stay on the header
+            HeaderCheckBox.Location = oPoint;
         }
 
         private void DataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
@@ -776,118 +894,6 @@ namespace WindowsFormsApplication3
             MessageBox.Show(info);
             e.Cancel = true;
         }
-
-        //List<int> imageColIndexs = new List<int>();
-
-        //List<DataGridViewColumn> imgcolumns = new List<DataGridViewColumn>();
-
-        //private void GetImageColumns()
-        //{
-        //    for (var i = 0; i < dataGridView1.Columns.Count; i++)
-        //    {
-        //        try
-        //        {
-        //            var uu = new Uri(dataGridView1.Rows[1].Cells[i].Value.ToString());
-        //            if (uu.Scheme.StartsWith("http"))
-        //            {
-        //                imageColIndexs.Add(i);
-        //                dataGridView1.Columns[i].Visible = false;
-        //            }
-
-        //        }
-        //        catch (Exception ex)
-        //        {
-
-        //        }
-        //    }
-        //}
-        //private void AddImageColumn()
-        //{
-        //    List<DataGridViewImageColumn> lst = new List<DataGridViewImageColumn>();
-
-        //    foreach (var cell in imageColIndexs)
-        //    {
-        //        DataGridViewImageColumn imgColumn = new DataGridViewImageColumn();
-        //        imgColumn.HeaderText = "Image";
-        //        imgColumn.Width = _imageSize + 20;
-
-        //        dataGridView1.Columns.Insert(1, imgColumn);
-        //        imgcolumns.Add(imgColumn);
-        //        lst.Add(imgColumn);
-        //        // imgColumn.Frozen = true;
-        //    }
-
-        //    foreach (DataGridViewImageColumn col in lst)
-        //    {
-        //        col.Frozen = true;
-        //    }
-
-        //}
-        //private void LoadImageInCell()
-        //{
-        //    if (ConfigurationManager.AppSettings["DontNotLoadImage"] != null
-        //          && bool.Parse(ConfigurationManager.AppSettings["DontNotLoadImage"]))
-        //    {
-        //        return;
-        //    }
-
-        //    WebClient wc = new WebClient();
-        //    for (int rowIndex = 0; rowIndex < dataGridView1.Rows.Count; rowIndex++)
-        //    {
-
-        //        for (var i = 0; i < imageColIndexs.Count; i++)
-        //        {
-        //            if (dataGridView1.Rows[rowIndex].Cells[imageColIndexs[i]].Value != null)
-        //            {
-        //                var url = dataGridView1.Rows[rowIndex].Cells[imageColIndexs[i] + imageColIndexs.Count].Value.ToString();
-
-        //                if (string.IsNullOrEmpty(url))
-        //                {
-        //                    continue;
-        //                }
-
-        //                var uri = new Uri(url);
-        //                var filePAth = GetLocalImagePath(uri);
-
-        //                if (!Directory.Exists(Path.GetDirectoryName(filePAth)))
-        //                {
-        //                    Directory.CreateDirectory(Path.GetDirectoryName(filePAth));
-        //                }
-
-        //                if (!File.Exists(filePAth))
-        //                {
-        //                    wc.DownloadFile(url, filePAth);
-        //                }
-
-        //                var thumbFilePath = Path.Combine(Path.GetDirectoryName(filePAth), Path.GetFileNameWithoutExtension(filePAth) + "_thumb" + ".ico");
-        //                Image thumNailImage = null;
-
-        //                if (File.Exists(thumbFilePath))
-        //                {
-        //                    thumNailImage = Image.FromFile(thumbFilePath);
-        //                }
-        //                else
-        //                {
-        //                    var img = Image.FromFile(filePAth);
-        //                    thumNailImage = ImageThumbnailDataGridView.Helper.ResizeImage(img, _imageSize, _imageSize, false);
-        //                    thumNailImage.Save(thumbFilePath, ImageFormat.Icon);
-        //                    img.Dispose();
-        //                }
-
-        //                dataGridView1.Rows[rowIndex].Cells[imgcolumns[i].Index].Value = thumNailImage;
-        //                dataGridView1.Rows[rowIndex].Cells[imgcolumns[i].Index].Tag = filePAth;
-        //            }
-        //        }
-        //    }
-        //}
-        //private string GetLocalImagePath(Uri uri)
-        //{
-        //    var tt = _excelFilePath.Split(new string[] { "_dataBackup" }, StringSplitOptions.None)[0];
-        //    return Path.GetDirectoryName(tt) + "\\" +
-        //               Path.GetFileNameWithoutExtension(tt) + "-images"
-        //               + uri.LocalPath.Replace("/", "\\");
-        //}
-
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex < 0 || e.RowIndex < 0)
@@ -896,6 +902,7 @@ namespace WindowsFormsApplication3
             }
 
             dataGridView1.BeginEdit(false);
+
             if (dataGridView1[e.ColumnIndex, e.RowIndex].Tag != null)
             {
                 if (frmPrectiureViwer == null)
@@ -917,9 +924,7 @@ namespace WindowsFormsApplication3
                     frmPrectiureViwer.Show();
                 }
             }
-
         }
-
 
         private void dataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
@@ -945,35 +950,6 @@ namespace WindowsFormsApplication3
             imageColumnLoaded = true;
         }
 
-
-        PictureViewer frmPrectiureViwer = null;
-
-        bool alreadyOpend = false;
-
-        private void OpenWord(EventPublisher.EventArg arg)
-        {
-            try
-            {
-                if (!alreadyOpend)
-                {
-                    OutProcessDocument.OpenDocument(@"D:\1.docx");
-                    OutProcessDocument.ReSize(10, 10, 300, 300);
-                    alreadyOpend = true;
-                }
-
-                OutProcessDocument.Text = dataGridView1.CurrentCell.Value.ToString();
-                OutProcessDocument.Visible = true;
-            }
-            catch (System.Runtime.InteropServices.COMException)
-            {
-                alreadyOpend = false;
-
-                OutProcessDocument.Close();
-                MessageBox.Show("Try Again");
-            }
-
-        }
-
         private void DescriptionCount(EventPublisher.EventArg arg)
         {
             var count = 0;
@@ -995,6 +971,13 @@ namespace WindowsFormsApplication3
             Filter filter = new Filter((DataView)dataGridView1.DataSource);
             filter.WindowState = FormWindowState.Normal;
             filter.Show();
+        }
+
+        public void FilterById(int ID)
+        {
+            var dataTable = (DataView)dataGridView1.DataSource;
+            dataTable.RowFilter = "ID=" + ID.ToString();
+            imageLoader.LoadImageInCell();
         }
 
         private void FilterDone(EventPublisher.EventArg arg)
@@ -1042,6 +1025,12 @@ namespace WindowsFormsApplication3
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             openFileDialog.Filter = "XML (*.xml)|*.xml";
+
+          openFileDialog.InitialDirectory =
+              Path.GetDirectoryName(_excelFilePath) + "\\" +
+                      Path.GetFileNameWithoutExtension(_excelFilePath)
+                      + "_dataBackup\\Full";
+
             if (openFileDialog.ShowDialog(this) == DialogResult.OK)
             {
                 EventContainer.SubscribeEvent(EventPublisher.Events.DataImportSelectionCompleted.ToString(), OnDataImportSelectionCompleted);
@@ -1172,6 +1161,43 @@ namespace WindowsFormsApplication3
             dataGridView1.CurrentCell.Value = arg.Arg.ToString();
         }
 
+        private void SearchText(EventArg arg)
+        {
+
+            Search search = new Search(this.MdiParent);
+            // search.MdiParent = this.MdiParent;
+            search.Show();
+
+            search.ShowResult(dataGridView1.CurrentCell.Value.ToString());
+
+
+
+            //if (string.IsNullOrEmpty(ConfigurationManager.AppSettings["BackUpFolder"]))
+            //{
+            //    MessageBox.Show("BackUpFolder not defeined in config");
+            //    return;
+            //}
+
+            //var search = new SearchService(ConfigurationManager.AppSettings["BackUpFolder"]);
+            //var reults = search.SearchText(dataGridView1.CurrentCell.Value.ToString());
+
+            //if (reults.Any())
+            //{
+            //    Form1 form = new Form1(file, false, true);
+            //    form.MdiParent = this.MdiParent;
+            //    form.Show();
+            //    form.FilterById(search.FoundRowIndex);
+            //    form.WindowState = FormWindowState.Normal;
+            //    form.Height = 200;
+            //    // form.MdiParent = null;
+
+            //}
+            //else
+            //{
+            //    MessageBox.Show("No found");
+            //}
+
+        }
         private void SetenceCountInBullets(EventArg arg)
         {
 
@@ -1295,90 +1321,5 @@ namespace WindowsFormsApplication3
             MessageBox.Show(tt);
         }
 
-        int startingRowToFind = 0;
-        int startingColumnToFind = 0;
-        int startingIndexInCellToFindText = 0;
-        private void FindText(EventArg arg)
-        {
-            var textToFind = arg.Arg.ToString();
-
-            for (var rowIndex = startingRowToFind; rowIndex < dataGridView1.Rows.Count; rowIndex++)
-            {
-                DataGridViewRow row = dataGridView1.Rows[rowIndex];
-
-                for (var colIndex = startingColumnToFind; colIndex < dataGridView1.Rows[rowIndex].Cells.Count; colIndex++)
-                {
-                    var cell = dataGridView1.Rows[rowIndex].Cells[colIndex];
-
-                    if (!(dataGridView1.Columns[colIndex] is DataGridViewImageColumn))
-                    {
-
-                        if (cell.Visible && cell.Value != null && !string.IsNullOrEmpty(cell.Value.ToString()))
-                        {
-
-
-                            var indx = cell.Value.ToString().IndexOf(textToFind, startingIndexInCellToFindText, StringComparison.OrdinalIgnoreCase);
-
-                            if (indx != -1)
-                            {
-                                //heck to make mutiselect work in cell
-                                dataGridView1.CurrentCell = dataGridView1[0, rowIndex];
-
-                                dataGridView1.CurrentCell = cell;
-                                dataGridView1.BeginEdit(false);
-                                //HighlightText(editingTextBox, textToFind, startingIndexInCellToFindText);
-                                wpfRichText.SelectText(textToFind, startingIndexInCellToFindText);
-                                startingIndexInCellToFindText = 0;
-                                startingRowToFind = rowIndex;
-                                startingColumnToFind = colIndex;
-
-                                indx = cell.Value.ToString().IndexOf(textToFind, indx + textToFind.Length, StringComparison.OrdinalIgnoreCase);
-
-                                if (indx != -1)
-                                {
-                                    startingIndexInCellToFindText = indx;
-                                }
-                                else
-                                {
-
-                                    startingColumnToFind = colIndex + 1;
-                                }
-
-                                if (startingColumnToFind >= dataGridView1.Rows[rowIndex].Cells.Count)
-                                {
-                                    startingColumnToFind = 0;
-                                    startingIndexInCellToFindText = 0;
-                                    startingRowToFind++;
-                                }
-
-                                return;
-                            }
-                        }
-                    }
-                }
-
-                startingColumnToFind = 0;
-            }
-
-            MessageBox.Show("All Match Found");
-            startingColumnToFind = startingRowToFind = startingIndexInCellToFindText = 0;
-        }
-        private void ReplaceText(EventArg arg)
-        {
-            var arr = arg.Arg as string[];
-            var textToReplace = arr[1];
-            var textToFind = arr[0];
-
-            if (wpfRichText.ReplaceText(textToReplace))
-            {
-                //adjust startingIndexInCellToFindText based on length changed due to repalcement
-                var diff = textToReplace.Length - textToFind.Length;
-
-                if (startingIndexInCellToFindText > 0)
-                {
-                    startingIndexInCellToFindText += diff;
-                }
-            }
-        }
     }
 }

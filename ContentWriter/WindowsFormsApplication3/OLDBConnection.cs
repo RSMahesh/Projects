@@ -15,12 +15,9 @@ namespace StatusMaker.Data
         OleDbDataAdapter _adap;
         OleDbConnection _connection;
         DataTable _dt = new DataTable();
-        //List<string> addtionalCoumns = new List<string>( new []{"ColorCode", "TextSortData", "NumberSortData"});
-
-
+        const string defaultQuery = "Select * from [Sheet1$]";
         List<DataColumn> addtionalCoumns = new List<DataColumn>(new[] { new DataColumn("ColorCode", typeof(string)),
            new DataColumn(Constants.WordFrequencyColumnName, typeof(string)),
-            //new DataColumn("NumberSortData", typeof(double))
         });
 
 
@@ -43,9 +40,9 @@ namespace StatusMaker.Data
             _connection = new OleDbConnection(connection);
             _connection.Open();
         }
-        public DataTable ExecuteDatatable(string sql)
+        public DataTable ExecuteDatatable(string sql = defaultQuery, bool addCustomColums = true)
         {
-            if(Path.GetExtension(_filePath) == ".xml")
+            if (Path.GetExtension(_filePath) == ".xml")
             {
                 return ReadFromXml(_filePath);
             }
@@ -53,25 +50,29 @@ namespace StatusMaker.Data
             lock (this)
             {
                 this.OpenConnnction();
-             
+
                 _dt.TableName = "Sheet1";
                 _adap = new OleDbDataAdapter(sql, _connection);
                 _adap.Fill(_dt);
-               _adap.FillSchema(_dt, SchemaType.Source);
+                _adap.FillSchema(_dt, SchemaType.Source);
 
-                foreach (var col in addtionalCoumns)
+                if (addCustomColums)
                 {
-                    
-                    _dt.Columns.Add(col);
+                    foreach (var col in addtionalCoumns)
+                    {
+
+                        _dt.Columns.Add(col);
+                    }
                 }
 
                 this.CloseConnection();
                 return _dt;
-               
+
             }
         }
 
-        private DataTable ReadFromXml(string file)
+
+        public static DataTable ReadFromXml(string file)
         {
             DataSet dataSet = new DataSet();
             dataSet.ReadXml(file, XmlReadMode.InferSchema);
@@ -79,7 +80,7 @@ namespace StatusMaker.Data
             return dataSet.Tables[0];
         }
 
-        public void SetUpdateCommand(DataColumnCollection dataColumns)
+        public void SaveData(DataColumnCollection dataColumns)
         {
 
             TakeBackUp();
@@ -106,23 +107,23 @@ namespace StatusMaker.Data
 
             command.CommandText = updateStatement;
             _adap.UpdateCommand = command;
-          var updateCount =  _adap.Update(_dt);
+            var updateCount = _adap.Update(_dt);
             this.CloseConnection();
-           
+
         }
 
         private void TakeBackUp()
         {
-           
-          var backUpDir = Path.Combine(Path.GetDirectoryName(_filePath), Path.GetFileNameWithoutExtension( _filePath) + "_dataBackup");
+
+            var backUpDir = Path.Combine(Path.GetDirectoryName(_filePath), Path.GetFileNameWithoutExtension(_filePath) + "_dataBackup");
 
             if (!Directory.Exists(backUpDir))
             {
                 Directory.CreateDirectory(backUpDir);
             }
 
-          var backupFile =  Path.Combine(backUpDir, GetFileName(backUpDir));
-          var dt1 =   _dt.GetChanges();
+            var backupFile = Path.Combine(backUpDir, GetFileName(backUpDir));
+            var dt1 = _dt.GetChanges();
 
             if (dt1 != null)
             {
@@ -136,14 +137,14 @@ namespace StatusMaker.Data
                 Directory.CreateDirectory(backupFileDir);
             }
 
-            _dt.WriteXml(Path.Combine( backupFileDir, GetFileName(backupFileDir)), XmlWriteMode.WriteSchema);
+            _dt.WriteXml(Path.Combine(backupFileDir, GetFileName(backupFileDir)), XmlWriteMode.WriteSchema);
 
         }
 
         private string GetFileName(string backUpDir)
         {
             var startFrom = 100;
-           var fileCount = Directory.GetFiles(backUpDir, "*.xml").Length;
+            var fileCount = Directory.GetFiles(backUpDir, "*.xml").Length;
             startFrom += fileCount;
 
             //var fileName = "1";

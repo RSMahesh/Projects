@@ -30,6 +30,7 @@ namespace EventPublisher
         Relace,
         LoadTheme,
         WordsFrequency,
-        RichTextBoxTextChanged
+        RichTextBoxTextChanged,
+        SearchTextInBackUp
     }
 }

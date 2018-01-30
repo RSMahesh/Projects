@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Windows.Forms;
+using Utility;
 
 namespace WindowsFormsApplication3
 {
@@ -56,6 +57,33 @@ namespace WindowsFormsApplication3
 
             });
         }
+
+        bool alreadyOpend = false;
+
+        private void OpenWord(EventPublisher.EventArg arg)
+        {
+            try
+            {
+                if (!alreadyOpend)
+                {
+                    OutProcessDocument.OpenDocument(@"D:\1.docx");
+                    OutProcessDocument.ReSize(10, 10, 300, 300);
+                    alreadyOpend = true;
+                }
+
+                OutProcessDocument.Text = dataGridView1.CurrentCell.Value.ToString();
+                OutProcessDocument.Visible = true;
+            }
+            catch (System.Runtime.InteropServices.COMException)
+            {
+                alreadyOpend = false;
+
+                OutProcessDocument.Close();
+                MessageBox.Show("Try Again");
+            }
+
+        }
+
         private void MoveToNextRecord(EventArg obj)
         {
             var index = dataGridView1.CurrentRow.Index + 1;

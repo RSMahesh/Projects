@@ -39,5 +39,19 @@ namespace WindowsFormsApplication3
             return theme;
         }
 
+        public static Theme GetReadOnlyTheme()
+        {
+            var theme = new Theme();
+            theme.BackGroundColor = Color.White;
+            theme.ForeColor = Color.Black;
+            theme.SelectionBackColor = Color.White;
+            theme.SelectionForeColor = Color.Black;
+            theme.CurrentRowColor = Color.White;
+            theme.HighlightedRowColor = Color.YellowGreen;
+            theme.CurrentCellBorderColor = Color.Yellow;
+
+            return theme;
+        }
+
     }
 }

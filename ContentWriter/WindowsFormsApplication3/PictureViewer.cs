@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -45,6 +46,7 @@ namespace WindowsFormsApplication3
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
+           
             if (this.WindowState == FormWindowState.Maximized)
             {
                 this.WindowState = FormWindowState.Normal;
@@ -52,6 +54,15 @@ namespace WindowsFormsApplication3
             else
             {
                 this.WindowState = FormWindowState.Maximized;
+            }
+        }
+
+        private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
+        {
+            if(e.Button == MouseButtons.Right)
+            {
+                Process.Start(pictureBox1.ImageLocation);
+                this.Close();
             }
         }
     }

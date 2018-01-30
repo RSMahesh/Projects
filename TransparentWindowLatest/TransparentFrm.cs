@@ -49,7 +49,10 @@ namespace TransparentWindow
 
         public TransparentFrm(AttachedWindow attachedWindow)
         {
+        
             InitializeComponent();
+            this.Location = Screen.AllScreens[1].WorkingArea.Location;
+
             DeleteTempImages();
             _attachedWindow = attachedWindow;
             _favouriteLocation = new FavouriteLocation(this, _attachedWindow);
@@ -62,6 +65,8 @@ namespace TransparentWindow
 
         private void OnLoad(object sender, EventArgs e)
         {
+            this.Location = Screen.AllScreens[1].WorkingArea.Location;
+
             _transpainter = new Transpainter(this, _attachedWindow);
 
             Color backColor = Color.Black;
@@ -135,6 +140,10 @@ namespace TransparentWindow
             bottomFrm.FormBorderStyle = FormBorderStyle.None;
             leftFrm.FormBorderStyle = FormBorderStyle.None;
             rightFrm.FormBorderStyle = FormBorderStyle.None;
+
+
+          
+
 
             SetBackground();
 

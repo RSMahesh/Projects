@@ -27,11 +27,13 @@ namespace WindowsFormsApplication3
 
         private void btnReplace_Click(object sender, EventArgs e)
         {
-            
 
-    EventContainer.PublishEvent
-    (EventPublisher.Events.Relace.ToString(), new EventArg(Guid.NewGuid(), new[] { textBox1.Text, txtReplaceText.Text }));
+
+            EventContainer.PublishEvent
+            (EventPublisher.Events.Relace.ToString(), new EventArg(Guid.NewGuid(), new[] { textBox1.Text, txtReplaceText.Text }));
 
         }
+
+      
     }
 }

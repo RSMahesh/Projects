@@ -12,6 +12,7 @@ namespace WindowsFormsApplication3
     class ContextMenueHanler
     {
 
+        ContextMenu contextMenu = new ContextMenu();    
         FormulaRunner formulaRunner;
         DataGridView dataGridView;
         UndoRedoStack<CellData> undoRedo;
@@ -20,9 +21,21 @@ namespace WindowsFormsApplication3
             this.dataGridView = dataGridView;
             this.undoRedo = undoRedo;
             formulaRunner = new FormulaRunner(dataGridView);
+            AddContextMenu();
         }
-
-        public void OnApplyFormula(object sender, EventArgs e)
+        public void ShowMenu(Point p)
+        {
+            contextMenu.Show(dataGridView, p);
+        }
+        void AddContextMenu()
+        {
+            contextMenu.MenuItems.Add("Copy", OnCopy);
+            contextMenu.MenuItems.Add("Past", OnPast);
+            contextMenu.MenuItems.Add("Delete", OnDelete);
+            contextMenu.MenuItems.Add("ApplyFormula", OnApplyFormula);
+            dataGridView.ContextMenu = contextMenu;
+        }
+         void OnApplyFormula(object sender, EventArgs e)
         {
             FormulaList frm = new FormulaList(dataGridView);
             frm.ShowDialog();
@@ -43,7 +56,7 @@ namespace WindowsFormsApplication3
                 cell.Value = formulaOutPut;
             }
         }
-        public void OnCopy(object sender, EventArgs e)
+         void OnCopy(object sender, EventArgs e)
         {
             var listSelectedCells = new List<CellData>();
 
@@ -65,7 +78,7 @@ namespace WindowsFormsApplication3
             var serializedResult = serializer.Serialize(listSelectedCells);
             Clipboard.SetText(serializedResult);
         }
-        public void OnPast(object sender, EventArgs e)
+         void OnPast(object sender, EventArgs e)
         {
             var text = Clipboard.GetText();
             var pastCells = new List<CellData>();
@@ -94,7 +107,7 @@ namespace WindowsFormsApplication3
 
             PastCellData(copyedCells, pastCells);
         }
-        public void OnDelete(object sender, EventArgs e)
+         void OnDelete(object sender, EventArgs e)
         {
             var listSelectedCells = new List<CellData>();
 
@@ -106,7 +119,7 @@ namespace WindowsFormsApplication3
             }
 
         }
-        private void PasteSingleCellData(string copyedText, List<CellData> targetCells)
+         void PasteSingleCellData(string copyedText, List<CellData> targetCells)
         {
             for (var indx = 0; indx < targetCells.Count; indx++)
             {

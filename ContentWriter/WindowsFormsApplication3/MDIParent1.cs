@@ -74,11 +74,11 @@ namespace WindowsFormsApplication3
 
         string lastFileName = "";
         Form1 form1 = null;
-        void OpenFile(string filePath)
+        void OpenFile(string filePath, bool readOnly = false)
         {
 
 
-            if (SingleInstance.IsFileAlreadyOpen(filePath)) 
+            if (SingleInstance.IsFileAlreadyOpen(filePath))
             {
                 MessageBox.Show("File :" + filePath + " is already opend");
                 return;
@@ -86,12 +86,12 @@ namespace WindowsFormsApplication3
 
             this.Cursor = Cursors.WaitCursor;
 
-            form1 = new Form1(filePath);
+            form1 = new Form1(filePath, false, readOnly);
             form1.MdiParent = this;
             form1.FormClosed += Form1_FormClosed;
             form1.Show();
 
-            if (Path.GetExtension(filePath) != ".xml")
+            if (Path.GetExtension(filePath) != ".xml" && !readOnly)
             {
                 SaveFileLastOpenFilePath(filePath);
                 lastFileName = filePath;
@@ -204,11 +204,7 @@ namespace WindowsFormsApplication3
             }
         }
 
-        private void changeOrderToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var frm = new ColumnsOrder();
-            frm.Show();
-        }
+
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             EventContainer.PublishEvent
@@ -348,6 +344,34 @@ namespace WindowsFormsApplication3
         {
             EventContainer.PublishEvent
 (EventPublisher.Events.WordsFrequency.ToString(), new EventArg(Guid.NewGuid(), null));
+        }
+
+        private void openReadOnlyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            openFileDialog.Filter = "Text Files (*.xlsx)|*.xlsx";
+            if (openFileDialog.ShowDialog(this) == DialogResult.OK)
+            {
+
+                OpenFile(openFileDialog.FileName, true);
+            }
+        }
+
+        private void searchDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+//            EventContainer.PublishEvent
+//(EventPublisher.Events.SearchTextInBackUp.ToString(), new EventArg(Guid.NewGuid(), null));
+
+            Search search = new Search(this);
+            search.Show();
+        }
+
+        private void searchByCurrentCellToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EventContainer.PublishEvent
+(EventPublisher.Events.SearchTextInBackUp.ToString(), new EventArg(Guid.NewGuid(), null));
+
         }
     }
 }

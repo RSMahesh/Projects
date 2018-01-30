@@ -59,22 +59,31 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppContext.cs" />
     <Compile Include="CellData.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="ContextMenueHanler.cs" />
+    <Compile Include="DataDiff.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataDiff.Designer.cs">
+      <DependentUpon>DataDiff.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FindAndReplace.cs" />
     <Compile Include="Fom1.ObseleteCode.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormulaRunner.cs" />
     <Compile Include="ImageLoader.cs" />
     <Compile Include="RowInfo.cs" />
-    <Compile Include="Theme.cs" />
-    <Compile Include="ColumnsOrder.cs">
+    <Compile Include="Search.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ColumnsOrder.Designer.cs">
-      <DependentUpon>ColumnsOrder.cs</DependentUpon>
+    <Compile Include="Search.Designer.cs">
+      <DependentUpon>Search.cs</DependentUpon>
     </Compile>
+    <Compile Include="SearchItem.cs" />
+    <Compile Include="Theme.cs" />
     <Compile Include="Excel.cs" />
     <Compile Include="Filter.cs">
       <SubType>Form</SubType>
@@ -157,8 +166,8 @@
       <DependentUpon>WordEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="WpfRichTextBox.cs" />
-    <EmbeddedResource Include="ColumnsOrder.resx">
-      <DependentUpon>ColumnsOrder.cs</DependentUpon>
+    <EmbeddedResource Include="DataDiff.resx">
+      <DependentUpon>DataDiff.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Filter.resx">
       <DependentUpon>Filter.cs</DependentUpon>
@@ -200,6 +209,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Search.resx">
+      <DependentUpon>Search.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ThemeScreen.resx">
       <DependentUpon>ThemeScreen.cs</DependentUpon>
     </EmbeddedResource>
@@ -217,7 +229,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EventPublisher\EventPublisher.csproj">
