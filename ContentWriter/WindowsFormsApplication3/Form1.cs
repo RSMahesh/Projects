@@ -14,6 +14,7 @@ using System.Linq;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Configuration;
+using System.Diagnostics;
 
 namespace WindowsFormsApplication3
 {
@@ -35,6 +36,7 @@ namespace WindowsFormsApplication3
         ContextMenueHanler contextMenueHanler;
         FindAndReplace findAndReplace;
         PictureViewer frmPrectiureViwer = null;
+        Search searchWindow;
 
 
         public Form1(string filePath, bool importBackUp = false, bool isReadOnly = false)
@@ -74,6 +76,9 @@ namespace WindowsFormsApplication3
                 Utility.CheckDataSavedProperly(_excelFilePath);
             }
 
+             searchWindow = new Search(this.MdiParent);
+
+
         }
 
         private void AddEventsHandlersOfUIControls()
@@ -91,6 +96,26 @@ namespace WindowsFormsApplication3
             dataGridView1.RowHeightChanged += DataGridView1_RowHeightChanged;
             dataGridView1.Scroll += DataGridView1_Scroll;
             dataGridView1.ColumnHeaderMouseClick += DataGridView1_ColumnHeaderMouseClick;
+            dataGridView1.MouseClick += DataGridView1_MouseClick;
+            dataGridView1.MouseDoubleClick += DataGridView1_MouseDoubleClick;
+            
+        }
+
+        private void DataGridView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+           
+        }
+
+        private void DataGridView1_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (
+                dataGridView1.CurrentCell.OwningColumn.Name == "SKU")
+            {
+                string tt = "https://www.foagroup.com/catalogsearch/result/?q=";
+                var vv = dataGridView1.CurrentCell.Value.ToString();
+                tt += vv.Replace("FOA-", "");
+                Process.Start(tt);
+            }
         }
 
         private void DataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -191,7 +216,7 @@ namespace WindowsFormsApplication3
                 EventContainer.SubscribeEvent(EventPublisher.Events.WordsFrequency.ToString(), ShowSetenceCount);
                 EventContainer.SubscribeEvent(EventPublisher.Events.RichTextBoxTextChanged.ToString(), RichTextBoxTextChanged);
                 EventContainer.SubscribeEvent(EventPublisher.Events.SearchTextInBackUp.ToString(), SearchText);
-
+           
             }
 
         }
@@ -1164,11 +1189,16 @@ namespace WindowsFormsApplication3
         private void SearchText(EventArg arg)
         {
 
-            Search search = new Search(this.MdiParent);
+            //  Search search = new Search(this.MdiParent);
             // search.MdiParent = this.MdiParent;
-            search.Show();
+            if(searchWindow.IsDisposed)
+            {
+                searchWindow = new Search(this.MdiParent);
+            }
+            searchWindow.MdiParent = this.MdiParent;
+            searchWindow.Show();
 
-            search.ShowResult(dataGridView1.CurrentCell.Value.ToString());
+            searchWindow.ShowResult(dataGridView1.CurrentCell.Value.ToString());
 
 
 
@@ -1282,7 +1312,7 @@ namespace WindowsFormsApplication3
                 {
                     if (!(dataGridView1.Columns[cell.ColumnIndex] is DataGridViewImageColumn))
                     {
-                        if (cell.Value != null && !string.IsNullOrEmpty(cell.Value.ToString()))
+                        if (cell.Value != null && !string.IsNullOrEmpty(cell.Value.ToString().Trim()))
                         {
                             if (statics.ContainsKey(cell.ColumnIndex))
                             {

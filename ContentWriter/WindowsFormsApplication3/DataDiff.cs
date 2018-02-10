@@ -20,6 +20,7 @@ namespace WindowsFormsApplication3
 
         private void DataDiff_Load(object sender, EventArgs e)
         {
+            
             dataGridView1.Dock = DockStyle.Fill;
             dataGridView1.EnableHeadersVisualStyles = false;
             dataGridView1.RowHeadersVisible = false;
@@ -65,24 +66,42 @@ namespace WindowsFormsApplication3
                 xmlDataTable.Columns.Remove("ColorCode");
             }
 
+            if (xmlDataTable.Columns.Contains("Word Frequency"))
+            {
+                xmlDataTable.Columns.Remove("Word Frequency");
+            }
+
+
             if (xmlDataTable.Rows.Count != excelDataTable.Rows.Count)
             {
                 unique_items.Add("Rows count mismatch");
             }
 
+            var columnsName = "";
+            var columnsName12 = "";
+
+            for (int c = 0; c < xmlDataTable.Columns.Count; c++)
+            {
+                columnsName += Environment.NewLine + xmlDataTable.Columns[c].ColumnName;
+                columnsName12 += Environment.NewLine + excelDataTable.Columns[c].ColumnName;
+
+                if (xmlDataTable.Columns[c].ColumnName != excelDataTable.Columns[c].ColumnName)
+                {
+                    var tt = "fdfd";
+                }
+            }
+
+
 
             if (xmlDataTable.Columns.Count != excelDataTable.Columns.Count)
             {
-                var tb1 = excelDataTable;
-                var tb2 = xmlDataTable;
-
                 List<string> unMatchedColumns = new List<string>();
                 //if there is no value in any row for a column the column won't
                 // be available in xml data file. So we need to remove that column 
                 // for compariosion
-                foreach (DataColumn col in tb1.Columns)
+                foreach (DataColumn col in excelDataTable.Columns)
                 {
-                    if (!tb2.Columns.Contains(col.ColumnName))
+                    if (!xmlDataTable.Columns.Contains(col.ColumnName))
                     {
                         unMatchedColumns.Add(col.ColumnName);
                     }
@@ -90,7 +109,7 @@ namespace WindowsFormsApplication3
 
                 foreach (var col in unMatchedColumns)
                 {
-                    tb1.Columns.Remove(col);
+                    excelDataTable.Columns.Remove(col);
                 }
             }
 
@@ -103,18 +122,9 @@ namespace WindowsFormsApplication3
 
 
                     if (!EqualString(xmlValue, excelValue))
-
+                    {
                         AddRow(i + 1, xmlDataTable.Columns[c].ColumnName, xmlValue, excelValue);
-
-                    //unique_items.Add((i + 1).ToString() + ":" + xmlDataTable.Columns[c].ColumnName +
-                    //    Environment.NewLine + "backup:" + xmlDataTable.Rows[i][c].ToString() +
-                    //      Environment.NewLine + "excel:" + excelDataTable.Rows[i][c].ToString() +
-
-                    //       Environment.NewLine + "Diff:" + GetDiff(xmlValue, excelValue)
-
-
-
-                    //    );
+                    }
                 }
             }
 

@@ -31,6 +31,7 @@ namespace EventPublisher
         LoadTheme,
         WordsFrequency,
         RichTextBoxTextChanged,
-        SearchTextInBackUp
+        SearchTextInBackUp,
+        MaximizeGridWindow
     }
 }

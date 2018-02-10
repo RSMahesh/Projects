@@ -13,6 +13,8 @@ namespace WindowsFormsApplication3
     {
         string _folder;
         public int FoundRowIndex { get; private set; }
+
+        static Dictionary<string, DataTable> cachedDataTables;
         public SearchService(string folder)
         {
             _folder = folder;
@@ -21,20 +23,53 @@ namespace WindowsFormsApplication3
         {
             var files = System.IO.Directory.GetFiles(_folder, "*.xlsx");
 
+            //  List<SearchResult> allResults = new List<SearchResult>();
+
+            if (cachedDataTables == null)
+            {
+                cachedDataTables = new Dictionary<string, DataTable>();
+
+                foreach (var file in files)
+                {
+                    try
+                    {
+                        OLDBConnection12 connection = new OLDBConnection12(file);
+                        var datatable = connection.ExecuteDatatable("Select * from [Sheet1$]");
+
+                        cachedDataTables[file] = datatable;
+                        //allResults.AddRange(SearchDataTable(file, datatable, text));
+                    }
+                    catch (Exception ex)
+                    {
+                        // MessageBox.Show(file + ":" + ex);
+                    }
+                }
+            }
+
+            return SearchDataTables(text);
+        }
+
+        private List<SearchResult> SearchDataTables(string text)
+        {
             List<SearchResult> allResults = new List<SearchResult>();
 
-            foreach (var file in files)
+
+
+            foreach (var key in cachedDataTables.Keys)
             {
                 try
                 {
-                    OLDBConnection12 connection = new OLDBConnection12(file);
-                    var datatable = connection.ExecuteDatatable("Select * from [Sheet1$]");
-                    allResults.AddRange(SearchDataTable(file, datatable, text));
+                    allResults.AddRange(SearchDataTable(key, cachedDataTables[key], text));
+
                 }
-                catch(Exception ex)
+                catch (Exception)
                 {
-                  // MessageBox.Show(file + ":" + ex);
+
+
                 }
+
+
+
             }
 
             return allResults;
@@ -46,14 +81,19 @@ namespace WindowsFormsApplication3
 
             foreach (DataRow row in dataTable.Rows)
             {
+                string columns = string.Empty;
                 for (int colIndex = 0; colIndex < row.ItemArray.Length; colIndex++)
                 {
                     var indx1 = row.ItemArray[colIndex].ToString().IndexOf(searchText, 0);
 
                     if (indx1 > -1)
                     {
-                        lst.Add(new SearchResult(file, int.Parse(row.ItemArray[0].ToString()), colIndex));
+                        columns += dataTable.Columns[colIndex].ColumnName + ", ";
                     }
+                }
+                if (!string.IsNullOrEmpty(columns))
+                {
+                    lst.Add(new SearchResult(file, int.Parse(row.ItemArray[0].ToString()), columns));
                 }
 
                 //var allRowData = string.Join("|", row.ItemArray);
@@ -71,14 +111,15 @@ namespace WindowsFormsApplication3
 
     public class SearchResult
     {
-        public SearchResult(string file, int row, int col)
+        public SearchResult(string file, int row, string col)
         {
             File = file;
             Row = row;
-            Col = col;
+            ColName = col;
         }
         public string File { get; set; }
         public int Row { get; set; }
-        public int Col { get; set; }
+        public string ColName { get; set; }
+
     }
 }

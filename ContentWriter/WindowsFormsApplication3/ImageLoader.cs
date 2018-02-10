@@ -27,7 +27,16 @@ namespace WindowsFormsApplication3
             {
                 try
                 {
+
+                    for(var rowInd = 0; rowInd < dataGridView.Rows.Count; rowInd++)
+                    {
+                        //TODO: need to check all rows instead of row one
+                        //
+                    }
                     var uu = new Uri(dataGridView.Rows[0].Cells[i].Value.ToString());
+
+
+
                     if (uu.Scheme.StartsWith("http"))
                     {
                         imageColIndexs.Add(i);

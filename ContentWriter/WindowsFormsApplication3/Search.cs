@@ -20,7 +20,8 @@ namespace WindowsFormsApplication3
         {
             InitializeComponent();
             _mdiPArent = MDIpARENT;
-            this.TopMost = true;
+            this.MdiParent = _mdiPArent;
+            //this.TopMost = true;
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -49,7 +50,16 @@ namespace WindowsFormsApplication3
                 dataGridView1.DataSource = GetTable(results);
                 dataGridView1.Columns["FilePath"].Visible = false;
                 dataGridView1.Columns["File"].Width = 350;
-               // AddButton();
+
+                this.MdiParent.LayoutMdi(MdiLayout.TileHorizontal);
+
+                if(results.Count < 2)
+                {
+                    checkBox1.Checked = true;
+                   // Toggle();
+                }
+
+                // AddButton();
 
             }
             else
@@ -73,7 +83,7 @@ namespace WindowsFormsApplication3
             dataGridView2.Columns.Clear();
             dataGridView2.RowTemplate.Height = Constants.ImageIconSize;
             dataGridView2.RowTemplate.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-          
+
             OLDBConnection12 connection = new OLDBConnection12(file);
             var sourceTable = connection.ExecuteDatatable("Select * from [Sheet1$]");
             dataGridView2.DataSource = sourceTable;
@@ -91,7 +101,7 @@ namespace WindowsFormsApplication3
 
             dt.Columns.Add("File");
             dt.Columns.Add("Row", typeof(int));
-            dt.Columns.Add("Col", typeof(int));
+            dt.Columns.Add("Col");
             dt.Columns.Add("FilePath");
 
             foreach (var result in results)
@@ -99,7 +109,7 @@ namespace WindowsFormsApplication3
                 var row = dt.NewRow();
                 row["File"] = Path.GetFileName(result.File);
                 row["Row"] = result.Row;
-                row["Col"] = result.Col;
+                row["Col"] = result.ColName;
                 row["FilePath"] = result.File;
                 dt.Rows.Add(row);
             }
@@ -174,6 +184,36 @@ namespace WindowsFormsApplication3
         private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void txtSerchText_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        int groupBoxTop = 0;
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            Toggle();
+        }
+
+        private void Toggle()
+        {
+            if (checkBox1.Checked)
+            {
+                //  dataGridView1.Visible = false;
+                groupBoxTop = groupBox1.Top;
+                groupBox1.Top = dataGridView1.Top;
+            }
+            else
+            {
+                groupBox1.Top = groupBoxTop;
+            }
         }
     }
 }
