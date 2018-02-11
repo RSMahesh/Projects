@@ -156,6 +156,12 @@ namespace WindowsFormsApplication3
 
         private bool DoesColumnExist(string colName)
         {
+           if( colName.Equals(Constants.CurrentCell, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+
             foreach (DataGridViewColumn col in _formulaTargetgridView.Columns)
             {
                 if (col.Name.Equals(colName, StringComparison.OrdinalIgnoreCase))
@@ -163,6 +169,8 @@ namespace WindowsFormsApplication3
                     return true;
                 }
             }
+
+
 
             return false;
         }

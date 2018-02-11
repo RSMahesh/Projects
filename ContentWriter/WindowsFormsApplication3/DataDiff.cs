@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EventPublisher;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,15 +13,17 @@ namespace WindowsFormsApplication3
 {
     public partial class DataDiff : Form
     {
-        public DataDiff()
+        string backUpFile;
+        public DataDiff(string backUpFile)
         {
             GetTable();
             InitializeComponent();
+            this.backUpFile = backUpFile;
         }
 
         private void DataDiff_Load(object sender, EventArgs e)
         {
-            
+            TopMost = true;
             dataGridView1.Dock = DockStyle.Fill;
             dataGridView1.EnableHeadersVisualStyles = false;
             dataGridView1.RowHeadersVisible = false;
@@ -196,6 +199,13 @@ namespace WindowsFormsApplication3
             row["ExcelData"] = excelData;
             row["Diff"] = GetDiff(backupData, excelData);
             dt.Rows.Add(row);
+        }
+
+        private void btnOpenBackUp_Click(object sender, EventArgs e)
+        {
+            EventContainer.PublishEvent
+(EventPublisher.Events.StartDataImport.ToString(), new EventArg(Guid.NewGuid(), backUpFile));
+            this.Close();
         }
     }
 }

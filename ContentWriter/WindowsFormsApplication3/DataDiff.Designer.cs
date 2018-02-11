@@ -52,6 +52,7 @@
             this.btnOpenBackUp.TabIndex = 1;
             this.btnOpenBackUp.Text = "Open BackUp File";
             this.btnOpenBackUp.UseVisualStyleBackColor = true;
+            this.btnOpenBackUp.Click += new System.EventHandler(this.btnOpenBackUp_Click);
             // 
             // DataDiff
             // 

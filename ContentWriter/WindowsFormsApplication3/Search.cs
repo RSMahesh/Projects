@@ -56,15 +56,23 @@ namespace WindowsFormsApplication3
                 if(results.Count < 2)
                 {
                     checkBox1.Checked = true;
-                   // Toggle();
                 }
 
-                // AddButton();
+                DisplaySearchedInFiles();
 
             }
             else
             {
                 MessageBox.Show("No found");
+            }
+        }
+
+        private void DisplaySearchedInFiles()
+        {
+            listBox1.Items.Clear();
+            foreach(var key in SearchService.cachedDataTables.Keys)
+            {
+                listBox1.Items.Add(key);
             }
         }
 
@@ -147,53 +155,8 @@ namespace WindowsFormsApplication3
         {
             if (dataGridView1.Columns[e.ColumnIndex] is DataGridViewButtonColumn)
             {
-                //Write here your code...
                 ShowData();
             }
-        }
-
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            var sourceFile = @"D:\Surabhi next assignment souvnear home depot.xlsx";
-            var destFile = @"D:\information of 142 items.xlsx";
-
-            OLDBConnection12 connection = new OLDBConnection12(sourceFile);
-            var sourceTable = connection.ExecuteDatatable("Select * from [Sheet1$]");
-
-            connection = new OLDBConnection12(destFile);
-            var destTable = connection.ExecuteDatatable("Select * from [Sheet1$]");
-
-
-            foreach (DataRow row in sourceTable.Rows)
-            {
-                destTable.DefaultView.RowFilter = "SKU ='" + row["Vendor1 SKU"] + "'";
-                destTable.DefaultView[0]["Image"] = row["Image"];
-            }
-
-            connection.SaveData(destTable.Columns);
-
-
-        }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void txtSerchText_TextChanged(object sender, EventArgs e)
-        {
-
         }
 
         int groupBoxTop = 0;

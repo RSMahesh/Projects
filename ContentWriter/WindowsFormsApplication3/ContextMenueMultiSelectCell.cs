@@ -9,14 +9,14 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApplication3
 {
-    class ContextMenueHanler
+    class ContextMenueMultiSelectCell
     {
 
         ContextMenu contextMenu = new ContextMenu();    
         FormulaRunner formulaRunner;
         DataGridView dataGridView;
         UndoRedoStack<CellData> undoRedo;
-        public ContextMenueHanler(DataGridView dataGridView, UndoRedoStack<CellData> undoRedo )
+        public ContextMenueMultiSelectCell(DataGridView dataGridView, UndoRedoStack<CellData> undoRedo )
         {
             this.dataGridView = dataGridView;
             this.undoRedo = undoRedo;

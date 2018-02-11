@@ -10,5 +10,6 @@ namespace WindowsFormsApplication3
     {
      public const string  WordFrequencyColumnName = "Word Frequency";
         public const int ImageIconSize = 100;
+        public const string CurrentCell = "CurrentCell";
     }
 }

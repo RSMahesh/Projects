@@ -81,7 +81,7 @@ namespace WindowsFormsApplication3
             OLDBConnection12 connection = new OLDBConnection12(excelPath);
             var excelDataTable = connection.ExecuteDatatable("Select * from [Sheet1$]", false);
 
-            DataDiff diff = new DataDiff();
+            DataDiff diff = new DataDiff(files.FirstOrDefault());
             diff.AreTablesTheSame(xmlDataTable, excelDataTable);
         }
 

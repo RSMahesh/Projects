@@ -33,7 +33,8 @@ namespace WindowsFormsApplication3
         const string HighLighted = "highlighted";
         WpfRichTextBox wpfRichText;
         ImageLoader imageLoader;
-        ContextMenueHanler contextMenueHanler;
+        ContextMenueMultiSelectCell contextMenueMultiSelectCell;
+        ContextMenueCurrentCell contextMenueCurrentCell;
         FindAndReplace findAndReplace;
         PictureViewer frmPrectiureViwer = null;
         Search searchWindow;
@@ -43,6 +44,7 @@ namespace WindowsFormsApplication3
         {
 
             InitializeComponent();
+            AppContext.dataGridView = dataGridView1;
             wpfRichText = new WpfRichTextBox(wpfRichTextBoxPanel);
 
             _importBackUp = importBackUp;
@@ -50,7 +52,8 @@ namespace WindowsFormsApplication3
 
             AddEventsHandlersOfUIControls();
 
-            contextMenueHanler = new ContextMenueHanler(dataGridView1, _undoRedo);
+            contextMenueMultiSelectCell = new ContextMenueMultiSelectCell(dataGridView1, _undoRedo);
+            contextMenueCurrentCell = new ContextMenueCurrentCell();
 
             _excelFilePath = filePath;
 
@@ -76,7 +79,7 @@ namespace WindowsFormsApplication3
                 Utility.CheckDataSavedProperly(_excelFilePath);
             }
 
-             searchWindow = new Search(this.MdiParent);
+            searchWindow = new Search(this.MdiParent);
 
 
         }
@@ -98,12 +101,12 @@ namespace WindowsFormsApplication3
             dataGridView1.ColumnHeaderMouseClick += DataGridView1_ColumnHeaderMouseClick;
             dataGridView1.MouseClick += DataGridView1_MouseClick;
             dataGridView1.MouseDoubleClick += DataGridView1_MouseDoubleClick;
-            
+
         }
 
         private void DataGridView1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-           
+
         }
 
         private void DataGridView1_MouseClick(object sender, MouseEventArgs e)
@@ -132,7 +135,7 @@ namespace WindowsFormsApplication3
                 {
                     dataGridView1.Columns[e.ColumnIndex].Frozen = false;
                     dataGridView1.Columns[e.ColumnIndex].DisplayIndex = (int)dataGridView1.Columns[e.ColumnIndex].Tag;
-               //   dataGridView1.Columns[e.ColumnIndex].HeaderCell.Style.BackColor = Color.Black;
+                    //   dataGridView1.Columns[e.ColumnIndex].HeaderCell.Style.BackColor = Color.Black;
                 }
                 else
                 {
@@ -140,7 +143,7 @@ namespace WindowsFormsApplication3
                     dataGridView1.Columns[e.ColumnIndex].Tag = dataGridView1.Columns[e.ColumnIndex].DisplayIndex;
 
                     dataGridView1.Columns[e.ColumnIndex].DisplayIndex = GetNextForzenIndex();
-             //       dataGridView1.Columns[e.ColumnIndex].HeaderCell.Style.BackColor = Color.AliceBlue;
+                    //       dataGridView1.Columns[e.ColumnIndex].HeaderCell.Style.BackColor = Color.AliceBlue;
                     dataGridView1.Columns[e.ColumnIndex].Frozen = true;
 
                 }
@@ -216,7 +219,7 @@ namespace WindowsFormsApplication3
                 EventContainer.SubscribeEvent(EventPublisher.Events.WordsFrequency.ToString(), ShowSetenceCount);
                 EventContainer.SubscribeEvent(EventPublisher.Events.RichTextBoxTextChanged.ToString(), RichTextBoxTextChanged);
                 EventContainer.SubscribeEvent(EventPublisher.Events.SearchTextInBackUp.ToString(), SearchText);
-           
+
             }
 
         }
@@ -438,7 +441,10 @@ namespace WindowsFormsApplication3
                 editingTextBox = (DataGridViewTextBoxEditingControl)e.Control;
                 editingTextBox.MouseClick += EditingTextBox_MouseClick;
                 attachedEventFroKepUp = true;
+                AppContext.dataGridViewTextBoxEditing = editingTextBox;
             }
+
+
 
             wpfRichTextBoxPanel.Visible = false;
         }
@@ -644,10 +650,16 @@ namespace WindowsFormsApplication3
                 Rectangle r = dataGridView1.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false);
                 Point p = new Point(r.X + e.X, r.Y + e.Y);
 
+                var currentCellHited = e.ColumnIndex == dataGridView1.CurrentCell.ColumnIndex
+                        && e.RowIndex == dataGridView1.CurrentCell.RowIndex;
 
                 if (dataGridView1.SelectedCells.Count > 1)
                 {
-                    contextMenueHanler.ShowMenu(p);
+                    contextMenueMultiSelectCell.ShowMenu(p);
+                }
+                else if (currentCellHited)
+                {
+                    contextMenueCurrentCell.ShowMenu(p);
                 }
             }
         }
@@ -733,6 +745,7 @@ namespace WindowsFormsApplication3
 
             }
 
+          
             DialogResult dialogResult = MessageBox.Show("Do you want to laod unsaved data", "UnSaved Data Found", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.No)
             {
@@ -1051,19 +1064,35 @@ namespace WindowsFormsApplication3
             openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             openFileDialog.Filter = "XML (*.xml)|*.xml";
 
-          openFileDialog.InitialDirectory =
-              Path.GetDirectoryName(_excelFilePath) + "\\" +
-                      Path.GetFileNameWithoutExtension(_excelFilePath)
-                      + "_dataBackup\\Full";
+            openFileDialog.InitialDirectory =
+                Path.GetDirectoryName(_excelFilePath) + "\\" +
+                        Path.GetFileNameWithoutExtension(_excelFilePath)
+                        + "_dataBackup\\Full";
 
-            if (openFileDialog.ShowDialog(this) == DialogResult.OK)
+            string fileName = openFileDialog.FileName;
+
+            if (!string.IsNullOrEmpty(arg.Arg.ToString()))
             {
+                fileName = arg.Arg.ToString();
                 EventContainer.SubscribeEvent(EventPublisher.Events.DataImportSelectionCompleted.ToString(), OnDataImportSelectionCompleted);
 
-                var form1 = new Form1(openFileDialog.FileName, true);
-                form1.MdiParent = this.MdiParent;
-                form1.Show();
             }
+
+            else
+            {
+                if (openFileDialog.ShowDialog(this) == DialogResult.OK)
+                {
+                    fileName = openFileDialog.FileName;
+                    EventContainer.SubscribeEvent(EventPublisher.Events.DataImportSelectionCompleted.ToString(), OnDataImportSelectionCompleted);
+
+                }
+            }
+
+         
+            var form1 = new Form1(fileName, true);
+            form1.MdiParent = this.MdiParent;
+            form1.Show();
+
 
 
         }
@@ -1188,44 +1217,17 @@ namespace WindowsFormsApplication3
 
         private void SearchText(EventArg arg)
         {
-
-            //  Search search = new Search(this.MdiParent);
-            // search.MdiParent = this.MdiParent;
-            if(searchWindow.IsDisposed)
+            if (searchWindow.IsDisposed)
             {
                 searchWindow = new Search(this.MdiParent);
             }
             searchWindow.MdiParent = this.MdiParent;
             searchWindow.Show();
+            searchWindow.ShowResult(arg.Arg.ToString());
 
-            searchWindow.ShowResult(dataGridView1.CurrentCell.Value.ToString());
+            //    searchWindow.ShowResult(dataGridView1.CurrentCell.Value.ToString());
 
 
-
-            //if (string.IsNullOrEmpty(ConfigurationManager.AppSettings["BackUpFolder"]))
-            //{
-            //    MessageBox.Show("BackUpFolder not defeined in config");
-            //    return;
-            //}
-
-            //var search = new SearchService(ConfigurationManager.AppSettings["BackUpFolder"]);
-            //var reults = search.SearchText(dataGridView1.CurrentCell.Value.ToString());
-
-            //if (reults.Any())
-            //{
-            //    Form1 form = new Form1(file, false, true);
-            //    form.MdiParent = this.MdiParent;
-            //    form.Show();
-            //    form.FilterById(search.FoundRowIndex);
-            //    form.WindowState = FormWindowState.Normal;
-            //    form.Height = 200;
-            //    // form.MdiParent = null;
-
-            //}
-            //else
-            //{
-            //    MessageBox.Show("No found");
-            //}
 
         }
         private void SetenceCountInBullets(EventArg arg)

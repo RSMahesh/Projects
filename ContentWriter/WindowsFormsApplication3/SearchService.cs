@@ -14,7 +14,7 @@ namespace WindowsFormsApplication3
         string _folder;
         public int FoundRowIndex { get; private set; }
 
-        static Dictionary<string, DataTable> cachedDataTables;
+        public static Dictionary<string, DataTable> cachedDataTables;
         public SearchService(string folder)
         {
             _folder = folder;
@@ -23,8 +23,7 @@ namespace WindowsFormsApplication3
         {
             var files = System.IO.Directory.GetFiles(_folder, "*.xlsx");
 
-            //  List<SearchResult> allResults = new List<SearchResult>();
-
+        
             if (cachedDataTables == null)
             {
                 cachedDataTables = new Dictionary<string, DataTable>();
@@ -35,9 +34,7 @@ namespace WindowsFormsApplication3
                     {
                         OLDBConnection12 connection = new OLDBConnection12(file);
                         var datatable = connection.ExecuteDatatable("Select * from [Sheet1$]");
-
                         cachedDataTables[file] = datatable;
-                        //allResults.AddRange(SearchDataTable(file, datatable, text));
                     }
                     catch (Exception ex)
                     {
@@ -53,8 +50,6 @@ namespace WindowsFormsApplication3
         {
             List<SearchResult> allResults = new List<SearchResult>();
 
-
-
             foreach (var key in cachedDataTables.Keys)
             {
                 try
@@ -67,8 +62,6 @@ namespace WindowsFormsApplication3
 
 
                 }
-
-
 
             }
 
@@ -84,7 +77,7 @@ namespace WindowsFormsApplication3
                 string columns = string.Empty;
                 for (int colIndex = 0; colIndex < row.ItemArray.Length; colIndex++)
                 {
-                    var indx1 = row.ItemArray[colIndex].ToString().IndexOf(searchText, 0);
+                    var indx1 = row.ItemArray[colIndex].ToString().IndexOf(searchText, 0, StringComparison.OrdinalIgnoreCase);
 
                     if (indx1 > -1)
                     {
@@ -96,14 +89,6 @@ namespace WindowsFormsApplication3
                     lst.Add(new SearchResult(file, int.Parse(row.ItemArray[0].ToString()), columns));
                 }
 
-                //var allRowData = string.Join("|", row.ItemArray);
-
-                //var indx = allRowData.IndexOf(searchText, 0);
-
-                //if (indx > -1)
-                //{
-                //    return int.Parse(row.ItemArray[0].ToString());
-                //}
             }
             return lst;
         }

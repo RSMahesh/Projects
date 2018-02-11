@@ -360,18 +360,8 @@ namespace WindowsFormsApplication3
 
         private void searchDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-//            EventContainer.PublishEvent
-//(EventPublisher.Events.SearchTextInBackUp.ToString(), new EventArg(Guid.NewGuid(), null));
-
             Search search = new Search(this);
             search.Show();
-        }
-
-        private void searchByCurrentCellToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            EventContainer.PublishEvent
-(EventPublisher.Events.SearchTextInBackUp.ToString(), new EventArg(Guid.NewGuid(), null));
-
         }
     }
 }

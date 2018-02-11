@@ -44,7 +44,19 @@ namespace WindowsFormsApplication3
             {
                 case null: throw new ArgumentNullException(nameof(input));
                 case "": throw new ArgumentException($"{nameof(input)} cannot be empty", nameof(input));
-                default: return input.First().ToString().ToUpper() + input.Substring(1);
+                default:
+                  var arr =  input.Split(' ');
+
+                    for (var i = 0; i < arr.Length; i++)
+                    {
+                        if (arr[i].Length > 1)
+                        {
+                            arr[i] = arr[i].First().ToString().ToUpper() + arr[i].Substring(1);
+                        }
+                    }
+
+
+                    return string.Join(' '.ToString(), arr);
             }
         }
         private string RemoveIfRequired(string replaceOutPut)
@@ -72,9 +84,17 @@ namespace WindowsFormsApplication3
 
             foreach (Match match in matches)
             {
+                var replaceValue = string.Empty;
                 var columnName = match.Value.Replace("{", "").Replace("}", "");
-                var replaceValue = dataGridView.Rows[cell.RowIndex].Cells[columnName].Value.ToString();
-                formulaOutPut = formulaOutPut.Replace("{" + columnName + "}", replaceValue);
+                if (columnName.Equals(Constants.CurrentCell, StringComparison.OrdinalIgnoreCase))
+                {
+                    replaceValue = cell.Value.ToString();
+                }
+                else
+                {
+                     replaceValue = dataGridView.Rows[cell.RowIndex].Cells[columnName].Value.ToString();
+                }
+                    formulaOutPut = formulaOutPut.Replace("{" + columnName + "}", replaceValue);
             }
 
             return formulaOutPut;
