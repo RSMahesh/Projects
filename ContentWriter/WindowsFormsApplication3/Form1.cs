@@ -38,13 +38,18 @@ namespace WindowsFormsApplication3
         FindAndReplace findAndReplace;
         PictureViewer frmPrectiureViwer = null;
         Search searchWindow;
+        AppContext appContext;
 
 
         public Form1(string filePath, bool importBackUp = false, bool isReadOnly = false)
         {
 
             InitializeComponent();
-            AppContext.dataGridView = dataGridView1;
+
+            appContext = new AppContext();
+            appContext.dataGridView = dataGridView1;
+
+
             wpfRichText = new WpfRichTextBox(wpfRichTextBoxPanel);
 
             _importBackUp = importBackUp;
@@ -53,7 +58,7 @@ namespace WindowsFormsApplication3
             AddEventsHandlersOfUIControls();
 
             contextMenueMultiSelectCell = new ContextMenueMultiSelectCell(dataGridView1, _undoRedo);
-            contextMenueCurrentCell = new ContextMenueCurrentCell();
+            contextMenueCurrentCell = new ContextMenueCurrentCell(appContext);
 
             _excelFilePath = filePath;
 
@@ -80,8 +85,6 @@ namespace WindowsFormsApplication3
             }
 
             searchWindow = new Search(this.MdiParent);
-
-
         }
 
         private void AddEventsHandlersOfUIControls()
@@ -100,13 +103,12 @@ namespace WindowsFormsApplication3
             dataGridView1.Scroll += DataGridView1_Scroll;
             dataGridView1.ColumnHeaderMouseClick += DataGridView1_ColumnHeaderMouseClick;
             dataGridView1.MouseClick += DataGridView1_MouseClick;
-            dataGridView1.MouseDoubleClick += DataGridView1_MouseDoubleClick;
-
         }
-
-        private void DataGridView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void ShowFindWindow(EventArg arg)
         {
-
+            FindText frm = new FindText(appContext);
+            frm.TopMost = true;
+            frm.Show();
         }
 
         private void DataGridView1_MouseClick(object sender, MouseEventArgs e)
@@ -164,8 +166,6 @@ namespace WindowsFormsApplication3
             }
 
             return index;
-
-
         }
 
         private void DataGridView1_Scroll(object sender, ScrollEventArgs e)
@@ -219,6 +219,7 @@ namespace WindowsFormsApplication3
                 EventContainer.SubscribeEvent(EventPublisher.Events.WordsFrequency.ToString(), ShowSetenceCount);
                 EventContainer.SubscribeEvent(EventPublisher.Events.RichTextBoxTextChanged.ToString(), RichTextBoxTextChanged);
                 EventContainer.SubscribeEvent(EventPublisher.Events.SearchTextInBackUp.ToString(), SearchText);
+                EventContainer.SubscribeEvent(EventPublisher.Events.FindWindow.ToString(), ShowFindWindow);
 
             }
 
@@ -441,10 +442,8 @@ namespace WindowsFormsApplication3
                 editingTextBox = (DataGridViewTextBoxEditingControl)e.Control;
                 editingTextBox.MouseClick += EditingTextBox_MouseClick;
                 attachedEventFroKepUp = true;
-                AppContext.dataGridViewTextBoxEditing = editingTextBox;
+                appContext.dataGridViewTextBoxEditing = editingTextBox;
             }
-
-
 
             wpfRichTextBoxPanel.Visible = false;
         }
@@ -464,7 +463,6 @@ namespace WindowsFormsApplication3
             wpfRichTextBoxPanel.Location = rec.Location;
             wpfRichTextBoxPanel.Visible = true;
         }
-
 
         private void StartHighlightingWords()
         {
@@ -572,11 +570,7 @@ namespace WindowsFormsApplication3
 
         private void dataGridView1_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
-            //if(dataGridView1.SelectedCells.Count < 2)
-            // {
-            //     return;
-            // }
-
+         
             if (IsCellSelected(e.ColumnIndex, e.RowIndex))
             {
                 e.Paint(e.CellBounds, DataGridViewPaintParts.All
@@ -675,8 +669,6 @@ namespace WindowsFormsApplication3
 
             if (IsReadOnlyFile)
             {
-                //MessageBox.Show("Can not save backup file", "Save Error",
-                //MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -745,7 +737,7 @@ namespace WindowsFormsApplication3
 
             }
 
-          
+
             DialogResult dialogResult = MessageBox.Show("Do you want to laod unsaved data", "UnSaved Data Found", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.No)
             {
@@ -1011,13 +1003,7 @@ namespace WindowsFormsApplication3
             filter.Show();
         }
 
-        public void FilterById(int ID)
-        {
-            var dataTable = (DataView)dataGridView1.DataSource;
-            dataTable.RowFilter = "ID=" + ID.ToString();
-            imageLoader.LoadImageInCell();
-        }
-
+       
         private void FilterDone(EventPublisher.EventArg arg)
         {
             imageLoader.LoadImageInCell();
@@ -1071,7 +1057,7 @@ namespace WindowsFormsApplication3
 
             string fileName = openFileDialog.FileName;
 
-            if (!string.IsNullOrEmpty(arg.Arg.ToString()))
+            if (arg.Arg != null)
             {
                 fileName = arg.Arg.ToString();
                 EventContainer.SubscribeEvent(EventPublisher.Events.DataImportSelectionCompleted.ToString(), OnDataImportSelectionCompleted);
@@ -1088,7 +1074,7 @@ namespace WindowsFormsApplication3
                 }
             }
 
-         
+
             var form1 = new Form1(fileName, true);
             form1.MdiParent = this.MdiParent;
             form1.Show();
@@ -1105,15 +1091,17 @@ namespace WindowsFormsApplication3
             foreach (DataRow backUpdataRow in backUpDt.Rows)
             {
                 var row = int.Parse(backUpdataRow[0].ToString());
+
+                //--row as index start from 0
                 var currentDataRow = currentDt.Rows[--row];
-                //Start from one to avoiid ID column
+               
+                //Start from one to avoid ID column
                 for (var i = 1; i < backUpDt.Columns.Count; i++)
                 {
-                    currentDataRow[i] = backUpdataRow[i];
+                    var colName = backUpDt.Columns[i].ColumnName;
+                    currentDataRow[colName] = backUpdataRow[colName];
                 }
-
             }
-
         }
 
         private void dataGridView1_KeyDown(object sender, KeyEventArgs e)
@@ -1142,16 +1130,9 @@ namespace WindowsFormsApplication3
             }
         }
 
-
-        private void dataGridView1_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
-        {
-
-        }
-
-
+        
         private void dataGridView1_Sorted(object sender, EventArgs e)
         {
-
             imageLoader.LoadImageInCell();
         }
 
@@ -1224,15 +1205,9 @@ namespace WindowsFormsApplication3
             searchWindow.MdiParent = this.MdiParent;
             searchWindow.Show();
             searchWindow.ShowResult(arg.Arg.ToString());
-
-            //    searchWindow.ShowResult(dataGridView1.CurrentCell.Value.ToString());
-
-
-
         }
         private void SetenceCountInBullets(EventArg arg)
         {
-
             int threshold = 0;
 
             var columsToCheck = GetColumsToCheckForSentenceCount();

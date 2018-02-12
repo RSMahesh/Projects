@@ -26,14 +26,22 @@ namespace WindowsFormsApplication3
         }
         public void FindText(EventArg arg)
         {
-            var textToFind = arg.Arg.ToString();
-
+            var arr = arg.Arg as string[];
+            var textToFind = arr[0];
+            var columnName = arr[1];
+            
             for (var rowIndex = startingRowToFind; rowIndex < dataGridView.Rows.Count; rowIndex++)
             {
                 DataGridViewRow row = dataGridView.Rows[rowIndex];
 
                 for (var colIndex = startingColumnToFind; colIndex < dataGridView.Rows[rowIndex].Cells.Count; colIndex++)
                 {
+
+                    if(columnName != "ALL" && dataGridView.Columns[colIndex].Name != columnName)
+                    {
+                        continue;
+                    }
+
                     var cell = dataGridView.Rows[rowIndex].Cells[colIndex];
 
                     if (!(dataGridView.Columns[colIndex] is DataGridViewImageColumn))
@@ -99,6 +107,7 @@ namespace WindowsFormsApplication3
             var arr = arg.Arg as string[];
             var textToReplace = arr[1];
             var textToFind = arr[0];
+            var columnName = arr[2];
 
             if (wpfRichText.ReplaceText(textToReplace))
             {
@@ -112,7 +121,7 @@ namespace WindowsFormsApplication3
             }
 
             EventContainer.PublishEvent
-       (EventPublisher.Events.FindText.ToString(), new EventArg(textToFind));
+       (EventPublisher.Events.FindText.ToString(), new EventArg(new[] { textToFind, columnName } ));
 
         }
     }

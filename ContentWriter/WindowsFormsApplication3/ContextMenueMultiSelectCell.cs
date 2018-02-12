@@ -137,7 +137,7 @@ namespace WindowsFormsApplication3
             {
                 MessageBox.Show("Invalid Selection for Past"
                     + Environment.NewLine + "Correct Row :" + sourceInfo.Y.ToString() + " Correct Columns :" + sourceInfo.X.ToString());
-                return;
+               // return;
             }
 
             if (sourceInfo.X > 1 && targetInfo.X > 1)

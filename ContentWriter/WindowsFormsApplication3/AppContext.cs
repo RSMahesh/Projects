@@ -10,8 +10,8 @@ namespace WindowsFormsApplication3
     class AppContext
     {
 
-        public static DataGridView dataGridView;
+        public  DataGridView dataGridView;
 
-        public static DataGridViewTextBoxEditingControl dataGridViewTextBoxEditing;
+        public  DataGridViewTextBoxEditingControl dataGridViewTextBoxEditing;
     }
 }

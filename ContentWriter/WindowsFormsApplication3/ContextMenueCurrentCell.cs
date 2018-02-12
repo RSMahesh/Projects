@@ -14,13 +14,15 @@ namespace WindowsFormsApplication3
     class ContextMenueCurrentCell
     {
         ContextMenu contextMenu = new ContextMenu();
-        public ContextMenueCurrentCell()
+        AppContext appContext;
+        public ContextMenueCurrentCell(AppContext appContext)
         {
+            this.appContext = appContext;
             AddContextMenu();
         }
         public void ShowMenu(Point p)
         {
-            contextMenu.Show(AppContext.dataGridView, p);
+            contextMenu.Show(appContext.dataGridView, p);
         }
         void AddContextMenu()
         {
@@ -33,7 +35,7 @@ namespace WindowsFormsApplication3
             addDevice.MenuItems.Add(new MenuItem("Internet", SearchInternet));
 
             contextMenu.MenuItems.Add(addDevice);
-            AppContext.dataGridView.ContextMenu = contextMenu;
+            appContext.dataGridView.ContextMenu = contextMenu;
         }
 
         void SearchBackup(object sender, EventArgs e)
@@ -53,7 +55,7 @@ namespace WindowsFormsApplication3
         private string GetSearchText()
         {
             
-            return AppContext.dataGridViewTextBoxEditing.SelectedText.Trim();
+            return appContext.dataGridViewTextBoxEditing.SelectedText.Trim();
         }
 
         void SearchInternet(object sender, EventArgs e)
@@ -69,15 +71,15 @@ namespace WindowsFormsApplication3
 
         void OnCut(object sender, EventArgs e)
         {
-            AppContext.dataGridViewTextBoxEditing.Cut();
+            appContext.dataGridViewTextBoxEditing.Cut();
         }
         void OnCopy(object sender, EventArgs e)
         {
-            AppContext.dataGridViewTextBoxEditing.Copy();
+            appContext.dataGridViewTextBoxEditing.Copy();
         }
         void OnPast(object sender, EventArgs e)
         {
-            AppContext.dataGridViewTextBoxEditing.Paste();
+            appContext.dataGridViewTextBoxEditing.Paste();
         }
 
     }

@@ -329,9 +329,13 @@ namespace WindowsFormsApplication3
 
         private void findToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FindText frm = new FindText();
-            frm.TopMost = true;
-            frm.Show();
+            //FindText frm = new FindText();
+            //frm.TopMost = true;
+            //frm.Show();
+
+            EventContainer.PublishEvent
+(EventPublisher.Events.FindWindow.ToString(), new EventArg(Guid.NewGuid(), null));
+
         }
 
         private void themeToolStripMenuItem_Click(object sender, EventArgs e)

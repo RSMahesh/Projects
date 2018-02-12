@@ -32,6 +32,7 @@ namespace EventPublisher
         WordsFrequency,
         RichTextBoxTextChanged,
         SearchTextInBackUp,
-        MaximizeGridWindow
+        MaximizeGridWindow,
+        FindWindow,
     }
 }
