@@ -39,10 +39,18 @@ namespace WindowsFormsApplication3
         PictureViewer frmPrectiureViwer = null;
         Search searchWindow;
         AppContext appContext;
-
+        string urlToSerach = "https://www.foagroup.com/catalogsearch/result/?q=";
+        string [] exlcudeWordsInSearch =new [] { "FOA-", "xyz" };
+        string columnNameToSearch = "Vendor SKU";
 
         public Form1(string filePath, bool importBackUp = false, bool isReadOnly = false)
         {
+
+            urlToSerach = ConfigurationManager.AppSettings["urlToSerach"];
+            exlcudeWordsInSearch = ConfigurationManager.AppSettings["exlcudeWordsInSearch"].Split(',');
+            columnNameToSearch = ConfigurationManager.AppSettings["columnNameToSearch"];
+
+
 
             InitializeComponent();
 
@@ -83,7 +91,7 @@ namespace WindowsFormsApplication3
             {
                 Utility.CheckDataSavedProperly(_excelFilePath);
             }
-
+          
             searchWindow = new Search(this.MdiParent);
         }
 
@@ -114,11 +122,17 @@ namespace WindowsFormsApplication3
         private void DataGridView1_MouseClick(object sender, MouseEventArgs e)
         {
             if (
-                dataGridView1.CurrentCell.OwningColumn.Name == "SKU")
+                dataGridView1.CurrentCell.OwningColumn.Name.Equals(columnNameToSearch,StringComparison.OrdinalIgnoreCase)
+                )
             {
-                string tt = "https://www.foagroup.com/catalogsearch/result/?q=";
+                string tt = urlToSerach;
                 var vv = dataGridView1.CurrentCell.Value.ToString();
-                tt += vv.Replace("FOA-", "");
+
+                foreach(var word in exlcudeWordsInSearch)
+                {
+                    vv = vv.Replace(word, "");
+                }
+                tt += vv;
                 Process.Start(tt);
             }
         }

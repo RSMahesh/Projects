@@ -34,7 +34,7 @@ namespace WindowsFormsApplication3
         private void OpenFile(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            openFileDialog.InitialDirectory = Path.GetDirectoryName(lastFileName);
             openFileDialog.Filter = "Text Files (*.xlsx)|*.xlsx";
             if (openFileDialog.ShowDialog(this) == DialogResult.OK)
             {
@@ -76,8 +76,6 @@ namespace WindowsFormsApplication3
         Form1 form1 = null;
         void OpenFile(string filePath, bool readOnly = false)
         {
-
-
             if (SingleInstance.IsFileAlreadyOpen(filePath))
             {
                 MessageBox.Show("File :" + filePath + " is already opend");
@@ -87,7 +85,10 @@ namespace WindowsFormsApplication3
             this.Cursor = Cursors.WaitCursor;
 
             form1 = new Form1(filePath, false, readOnly);
-            form1.MdiParent = this;
+            if (!readOnly)
+            {
+                form1.MdiParent = this;
+            }
             form1.FormClosed += Form1_FormClosed;
             form1.Show();
 
@@ -287,8 +288,6 @@ namespace WindowsFormsApplication3
         {
             EventContainer.PublishEvent
 (EventPublisher.Events.Statistics.ToString(), new EventArg(Guid.NewGuid(), null));
-
-
         }
 
         bool lasteFileLaoded;
@@ -353,7 +352,7 @@ namespace WindowsFormsApplication3
         private void openReadOnlyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            openFileDialog.InitialDirectory = Path.GetDirectoryName(lastFileName);
             openFileDialog.Filter = "Text Files (*.xlsx)|*.xlsx";
             if (openFileDialog.ShowDialog(this) == DialogResult.OK)
             {

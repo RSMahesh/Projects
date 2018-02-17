@@ -44,7 +44,6 @@ namespace WindowsFormsApplication3
                     cmbFields.Items.Add(col.Name);
                 }
             }
-
             cmbFields.SelectedIndex = 0;
         }
     }

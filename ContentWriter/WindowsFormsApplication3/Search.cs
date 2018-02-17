@@ -31,6 +31,14 @@ namespace WindowsFormsApplication3
             Cursor = Cursors.Default;
         }
 
+
+        private void OpenFile()
+        {
+            var filePath = dataGridView1.CurrentRow.Cells["FilePath"].Value.ToString();
+
+            var form1 = new Form1(filePath, false, true);
+            form1.Show();
+        }
         public void ShowResult(string searchText)
         {
             txtSerchText.Text = searchText;
@@ -53,7 +61,7 @@ namespace WindowsFormsApplication3
 
                 this.MdiParent.LayoutMdi(MdiLayout.TileHorizontal);
 
-                if(results.Count < 2)
+                if (results.Count < 2)
                 {
                     checkBox1.Checked = true;
                 }
@@ -65,12 +73,14 @@ namespace WindowsFormsApplication3
             {
                 MessageBox.Show("No found");
             }
+
+            AddButton();
         }
 
         private void DisplaySearchedInFiles()
         {
             listBox1.Items.Clear();
-            foreach(var key in SearchService.cachedDataTables.Keys)
+            foreach (var key in SearchService.cachedDataTables.Keys)
             {
                 listBox1.Items.Add(key);
             }
@@ -155,7 +165,7 @@ namespace WindowsFormsApplication3
         {
             if (dataGridView1.Columns[e.ColumnIndex] is DataGridViewButtonColumn)
             {
-                ShowData();
+                OpenFile();
             }
         }
 
