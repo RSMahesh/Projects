@@ -30,6 +30,9 @@ namespace WindowsFormsApplication3
             contextMenu.MenuItems.Add("Copy", OnCopy);
             contextMenu.MenuItems.Add("Past", OnPast);
             contextMenu.MenuItems.Add("Delete", OnCut);
+            contextMenu.MenuItems.Add("-");
+            contextMenu.MenuItems.Add("Find", OnFind);
+
             MenuItem addDevice = new MenuItem("Search");
             addDevice.MenuItems.Add(new MenuItem("Backup", SearchBackup));
             addDevice.MenuItems.Add(new MenuItem("Internet", SearchInternet));
@@ -68,6 +71,17 @@ namespace WindowsFormsApplication3
             }
             Process.Start("https://www.google.com/search?q=" + searchText);
         }
+
+        void OnFind(object sender, EventArgs e)
+        {
+          var text =  appContext.dataGridViewTextBoxEditing.SelectedText;
+            FindText frm = new FindText(appContext);
+            frm.FindString = text;
+            frm.TopMost = true;
+            frm.Show();
+            frm.FindNext();
+        }
+
 
         void OnCut(object sender, EventArgs e)
         {

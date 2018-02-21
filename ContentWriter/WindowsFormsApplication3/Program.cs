@@ -8,6 +8,7 @@ namespace WindowsFormsApplication3
 {
     static class Program
     {
+        static MDIParent1 mdiParent1;
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -18,14 +19,18 @@ namespace WindowsFormsApplication3
             Application.ThreadException += Application_ThreadException1;
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(MyHandler);
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-
-            Application.Run(new MDIParent1());
+            mdiParent1 = new MDIParent1();
+            Application.Run(mdiParent1);
         }
 
         private static void Application_ThreadException1(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
             Logger.LogError(e.Exception);
             MessageBox.Show(GetExceptionMessage(e.Exception));
+            if (mdiParent1 != null)
+            {
+                mdiParent1.OnError();
+            }
         }
 
         private static string GetExceptionMessage(Exception ex)

@@ -141,7 +141,8 @@ namespace WindowsFormsApplication3
         {
             if (e.Button == MouseButtons.Right)
             {
-                if (dataGridView1.Columns[e.ColumnIndex] is DataGridViewImageColumn ||
+                if (
+                    //dataGridView1.Columns[e.ColumnIndex] is DataGridViewImageColumn ||
                 dataGridView1.Columns[e.ColumnIndex].Name == "ID")
                 {
                     return;
@@ -286,8 +287,11 @@ namespace WindowsFormsApplication3
             dataGridView1.RowTemplate.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
 
             _dataConnection = new OLDBConnection12(_excelFilePath);
+
             var dt = _dataConnection.ExecuteDatatable("Select * from [Sheet1$]").DefaultView;
+           
             dataGridView1.DataSource = dt;
+
             //  dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.Dock = DockStyle.Fill;
             dataGridView1.AllowUserToOrderColumns = true;
@@ -329,6 +333,36 @@ namespace WindowsFormsApplication3
             // to avoid that work around is to call IncreaseRowHeight on load
             IncreaseRowHeight(1, 4);
             this.Text = _excelFilePath;
+        }
+
+        private string GetSheetName ()
+        {
+            var sheets = _dataConnection.GetSheets();
+
+            if(sheets.Count < 2)
+            {
+                return sheets.FirstOrDefault();
+            }
+
+          MessageBox.Show("More then on Sheets. Name : " +  string.Join(",", sheets));
+
+
+            foreach (string sheet in sheets)
+            {
+
+                DialogResult dialogResult = 
+                    MessageBox.Show("Do you want to Open " + sheet, "Open Sheet", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    return sheet;
+                }
+                else if (dialogResult == DialogResult.No)
+                {
+                    //do something else
+                }
+            }
+
+            throw new Exception("No Sheet Selected");
         }
 
 
@@ -745,7 +779,9 @@ namespace WindowsFormsApplication3
 
         private void LoadUnSavedData()
         {
-            if ((!File.Exists(UnSavedDataFile) && !File.Exists(UnSavedDataCurrentCellFile)) || IsReadOnlyFile)
+            if ((!File.Exists(UnSavedDataFile) && !File.Exists(UnSavedDataCurrentCellFile)) 
+                || IsReadOnlyFile
+                || ConfigurationManager.AppSettings["AlertForUnSavedState"] == "false")
             {
                 return;
 

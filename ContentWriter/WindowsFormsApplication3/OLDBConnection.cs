@@ -15,7 +15,7 @@ namespace StatusMaker.Data
         OleDbDataAdapter _adap;
         OleDbConnection _connection;
         DataTable _dt = new DataTable();
-        const string defaultQuery = "Select * from [Sheet1$]";
+       const string defaultQuery = "Select * from [Sheet1$]";
         List<DataColumn> addtionalCoumns = new List<DataColumn>(new[] { new DataColumn("ColorCode", typeof(string)),
            new DataColumn(Constants.WordFrequencyColumnName, typeof(string)),
         });
@@ -25,8 +25,7 @@ namespace StatusMaker.Data
         {
             _filePath = filePath;
         }
-
-
+        
         public void CloseConnection()
         {
             if (_connection.State == ConnectionState.Open)
@@ -36,7 +35,7 @@ namespace StatusMaker.Data
         }
         public void OpenConnnction()
         {
-            var connection = Excel.GetExcelConnectionString(_filePath);
+            var connection = ExcelProvider.GetExcelConnectionString(_filePath);
             _connection = new OleDbConnection(connection);
             _connection.Open();
         }
@@ -154,6 +153,20 @@ namespace StatusMaker.Data
             //}
 
             return startFrom + ".xml";
+        }
+
+        public List<string>  GetSheets()
+        {
+            OpenConnnction();
+          var  dt = _connection.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
+            List<string> coll = new List<string>();
+            foreach (DataRow row in dt.Rows)
+            {
+                coll.Add( row["TABLE_NAME"].ToString());
+              
+            }
+            CloseConnection();
+            return coll;
         }
     }
 }

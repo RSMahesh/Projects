@@ -15,43 +15,33 @@ namespace WindowsFormsApplication3
         List<DataGridViewColumn> imgcolumns = new List<DataGridViewColumn>();
         DataGridView dataGridView;
         string excelFilePath;
+
+        public ImageLoader(DataGridView dataGridView) : this(dataGridView, string.Empty)
+        {
+        }
         public ImageLoader(DataGridView dataGridView, string excelFilePath)
         {
             this.dataGridView = dataGridView;
             this.excelFilePath = excelFilePath;
         }
 
-        private void GetImageColumns()
+        public static bool IsValidImageUrl(string url)
         {
-            for (var i = 0; i < dataGridView.Columns.Count; i++)
+            try
             {
-                try
+                var uri = new Uri(url);
+                if (!string.IsNullOrEmpty(url.Trim()) && uri.Scheme.StartsWith("http"))
                 {
-
-                    for(var rowInd = 0; rowInd < dataGridView.Rows.Count; rowInd++)
-                    {
-                        //TODO: need to check all rows instead of row one
-                        //
-                    }
-                    var uu = new Uri(dataGridView.Rows[0].Cells[i].Value.ToString());
-
-
-
-                    if (uu.Scheme.StartsWith("http"))
-                    {
-                        imageColIndexs.Add(i);
-                        dataGridView.Columns[i].Visible = false;
-                    }
-
-                }
-                catch (Exception ex)
-                {
-
+                    return true;
                 }
             }
+            catch (Exception ex)
+            {
+            }
+
+            return false;
         }
 
-      
         public void AddImageColumn()
         {
             GetImageColumns();
@@ -63,16 +53,16 @@ namespace WindowsFormsApplication3
                 DataGridViewImageColumn imgColumn = new DataGridViewImageColumn();
                 imgColumn.HeaderText = "Image";
                 imgColumn.Width = Constants.ImageIconSize + 20;
-           
+
                 dataGridView.Columns.Insert(1, imgColumn);
                 imgcolumns.Add(imgColumn);
                 lst.Add(imgColumn);
-                // imgColumn.Frozen = true;
             }
 
             foreach (DataGridViewImageColumn col in lst)
             {
                 col.Frozen = true;
+                col.Tag = col.Index;
             }
 
 
@@ -104,7 +94,7 @@ namespace WindowsFormsApplication3
                             }
 
                             var uri = new Uri(url);
-                            var filePAth = GetLocalImagePath(uri);
+                            var filePAth = GetLocalImagePath(uri, rowIndex);
 
                             if (!Directory.Exists(Path.GetDirectoryName(filePAth)))
                             {
@@ -144,9 +134,48 @@ namespace WindowsFormsApplication3
                 }
             }
         }
-        private string GetLocalImagePath(Uri uri)
+
+        private void GetImageColumns()
         {
-            var tt = excelFilePath.Split(new string[] { "_dataBackup" }, StringSplitOptions.None)[0];
+            for (var colIndex = 0; colIndex < dataGridView.Columns.Count; colIndex++)
+            {
+                if (dataGridView.Columns[colIndex].Name.IndexOf("Image", 0, StringComparison.OrdinalIgnoreCase) == -1)
+                {
+                    continue;
+                }
+
+                for (var rowInd = 0; rowInd < dataGridView.Rows.Count; rowInd++)
+                {
+                    var obj = dataGridView.Rows[rowInd].Cells[colIndex].Value;
+                    if (obj == null || string.IsNullOrEmpty(obj.ToString().Trim()))
+                    {
+                        continue;
+                    }
+
+                    if (IsValidImageUrl(obj.ToString()))
+                    {
+                        imageColIndexs.Add(colIndex);
+                        dataGridView.Columns[colIndex].Visible = false;
+                    }
+                    break;
+                }
+            }
+        }
+
+        private string GetLocalImagePath(Uri uri, int rowIndex)
+        {
+            var filePath = excelFilePath;
+            if (string.IsNullOrEmpty(filePath))
+            {
+                if (dataGridView.Columns.Contains("FilePath"))
+                {
+                    filePath = dataGridView["FilePath", rowIndex].Value.ToString();
+                }
+            }
+
+            //if file is backup file then split the path
+            var tt = filePath.Split(new string[] { "_dataBackup" }, StringSplitOptions.None)[0];
+
             return Path.GetDirectoryName(tt) + "\\" +
                        Path.GetFileNameWithoutExtension(tt) + "-images"
                        + uri.LocalPath.Replace("/", "\\");

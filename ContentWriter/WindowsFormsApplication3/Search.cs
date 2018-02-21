@@ -16,6 +16,7 @@ namespace WindowsFormsApplication3
     public partial class Search : Form
     {
         Form _mdiPArent;
+        ImageLoader imageLoader;
         public Search(Form MDIpARENT)
         {
             InitializeComponent();
@@ -50,16 +51,22 @@ namespace WindowsFormsApplication3
 
             var search = new SearchService(ConfigurationManager.AppSettings["BackUpFolder"]);
             var results = search.SearchText(searchText);
+
+
             if (results.Any())
             {
                 // MessageBox.Show("Found :" + results.Count.ToString());
 
                 dataGridView1.Columns.Clear();
+              dataGridView1.RowTemplate.Height   = Constants.ImageIconSize;
                 dataGridView1.DataSource = GetTable(results);
                 dataGridView1.Columns["FilePath"].Visible = false;
                 dataGridView1.Columns["File"].Width = 350;
+                ImageLoader imgeLoader = new ImageLoader(dataGridView1);
+                imgeLoader.AddImageColumn();
+                imgeLoader.LoadImageInCell();
 
-                this.MdiParent.LayoutMdi(MdiLayout.TileHorizontal);
+             //   this.MdiParent.LayoutMdi(MdiLayout.TileHorizontal);
 
                 if (results.Count < 2)
                 {
@@ -77,16 +84,26 @@ namespace WindowsFormsApplication3
             AddButton();
         }
 
-        private void DisplaySearchedInFiles()
+        private string GetImageUrl(DataRow dataRow)
         {
-            listBox1.Items.Clear();
-            foreach (var key in SearchService.cachedDataTables.Keys)
+            foreach (var item in dataRow.ItemArray)
             {
-                listBox1.Items.Add(key);
+                if (item != null && ImageLoader.IsValidImageUrl(item.ToString()))
+                {
+                   return item.ToString();
+                }
             }
+            return string.Empty;
         }
 
-        ImageLoader imageLoader;
+        private void DisplaySearchedInFiles()
+        {
+            //listBox1.Items.Clear();
+            foreach (var key in SearchService.cachedDataTables.Keys)
+            {
+               // listBox1.Items.Add(key);
+            }
+        }
         private void ShowData()
         {
             var file = dataGridView1.CurrentRow.Cells["FilePath"].Value.ToString();
@@ -94,7 +111,7 @@ namespace WindowsFormsApplication3
             imageLoader = new ImageLoader(dataGridView2, file);
             imageLoader.AddImageColumn();
             imageLoader.LoadImageInCell();
-            groupBox1.Text = Path.GetFileName(file);
+            //groupBox1.Text = Path.GetFileName(file);
         }
         private void showDataInGrid(string file)
         {
@@ -121,6 +138,7 @@ namespace WindowsFormsApplication3
             dt.Columns.Add("Row", typeof(int));
             dt.Columns.Add("Col");
             dt.Columns.Add("FilePath");
+            dt.Columns.Add("ImageUrl");
 
             foreach (var result in results)
             {
@@ -129,6 +147,7 @@ namespace WindowsFormsApplication3
                 row["Row"] = result.Row;
                 row["Col"] = result.ColName;
                 row["FilePath"] = result.File;
+                row["ImageUrl"] = GetImageUrl(result.DataRow);
                 dt.Rows.Add(row);
             }
 
@@ -180,12 +199,12 @@ namespace WindowsFormsApplication3
             if (checkBox1.Checked)
             {
                 //  dataGridView1.Visible = false;
-                groupBoxTop = groupBox1.Top;
-                groupBox1.Top = dataGridView1.Top;
+                //  groupBoxTop = groupBox1.Top;
+                //  groupBox1.Top = dataGridView1.Top;
             }
             else
             {
-                groupBox1.Top = groupBoxTop;
+                //groupBox1.Top = groupBoxTop;
             }
         }
     }

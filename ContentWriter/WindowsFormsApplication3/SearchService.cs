@@ -86,7 +86,7 @@ namespace WindowsFormsApplication3
                 }
                 if (!string.IsNullOrEmpty(columns))
                 {
-                    lst.Add(new SearchResult(file, int.Parse(row.ItemArray[0].ToString()), columns));
+                    lst.Add(new SearchResult(file, int.Parse(row.ItemArray[0].ToString()), columns, row));
                 }
 
             }
@@ -96,15 +96,17 @@ namespace WindowsFormsApplication3
 
     public class SearchResult
     {
-        public SearchResult(string file, int row, string col)
+        public SearchResult(string file, int row, string col, DataRow dataRow)
         {
             File = file;
             Row = row;
             ColName = col;
+            DataRow = dataRow;
         }
         public string File { get; set; }
         public int Row { get; set; }
         public string ColName { get; set; }
+        public DataRow DataRow { get; set; }
 
     }
 }

@@ -20,10 +20,27 @@ namespace WindowsFormsApplication3
             InitializeComponent();
         }
 
+        public string FindString
+        {
+           private get
+            {
+                return textBox1.Text;
+            }
+            set
+            {
+                textBox1.Text = value;
+            }
+        }
+
         private void btnFindNext_Click(object sender, EventArgs e)
         {
+            FindNext();
+        }
+
+        public void FindNext()
+        {
             EventContainer.PublishEvent
-           (EventPublisher.Events.FindText.ToString(), new EventArg(Guid.NewGuid(), new[] { textBox1.Text, cmbFields.Text }));
+         (EventPublisher.Events.FindText.ToString(), new EventArg(Guid.NewGuid(), new[] { textBox1.Text, cmbFields.Text }));
 
         }
 
@@ -48,22 +65,5 @@ namespace WindowsFormsApplication3
         }
     }
 
-    class FindParameter
-    {
-        public FindParameter(string columnName, string findText)
-        {
-            ColumnName = columnName;
-            FindText = findText;
-        }
-        public string ColumnName { get; private set; }
-        public string FindText { get; private set; }
-
-        public bool SearchAll
-        {
-            get
-            {
-                return ColumnName == "ALL";
-            }
-        }
-    }
+   
 }

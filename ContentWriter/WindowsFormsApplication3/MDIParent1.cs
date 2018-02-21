@@ -23,6 +23,10 @@ namespace WindowsFormsApplication3
             InitializeComponent();
         }
 
+        public void OnError()
+        {
+            Cursor = Cursors.Default;
+        }
         private void ShowNewForm(object sender, EventArgs e)
         {
             Form childForm = new Form();

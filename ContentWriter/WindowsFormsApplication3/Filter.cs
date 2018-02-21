@@ -24,7 +24,8 @@ namespace WindowsFormsApplication3
         private void Filter_Load(object sender, EventArgs e)
         {
             cmbOpreator.SelectedIndex = 0;
-            foreach(DataColumn col in _dataView.Table.Columns)
+            cmbFields.Items.Add("Select Column");
+            foreach (DataColumn col in _dataView.Table.Columns)
             {
                 cmbFields.Items.Add(col.ColumnName);
             }
@@ -67,13 +68,19 @@ namespace WindowsFormsApplication3
                 if (cmbOpreator.SelectedItem.ToString() == "Equal")
                 {
                     query += " or [" + cmbFields.SelectedItem + "] ='" + item + "'";
-
                 }
+                else if (cmbOpreator.SelectedItem.ToString() == "Contains")
+                {
+                    query += " or [" + cmbFields.SelectedItem + "] like '%" + item + "%'";
+                }
+                else if (cmbOpreator.SelectedItem.ToString() == "Not Contains")
+                {
+                    query += " or [" + cmbFields.SelectedItem + "] Not like '%" + item + "%'";
+                }
+
                 else
                 {
                     query += "and [" + cmbFields.SelectedItem + "] <>'" + item + "' ";
-
-
                 }
 
             }
