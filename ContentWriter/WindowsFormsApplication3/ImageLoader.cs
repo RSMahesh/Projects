@@ -139,10 +139,10 @@ namespace WindowsFormsApplication3
         {
             for (var colIndex = 0; colIndex < dataGridView.Columns.Count; colIndex++)
             {
-                if (dataGridView.Columns[colIndex].Name.IndexOf("Image", 0, StringComparison.OrdinalIgnoreCase) == -1)
-                {
-                    continue;
-                }
+                //if (dataGridView.Columns[colIndex].Name.IndexOf("Image", 0, StringComparison.OrdinalIgnoreCase) == -1)
+                //{
+                //    continue;
+                //}
 
                 for (var rowInd = 0; rowInd < dataGridView.Rows.Count; rowInd++)
                 {
