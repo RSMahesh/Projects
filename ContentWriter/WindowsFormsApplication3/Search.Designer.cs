@@ -142,7 +142,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(983, 662);
+            this.ClientSize = new System.Drawing.Size(1205, 662);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.btnSearch);

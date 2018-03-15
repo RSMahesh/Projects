@@ -10,6 +10,7 @@ using System.Data;
 using System.IO;
 using StatusMaker.Data;
 using System.Windows.Forms;
+using System.Web.Script.Serialization;
 
 namespace WindowsFormsApplication3
 {
@@ -61,28 +62,36 @@ namespace WindowsFormsApplication3
 
         public static void CheckDataSavedProperly(string excelPath)
         {
-            var backUpFolder = Path.GetDirectoryName(excelPath) + "\\" +
-                     Path.GetFileNameWithoutExtension(excelPath)
-                     + "_dataBackup\\Full";
-
-
-            if (!Directory.Exists(backUpFolder))
+            try
             {
-                return;
+                var backUpFolder = Path.GetDirectoryName(excelPath) + "\\" +
+                         Path.GetFileNameWithoutExtension(excelPath)
+                         + "_dataBackup\\Full";
+
+
+                if (!Directory.Exists(backUpFolder))
+                {
+                    return;
+                }
+
+                var files = Directory.GetFiles(backUpFolder, "*.xml").OrderByDescending(x => x.ToString()).ToList();
+                if (!files.Any())
+                {
+                    return;
+                }
+
+                var xmlDataTable = OLDBConnection12.ReadFromXml(files.FirstOrDefault());
+                OLDBConnection12 connection = new OLDBConnection12(excelPath);
+                var excelDataTable = connection.ExecuteDatatable("Select * from [Sheet1$]", false);
+
+                DataDiff diff = new DataDiff(files.FirstOrDefault());
+                diff.AreTablesTheSame(xmlDataTable, excelDataTable);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Data Diff Failed. Error: " + ex.ToString());
             }
 
-            var files = Directory.GetFiles(backUpFolder, "*.xml").OrderByDescending(x => x.ToString()).ToList();
-            if (!files.Any())
-            {
-                return;
-            }
-
-            var xmlDataTable = OLDBConnection12.ReadFromXml(files.FirstOrDefault());
-            OLDBConnection12 connection = new OLDBConnection12(excelPath);
-            var excelDataTable = connection.ExecuteDatatable("Select * from [Sheet1$]", false);
-
-            DataDiff diff = new DataDiff(files.FirstOrDefault());
-            diff.AreTablesTheSame(xmlDataTable, excelDataTable);
         }
 
         public static IEnumerable<string> AreTablesTheSame(DataTable xmlDataTable, DataTable excelDataTable)
@@ -146,6 +155,26 @@ namespace WindowsFormsApplication3
             return unique_items.ToList();
         }
 
+
+        public static string FreeLanceAppDataFolder
+        {
+            get
+            {
+                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FreeLance");
+            }
+        }
+
+        public static string Serialize(object obj)
+        {
+            var serializer = new JavaScriptSerializer();
+            return serializer.Serialize(obj);
+        }
+
+        public static T Deserialize<T>(string data)
+        {
+            var serializer = new JavaScriptSerializer();
+            return serializer.Deserialize<T>(data);
+        }
         private static bool EqualString(string one, string two)
         {
 
@@ -183,5 +212,7 @@ namespace WindowsFormsApplication3
 
             return string.Join(";", diff);
         }
+
+
     }
 }

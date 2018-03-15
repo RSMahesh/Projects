@@ -84,6 +84,7 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.showHideColumnsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -361,7 +362,8 @@
             this.formulaToolStripMenuItem,
             this.filterToolStripMenuItem,
             this.importBackUpToolStripMenuItem,
-            this.themeToolStripMenuItem});
+            this.themeToolStripMenuItem,
+            this.showHideColumnsToolStripMenuItem});
             this.toolsMenu.Name = "toolsMenu";
             this.toolsMenu.Size = new System.Drawing.Size(48, 20);
             this.toolsMenu.Text = "&Tools";
@@ -533,6 +535,13 @@
             this.toolStripStatusLabel.Size = new System.Drawing.Size(39, 17);
             this.toolStripStatusLabel.Text = "Status";
             // 
+            // showHideColumnsToolStripMenuItem
+            // 
+            this.showHideColumnsToolStripMenuItem.Name = "showHideColumnsToolStripMenuItem";
+            this.showHideColumnsToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.showHideColumnsToolStripMenuItem.Text = "ShowHideColumns";
+            this.showHideColumnsToolStripMenuItem.Click += new System.EventHandler(this.showHideColumnsToolStripMenuItem_Click);
+            // 
             // MDIParent1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -611,6 +620,7 @@
         private System.Windows.Forms.ToolStripMenuItem wordsFrequencyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openReadOnlyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem searchDataToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showHideColumnsToolStripMenuItem;
     }
 }
 

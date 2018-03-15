@@ -64,6 +64,12 @@
   <ItemGroup>
     <Compile Include="AppContext.cs" />
     <Compile Include="CellData.cs" />
+    <Compile Include="ColumnCustomization.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ColumnCustomization.Designer.cs">
+      <DependentUpon>ColumnCustomization.cs</DependentUpon>
+    </Compile>
     <Compile Include="Constants.cs" />
     <Compile Include="ContextMenueCurrentCell.cs" />
     <Compile Include="ContextMenueMultiSelectCell.cs" />
@@ -170,6 +176,9 @@
       <DependentUpon>WordEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="WpfRichTextBox.cs" />
+    <EmbeddedResource Include="ColumnCustomization.resx">
+      <DependentUpon>ColumnCustomization.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DataDiff.resx">
       <DependentUpon>DataDiff.cs</DependentUpon>
     </EmbeddedResource>

@@ -139,7 +139,7 @@ namespace WindowsFormsApplication3
             dt.Columns.Add("Col");
             dt.Columns.Add("FilePath");
             dt.Columns.Add("ImageUrl");
-            dt.Columns.Add("Title")
+            dt.Columns.Add("Title");
             dt.Columns.Add("Description");
 
 

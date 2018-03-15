@@ -12,7 +12,7 @@ namespace WindowsFormsApplication3
         static  Logger()
         {
           
-            _logFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FreeLance", "error.log");
+            _logFilePath = Path.Combine(Utility.FreeLanceAppDataFolder, "error.log");
           
             if(!Directory.Exists(Path.GetDirectoryName(_logFilePath)))
             {

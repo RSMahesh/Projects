@@ -49,16 +49,14 @@ namespace WindowsFormsApplication3
 
         private string GetDataFile()
         {
-            var _dataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            _dataFolder = Path.Combine(_dataFolder, "FreeLance");
-
-            if (!Directory.Exists(_dataFolder))
+         
+            if (!Directory.Exists(Utility.FreeLanceAppDataFolder))
             {
-                Directory.CreateDirectory(_dataFolder);
+                Directory.CreateDirectory(Utility.FreeLanceAppDataFolder);
             }
 
 
-            return Path.Combine(_dataFolder, "LastFile.txt");
+            return Path.Combine(Utility.FreeLanceAppDataFolder, "LastFile.txt");
 
         }
         private void SaveFileLastOpenFilePath(string filePath)
@@ -369,6 +367,12 @@ namespace WindowsFormsApplication3
         {
             Search search = new Search(this);
             search.Show();
+        }
+
+        private void showHideColumnsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EventContainer.PublishEvent
+            (EventPublisher.Events.ShowHideColumns.ToString(), new EventArg(Guid.NewGuid(), null));
         }
     }
 }

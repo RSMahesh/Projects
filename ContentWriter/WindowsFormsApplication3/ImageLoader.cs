@@ -75,6 +75,8 @@ namespace WindowsFormsApplication3
                 return;
             }
 
+            var filePAth = string.Empty;
+
             WebClient wc = new WebClient();
             for (int rowIndex = 0; rowIndex < dataGridView.Rows.Count; rowIndex++)
             {
@@ -94,7 +96,7 @@ namespace WindowsFormsApplication3
                             }
 
                             var uri = new Uri(url);
-                            var filePAth = GetLocalImagePath(uri, rowIndex);
+                            filePAth = GetLocalImagePath(uri, rowIndex);
 
                             if (!Directory.Exists(Path.GetDirectoryName(filePAth)))
                             {
@@ -127,12 +129,29 @@ namespace WindowsFormsApplication3
                         }
 
                     }
+                    catch (WebException ex)
+                    {
+                        if (ex.Status == WebExceptionStatus.ProtocolError &&
+                            ex.Response != null)
+                        {
+                            var resp = (HttpWebResponse)ex.Response;
+                            if (resp.StatusCode == HttpStatusCode.NotFound)
+                            {
+                                File.Copy(Path.Combine(Application.StartupPath, "Image-not-found.png"), filePAth);
+                            }
+                        }
+                    }
                     catch (Exception ex)
                     {
 
                     }
                 }
             }
+        }
+
+        private void HandleImageNotFound_404()
+        {
+
         }
 
         private void GetImageColumns()

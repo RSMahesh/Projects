@@ -11,27 +11,39 @@ using WindowsFormsControlLibrary1;
 
 namespace WindowsFormsApplication3
 {
-    public partial class LayOutSetting : Form
+    partial class LayOutSetting : Form
     {
         List<CheckBox> _inputs = new List<CheckBox>();
-       public static List<ControlPostion> left = new List<ControlPostion>();
-       public static List<ControlPostion> right = new List<ControlPostion>();
-       
-       public static DataColumnCollection _columns;
-        public LayOutSetting()
+        AppContext appContext;
+
+        public static List<ControlPostion> left = new List<ControlPostion>();
+        public static List<ControlPostion> right = new List<ControlPostion>();
+
+        //public static DataColumnCollection _columns;
+
+        public DataColumnCollection _columns
         {
-          
+            get
+            {
+                return ((DataView)appContext.dataGridView.DataSource).Table.Columns;
+            }
+        }
+
+        public LayOutSetting(AppContext appContext)
+        {
+            this.appContext = appContext;
+
             InitializeComponent();
-          
+
             rightPanel.CellBorderStyle = leftPanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
 
         }
 
-    private void InitKayOut()
+        private void InitKayOut()
         {
-            if(left.Count ==0 && right.Count ==0)
+            if (left.Count == 0 && right.Count == 0)
             {
-                for(var i =0; i < _columns.Count; i++)
+                for (var i = 0; i < _columns.Count; i++)
                 {
                     var pp = new ControlPostion();
                     pp.Index = i;
@@ -39,7 +51,7 @@ namespace WindowsFormsApplication3
                     pp.dataColumn = _columns[i];
 
                     left.Add(pp);
-                    i= i+1;
+                    i = i + 1;
                     if (i == _columns.Count)
                         break;
 
@@ -52,26 +64,26 @@ namespace WindowsFormsApplication3
                 }
             }
         }
-      
+
         private void LayOutSetting_Load(object sender, EventArgs e)
         {
             panel1.AutoScroll = true;
             panel2.AutoScroll = true;
             InitKayOut();
             AddControls();
-         
-           
+
+
         }
 
-        
+
 
         private void AddControls()
         {
             var row = 0;
             leftPanel.AutoSize = rightPanel.AutoSize = true;
-            foreach(var controlP in left )
+            foreach (var controlP in left)
             {
-                var inputControl = new InputControl(controlP.dataColumn.ColumnName,0,0);
+                var inputControl = new InputControl(controlP.dataColumn.ColumnName, 0, 0);
                 inputControl.Tag = controlP.Index.ToString();
                 FlowLayoutPanel panel = new FlowLayoutPanel();
                 panel.AutoSize = true;
@@ -89,7 +101,7 @@ namespace WindowsFormsApplication3
             row = 0;
             foreach (var controlP in right)
             {
-                var inputControl = new InputControl(controlP.dataColumn.ColumnName,0,0);
+                var inputControl = new InputControl(controlP.dataColumn.ColumnName, 0, 0);
                 inputControl.Tag = controlP.Index.ToString();
                 FlowLayoutPanel panel = new FlowLayoutPanel();
                 panel.AutoSize = true;
@@ -107,7 +119,7 @@ namespace WindowsFormsApplication3
         private void Chk_Click(object sender, EventArgs e)
         {
             var chk = (CheckBox)sender;
-            currentPanel =(Panel) chk.Parent;
+            currentPanel = (Panel)chk.Parent;
         }
 
         private void btnMoveUp_Click(object sender, EventArgs e)
@@ -117,14 +129,14 @@ namespace WindowsFormsApplication3
 
         private void btnMoveRight_Click(object sender, EventArgs e)
         {
-            if(currentPanel.Parent != leftPanel)
+            if (currentPanel.Parent != leftPanel)
             {
                 return;
             }
             leftPanel.Controls.Remove(currentPanel);
             rightPanel.RowCount += 1;
-            rightPanel.Controls.Add (currentPanel,0, rightPanel.RowCount-1);
-          //  parent.Controls.Add(inputControl, col, row);
+            rightPanel.Controls.Add(currentPanel, 0, rightPanel.RowCount - 1);
+            //  parent.Controls.Add(inputControl, col, row);
 
             //    Control c1 = this.tableLayoutPanel1.GetControlFromPosition(0, 0);
 
@@ -145,15 +157,12 @@ namespace WindowsFormsApplication3
     {
         public int Index { get; set; }
         public int Row { get; set; }
-       // public int col { get; set; }
+        // public int col { get; set; }
         public bool Readonly { get; set; }
         public int TextBoxWidth { get; set; }
         public int TesBoxHieght { get; set; }
         public bool Hidden { get; set; }
 
         public DataColumn dataColumn { get; set; }
-
-
-
     }
 }

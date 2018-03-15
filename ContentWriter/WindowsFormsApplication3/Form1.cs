@@ -56,6 +56,7 @@ namespace WindowsFormsApplication3
 
             appContext = new AppContext();
             appContext.dataGridView = dataGridView1;
+            appContext.ExcelFilePath = filePath;
 
 
             wpfRichText = new WpfRichTextBox(wpfRichTextBoxPanel);
@@ -89,6 +90,7 @@ namespace WindowsFormsApplication3
 
             if (!IsReadOnlyFile)
             {
+
                 Utility.CheckDataSavedProperly(_excelFilePath);
             }
           
@@ -117,6 +119,17 @@ namespace WindowsFormsApplication3
             FindText frm = new FindText(appContext);
             frm.TopMost = true;
             frm.Show();
+        }
+
+        private void ShowHideColumns(EventArg arg)
+        {
+            ColumnCustomization frm = new ColumnCustomization(appContext);
+            frm.TopMost = true;
+            frm.Show();
+
+            //LayOutSetting frm1 = new LayOutSetting(appContext);
+            //frm1.Show();
+
         }
 
         private void DataGridView1_MouseClick(object sender, MouseEventArgs e)
@@ -235,7 +248,7 @@ namespace WindowsFormsApplication3
                 EventContainer.SubscribeEvent(EventPublisher.Events.RichTextBoxTextChanged.ToString(), RichTextBoxTextChanged);
                 EventContainer.SubscribeEvent(EventPublisher.Events.SearchTextInBackUp.ToString(), SearchText);
                 EventContainer.SubscribeEvent(EventPublisher.Events.FindWindow.ToString(), ShowFindWindow);
-
+                EventContainer.SubscribeEvent(EventPublisher.Events.ShowHideColumns.ToString(), ShowHideColumns);
             }
 
         }
@@ -842,14 +855,14 @@ namespace WindowsFormsApplication3
         {
             get
             {
-                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FreeLance", Path.GetFileNameWithoutExtension(_excelFilePath) + "_unsaved.txt");
+                return Path.Combine(Utility.FreeLanceAppDataFolder, Path.GetFileNameWithoutExtension(_excelFilePath) + "_unsaved.txt");
             }
         }
         private string UnSavedDataCurrentCellFile
         {
             get
             {
-                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FreeLance", Path.GetFileNameWithoutExtension(_excelFilePath) + "_unsaved_currentcell.txt");
+                return Path.Combine(Utility.FreeLanceAppDataFolder, Path.GetFileNameWithoutExtension(_excelFilePath) + "_unsaved_currentcell.txt");
             }
         }
 
@@ -863,7 +876,7 @@ namespace WindowsFormsApplication3
 
             var serializer = new JavaScriptSerializer();
             var serializedResult = serializer.Serialize(rowsInfo);
-            var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FreeLance", Path.GetFileNameWithoutExtension(_excelFilePath) + "_style.txt");
+            var filePath = Path.Combine(Utility.FreeLanceAppDataFolder, Path.GetFileNameWithoutExtension(_excelFilePath) + "_style.txt");
             //  MessageBox.Show(serializedResult);
             File.WriteAllText(filePath, serializedResult);
 
@@ -872,7 +885,7 @@ namespace WindowsFormsApplication3
         private void ReadRowInfo()
         {
             var serializer = new JavaScriptSerializer();
-            var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FreeLance", Path.GetFileNameWithoutExtension(_excelFilePath) + "_style.txt");
+            var filePath = Path.Combine(Utility.FreeLanceAppDataFolder, Path.GetFileNameWithoutExtension(_excelFilePath) + "_style.txt");
 
             if (File.Exists(filePath))
             {
