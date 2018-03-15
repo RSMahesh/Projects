@@ -210,5 +210,15 @@ namespace WindowsFormsApplication3
                 //groupBox1.Top = groupBoxTop;
             }
         }
+
+        private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }
