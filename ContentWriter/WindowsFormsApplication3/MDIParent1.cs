@@ -176,6 +176,7 @@ namespace WindowsFormsApplication3
             this.AllowDrop = true;
             this.DragEnter += MDIParent1_DragEnter;
             this.DragDrop += MDIParent1_DragDrop;
+            this.themeColorPickerToolStripSplitButton1.ColorSelected += ThemeColorPickerToolStripSplitButton1_ColorSelected;
 
             //OLDBConnection12 connection = new OLDBConnection12(@"D:\\WordList.xlsx");
             //var dt = connection.ExecuteDatatable("Select * from [Sheet1$]");
@@ -189,6 +190,13 @@ namespace WindowsFormsApplication3
 
 
             // OpenFile(@"D:\11.xlsx");
+
+        }
+
+        private void ThemeColorPickerToolStripSplitButton1_ColorSelected(object sender, ColorSelectedArg e)
+        {
+            EventContainer.PublishEvent
+           (EventPublisher.Events.ChangeBackGroundColor.ToString(), new EventArg(Guid.NewGuid(), e.Color));
 
         }
 

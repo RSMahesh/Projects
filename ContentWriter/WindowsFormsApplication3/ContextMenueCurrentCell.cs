@@ -30,8 +30,14 @@ namespace WindowsFormsApplication3
             contextMenu.MenuItems.Add("Copy", OnCopy);
             contextMenu.MenuItems.Add("Past", OnPast);
             contextMenu.MenuItems.Add("Delete", OnCut);
+
             contextMenu.MenuItems.Add("-");
+            contextMenu.MenuItems.Add("Editor", OnEditor);
+            contextMenu.MenuItems.Add("-");
+
             contextMenu.MenuItems.Add("Find", OnFind);
+
+            contextMenu.MenuItems.Add("Filter", OnFilter);
 
             MenuItem addDevice = new MenuItem("Search");
             addDevice.MenuItems.Add(new MenuItem("Backup", SearchBackup));
@@ -57,7 +63,7 @@ namespace WindowsFormsApplication3
 
         private string GetSearchText()
         {
-            
+
             return appContext.dataGridViewTextBoxEditing.SelectedText.Trim();
         }
 
@@ -72,9 +78,22 @@ namespace WindowsFormsApplication3
             Process.Start("https://www.google.com/search?q=" + searchText);
         }
 
+        void OnFilter(object sender, EventArgs e)
+        {
+            Filter filter = new Filter(appContext);
+
+            filter.WindowState = FormWindowState.Normal;
+            filter.Show();
+            var text = appContext.dataGridViewTextBoxEditing.SelectedText;
+            filter.ColumnToFilter = appContext.dataGridView.CurrentCell.OwningColumn.Name;
+            filter.TextToFilter = text;
+            filter.Operation = "Contains";
+          
+        }
+
         void OnFind(object sender, EventArgs e)
         {
-          var text =  appContext.dataGridViewTextBoxEditing.SelectedText;
+            var text = appContext.dataGridViewTextBoxEditing.SelectedText;
             FindText frm = new FindText(appContext);
             frm.FindString = text;
             frm.TopMost = true;
@@ -82,6 +101,26 @@ namespace WindowsFormsApplication3
             frm.FindNext();
         }
 
+        void OnEditor(object sender, EventArgs e)
+        {
+            PopUpEditor frm = new PopUpEditor(appContext);
+          //  WpfRichTextBox txt = new WpfRichTextBox(frm.TextBoxPanel);
+
+            //  frm.FormBorderStyle = FormBorderStyle.None;
+            //frm.BackColor = appContext.Theme.BackGroundColor;
+            //txt.BackgroundColor = Utility.ToMediaColor(appContext.Theme.BackGroundColor);
+            //txt.FontSize = 18;
+            //txt.AddText(appContext.dataGridViewTextBoxEditing.Text);
+            //txt.LineSpacing = 30;
+            //frm.TextLength = appContext.dataGridViewTextBoxEditing.Text.Length;
+
+            //appContext.dataGridView.EndEdit();
+            //frm.TopMost = true;
+            frm.Show();
+
+
+            //  appContext.dataGridViewTextBoxEditing.Cut();
+        }
 
         void OnCut(object sender, EventArgs e)
         {

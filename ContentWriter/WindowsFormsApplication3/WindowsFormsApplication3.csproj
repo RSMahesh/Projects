@@ -43,6 +43,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Speech" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Presentation" />
     <Reference Include="System.Xml.Linq" />
@@ -85,6 +86,12 @@
     </Compile>
     <Compile Include="FormulaRunner.cs" />
     <Compile Include="ImageLoader.cs" />
+    <Compile Include="PopUpEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PopUpEditor.Designer.cs">
+      <DependentUpon>PopUpEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="RowInfo.cs" />
     <Compile Include="Search.cs">
       <SubType>Form</SubType>
@@ -167,6 +174,9 @@
     <Compile Include="ThemeScreen.Designer.cs">
       <DependentUpon>ThemeScreen.cs</DependentUpon>
     </Compile>
+    <Compile Include="TracBarForToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UndoRedo.cs" />
     <Compile Include="Utility.cs" />
     <Compile Include="WordEditor.cs">
@@ -211,6 +221,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PictureViewer.resx">
       <DependentUpon>PictureViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PopUpEditor.resx">
+      <DependentUpon>PopUpEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

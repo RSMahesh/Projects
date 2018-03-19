@@ -20,55 +20,47 @@ namespace WindowsFormsApplication3
     public class WpfRichTextBox
     {
         RichTextBox richTextBox = new RichTextBox();
-
-        System.Windows.Controls.ContextMenu contextMenu = new System.Windows.Controls.ContextMenu();
         ElementHost host = new ElementHost();
 
         bool addingText = false;
-
-        void AddContextMenu()
+        public WpfRichTextBox(Control panel)
         {
-
-            contextMenu.Items.Add("Copy");
-            //contextMenu.MenuItems.Add("Past", OnPast);
-            //contextMenu.MenuItems.Add("Delete", OnDelete);
-            //contextMenu.MenuItems.Add("ApplyFormula", OnApplyFormula);
-
-        }
-
-        private void RichTextBox_ContextMenuOpening(object sender, System.Windows.Controls.ContextMenuEventArgs e)
-        {
-            //RichTextBox rtb = sender as RichTextBox;
-
-
-            //if (rtb == null) return;
-
-            //ContextMenu contextMenu = rtb.ContextMenu;
-
-            //contextMenu.PlacementTarget = rtb;
-            //FormSys frm = new FormSys();
-            //frm.Show();
-        }
-
-        public WpfRichTextBox(System.Windows.Forms.Panel panel)
-        {
-            // AddContextMenu();
             ChangeLanguage();
             richTextBox.PreviewMouseRightButtonDown += RichTextBox_PreviewMouseRightButtonDown;
             richTextBox.MouseDown += RichTextBox_MouseDown;
-            richTextBox.ContextMenuOpening += RichTextBox_ContextMenuOpening;
             richTextBox.SpellCheck.IsEnabled = true;
             richTextBox.FontFamily = new FontFamily("Verdana");
-          //  richTextBox.FontStyle = System.Windows.FontStyles.Normal;
             richTextBox.FontSize = 14.25F;
-           // richTextBox.FontWeight = System.Windows.FontWeights.Regular;
             richTextBox.TextChanged += RichTextBox_TextChanged;
-            richTextBox.KeyUp += RichTextBox_KeyUp;
             richTextBox.BorderBrush = new SolidColorBrush(Colors.White);
             richTextBox.BorderThickness = new Thickness(3);
             host.Dock = DockStyle.Fill;
             host.Child = richTextBox;
             panel.Controls.Add(host);
+        }
+
+        public string Text
+        {
+            get
+            {
+                return new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd).Text;
+            }
+            set
+            {
+                Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("en-GB");
+                addingText = true;
+                richTextBox.Document.Blocks.Clear();
+                richTextBox.Document.Blocks.Add(new Paragraph(new Run(value)));
+                addingText = false;
+            }
+        }
+
+        public double FontSize
+        {
+            set
+            {
+                richTextBox.FontSize = value;
+            }
         }
 
         public Color BackgroundColor
@@ -83,7 +75,7 @@ namespace WindowsFormsApplication3
                 richTextBox.Background = brush;
             }
         }
-        
+
         public Color ForegroundColor
         {
             get
@@ -96,8 +88,6 @@ namespace WindowsFormsApplication3
                 richTextBox.Foreground = brush;
             }
         }
-
-
         public Color BorderColor
         {
             get
@@ -110,17 +100,13 @@ namespace WindowsFormsApplication3
             }
         }
 
+        
         private void ChangeLanguage()
         {
             Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("en-GB");
-
-            //FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement),
-            //    new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.Name)));
         }
         private void RichTextBox_PreviewMouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            //FormSys frm = new FormSys();
-            //frm.ShowDialog();
         }
 
         private void RichTextBox_MouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -133,29 +119,32 @@ namespace WindowsFormsApplication3
             richTextBox.ContextMenu = null;
         }
 
-        private void RichTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            //   throw new NotImplementedException();
-        }
-
         private void RichTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             if (!addingText)
             {
-                var text = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd).Text;
-
-                EventContainer.PublishEvent(Events.RichTextBoxTextChanged.ToString(), new EventArg(text));
+                EventContainer.PublishEvent(Events.RichTextBoxTextChanged.ToString(), new EventArg(Text));
             }
         }
 
-        public void AddText(string text)
+        //public void AddText(string text)
+        //{
+        //    Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("en-GB");
+        //    addingText = true;
+        //    richTextBox.Document.Blocks.Clear();
+        //    richTextBox.Document.Blocks.Add(new Paragraph(new Run(text)));
+        //    addingText = false;
+        //}
+
+        public int LineSpacing
         {
-            Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("en-GB");
-            addingText = true;
-            richTextBox.Document.Blocks.Clear();
-            richTextBox.Document.Blocks.Add(new Paragraph(new Run(text)));
-            addingText = false;
+            set
+            {
+                Paragraph p = richTextBox.Document.Blocks.FirstBlock as Paragraph;
+                p.LineHeight = value;
+            }
         }
+
 
         public void HighlightWholeWordAll(string word)
         {

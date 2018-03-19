@@ -34,6 +34,7 @@ namespace EventPublisher
         SearchTextInBackUp,
         MaximizeGridWindow,
         FindWindow,
-        ShowHideColumns
+        ShowHideColumns,
+        ChangeBackGroundColor
     }
 }

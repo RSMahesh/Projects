@@ -22,8 +22,18 @@ namespace WindowsFormsApplication3
             InitializeComponent();
             _mdiPArent = MDIpARENT;
             this.MdiParent = _mdiPArent;
+            //    this.ResizeEnd += Search_ResizeEnd;
+            //  this.MaximumSizeChanged += Search_MaximumSizeChanged;
+            this.Resize += Search_Resize;
             //this.TopMost = true;
         }
+
+        private void Search_Resize(object sender, EventArgs e)
+        {
+            this.splitContainer1.Width = this.Width - 50;
+        }
+
+
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
@@ -58,7 +68,7 @@ namespace WindowsFormsApplication3
                 // MessageBox.Show("Found :" + results.Count.ToString());
 
                 dataGridView1.Columns.Clear();
-              dataGridView1.RowTemplate.Height   = Constants.ImageIconSize;
+                dataGridView1.RowTemplate.Height = Constants.ImageIconSize;
                 dataGridView1.DataSource = GetTable(results);
                 dataGridView1.Columns["FilePath"].Visible = false;
                 dataGridView1.Columns["File"].Width = 350;
@@ -66,7 +76,7 @@ namespace WindowsFormsApplication3
                 imgeLoader.AddImageColumn();
                 imgeLoader.LoadImageInCell();
 
-             //   this.MdiParent.LayoutMdi(MdiLayout.TileHorizontal);
+                //   this.MdiParent.LayoutMdi(MdiLayout.TileHorizontal);
 
                 if (results.Count < 2)
                 {
@@ -90,7 +100,7 @@ namespace WindowsFormsApplication3
             {
                 if (item != null && ImageLoader.IsValidImageUrl(item.ToString()))
                 {
-                   return item.ToString();
+                    return item.ToString();
                 }
             }
             return string.Empty;
@@ -101,7 +111,7 @@ namespace WindowsFormsApplication3
             //listBox1.Items.Clear();
             foreach (var key in SearchService.cachedDataTables.Keys)
             {
-               // listBox1.Items.Add(key);
+                // listBox1.Items.Add(key);
             }
         }
         private void ShowData()
@@ -151,11 +161,31 @@ namespace WindowsFormsApplication3
                 row["Col"] = result.ColName;
                 row["FilePath"] = result.File;
                 row["ImageUrl"] = GetImageUrl(result.DataRow);
+            //    row["Title"]
+
                 dt.Rows.Add(row);
             }
 
             return dt;
 
+        }
+
+        private string GetSimilarColumnInExcelRow(string columnName, DataRow dataRow)
+        {
+           if( dataRow.Table.Columns.Contains(columnName))
+            {
+                return columnName;
+            }
+
+           foreach(DataColumn column in dataRow.Table.Columns)
+            {
+                if (column.ColumnName.IndexOf(columnName, 0, StringComparison.OrdinalIgnoreCase) !=-1)
+                {
+                    return column.ColumnName;
+                }
+            }
+
+            return string.Empty;
         }
 
         private void Search_Load(object sender, EventArgs e)

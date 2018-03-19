@@ -11,13 +11,15 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApplication3
 {
-    public partial class Filter : Form
+     partial class Filter : Form
     {
       
         DataView _dataView;
-        public Filter(DataView dataView)
+        AppContext appContext;
+        public Filter(AppContext appContext)
         {
-            _dataView = dataView;
+            this.appContext = appContext;
+            _dataView = (DataView) this.appContext.dataGridView.DataSource;
             InitializeComponent();
         }
 
@@ -28,6 +30,30 @@ namespace WindowsFormsApplication3
             foreach (DataColumn col in _dataView.Table.Columns)
             {
                 cmbFields.Items.Add(col.ColumnName);
+            }
+        }
+
+        public string ColumnToFilter
+        {
+            set
+            {
+                cmbFields.SelectedItem = value;
+            }
+        }
+
+        public string Operation
+        {
+            set
+            {
+                cmbOpreator.SelectedItem = value;
+            }
+        }
+
+        public string TextToFilter
+        {
+            set
+            {
+                txtFilterValue.Text = value;
             }
         }
 

@@ -40,7 +40,7 @@ namespace WindowsFormsApplication3
         Search searchWindow;
         AppContext appContext;
         string urlToSerach = "https://www.foagroup.com/catalogsearch/result/?q=";
-        string [] exlcudeWordsInSearch =new [] { "FOA-", "xyz" };
+        string[] exlcudeWordsInSearch = new[] { "FOA-", "xyz" };
         string columnNameToSearch = "Vendor SKU";
 
         public Form1(string filePath, bool importBackUp = false, bool isReadOnly = false)
@@ -93,7 +93,7 @@ namespace WindowsFormsApplication3
 
                 Utility.CheckDataSavedProperly(_excelFilePath);
             }
-          
+
             searchWindow = new Search(this.MdiParent);
         }
 
@@ -135,13 +135,13 @@ namespace WindowsFormsApplication3
         private void DataGridView1_MouseClick(object sender, MouseEventArgs e)
         {
             if (
-                dataGridView1.CurrentCell.OwningColumn.Name.Equals(columnNameToSearch,StringComparison.OrdinalIgnoreCase)
+                dataGridView1.CurrentCell.OwningColumn.Name.Equals(columnNameToSearch, StringComparison.OrdinalIgnoreCase)
                 )
             {
                 string tt = urlToSerach;
                 var vv = dataGridView1.CurrentCell.Value.ToString();
 
-                foreach(var word in exlcudeWordsInSearch)
+                foreach (var word in exlcudeWordsInSearch)
                 {
                     vv = vv.Replace(word, "");
                 }
@@ -155,7 +155,7 @@ namespace WindowsFormsApplication3
             if (e.Button == MouseButtons.Right)
             {
                 if (
-                    //dataGridView1.Columns[e.ColumnIndex] is DataGridViewImageColumn ||
+                //dataGridView1.Columns[e.ColumnIndex] is DataGridViewImageColumn ||
                 dataGridView1.Columns[e.ColumnIndex].Name == "ID")
                 {
                     return;
@@ -249,6 +249,8 @@ namespace WindowsFormsApplication3
                 EventContainer.SubscribeEvent(EventPublisher.Events.SearchTextInBackUp.ToString(), SearchText);
                 EventContainer.SubscribeEvent(EventPublisher.Events.FindWindow.ToString(), ShowFindWindow);
                 EventContainer.SubscribeEvent(EventPublisher.Events.ShowHideColumns.ToString(), ShowHideColumns);
+                EventContainer.SubscribeEvent(EventPublisher.Events.ChangeBackGroundColor.ToString(), ChangeBackGroundColor);
+
             }
 
         }
@@ -256,6 +258,7 @@ namespace WindowsFormsApplication3
         void LoadTheme(EventArg arg)
         {
             _theme = (Theme)arg.Arg;
+            appContext.Theme = _theme;
             this.dataGridView1.RowTemplate.DefaultCellStyle.BackColor = _theme.BackGroundColor;
             this.dataGridView1.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Verdana", 11F);
             this.dataGridView1.RowTemplate.DefaultCellStyle.ForeColor = _theme.ForeColor;
@@ -278,6 +281,16 @@ namespace WindowsFormsApplication3
             wpfRichText.BorderColor = Utility.ToMediaColor(_theme.CurrentCellBorderColor);
             wpfRichText.ForegroundColor = Utility.ToMediaColor(_theme.ForeColor);
         }
+
+        void ChangeBackGroundColor(EventArg arg)
+        {
+            var bgColor = (Color)arg.Arg;
+            _theme.BackGroundColor = bgColor;
+            _theme.HighlightedRowColor = _theme.SelectionBackColor = _theme.CurrentRowColor = bgColor;
+
+            LoadTheme(new EventArg(_theme));
+        }
+
 
         private void DataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
@@ -302,7 +315,7 @@ namespace WindowsFormsApplication3
             _dataConnection = new OLDBConnection12(_excelFilePath);
 
             var dt = _dataConnection.ExecuteDatatable("Select * from [Sheet1$]").DefaultView;
-           
+
             dataGridView1.DataSource = dt;
 
             //  dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -348,22 +361,22 @@ namespace WindowsFormsApplication3
             this.Text = _excelFilePath;
         }
 
-        private string GetSheetName ()
+        private string GetSheetName()
         {
             var sheets = _dataConnection.GetSheets();
 
-            if(sheets.Count < 2)
+            if (sheets.Count < 2)
             {
                 return sheets.FirstOrDefault();
             }
 
-          MessageBox.Show("More then on Sheets. Name : " +  string.Join(",", sheets));
+            MessageBox.Show("More then on Sheets. Name : " + string.Join(",", sheets));
 
 
             foreach (string sheet in sheets)
             {
 
-                DialogResult dialogResult = 
+                DialogResult dialogResult =
                     MessageBox.Show("Do you want to Open " + sheet, "Open Sheet", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
@@ -519,7 +532,7 @@ namespace WindowsFormsApplication3
             if (!imageColumnLoaded || editingTextBox == null || dataGridView1.Columns[dataGridView1.CurrentCell.ColumnIndex].Name == Constants.WordFrequencyColumnName)
                 return;
             var rec = dataGridView1.GetCellDisplayRectangle(dataGridView1.CurrentCell.ColumnIndex, dataGridView1.CurrentCell.RowIndex, true);
-            wpfRichText.AddText(editingTextBox.Text);
+            wpfRichText.Text = editingTextBox.Text;
             wpfRichTextBoxPanel.Size = rec.Size;
             wpfRichTextBoxPanel.Location = rec.Location;
             wpfRichTextBoxPanel.Visible = true;
@@ -631,7 +644,7 @@ namespace WindowsFormsApplication3
 
         private void dataGridView1_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
-         
+
             if (IsCellSelected(e.ColumnIndex, e.RowIndex))
             {
                 e.Paint(e.CellBounds, DataGridViewPaintParts.All
@@ -792,7 +805,7 @@ namespace WindowsFormsApplication3
 
         private void LoadUnSavedData()
         {
-            if ((!File.Exists(UnSavedDataFile) && !File.Exists(UnSavedDataCurrentCellFile)) 
+            if ((!File.Exists(UnSavedDataFile) && !File.Exists(UnSavedDataCurrentCellFile))
                 || IsReadOnlyFile
                 || ConfigurationManager.AppSettings["AlertForUnSavedState"] == "false")
             {
@@ -1061,12 +1074,12 @@ namespace WindowsFormsApplication3
 
         private void ShowFilter(EventPublisher.EventArg arg)
         {
-            Filter filter = new Filter((DataView)dataGridView1.DataSource);
+            Filter filter = new Filter(appContext);
             filter.WindowState = FormWindowState.Normal;
             filter.Show();
         }
 
-       
+
         private void FilterDone(EventPublisher.EventArg arg)
         {
             imageLoader.LoadImageInCell();
@@ -1157,7 +1170,7 @@ namespace WindowsFormsApplication3
 
                 //--row as index start from 0
                 var currentDataRow = currentDt.Rows[--row];
-               
+
                 //Start from one to avoid ID column
                 for (var i = 1; i < backUpDt.Columns.Count; i++)
                 {
@@ -1193,7 +1206,7 @@ namespace WindowsFormsApplication3
             }
         }
 
-        
+
         private void dataGridView1_Sorted(object sender, EventArgs e)
         {
             imageLoader.LoadImageInCell();

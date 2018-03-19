@@ -15,5 +15,7 @@ namespace WindowsFormsApplication3
         public  DataGridViewTextBoxEditingControl dataGridViewTextBoxEditing;
 
         public string ExcelFilePath;
+
+        public Theme Theme;
     }
 }

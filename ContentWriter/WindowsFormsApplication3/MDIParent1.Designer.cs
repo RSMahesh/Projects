@@ -68,6 +68,7 @@
             this.filterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importBackUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.themeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showHideColumnsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.newWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cascadeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -84,7 +85,7 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.showHideColumnsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.themeColorPickerToolStripSplitButton1 = new ExHtmlEditor.ColorPicker.ThemeColorPickerToolStripSplitButton();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -417,6 +418,13 @@
             this.themeToolStripMenuItem.Text = "Theme";
             this.themeToolStripMenuItem.Click += new System.EventHandler(this.themeToolStripMenuItem_Click);
             // 
+            // showHideColumnsToolStripMenuItem
+            // 
+            this.showHideColumnsToolStripMenuItem.Name = "showHideColumnsToolStripMenuItem";
+            this.showHideColumnsToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.showHideColumnsToolStripMenuItem.Text = "ShowHideColumns";
+            this.showHideColumnsToolStripMenuItem.Click += new System.EventHandler(this.showHideColumnsToolStripMenuItem_Click);
+            // 
             // windowsMenu
             // 
             this.windowsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -521,7 +529,8 @@
             // statusStrip
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel});
+            this.toolStripStatusLabel,
+            this.themeColorPickerToolStripSplitButton1});
             this.statusStrip.Location = new System.Drawing.Point(0, 431);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(805, 22);
@@ -535,12 +544,18 @@
             this.toolStripStatusLabel.Size = new System.Drawing.Size(39, 17);
             this.toolStripStatusLabel.Text = "Status";
             // 
-            // showHideColumnsToolStripMenuItem
+            // themeColorPickerToolStripSplitButton1
             // 
-            this.showHideColumnsToolStripMenuItem.Name = "showHideColumnsToolStripMenuItem";
-            this.showHideColumnsToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.showHideColumnsToolStripMenuItem.Text = "ShowHideColumns";
-            this.showHideColumnsToolStripMenuItem.Click += new System.EventHandler(this.showHideColumnsToolStripMenuItem_Click);
+            this.themeColorPickerToolStripSplitButton1.Color = System.Drawing.Color.White;
+            this.themeColorPickerToolStripSplitButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.themeColorPickerToolStripSplitButton1.Image = ((System.Drawing.Image)(resources.GetObject("themeColorPickerToolStripSplitButton1.Image")));
+            this.themeColorPickerToolStripSplitButton1.ImageHeight = 16;
+            this.themeColorPickerToolStripSplitButton1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.themeColorPickerToolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.themeColorPickerToolStripSplitButton1.ImageWidth = 32;
+            this.themeColorPickerToolStripSplitButton1.Name = "themeColorPickerToolStripSplitButton1";
+            this.themeColorPickerToolStripSplitButton1.Size = new System.Drawing.Size(32, 20);
+            this.themeColorPickerToolStripSplitButton1.Text = "themeColorPickerToolStripSplitButton1";
             // 
             // MDIParent1
             // 
@@ -621,6 +636,7 @@
         private System.Windows.Forms.ToolStripMenuItem openReadOnlyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem searchDataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showHideColumnsToolStripMenuItem;
+        private ExHtmlEditor.ColorPicker.ThemeColorPickerToolStripSplitButton themeColorPickerToolStripSplitButton1;
     }
 }
 
