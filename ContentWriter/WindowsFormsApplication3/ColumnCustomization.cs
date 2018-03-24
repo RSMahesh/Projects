@@ -40,6 +40,7 @@ namespace WindowsFormsApplication3
         private void ShowHide(int index, bool value)
         {
             appContext.dataGridView.Columns[checkedListBox1.Items[index].ToString()].Visible = value;
+            SaveToFile();
         }
 
         private void LoadColumns()
@@ -50,7 +51,7 @@ namespace WindowsFormsApplication3
                 checkedListBox1.SetItemChecked(checkedListBox1.Items.Count - 1, col.Visible);
             }
         }
-   
+
         private string DataFile
         {
             get
@@ -63,6 +64,34 @@ namespace WindowsFormsApplication3
         {
             var checkedState = checkedListBox1.GetItemCheckState(checkedListBox1.SelectedIndex) == CheckState.Checked;
             checkedListBox1.SetItemChecked(checkedListBox1.SelectedIndex, !checkedState);
+        }
+
+        private void SaveToFile()
+        {
+            List<string> cols = new List<string>();
+            foreach (DataGridViewColumn col in appContext.dataGridView.Columns)
+            {
+                if (!col.Visible)
+                {
+                    cols.Add(col.Name);
+                }
+            }
+
+            File.WriteAllText(DataFile, string.Join("|", cols));
+        }
+
+        public void ShowHideGridColums()
+        {
+            if (File.Exists(DataFile))
+            {
+                var str = File.ReadAllText(DataFile);
+                var columnsName = str.Split('|');
+
+                foreach (var colName in columnsName)
+                {
+                    appContext.dataGridView.Columns[colName].Visible = false;
+                }
+            }
         }
     }
 }

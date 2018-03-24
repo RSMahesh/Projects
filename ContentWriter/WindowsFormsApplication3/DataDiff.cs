@@ -120,8 +120,9 @@ namespace WindowsFormsApplication3
             {
                 for (int c = 0; c < xmlDataTable.Columns.Count; c++)
                 {
+                    
                     var xmlValue = RemoveMetaCharacter(xmlDataTable.Rows[i][c].ToString());
-                    var excelValue = RemoveMetaCharacter(excelDataTable.Rows[i][c].ToString());
+                    var excelValue = RemoveMetaCharacter(excelDataTable.Rows[i][xmlDataTable.Columns[c].ColumnName].ToString());
 
 
                     if (!EqualString(xmlValue, excelValue))

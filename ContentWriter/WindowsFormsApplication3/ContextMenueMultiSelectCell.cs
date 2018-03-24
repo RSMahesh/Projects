@@ -12,11 +12,11 @@ namespace WindowsFormsApplication3
     class ContextMenueMultiSelectCell
     {
 
-        ContextMenu contextMenu = new ContextMenu();    
+        ContextMenu contextMenu = new ContextMenu();
         FormulaRunner formulaRunner;
         DataGridView dataGridView;
         UndoRedoStack<CellData> undoRedo;
-        public ContextMenueMultiSelectCell(DataGridView dataGridView, UndoRedoStack<CellData> undoRedo )
+        public ContextMenueMultiSelectCell(DataGridView dataGridView, UndoRedoStack<CellData> undoRedo)
         {
             this.dataGridView = dataGridView;
             this.undoRedo = undoRedo;
@@ -29,13 +29,14 @@ namespace WindowsFormsApplication3
         }
         void AddContextMenu()
         {
+            contextMenu.MenuItems.Add("Cut", OnCut);
             contextMenu.MenuItems.Add("Copy", OnCopy);
             contextMenu.MenuItems.Add("Past", OnPast);
             contextMenu.MenuItems.Add("Delete", OnDelete);
             contextMenu.MenuItems.Add("ApplyFormula", OnApplyFormula);
             dataGridView.ContextMenu = contextMenu;
         }
-         void OnApplyFormula(object sender, EventArgs e)
+        void OnApplyFormula(object sender, EventArgs e)
         {
             FormulaList frm = new FormulaList(dataGridView);
             frm.ShowDialog();
@@ -46,7 +47,7 @@ namespace WindowsFormsApplication3
                 MessageBox.Show("No Fromula Found");
                 return;
             }
-       
+
             foreach (DataGridViewCell cell in dataGridView.SelectedCells)
             {
                 var formulaOutPut = formulaRunner.ExecuteFromula(cell, frm.CurrentFormula);
@@ -56,7 +57,13 @@ namespace WindowsFormsApplication3
                 cell.Value = formulaOutPut;
             }
         }
-         void OnCopy(object sender, EventArgs e)
+        void OnCut(object sender, EventArgs e)
+        {
+            OnCopy(null, null);
+            OnDelete(null, null);
+        }
+
+        void OnCopy(object sender, EventArgs e)
         {
             var listSelectedCells = new List<CellData>();
 
@@ -69,16 +76,16 @@ namespace WindowsFormsApplication3
 
             if (selctionInfo.X > 1 && selctionInfo.Y > 1)
             {
-                MessageBox.Show("Invalid Selection Only One Row or One Column can be selected." +
-                  Environment.NewLine + "Selected Row :" + selctionInfo.Y.ToString() + " Selected Columns :" + selctionInfo.X.ToString());
-                return;
+                var msg = "Invalid Selection Only One Row or One Column can be selected." +
+                Environment.NewLine + "Selected Row :" + selctionInfo.Y.ToString() + " Selected Columns :" + selctionInfo.X.ToString();
+                throw new Exception(msg);
             }
 
             var serializer = new JavaScriptSerializer();
             var serializedResult = serializer.Serialize(listSelectedCells);
             Clipboard.SetText(serializedResult);
         }
-         void OnPast(object sender, EventArgs e)
+        void OnPast(object sender, EventArgs e)
         {
             var text = Clipboard.GetText();
             var pastCells = new List<CellData>();
@@ -107,7 +114,7 @@ namespace WindowsFormsApplication3
 
             PastCellData(copyedCells, pastCells);
         }
-         void OnDelete(object sender, EventArgs e)
+        void OnDelete(object sender, EventArgs e)
         {
             var listSelectedCells = new List<CellData>();
 
@@ -119,7 +126,7 @@ namespace WindowsFormsApplication3
             }
 
         }
-         void PasteSingleCellData(string copyedText, List<CellData> targetCells)
+        void PasteSingleCellData(string copyedText, List<CellData> targetCells)
         {
             for (var indx = 0; indx < targetCells.Count; indx++)
             {
@@ -137,7 +144,7 @@ namespace WindowsFormsApplication3
             {
                 MessageBox.Show("Invalid Selection for Past"
                     + Environment.NewLine + "Correct Row :" + sourceInfo.Y.ToString() + " Correct Columns :" + sourceInfo.X.ToString());
-               // return;
+                // return;
             }
 
             if (sourceInfo.X > 1 && targetInfo.X > 1)

@@ -155,7 +155,6 @@ namespace WindowsFormsApplication3
             return unique_items.ToList();
         }
 
-
         public static string FreeLanceAppDataFolder
         {
             get
@@ -170,11 +169,28 @@ namespace WindowsFormsApplication3
             return serializer.Serialize(obj);
         }
 
+        //public static void ResizeChildonFormResize(Form form, Control controlToResize)
+        //{
+        //    form.Resize += Form_Resize;
+        //    formControlMapping[form] = controlToResize;
+        //}
+
+        //static Dictionary<Form, Control> formControlMapping = new Dictionary<Form, Control>();
+        //private static void Form_Resize(object sender, EventArgs e)
+        //{
+        //    var form = (Form)sender;
+        //    var control = formControlMapping[form];
+
+        //    control.Width = form.Width - 30;
+        //    control.Height = form.Height - 70;
+        //}
+
         public static T Deserialize<T>(string data)
         {
             var serializer = new JavaScriptSerializer();
             return serializer.Deserialize<T>(data);
         }
+
         private static bool EqualString(string one, string two)
         {
 
@@ -212,7 +228,6 @@ namespace WindowsFormsApplication3
 
             return string.Join(";", diff);
         }
-
 
     }
 }

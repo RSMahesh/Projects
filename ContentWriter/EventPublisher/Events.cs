@@ -16,8 +16,8 @@ namespace EventPublisher
         WordDocSaved,
         OpenWord,
         DescriptionCount,
-        ShowFilter,
-        ShowFilterDone,
+        ShowFilterWindow,
+        FilterDone,
         DataImportSelectionCompleted,
         StartDataImport,
         Undo,
@@ -35,6 +35,7 @@ namespace EventPublisher
         MaximizeGridWindow,
         FindWindow,
         ShowHideColumns,
-        ChangeBackGroundColor
+        ChangeBackGroundColor,
+        ClearFilter
     }
 }

@@ -84,8 +84,9 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.themeColorPickerToolStripSplitButton1 = new ExHtmlEditor.ColorPicker.ThemeColorPickerToolStripSplitButton();
+            this.toolStripStatusClearFilter = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -188,6 +189,7 @@
             this.printToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
             this.printToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.printToolStripMenuItem.Text = "&Print";
+            this.printToolStripMenuItem.Click += new System.EventHandler(this.printToolStripMenuItem_Click);
             // 
             // printPreviewToolStripMenuItem
             // 
@@ -265,7 +267,6 @@
             this.cutToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
             this.cutToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.cutToolStripMenuItem.Text = "Cu&t";
-            this.cutToolStripMenuItem.Click += new System.EventHandler(this.CutToolStripMenuItem_Click);
             // 
             // copyToolStripMenuItem
             // 
@@ -275,7 +276,6 @@
             this.copyToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
             this.copyToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.copyToolStripMenuItem.Text = "&Copy";
-            this.copyToolStripMenuItem.Click += new System.EventHandler(this.CopyToolStripMenuItem_Click);
             // 
             // pasteToolStripMenuItem
             // 
@@ -285,7 +285,6 @@
             this.pasteToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
             this.pasteToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.pasteToolStripMenuItem.Text = "&Paste";
-            this.pasteToolStripMenuItem.Click += new System.EventHandler(this.PasteToolStripMenuItem_Click);
             // 
             // toolStripSeparator7
             // 
@@ -530,7 +529,8 @@
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel,
-            this.themeColorPickerToolStripSplitButton1});
+            this.themeColorPickerToolStripSplitButton1,
+            this.toolStripStatusClearFilter});
             this.statusStrip.Location = new System.Drawing.Point(0, 431);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(805, 22);
@@ -554,8 +554,15 @@
             this.themeColorPickerToolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.themeColorPickerToolStripSplitButton1.ImageWidth = 32;
             this.themeColorPickerToolStripSplitButton1.Name = "themeColorPickerToolStripSplitButton1";
-            this.themeColorPickerToolStripSplitButton1.Size = new System.Drawing.Size(32, 20);
+            this.themeColorPickerToolStripSplitButton1.Size = new System.Drawing.Size(48, 20);
             this.themeColorPickerToolStripSplitButton1.Text = "themeColorPickerToolStripSplitButton1";
+            // 
+            // toolStripStatusClearFilter
+            // 
+            this.toolStripStatusClearFilter.Name = "toolStripStatusClearFilter";
+            this.toolStripStatusClearFilter.Size = new System.Drawing.Size(63, 17);
+            this.toolStripStatusClearFilter.Text = "Clear Filter";
+            this.toolStripStatusClearFilter.Click += new System.EventHandler(this.toolStripStatusLabel1_Click);
             // 
             // MDIParent1
             // 
@@ -637,6 +644,7 @@
         private System.Windows.Forms.ToolStripMenuItem searchDataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showHideColumnsToolStripMenuItem;
         private ExHtmlEditor.ColorPicker.ThemeColorPickerToolStripSplitButton themeColorPickerToolStripSplitButton1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusClearFilter;
     }
 }
 

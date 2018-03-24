@@ -21,11 +21,18 @@ namespace WindowsFormsApplication3
         public MDIParent1()
         {
             InitializeComponent();
+            toolStripStatusClearFilter.Visible = false;
+            SubScribeEvents();
         }
 
         public void OnError()
         {
             Cursor = Cursors.Default;
+        }
+
+        private void SubScribeEvents()
+        {
+            EventContainer.SubscribeEvent(EventPublisher.Events.FilterDone.ToString(), FilterDone);
         }
         private void ShowNewForm(object sender, EventArgs e)
         {
@@ -49,12 +56,10 @@ namespace WindowsFormsApplication3
 
         private string GetDataFile()
         {
-         
             if (!Directory.Exists(Utility.FreeLanceAppDataFolder))
             {
                 Directory.CreateDirectory(Utility.FreeLanceAppDataFolder);
             }
-
 
             return Path.Combine(Utility.FreeLanceAppDataFolder, "LastFile.txt");
 
@@ -105,12 +110,9 @@ namespace WindowsFormsApplication3
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             var form1 = (Form)sender;
-
             form1.Hide();
-
             form1.Dispose();
             form1 = null;
-
         }
 
         private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -128,21 +130,6 @@ namespace WindowsFormsApplication3
         {
             this.Close();
         }
-
-        private void CutToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void PasteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-        }
-
-
-
         private void CascadeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LayoutMdi(MdiLayout.Cascade);
@@ -269,21 +256,21 @@ namespace WindowsFormsApplication3
         private void filterToolStripMenuItem_Click(object sender, EventArgs e)
         {
             EventContainer.PublishEvent
-(EventPublisher.Events.ShowFilter.ToString(), new EventArg(Guid.NewGuid(), null));
+    (EventPublisher.Events.ShowFilterWindow.ToString(), new EventArg(Guid.NewGuid(), null));
 
         }
 
         private void importBackUpToolStripMenuItem_Click(object sender, EventArgs e)
         {
             EventContainer.PublishEvent
-(EventPublisher.Events.StartDataImport.ToString(), new EventArg(Guid.NewGuid(), null));
+    (EventPublisher.Events.StartDataImport.ToString(), new EventArg(Guid.NewGuid(), null));
 
         }
 
         private void undoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             EventContainer.PublishEvent
-(EventPublisher.Events.Undo.ToString(), new EventArg(Guid.NewGuid(), null));
+    (EventPublisher.Events.Undo.ToString(), new EventArg(Guid.NewGuid(), null));
 
         }
 
@@ -291,13 +278,13 @@ namespace WindowsFormsApplication3
         {
 
             EventContainer.PublishEvent
-(EventPublisher.Events.ReDo.ToString(), new EventArg(Guid.NewGuid(), null));
+    (EventPublisher.Events.ReDo.ToString(), new EventArg(Guid.NewGuid(), null));
         }
 
         private void statToolStripMenuItem_Click(object sender, EventArgs e)
         {
             EventContainer.PublishEvent
-(EventPublisher.Events.Statistics.ToString(), new EventArg(Guid.NewGuid(), null));
+    (EventPublisher.Events.Statistics.ToString(), new EventArg(Guid.NewGuid(), null));
         }
 
         bool lasteFileLaoded;
@@ -318,32 +305,27 @@ namespace WindowsFormsApplication3
 
         private void formulaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
             EventContainer.PublishEvent
-(EventPublisher.Events.Formula.ToString(), new EventArg(Guid.NewGuid(), null));
+    (EventPublisher.Events.Formula.ToString(), new EventArg(Guid.NewGuid(), null));
         }
 
         private void sentenceCountToolStripMenuItem_Click(object sender, EventArgs e)
         {
             EventContainer.PublishEvent
-(EventPublisher.Events.SetenceCountInDescription.ToString(), new EventArg(Guid.NewGuid(), null));
+    (EventPublisher.Events.SetenceCountInDescription.ToString(), new EventArg(Guid.NewGuid(), null));
         }
 
         private void sentenceCountInBulletToolStripMenuItem_Click(object sender, EventArgs e)
         {
             EventContainer.PublishEvent
-(EventPublisher.Events.SetenceCountInBullet.ToString(), new EventArg(Guid.NewGuid(), null));
+    (EventPublisher.Events.SetenceCountInBullet.ToString(), new EventArg(Guid.NewGuid(), null));
 
         }
 
         private void findToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //FindText frm = new FindText();
-            //frm.TopMost = true;
-            //frm.Show();
-
             EventContainer.PublishEvent
-(EventPublisher.Events.FindWindow.ToString(), new EventArg(Guid.NewGuid(), null));
+    (EventPublisher.Events.FindWindow.ToString(), new EventArg(Guid.NewGuid(), null));
 
         }
 
@@ -356,7 +338,7 @@ namespace WindowsFormsApplication3
         private void wordsFrequencyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             EventContainer.PublishEvent
-(EventPublisher.Events.WordsFrequency.ToString(), new EventArg(Guid.NewGuid(), null));
+    (EventPublisher.Events.WordsFrequency.ToString(), new EventArg(Guid.NewGuid(), null));
         }
 
         private void openReadOnlyToolStripMenuItem_Click(object sender, EventArgs e)
@@ -381,6 +363,23 @@ namespace WindowsFormsApplication3
         {
             EventContainer.PublishEvent
             (EventPublisher.Events.ShowHideColumns.ToString(), new EventArg(Guid.NewGuid(), null));
+        }
+
+        private void toolStripStatusLabel1_Click(object sender, EventArgs e)
+        {
+            EventContainer.PublishEvent(EventPublisher.Events.ClearFilter.ToString(), new EventArg(Guid.NewGuid(), null));
+            toolStripStatusClearFilter.Visible = false;
+        }
+
+        private void FilterDone(EventPublisher.EventArg arg)
+        {
+            toolStripStatusClearFilter.Visible = true;
+        }
+
+        private void printToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form3 frm = new Form3();
+            frm.Show();
         }
     }
 }

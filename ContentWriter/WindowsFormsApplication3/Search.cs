@@ -20,28 +20,22 @@ namespace WindowsFormsApplication3
         public Search(Form MDIpARENT)
         {
             InitializeComponent();
+            this.splitContainer1.SplitterDistance = 800;
             _mdiPArent = MDIpARENT;
             this.MdiParent = _mdiPArent;
-            //    this.ResizeEnd += Search_ResizeEnd;
-            //  this.MaximumSizeChanged += Search_MaximumSizeChanged;
             this.Resize += Search_Resize;
-            //this.TopMost = true;
         }
-
         private void Search_Resize(object sender, EventArgs e)
         {
-            this.splitContainer1.Width = this.Width - 50;
+            this.splitContainer1.Width = this.Width - 30;
+            this.splitContainer1.Height = this.Height - 80;
         }
-
-
-
         private void btnSearch_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
             ShowResult(txtSerchText.Text);
             Cursor = Cursors.Default;
         }
-
 
         private void OpenFile()
         {
@@ -65,24 +59,29 @@ namespace WindowsFormsApplication3
 
             if (results.Any())
             {
-                // MessageBox.Show("Found :" + results.Count.ToString());
 
                 dataGridView1.Columns.Clear();
+                dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = SystemColors.Control;
+                dataGridView1.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+              
+                dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+                dataGridView1.ColumnHeadersHeight = 30;
+                dataGridView1.EnableHeadersVisualStyles = false;
+                
+
+                dataGridView1.RowHeadersVisible = false;
+
                 dataGridView1.RowTemplate.Height = Constants.ImageIconSize;
                 dataGridView1.DataSource = GetTable(results);
+                SetColumnWidth();
                 dataGridView1.Columns["FilePath"].Visible = false;
-                dataGridView1.Columns["File"].Width = 350;
+                dataGridView1.Columns["File"].Width = 100;
+                dataGridView1.Columns[0].Width = 50;
+                ToggleMetaInfo();
+
                 ImageLoader imgeLoader = new ImageLoader(dataGridView1);
                 imgeLoader.AddImageColumn();
                 imgeLoader.LoadImageInCell();
-
-                //   this.MdiParent.LayoutMdi(MdiLayout.TileHorizontal);
-
-                if (results.Count < 2)
-                {
-                    checkBox1.Checked = true;
-                }
-
                 DisplaySearchedInFiles();
 
             }
@@ -92,6 +91,14 @@ namespace WindowsFormsApplication3
             }
 
             AddButton();
+        }
+
+        private void SetColumnWidth()
+        {
+           foreach (DataGridViewColumn column in dataGridView1.Columns)
+            {
+                column.Width = 200;
+            }
         }
 
         private string GetImageUrl(DataRow dataRow)
@@ -128,30 +135,76 @@ namespace WindowsFormsApplication3
             dataGridView2.Columns.Clear();
             dataGridView2.RowTemplate.Height = Constants.ImageIconSize;
             dataGridView2.RowTemplate.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            dataGridView2.RowHeadersVisible = false;
+            dataGridView2.ColumnHeadersVisible = false;
 
             OLDBConnection12 connection = new OLDBConnection12(file);
             var sourceTable = connection.ExecuteDatatable("Select * from [Sheet1$]");
+            var newTable = sourceTable.Clone();
+            var rowIndex = int.Parse(dataGridView1.CurrentRow.Cells["Row"].Value.ToString()) - 1;
+            var row = sourceTable.Rows[rowIndex];
+            newTable.ImportRow(row);
+            sourceTable = FlipDataSet(newTable);
+
             dataGridView2.DataSource = sourceTable;
-            sourceTable.DefaultView.RowFilter = "ID=" + int.Parse(dataGridView1.CurrentRow.Cells["Row"].Value.ToString());
-            dataGridView2.Columns[0].Width = 30;
+            dataGridView2.SelectionMode = DataGridViewSelectionMode.CellSelect;
+         //  dataGridView2.RowTemplate.DefaultCellStyle.SelectionBackColor = Color.Transparent;
+            dataGridView2.Columns[0].Width = 100;
+            dataGridView2.Columns[1].Width = 250;
+            dataGridView2.Columns[0].DefaultCellStyle.BackColor = SystemColors.Control;
+           // dataGridView2.Columns[0].DefaultCellStyle.ForeColor = SystemColors.Control;
+            dataGridView2.Columns[0].ReadOnly = true;
+           
+        }
+
+        public DataTable FlipDataSet(DataTable dt)
+        {
+            DataTable table = new DataTable();
+
+            for (int i = 0; i <= dt.Rows.Count; i++)
+            { table.Columns.Add(Convert.ToString(i)); }
+
+            DataRow r;
+            for (int k = 0; k < dt.Columns.Count; k++)
+            {
+                r = table.NewRow();
+                r[0] = dt.Columns[k].ToString();
+                for (int j = 1; j <= dt.Rows.Count; j++)
+                { r[j] = dt.Rows[j - 1][k]; }
+                table.Rows.Add(r);
+            }
+
+            return table;
+        }
+
+        private List<KeyValuePair<string, string[]>> CustomColumns()
+        {
+            var list = new List<KeyValuePair<string, string[]>>();
+            list.Add(new KeyValuePair<string, string[]>("Title", new[] { "Title", "Name" }));
+            list.Add(new KeyValuePair<string, string[]>("Description", new[] { "Description" }));
+            list.Add(new KeyValuePair<string, string[]>("Bullet 1", new[] { "Bullet 1", "Bullet1" }));
+            list.Add(new KeyValuePair<string, string[]>("Bullet 2", new[] { "Bullet 2", "Bullet2" }));
+            list.Add(new KeyValuePair<string, string[]>("Bullet 3", new[] { "Bullet 3", "Bullet3" }));
+
+            return list;
         }
 
         private DataTable GetTable(IEnumerable<SearchResult> results)
         {
-
             DataTable dt = new DataTable("SearchResults");
-
             dt.Columns.Add("S.No", typeof(int));
             dt.Columns[0].AutoIncrement = true;
+            var customColumns = CustomColumns();
+            foreach (var item in customColumns)
+            {
+                dt.Columns.Add(item.Key);
+            }
 
             dt.Columns.Add("File");
             dt.Columns.Add("Row", typeof(int));
             dt.Columns.Add("Col");
             dt.Columns.Add("FilePath");
             dt.Columns.Add("ImageUrl");
-            dt.Columns.Add("Title");
-            dt.Columns.Add("Description");
-
 
             foreach (var result in results)
             {
@@ -161,7 +214,12 @@ namespace WindowsFormsApplication3
                 row["Col"] = result.ColName;
                 row["FilePath"] = result.File;
                 row["ImageUrl"] = GetImageUrl(result.DataRow);
-            //    row["Title"]
+
+
+                foreach (var item in customColumns)
+                {
+                    LoadDataFromDataRow(result.DataRow, row, item);
+                }
 
                 dt.Rows.Add(row);
             }
@@ -170,16 +228,30 @@ namespace WindowsFormsApplication3
 
         }
 
+        private void LoadDataFromDataRow(DataRow sourceDataRow, DataRow destinationDataRow, KeyValuePair<string, string[]> customColumn)
+        {
+            foreach (var colName in customColumn.Value)
+            {
+                foreach (DataColumn column in sourceDataRow.Table.Columns)
+                {
+                    if (column.ColumnName.Trim().Equals(colName, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        destinationDataRow[customColumn.Key] = sourceDataRow[column.ColumnName];
+                        return;
+                    }
+                }
+            }
+        }
         private string GetSimilarColumnInExcelRow(string columnName, DataRow dataRow)
         {
-           if( dataRow.Table.Columns.Contains(columnName))
+            if (dataRow.Table.Columns.Contains(columnName))
             {
                 return columnName;
             }
 
-           foreach(DataColumn column in dataRow.Table.Columns)
+            foreach (DataColumn column in dataRow.Table.Columns)
             {
-                if (column.ColumnName.IndexOf(columnName, 0, StringComparison.OrdinalIgnoreCase) !=-1)
+                if (column.ColumnName.IndexOf(columnName, 0, StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     return column.ColumnName;
                 }
@@ -191,6 +263,8 @@ namespace WindowsFormsApplication3
         private void Search_Load(object sender, EventArgs e)
         {
             dataGridView1.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
+            dataGridView1.RowTemplate.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+
             dataGridView1.CellContentClick += DataGridView1_CellContentClick;
             dataGridView1.SelectionChanged += DataGridView1_SelectionChanged;
             dataGridView2.AllowUserToAddRows = false;
@@ -210,6 +284,8 @@ namespace WindowsFormsApplication3
             dgvButton.Name = "Button";
             dgvButton.UseColumnTextForButtonValue = true;
             dgvButton.Text = "Open";
+            dgvButton.Name = "Open File";
+            dgvButton.Width = 60;
             dataGridView1.Columns.Add(dgvButton);
         }
 
@@ -221,34 +297,15 @@ namespace WindowsFormsApplication3
             }
         }
 
-        int groupBoxTop = 0;
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void chkShowMetaInfo_CheckedChanged(object sender, EventArgs e)
         {
-            Toggle();
+            ToggleMetaInfo();
         }
 
-        private void Toggle()
+        private void ToggleMetaInfo()
         {
-            if (checkBox1.Checked)
-            {
-                //  dataGridView1.Visible = false;
-                //  groupBoxTop = groupBox1.Top;
-                //  groupBox1.Top = dataGridView1.Top;
-            }
-            else
-            {
-                //groupBox1.Top = groupBoxTop;
-            }
-        }
-
-        private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
+            dataGridView1.Columns["Row"].Visible = chkShowMetaInfo.CheckState == CheckState.Checked;
+            dataGridView1.Columns["col"].Visible = chkShowMetaInfo.CheckState == CheckState.Checked;
         }
     }
 }

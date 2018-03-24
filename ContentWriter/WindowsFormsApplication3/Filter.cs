@@ -118,7 +118,7 @@ namespace WindowsFormsApplication3
         {
             FilterData();
             EventContainer.PublishEvent
-(EventPublisher.Events.ShowFilterDone.ToString(), new EventArg(Guid.NewGuid(), null));
+(EventPublisher.Events.FilterDone.ToString(), new EventArg(Guid.NewGuid(), null));
         }
     }
 }

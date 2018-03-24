@@ -50,8 +50,6 @@ namespace WindowsFormsApplication3
             exlcudeWordsInSearch = ConfigurationManager.AppSettings["exlcudeWordsInSearch"].Split(',');
             columnNameToSearch = ConfigurationManager.AppSettings["columnNameToSearch"];
 
-
-
             InitializeComponent();
 
             appContext = new AppContext();
@@ -95,8 +93,22 @@ namespace WindowsFormsApplication3
             }
 
             searchWindow = new Search(this.MdiParent);
+
+           
         }
 
+        private void HideColumns()
+        {
+            try
+            {
+                new ColumnCustomization(appContext).ShowHideGridColums();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show("Show Hide Column Faild" + Environment.NewLine + "Error:" + ex);
+            }
+        }
         private void AddEventsHandlersOfUIControls()
         {
             dataGridView1.DataError += DataGridView1_DataError;
@@ -126,10 +138,6 @@ namespace WindowsFormsApplication3
             ColumnCustomization frm = new ColumnCustomization(appContext);
             frm.TopMost = true;
             frm.Show();
-
-            //LayOutSetting frm1 = new LayOutSetting(appContext);
-            //frm1.Show();
-
         }
 
         private void DataGridView1_MouseClick(object sender, MouseEventArgs e)
@@ -233,8 +241,9 @@ namespace WindowsFormsApplication3
 
                 EventContainer.SubscribeEvent(EventPublisher.Events.Save.ToString(), Save);
                 EventContainer.SubscribeEvent(EventPublisher.Events.DescriptionCount.ToString(), DescriptionCount);
-                EventContainer.SubscribeEvent(EventPublisher.Events.ShowFilter.ToString(), ShowFilter);
-                EventContainer.SubscribeEvent(EventPublisher.Events.ShowFilterDone.ToString(), FilterDone);
+                EventContainer.SubscribeEvent(EventPublisher.Events.ShowFilterWindow.ToString(), ShowFilter);
+                EventContainer.SubscribeEvent(EventPublisher.Events.FilterDone.ToString(), FilterDone);
+                EventContainer.SubscribeEvent(EventPublisher.Events.ClearFilter.ToString(), ClearFilter);
                 EventContainer.SubscribeEvent(EventPublisher.Events.Undo.ToString(), UnDo);
                 EventContainer.SubscribeEvent(EventPublisher.Events.ReDo.ToString(), ReDo);
                 EventContainer.SubscribeEvent(EventPublisher.Events.Statistics.ToString(), ShowStatistics);
@@ -359,6 +368,8 @@ namespace WindowsFormsApplication3
             // to avoid that work around is to call IncreaseRowHeight on load
             IncreaseRowHeight(1, 4);
             this.Text = _excelFilePath;
+
+            HideColumns();
         }
 
         private string GetSheetName()
@@ -929,12 +940,15 @@ namespace WindowsFormsApplication3
 
             allCheckedRows.ForEach(row =>
             {
-                var rowNumber = int.Parse(row.Cells["ID"].Value.ToString());
-                var desRow = dt2.NewRow();
-                var sourceRow = dt.Rows[--rowNumber];
-                desRow.ItemArray = sourceRow.ItemArray.Clone() as object[];
-
-                dt2.Rows.Add(desRow);
+                int rowId;
+                if (int.TryParse(row.Cells["ID"].Value.ToString(), out rowId))
+                {
+                    var rowNumber = rowId;
+                    var desRow = dt2.NewRow();
+                    var sourceRow = dt.Rows[--rowNumber];
+                    desRow.ItemArray = sourceRow.ItemArray.Clone() as object[];
+                    dt2.Rows.Add(desRow);
+                }
             });
 
             return dt2;
@@ -1079,6 +1093,11 @@ namespace WindowsFormsApplication3
             filter.Show();
         }
 
+        private void ClearFilter(EventPublisher.EventArg arg)
+        {
+            ((DataView)dataGridView1.DataSource).RowFilter = string.Empty;
+            imageLoader.LoadImageInCell();
+        }
 
         private void FilterDone(EventPublisher.EventArg arg)
         {

@@ -104,22 +104,7 @@ namespace WindowsFormsApplication3
         void OnEditor(object sender, EventArgs e)
         {
             PopUpEditor frm = new PopUpEditor(appContext);
-          //  WpfRichTextBox txt = new WpfRichTextBox(frm.TextBoxPanel);
-
-            //  frm.FormBorderStyle = FormBorderStyle.None;
-            //frm.BackColor = appContext.Theme.BackGroundColor;
-            //txt.BackgroundColor = Utility.ToMediaColor(appContext.Theme.BackGroundColor);
-            //txt.FontSize = 18;
-            //txt.AddText(appContext.dataGridViewTextBoxEditing.Text);
-            //txt.LineSpacing = 30;
-            //frm.TextLength = appContext.dataGridViewTextBoxEditing.Text.Length;
-
-            //appContext.dataGridView.EndEdit();
-            //frm.TopMost = true;
             frm.Show();
-
-
-            //  appContext.dataGridViewTextBoxEditing.Cut();
         }
 
         void OnCut(object sender, EventArgs e)
@@ -134,6 +119,5 @@ namespace WindowsFormsApplication3
         {
             appContext.dataGridViewTextBoxEditing.Paste();
         }
-
     }
 }
