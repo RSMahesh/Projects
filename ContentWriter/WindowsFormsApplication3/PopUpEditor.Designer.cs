@@ -30,11 +30,11 @@
         {
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.btnPlayPause = new System.Windows.Forms.Button();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
-            this.button1 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
@@ -63,6 +63,17 @@
             this.groupBox1.Size = new System.Drawing.Size(695, 84);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(645, 55);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(24, 23);
+            this.button1.TabIndex = 10;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // comboBox1
             // 
@@ -102,16 +113,6 @@
             this.trackBar1.Name = "trackBar1";
             this.trackBar1.Size = new System.Drawing.Size(174, 45);
             this.trackBar1.TabIndex = 7;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(645, 55);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(24, 23);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // PopUpEditor
             // 

@@ -20,6 +20,7 @@ namespace WindowsFormsApplication3
         {
             this.currentFormula = currentFormula;
             var replaceOutPut = ReplacePlaceHolders(cell);
+            replaceOutPut = Trim(replaceOutPut);
             return MakeProperCase(RemoveIfRequired(replaceOutPut));
         }
         private string MakeProperCase(string replaceOutPut)
@@ -37,6 +38,22 @@ namespace WindowsFormsApplication3
             }
 
             return replaceOutPut;
+        }
+
+        private string Trim(string replaceOutPut)
+        {
+            const string remove = "%t%";
+            var indx = replaceOutPut.IndexOf(remove, StringComparison.OrdinalIgnoreCase);
+
+            var arr = replaceOutPut.Split(new string[] { remove }, StringSplitOptions.None);
+            if (arr.Length > 2)
+            {
+                var one =arr[1].Trim();
+
+                replaceOutPut = one + arr[2];
+            }
+
+            return replaceOutPut.Trim();
         }
         string FirstCharToUpper(string input)
         {

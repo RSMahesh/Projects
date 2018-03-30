@@ -67,7 +67,6 @@
             this.formulaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.filterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importBackUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.themeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showHideColumnsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.newWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -87,6 +86,7 @@
             this.themeColorPickerToolStripSplitButton1 = new ExHtmlEditor.ColorPicker.ThemeColorPickerToolStripSplitButton();
             this.toolStripStatusClearFilter = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.spellCheckToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -362,8 +362,8 @@
             this.formulaToolStripMenuItem,
             this.filterToolStripMenuItem,
             this.importBackUpToolStripMenuItem,
-            this.themeToolStripMenuItem,
-            this.showHideColumnsToolStripMenuItem});
+            this.showHideColumnsToolStripMenuItem,
+            this.spellCheckToolStripMenuItem});
             this.toolsMenu.Name = "toolsMenu";
             this.toolsMenu.Size = new System.Drawing.Size(48, 20);
             this.toolsMenu.Text = "&Tools";
@@ -409,13 +409,6 @@
             this.importBackUpToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
             this.importBackUpToolStripMenuItem.Text = "Import BackUp";
             this.importBackUpToolStripMenuItem.Click += new System.EventHandler(this.importBackUpToolStripMenuItem_Click);
-            // 
-            // themeToolStripMenuItem
-            // 
-            this.themeToolStripMenuItem.Name = "themeToolStripMenuItem";
-            this.themeToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.themeToolStripMenuItem.Text = "Theme";
-            this.themeToolStripMenuItem.Click += new System.EventHandler(this.themeToolStripMenuItem_Click);
             // 
             // showHideColumnsToolStripMenuItem
             // 
@@ -564,6 +557,14 @@
             this.toolStripStatusClearFilter.Text = "Clear Filter";
             this.toolStripStatusClearFilter.Click += new System.EventHandler(this.toolStripStatusLabel1_Click);
             // 
+            // spellCheckToolStripMenuItem
+            // 
+            this.spellCheckToolStripMenuItem.Name = "spellCheckToolStripMenuItem";
+            this.spellCheckToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(System.Windows.Forms.Keys.F7));
+            this.spellCheckToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.spellCheckToolStripMenuItem.Text = "SpellCheck";
+            this.spellCheckToolStripMenuItem.Click += new System.EventHandler(this.spellCheckToolStripMenuItem_Click);
+            // 
             // MDIParent1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -638,13 +639,13 @@
         private System.Windows.Forms.ToolStripMenuItem sentenceCountToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sentenceCountInBulletToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem findToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem themeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem wordsFrequencyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openReadOnlyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem searchDataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showHideColumnsToolStripMenuItem;
         private ExHtmlEditor.ColorPicker.ThemeColorPickerToolStripSplitButton themeColorPickerToolStripSplitButton1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusClearFilter;
+        private System.Windows.Forms.ToolStripMenuItem spellCheckToolStripMenuItem;
     }
 }
 

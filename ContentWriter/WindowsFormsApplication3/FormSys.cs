@@ -109,6 +109,11 @@ namespace WindowsFormsApplication3
         {
 
         }
+
+        private void FormSys_Load(object sender, EventArgs e)
+        {
+
+        }
     }
    
 }

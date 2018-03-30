@@ -32,6 +32,10 @@ namespace WindowsFormsApplication3
             contextMenu.MenuItems.Add("Delete", OnCut);
 
             contextMenu.MenuItems.Add("-");
+            contextMenu.MenuItems.Add("Spell Check", OnSpellCheck);
+            contextMenu.MenuItems.Add("-");
+
+            contextMenu.MenuItems.Add("-");
             contextMenu.MenuItems.Add("Editor", OnEditor);
             contextMenu.MenuItems.Add("-");
 
@@ -101,6 +105,10 @@ namespace WindowsFormsApplication3
             frm.FindNext();
         }
 
+        void OnSpellCheck(object sender, EventArgs e)
+        {
+            appContext.ShowWpfRichTextBox();
+        }
         void OnEditor(object sender, EventArgs e)
         {
             PopUpEditor frm = new PopUpEditor(appContext);

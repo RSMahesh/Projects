@@ -24,6 +24,7 @@ namespace WindowsFormsApplication3
 
         private void FindText_Load(object sender, EventArgs e)
         {
+
         }
 
         private void ColumnCustomization_Load(object sender, EventArgs e)

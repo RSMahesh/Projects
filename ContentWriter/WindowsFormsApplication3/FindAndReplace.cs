@@ -17,12 +17,11 @@ namespace WindowsFormsApplication3
         WpfRichTextBox wpfRichText;
         Action showWpfRichTextBox;
 
-        public FindAndReplace(DataGridView dataGridView,
-        WpfRichTextBox wpfRichText, Action ShowWpfRichTextBox)
+        public FindAndReplace(AppContext appContext)
         {
-            this.dataGridView = dataGridView;
-            this.wpfRichText = wpfRichText;
-            this.showWpfRichTextBox = ShowWpfRichTextBox;
+            this.dataGridView = appContext.dataGridView;
+            this.wpfRichText = appContext.wpfRichTextBox;
+            this.showWpfRichTextBox = appContext.ShowWpfRichTextBox;
         }
         public void FindText(EventArg arg)
         {

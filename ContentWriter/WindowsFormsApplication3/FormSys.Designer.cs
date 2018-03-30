@@ -82,6 +82,7 @@
             this.Controls.Add(this.lbSynonym);
             this.Name = "FormSys";
             this.Text = "FormSys";
+            this.Load += new System.EventHandler(this.FormSys_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

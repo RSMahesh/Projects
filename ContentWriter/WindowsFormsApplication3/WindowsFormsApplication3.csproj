@@ -74,6 +74,12 @@
     <Compile Include="Constants.cs" />
     <Compile Include="ContextMenueCurrentCell.cs" />
     <Compile Include="ContextMenueMultiSelectCell.cs" />
+    <Compile Include="CustomDictionary.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CustomDictionary.Designer.cs">
+      <DependentUpon>CustomDictionary.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataDiff.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -106,6 +112,12 @@
       <DependentUpon>Search.cs</DependentUpon>
     </Compile>
     <Compile Include="SearchService.cs" />
+    <Compile Include="SpellCheckWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SpellCheckWindow.Designer.cs">
+      <DependentUpon>SpellCheckWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Theme.cs" />
     <Compile Include="Excel.cs" />
     <Compile Include="Filter.cs">
@@ -143,12 +155,6 @@
     </Compile>
     <Compile Include="FormulaList.Designer.cs">
       <DependentUpon>FormulaList.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormulaWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormulaWindow.Designer.cs">
-      <DependentUpon>FormulaWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Helper.cs" />
     <Compile Include="LayOutSetting.cs">
@@ -195,6 +201,9 @@
     <EmbeddedResource Include="ColumnCustomization.resx">
       <DependentUpon>ColumnCustomization.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="CustomDictionary.resx">
+      <DependentUpon>CustomDictionary.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DataDiff.resx">
       <DependentUpon>DataDiff.cs</DependentUpon>
     </EmbeddedResource>
@@ -218,9 +227,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormulaList.resx">
       <DependentUpon>FormulaList.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormulaWindow.resx">
-      <DependentUpon>FormulaWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LayOutSetting.resx">
       <DependentUpon>LayOutSetting.cs</DependentUpon>
@@ -246,6 +252,9 @@
     </Compile>
     <EmbeddedResource Include="Search.resx">
       <DependentUpon>Search.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SpellCheckWindow.resx">
+      <DependentUpon>SpellCheckWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ThemeScreen.resx">
       <DependentUpon>ThemeScreen.cs</DependentUpon>

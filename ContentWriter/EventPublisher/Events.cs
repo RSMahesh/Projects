@@ -36,6 +36,8 @@ namespace EventPublisher
         FindWindow,
         ShowHideColumns,
         ChangeBackGroundColor,
-        ClearFilter
+        ClearFilter,
+        SpellCheck,
+        CustomDictionaryUpdate
     }
 }

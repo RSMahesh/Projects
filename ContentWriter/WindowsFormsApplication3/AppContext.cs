@@ -17,5 +17,9 @@ namespace WindowsFormsApplication3
         public string ExcelFilePath;
 
         public Theme Theme;
+
+        public Action ShowWpfRichTextBox;
+
+        public WpfRichTextBox wpfRichTextBox;
     }
 }

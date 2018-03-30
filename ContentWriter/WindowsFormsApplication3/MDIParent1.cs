@@ -381,5 +381,10 @@ namespace WindowsFormsApplication3
             Form3 frm = new Form3();
             frm.Show();
         }
+
+        private void spellCheckToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EventContainer.PublishEvent(EventPublisher.Events.SpellCheck.ToString(), new EventArg(Guid.NewGuid(), null));
+        }
     }
 }

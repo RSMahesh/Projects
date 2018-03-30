@@ -289,12 +289,42 @@ namespace WindowsFormsApplication3
             dataGridView1.Columns.Add(dgvButton);
         }
 
+
+        PictureViewer frmPrectiureViwer = null;
         private void DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (dataGridView1.Columns[e.ColumnIndex] is DataGridViewButtonColumn)
             {
                 OpenFile();
+                return;
             }
+
+          
+
+            dataGridView1.BeginEdit(false);
+
+            if (dataGridView1[e.ColumnIndex, e.RowIndex].Tag != null)
+            {
+                if (frmPrectiureViwer == null)
+                {
+                    frmPrectiureViwer = new PictureViewer(dataGridView1[e.ColumnIndex, e.RowIndex].Tag.ToString());
+                }
+
+                try
+                {
+                    frmPrectiureViwer.SetImage(dataGridView1[e.ColumnIndex, e.RowIndex].Tag.ToString());
+                    frmPrectiureViwer.TopMost = true;
+                    frmPrectiureViwer.Show();
+                }
+                catch
+                {
+                    frmPrectiureViwer = new PictureViewer(dataGridView1[e.ColumnIndex, e.RowIndex].Tag.ToString());
+                    frmPrectiureViwer.SetImage(dataGridView1[e.ColumnIndex, e.RowIndex].Tag.ToString());
+                    frmPrectiureViwer.TopMost = true;
+                    frmPrectiureViwer.Show();
+                }
+            }
+
         }
 
         private void chkShowMetaInfo_CheckedChanged(object sender, EventArgs e)
@@ -306,6 +336,11 @@ namespace WindowsFormsApplication3
         {
             dataGridView1.Columns["Row"].Visible = chkShowMetaInfo.CheckState == CheckState.Checked;
             dataGridView1.Columns["col"].Visible = chkShowMetaInfo.CheckState == CheckState.Checked;
+        }
+
+        private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

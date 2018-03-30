@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,16 +29,47 @@ namespace WindowsFormsApplication3
         public static Theme GetDefaultTheme()
         {
             var theme = new Theme();
-            theme.BackGroundColor = Color.LightGray;
+            theme.BackGroundColor = SavedBackGroundColor;
             theme.ForeColor = Color.Black;
-            theme.SelectionBackColor = Color.LightGray;
+            theme.SelectionBackColor = SavedBackGroundColor;
             theme.SelectionForeColor = Color.Black;
-            theme.CurrentRowColor = Color.LightGray;
+            theme.CurrentRowColor = SavedBackGroundColor;
             theme.HighlightedRowColor = Color.CadetBlue;
             theme.CurrentCellBorderColor = Color.White;
 
             return theme;
         }
+
+
+        public static Color SavedBackGroundColor
+        {
+            get
+            {
+                if (File.Exists(BackGroundColorFile))
+                {
+                    return ColorTranslator.FromHtml(File.ReadAllText(BackGroundColorFile));
+                }
+                else
+                {
+                    return Color.LightGray;
+                }
+            }
+
+            set
+            {
+                File.WriteAllText(BackGroundColorFile, ColorTranslator.ToHtml(value));
+            }
+        }
+
+
+        private static string BackGroundColorFile
+        {
+            get
+            {
+                return Path.Combine(Utility.FreeLanceAppDataFolder, "_BackGroundColor.txt");
+            }
+        }
+
 
         public static Theme GetReadOnlyTheme()
         {

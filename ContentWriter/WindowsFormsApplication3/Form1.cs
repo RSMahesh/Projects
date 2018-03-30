@@ -36,6 +36,7 @@ namespace WindowsFormsApplication3
         ContextMenueMultiSelectCell contextMenueMultiSelectCell;
         ContextMenueCurrentCell contextMenueCurrentCell;
         FindAndReplace findAndReplace;
+        SpellCheckWindow spellCheckWindow;
         PictureViewer frmPrectiureViwer = null;
         Search searchWindow;
         AppContext appContext;
@@ -49,15 +50,14 @@ namespace WindowsFormsApplication3
             urlToSerach = ConfigurationManager.AppSettings["urlToSerach"];
             exlcudeWordsInSearch = ConfigurationManager.AppSettings["exlcudeWordsInSearch"].Split(',');
             columnNameToSearch = ConfigurationManager.AppSettings["columnNameToSearch"];
-
             InitializeComponent();
-
+            wpfRichText = new WpfRichTextBox(wpfRichTextBoxPanel);
             appContext = new AppContext();
             appContext.dataGridView = dataGridView1;
             appContext.ExcelFilePath = filePath;
+            appContext.ShowWpfRichTextBox = ShowWpfRichTextBox;
+            appContext.wpfRichTextBox = wpfRichText;
 
-
-            wpfRichText = new WpfRichTextBox(wpfRichTextBoxPanel);
 
             _importBackUp = importBackUp;
             _undoRedo = new UndoRedoStack<CellData>(new SetCellDataCommand(dataGridView1));
@@ -70,8 +70,9 @@ namespace WindowsFormsApplication3
             _excelFilePath = filePath;
 
             imageLoader = new ImageLoader(dataGridView1, _excelFilePath);
-            findAndReplace = new FindAndReplace(dataGridView1, wpfRichText, ShowWpfRichTextBox);
-
+            findAndReplace = new FindAndReplace(appContext);
+            spellCheckWindow = new SpellCheckWindow(appContext);
+       
             wpfRichTextBoxPanel.Visible = false;
 
             IsReadOnlyFile = isReadOnly;
@@ -94,7 +95,6 @@ namespace WindowsFormsApplication3
 
             searchWindow = new Search(this.MdiParent);
 
-           
         }
 
         private void HideColumns()
@@ -114,6 +114,8 @@ namespace WindowsFormsApplication3
             dataGridView1.DataError += DataGridView1_DataError;
             dataGridView1.CellPainting += dataGridView1_CellPainting;
             dataGridView1.CellLeave += dataGridView1_CellLeave;
+            dataGridView1.CellEnter += DataGridView1_CellEnter; ;
+            dataGridView1.CellContentClick += DataGridView1_CellContentClick;
             dataGridView1.EditingControlShowing += DataGridView1_EditingControlShowing;
             dataGridView1.RowHeaderMouseClick += DataGridView1_RowHeaderMouseClick;
             dataGridView1.CellValidating += DataGridView1_CellValidating;
@@ -126,6 +128,23 @@ namespace WindowsFormsApplication3
             dataGridView1.ColumnHeaderMouseClick += DataGridView1_ColumnHeaderMouseClick;
             dataGridView1.MouseClick += DataGridView1_MouseClick;
         }
+
+        private void DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            spellCheckWindow.Visible = false;
+        }
+
+        private void DataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            HideWpfRichTextBox();
+        }
+
+        //private void DataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e)
+        //{
+        //    dataGridView1.CurrentCell = dataGridView1[e.ColumnIndex, e.RowIndex];
+        //    dataGridView1.BeginEdit(false);
+        //}
+
         private void ShowFindWindow(EventArg arg)
         {
             FindText frm = new FindText(appContext);
@@ -259,6 +278,7 @@ namespace WindowsFormsApplication3
                 EventContainer.SubscribeEvent(EventPublisher.Events.FindWindow.ToString(), ShowFindWindow);
                 EventContainer.SubscribeEvent(EventPublisher.Events.ShowHideColumns.ToString(), ShowHideColumns);
                 EventContainer.SubscribeEvent(EventPublisher.Events.ChangeBackGroundColor.ToString(), ChangeBackGroundColor);
+                EventContainer.SubscribeEvent(EventPublisher.Events.SpellCheck.ToString(), spellCheckWindow.Check);
 
             }
 
@@ -276,6 +296,7 @@ namespace WindowsFormsApplication3
 
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
+
                 row.DefaultCellStyle.BackColor = _theme.BackGroundColor;
                 row.DefaultCellStyle.ForeColor = _theme.ForeColor;
 
@@ -296,6 +317,7 @@ namespace WindowsFormsApplication3
             var bgColor = (Color)arg.Arg;
             _theme.BackGroundColor = bgColor;
             _theme.HighlightedRowColor = _theme.SelectionBackColor = _theme.CurrentRowColor = bgColor;
+            Theme.SavedBackGroundColor = bgColor;
 
             LoadTheme(new EventArg(_theme));
         }
@@ -370,36 +392,6 @@ namespace WindowsFormsApplication3
             this.Text = _excelFilePath;
 
             HideColumns();
-        }
-
-        private string GetSheetName()
-        {
-            var sheets = _dataConnection.GetSheets();
-
-            if (sheets.Count < 2)
-            {
-                return sheets.FirstOrDefault();
-            }
-
-            MessageBox.Show("More then on Sheets. Name : " + string.Join(",", sheets));
-
-
-            foreach (string sheet in sheets)
-            {
-
-                DialogResult dialogResult =
-                    MessageBox.Show("Do you want to Open " + sheet, "Open Sheet", MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
-                {
-                    return sheet;
-                }
-                else if (dialogResult == DialogResult.No)
-                {
-                    //do something else
-                }
-            }
-
-            throw new Exception("No Sheet Selected");
         }
 
 
@@ -499,6 +491,31 @@ namespace WindowsFormsApplication3
         }
 
 
+
+        //private void SpellCheck(EventArg arg)
+        //{
+        //    for (int row = 0; row < dataGridView1.Rows.Count; row++)
+        //    {
+        //        foreach (DataGridViewCell cell in dataGridView1.Rows[row].Cells)
+        //        {
+        //            if (cell.Value != null
+        //                && !(dataGridView1.Columns[cell.ColumnIndex] is DataGridViewImageColumn)
+        //                && dataGridView1.Columns[cell.ColumnIndex].Visible && cell.ColumnIndex ==5)
+        //            {
+
+        //                dataGridView1.CurrentCell = cell;
+        //                dataGridView1.BeginEdit(false);
+        //               if( wpfRichText.IsSpellErrors())
+        //                {
+        //                    return;
+        //                }
+
+        //            }
+        //        }
+        //    }
+        //}
+
+
         private int GetRowHeightBasedOnLength(int maxColumnTextLength)
         {
             return (int)Math.Abs(maxColumnTextLength / 4) + 10;
@@ -514,6 +531,7 @@ namespace WindowsFormsApplication3
                 IncreaseRowHeight(e.RowIndex, e.ColumnIndex);
                 dataGridView1.Columns[e.ColumnIndex].Width = dataGridView1.Columns[e.ColumnIndex].Width + 1;
                 dataGridView1[e.ColumnIndex, e.RowIndex].Selected = true;
+               // spellCheckWindow.Visible = false;
             }
         }
 
@@ -530,7 +548,7 @@ namespace WindowsFormsApplication3
                 appContext.dataGridViewTextBoxEditing = editingTextBox;
             }
 
-            wpfRichTextBoxPanel.Visible = false;
+            ShowWpfRichTextBox();
         }
 
         private void EditingTextBox_MouseClick(object sender, MouseEventArgs e)
@@ -547,6 +565,11 @@ namespace WindowsFormsApplication3
             wpfRichTextBoxPanel.Size = rec.Size;
             wpfRichTextBoxPanel.Location = rec.Location;
             wpfRichTextBoxPanel.Visible = true;
+        }
+
+        private void HideWpfRichTextBox()
+        {
+            wpfRichTextBoxPanel.Visible = false;
         }
 
         private void StartHighlightingWords()

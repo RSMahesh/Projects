@@ -20,15 +20,20 @@ namespace WindowsFormsApplication3
     public class WpfRichTextBox
     {
         RichTextBox richTextBox = new RichTextBox();
+        RichTextBox internalRichTextBox = new RichTextBox();
         ElementHost host = new ElementHost();
+        public System.Windows.Controls.SpellingError spellingError;
+        public string SpellErrorText;
 
-        bool addingText = false;
+        bool doNotPublishChangeText = false;
         public WpfRichTextBox(Control panel)
         {
             ChangeLanguage();
+
             richTextBox.PreviewMouseRightButtonDown += RichTextBox_PreviewMouseRightButtonDown;
             richTextBox.MouseDown += RichTextBox_MouseDown;
             richTextBox.SpellCheck.IsEnabled = true;
+            internalRichTextBox.SpellCheck.IsEnabled = true;
             richTextBox.FontFamily = new FontFamily("Verdana");
             richTextBox.FontSize = 14.25F;
             richTextBox.TextChanged += RichTextBox_TextChanged;
@@ -48,10 +53,10 @@ namespace WindowsFormsApplication3
             set
             {
                 Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("en-GB");
-                addingText = true;
+                doNotPublishChangeText = true;
                 richTextBox.Document.Blocks.Clear();
                 richTextBox.Document.Blocks.Add(new Paragraph(new Run(value)));
-                addingText = false;
+                doNotPublishChangeText = false;
             }
         }
 
@@ -88,6 +93,7 @@ namespace WindowsFormsApplication3
                 richTextBox.Foreground = brush;
             }
         }
+
         public Color BorderColor
         {
             get
@@ -99,8 +105,170 @@ namespace WindowsFormsApplication3
                 richTextBox.BorderBrush = new SolidColorBrush(value);
             }
         }
-
         
+        public bool IsSpellErrors()
+        {
+            TextRange spellErrorRange;
+            TextPointer start_pointer, end_pointer;
+            int chrPos = 0;
+
+            richTextBox.SelectAll();
+            int txtLen = richTextBox.Selection.Text.Length;
+           
+            for (int i = chrPos; i < txtLen; i++)
+            {
+                start_pointer = richTextBox.Document.ContentStart.GetNextInsertionPosition
+                    (LogicalDirection.Forward).GetPositionAtOffset(i, LogicalDirection.Forward);
+
+                spellingError = richTextBox.GetSpellingError(start_pointer);
+                if (spellingError != null)
+                {
+
+                    spellErrorRange = richTextBox.GetSpellingErrorRange(start_pointer);
+                    SpellErrorText = spellErrorRange.Text;
+                    int errRange = spellErrorRange.Text.Length;
+                    
+                    string textRun = start_pointer.GetTextInRun(LogicalDirection.Forward);
+                    string trimmedString = string.Empty;
+                    end_pointer = richTextBox.Document.ContentStart.GetNextInsertionPosition
+                        (LogicalDirection.Forward).GetPositionAtOffset(i + errRange, LogicalDirection.Forward);
+                    richTextBox.Selection.Select(start_pointer, start_pointer);
+                   // richTextBox.Focus();
+
+
+                    Rect screenPos = richTextBox.Selection.Start.GetCharacterRect(LogicalDirection.Forward);
+                    double offset = screenPos.Top + richTextBox.VerticalOffset;
+                    richTextBox.ScrollToVerticalOffset(offset - richTextBox.ActualHeight / 2);
+
+                    return true;
+                }
+            }
+
+            return false;
+
+        }
+
+        public bool IsSpellErrorsEx(string text)
+        {
+            TextRange spellErrorRange;
+            TextPointer start_pointer, end_pointer;
+            int chrPos = 0;
+            Text = text;
+
+            richTextBox.SelectAll();
+            int txtLen = richTextBox.Selection.Text.Length;
+
+            for (int i = chrPos; i < txtLen; i++)
+            {
+                start_pointer = richTextBox.Document.ContentStart.GetNextInsertionPosition
+                    (LogicalDirection.Forward).GetPositionAtOffset(i, LogicalDirection.Forward);
+
+                spellingError = richTextBox.GetSpellingError(start_pointer);
+                if (spellingError != null)
+                {
+
+                    spellErrorRange = richTextBox.GetSpellingErrorRange(start_pointer);
+                    SpellErrorText = spellErrorRange.Text;
+                    int errRange = spellErrorRange.Text.Length;
+
+                    string textRun = start_pointer.GetTextInRun(LogicalDirection.Forward);
+                    string trimmedString = string.Empty;
+                    end_pointer = richTextBox.Document.ContentStart.GetNextInsertionPosition
+                        (LogicalDirection.Forward).GetPositionAtOffset(i + errRange, LogicalDirection.Forward);
+                    richTextBox.Selection.Select(start_pointer, start_pointer);
+                    // richTextBox.Focus();
+
+
+                    Rect screenPos = richTextBox.Selection.Start.GetCharacterRect(LogicalDirection.Forward);
+                    double offset = screenPos.Top + richTextBox.VerticalOffset;
+                    richTextBox.ScrollToVerticalOffset(offset - richTextBox.ActualHeight / 2);
+
+                    return true;
+                }
+            }
+
+            return false;
+
+        }
+
+        public bool DoesContainSpellErrors(string text)
+        {
+            //this.richTextBox.Visibility = Visibility.Hidden;
+            this.doNotPublishChangeText = true;
+
+            TextPointer start_pointer, end_pointer;
+            int chrPos = 0;
+
+            richTextBox.Document.Blocks.Clear();
+            richTextBox.Document.Blocks.Add(new Paragraph(new Run(text)));
+
+            richTextBox.SelectAll();
+            int txtLen = richTextBox.Selection.Text.Length;
+          
+            for (int i = chrPos; i < txtLen; i++)
+            {
+                start_pointer = richTextBox.Document.ContentStart.GetNextInsertionPosition
+                    (LogicalDirection.Forward).GetPositionAtOffset(i, LogicalDirection.Forward);
+
+              var  spellingError12 = richTextBox.GetSpellingError(start_pointer);
+                if (spellingError12 != null)
+                {
+                   var spellErrorRange = richTextBox.GetSpellingErrorRange(start_pointer);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool DoesContainSpellErrors123(string text)
+        {
+            TextPointer start_pointer, end_pointer;
+            int chrPos = 0;
+
+            internalRichTextBox.Document.Blocks.Clear();
+            internalRichTextBox.Document.Blocks.Add(new Paragraph(new Run(text)));
+
+            internalRichTextBox.SelectAll();
+            int txtLen = internalRichTextBox.Selection.Text.Length;
+
+            for (int i = chrPos; i < txtLen; i++)
+            {
+                start_pointer = internalRichTextBox.Document.ContentStart.GetNextInsertionPosition
+                    (LogicalDirection.Forward).GetPositionAtOffset(i, LogicalDirection.Forward);
+
+                var spellingError12 = internalRichTextBox.GetSpellingError(start_pointer);
+                if (spellingError12 != null)
+                {
+                    var spellErrorRange = internalRichTextBox.GetSpellingErrorRange(start_pointer);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public void CorrectSpellError(string text)
+        {
+            spellingError.Correct(text);
+        }
+
+        public void IgnoreSpellError()
+        {
+            spellingError.IgnoreAll();
+        }
+
+        public void LoadCustomDic(Uri customDictionaryUri)
+        {
+            System.Collections.IList dictionaries = System.Windows.Controls.SpellCheck.GetCustomDictionaries(richTextBox);
+            if(dictionaries.Contains(customDictionaryUri))
+            {
+                dictionaries.Remove(customDictionaryUri);
+            }
+
+            dictionaries.Add(customDictionaryUri);
+        }
+
         private void ChangeLanguage()
         {
             Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("en-GB");
@@ -121,21 +289,12 @@ namespace WindowsFormsApplication3
 
         private void RichTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            if (!addingText)
+            if (!doNotPublishChangeText)
             {
                 EventContainer.PublishEvent(Events.RichTextBoxTextChanged.ToString(), new EventArg(Text));
             }
         }
-
-        //public void AddText(string text)
-        //{
-        //    Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("en-GB");
-        //    addingText = true;
-        //    richTextBox.Document.Blocks.Clear();
-        //    richTextBox.Document.Blocks.Add(new Paragraph(new Run(text)));
-        //    addingText = false;
-        //}
-
+        
         public int LineSpacing
         {
             set
@@ -174,7 +333,6 @@ namespace WindowsFormsApplication3
             if (index != -1)
             {
                 SelectAndChangeColor(index, word.Length);
-                //myRtb.Select(index, word.Length);
             }
         }
 
