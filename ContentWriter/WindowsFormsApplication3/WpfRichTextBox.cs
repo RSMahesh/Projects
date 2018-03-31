@@ -194,8 +194,7 @@ namespace WindowsFormsApplication3
         public bool DoesContainSpellErrors(string text)
         {
             //this.richTextBox.Visibility = Visibility.Hidden;
-            this.doNotPublishChangeText = true;
-
+        
             TextPointer start_pointer, end_pointer;
             int chrPos = 0;
 
@@ -275,6 +274,7 @@ namespace WindowsFormsApplication3
         }
         private void RichTextBox_PreviewMouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+
         }
 
         private void RichTextBox_MouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)

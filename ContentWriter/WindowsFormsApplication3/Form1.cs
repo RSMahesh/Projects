@@ -43,6 +43,7 @@ namespace WindowsFormsApplication3
         string urlToSerach = "https://www.foagroup.com/catalogsearch/result/?q=";
         string[] exlcudeWordsInSearch = new[] { "FOA-", "xyz" };
         string columnNameToSearch = "Vendor SKU";
+        bool autoSpellCheckMode;
 
         public Form1(string filePath, bool importBackUp = false, bool isReadOnly = false)
         {
@@ -57,6 +58,7 @@ namespace WindowsFormsApplication3
             appContext.ExcelFilePath = filePath;
             appContext.ShowWpfRichTextBox = ShowWpfRichTextBox;
             appContext.wpfRichTextBox = wpfRichText;
+            appContext.synonymProvider = new SynonymProvider();
 
 
             _importBackUp = importBackUp;
@@ -278,11 +280,27 @@ namespace WindowsFormsApplication3
                 EventContainer.SubscribeEvent(EventPublisher.Events.FindWindow.ToString(), ShowFindWindow);
                 EventContainer.SubscribeEvent(EventPublisher.Events.ShowHideColumns.ToString(), ShowHideColumns);
                 EventContainer.SubscribeEvent(EventPublisher.Events.ChangeBackGroundColor.ToString(), ChangeBackGroundColor);
-                EventContainer.SubscribeEvent(EventPublisher.Events.SpellCheck.ToString(), spellCheckWindow.Check);
+                EventContainer.SubscribeEvent(EventPublisher.Events.SpellCheck.ToString(), SpellCheck);
+                EventContainer.SubscribeEvent(EventPublisher.Events.ToggleAutoSpellCheckMode.ToString(), ToggleAutoSpellCheckMode);
 
             }
 
         }
+
+
+        
+        void ToggleAutoSpellCheckMode(EventArg arg)
+        {
+            autoSpellCheckMode = !autoSpellCheckMode;
+        }
+        void SpellCheck(EventArg arg)
+        {
+            this.Cursor = Cursors.WaitCursor;
+            spellCheckWindow.Check(arg);
+            this.Cursor = Cursors.Default;
+        }
+
+
 
         void LoadTheme(EventArg arg)
         {
@@ -548,7 +566,10 @@ namespace WindowsFormsApplication3
                 appContext.dataGridViewTextBoxEditing = editingTextBox;
             }
 
-            ShowWpfRichTextBox();
+            if (autoSpellCheckMode)
+            {
+                ShowWpfRichTextBox();
+            }
         }
 
         private void EditingTextBox_MouseClick(object sender, MouseEventArgs e)
@@ -561,7 +582,7 @@ namespace WindowsFormsApplication3
             if (!imageColumnLoaded || editingTextBox == null || dataGridView1.Columns[dataGridView1.CurrentCell.ColumnIndex].Name == Constants.WordFrequencyColumnName)
                 return;
             var rec = dataGridView1.GetCellDisplayRectangle(dataGridView1.CurrentCell.ColumnIndex, dataGridView1.CurrentCell.RowIndex, true);
-            wpfRichText.Text = editingTextBox.Text;
+            wpfRichText.Text = dataGridView1.CurrentCell.Value.ToString();
             wpfRichTextBoxPanel.Size = rec.Size;
             wpfRichTextBoxPanel.Location = rec.Location;
             wpfRichTextBoxPanel.Visible = true;

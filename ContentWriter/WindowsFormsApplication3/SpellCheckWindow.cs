@@ -21,9 +21,13 @@ namespace WindowsFormsApplication3
         Action showWpfRichTextBox;
         AppContext appContext;
         CustomDictionary customDictionary;
+
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem menuItemSynonyms;
         public SpellCheckWindow(AppContext appContext)
         {
             InitializeComponent();
+            this.textBox1.ReadOnly = true;
             this.dataGridView = appContext.dataGridView;
             this.wpfRichText = appContext.wpfRichTextBox;
             this.showWpfRichTextBox = appContext.ShowWpfRichTextBox;
@@ -34,6 +38,25 @@ namespace WindowsFormsApplication3
             LoadColumns();
             checkedListBox1.MultiColumn = false;
             EventContainer.SubscribeEvent(EventPublisher.Events.CustomDictionaryUpdate.ToString(), CustomDictionaryUpdate);
+            listBox1.ContextMenu = contextMenu;
+            menuItemSynonyms = contextMenu.MenuItems.Add("Synonyms");
+            menuItemSynonyms.Select += MenuItemSynonyms_Select;
+
+        }
+
+        private void MenuItemSynonyms_Select(object sender, EventArgs e)
+        {
+            appContext.synonymProvider.AddSynoms(listBox1.SelectedItem.ToString(),
+                   menuItemSynonyms, OnSynonymClick);
+        }
+
+        private void OnSynonymClick(object sender, EventArgs e)
+        {
+           // var menuIltem = (MenuItem)sender;
+
+         //   listBox1.Items.Remove(listBox1.SelectedItem);
+
+          //  appContext.dataGridViewTextBoxEditing.Paste(menuIltem.Text);
         }
 
         private void CustomDictionaryUpdate(EventArg obj)
@@ -59,7 +82,7 @@ namespace WindowsFormsApplication3
 
             //TODO: remove 
             var columnName = "ALL";
-
+            this.Cursor = Cursors.WaitCursor;
             for (var rowIndex = startingRowToFind; rowIndex < dataGridView.Rows.Count; rowIndex++)
             {
                 DataGridViewRow row = dataGridView.Rows[rowIndex];
@@ -79,7 +102,7 @@ namespace WindowsFormsApplication3
                         if (cell.Visible && cell.Value != null && !string.IsNullOrEmpty(cell.Value.ToString()))
                         {
 
-                            if(!wpfRichText.DoesContainSpellErrors(cell.Value.ToString()))
+                            if(!wpfRichText.DoesContainSpellErrors123(cell.Value.ToString()))
                             {
                                 continue;
                             }
@@ -89,12 +112,32 @@ namespace WindowsFormsApplication3
                             appContext.ShowWpfRichTextBox();
                             if (wpfRichText.IsSpellErrors())
                             {
-                                
+
                                 startingRowToFind = rowIndex;
                                 startingColumnToFind = colIndex;
                                
                                 ShowSpellError();
                                 this.Show();
+                                var rec = appContext.dataGridView.GetCellDisplayRectangle(dataGridView.CurrentCell.ColumnIndex, dataGridView.CurrentCell.RowIndex, true);
+
+                                var screen = Screen.FromControl(this);
+                                
+
+                                if (rec.IntersectsWith(this.Bounds))
+                                {
+                                    this.Left += 200;
+                                    this.Top += 200;
+
+                                    if(this.Right > screen.Bounds.Right)
+                                    {
+                                      this.Left -=600;
+                                    }
+                                    if (this.Bottom > screen.Bounds.Bottom)
+                                    {
+                                        this.Top -= 600;
+                                    }
+                                }
+                                this.Cursor = Cursors.Default;
                                 return;
                             }
                             else
@@ -110,6 +153,7 @@ namespace WindowsFormsApplication3
             }
 
             MessageBox.Show("No Spell Error");
+            this.Cursor = Cursors.Default;
             startingColumnToFind = startingRowToFind = startingIndexInCellToFindText = 0;
         }
 
@@ -188,7 +232,9 @@ namespace WindowsFormsApplication3
 
             foreach (DataGridViewColumn col in appContext.dataGridView.Columns)
             {
-                if(col.Visible && !(col is DataGridViewImageColumn) && !col.ReadOnly)
+                if(col.Visible && !(col is DataGridViewImageColumn) && !col.ReadOnly &&
+                    col.ValueType == typeof(string)
+                    )
                 {
                     checkedListBox1.Items.Add(col.Name);
                     checkedListBox1.SetItemChecked(checkedListBox1.Items.Count - 1, true);
@@ -206,5 +252,12 @@ namespace WindowsFormsApplication3
         {
             customDictionary.ShowUI();
         }
+
+        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var checkedState = checkedListBox1.GetItemCheckState(checkedListBox1.SelectedIndex) == CheckState.Checked;
+            checkedListBox1.SetItemChecked(checkedListBox1.SelectedIndex, !checkedState);
+        }
+        
     }
 }

@@ -38,6 +38,7 @@ namespace EventPublisher
         ChangeBackGroundColor,
         ClearFilter,
         SpellCheck,
-        CustomDictionaryUpdate
+        CustomDictionaryUpdate,
+        ToggleAutoSpellCheckMode
     }
 }

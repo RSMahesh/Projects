@@ -15,6 +15,7 @@ namespace WindowsFormsApplication3
     {
         ContextMenu contextMenu = new ContextMenu();
         AppContext appContext;
+        MenuItem menuItemSynonyms;
         public ContextMenueCurrentCell(AppContext appContext)
         {
             this.appContext = appContext;
@@ -31,10 +32,11 @@ namespace WindowsFormsApplication3
             contextMenu.MenuItems.Add("Past", OnPast);
             contextMenu.MenuItems.Add("Delete", OnCut);
 
-            contextMenu.MenuItems.Add("-");
-            contextMenu.MenuItems.Add("Spell Check", OnSpellCheck);
-            contextMenu.MenuItems.Add("-");
 
+            contextMenu.MenuItems.Add("-");
+            menuItemSynonyms = contextMenu.MenuItems.Add("Synonyms");
+            menuItemSynonyms.Select += MenuItemSynonyms_Select;
+       
             contextMenu.MenuItems.Add("-");
             contextMenu.MenuItems.Add("Editor", OnEditor);
             contextMenu.MenuItems.Add("-");
@@ -49,6 +51,19 @@ namespace WindowsFormsApplication3
 
             contextMenu.MenuItems.Add(addDevice);
             appContext.dataGridView.ContextMenu = contextMenu;
+        }
+
+        private void MenuItemSynonyms_Select(object sender, EventArgs e)
+        {
+         appContext.synonymProvider.AddSynoms(appContext.dataGridViewTextBoxEditing.SelectedText,
+                menuItemSynonyms, OnSynonymClick);
+        }
+
+        private void OnSynonymClick(object sender, EventArgs e)
+        {
+            var menuIltem = (MenuItem)sender;
+            
+            appContext.dataGridViewTextBoxEditing.Paste(menuIltem.Text); 
         }
 
         void SearchBackup(object sender, EventArgs e)
@@ -105,10 +120,6 @@ namespace WindowsFormsApplication3
             frm.FindNext();
         }
 
-        void OnSpellCheck(object sender, EventArgs e)
-        {
-            appContext.ShowWpfRichTextBox();
-        }
         void OnEditor(object sender, EventArgs e)
         {
             PopUpEditor frm = new PopUpEditor(appContext);

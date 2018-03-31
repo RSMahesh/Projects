@@ -31,59 +31,51 @@
             this.lbSynonym = new System.Windows.Forms.ListBox();
             this.tbWord = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // lbSynonym
             // 
+            this.lbSynonym.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbSynonym.FormattingEnabled = true;
-            this.lbSynonym.Location = new System.Drawing.Point(82, 66);
+            this.lbSynonym.ItemHeight = 18;
+            this.lbSynonym.Location = new System.Drawing.Point(3, 33);
             this.lbSynonym.Name = "lbSynonym";
-            this.lbSynonym.Size = new System.Drawing.Size(327, 277);
+            this.lbSynonym.Size = new System.Drawing.Size(225, 292);
             this.lbSynonym.TabIndex = 0;
+            this.lbSynonym.SelectedIndexChanged += new System.EventHandler(this.lbSynonym_SelectedIndexChanged);
             // 
             // tbWord
             // 
-            this.tbWord.Location = new System.Drawing.Point(82, 24);
+            this.tbWord.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbWord.Location = new System.Drawing.Point(3, 0);
             this.tbWord.Name = "tbWord";
-            this.tbWord.Size = new System.Drawing.Size(176, 20);
+            this.tbWord.Size = new System.Drawing.Size(225, 24);
             this.tbWord.TabIndex = 1;
             this.tbWord.Text = "Pretty";
+            this.tbWord.TextChanged += new System.EventHandler(this.tbWord_TextChanged);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(134, 364);
+            this.button1.Location = new System.Drawing.Point(51, 364);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 2;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(496, 89);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(240, 150);
-            this.dataGridView1.TabIndex = 3;
-            this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
-            this.dataGridView1.CurrentCellChanged += new System.EventHandler(this.dataGridView1_CurrentCellChanged);
             // 
             // FormSys
             // 
+            this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1117, 399);
-            this.Controls.Add(this.dataGridView1);
+            this.ClientSize = new System.Drawing.Size(230, 326);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.tbWord);
             this.Controls.Add(this.lbSynonym);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormSys";
             this.Text = "FormSys";
             this.Load += new System.EventHandler(this.FormSys_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -94,6 +86,5 @@
         private System.Windows.Forms.ListBox lbSynonym;
         private System.Windows.Forms.TextBox tbWord;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }

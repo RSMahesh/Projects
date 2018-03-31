@@ -378,13 +378,28 @@ namespace WindowsFormsApplication3
 
         private void printToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form3 frm = new Form3();
+            FormSys frm = new FormSys();
             frm.Show();
         }
 
         private void spellCheckToolStripMenuItem_Click(object sender, EventArgs e)
         {
             EventContainer.PublishEvent(EventPublisher.Events.SpellCheck.ToString(), new EventArg(Guid.NewGuid(), null));
+        }
+
+        private void toolStripStatusLabel1_Click_1(object sender, EventArgs e)
+        {
+            if(toolStripAutoSpellCheck.Text == "Auto Spell Check Off")
+            {
+                toolStripAutoSpellCheck.Text = "Auto Spell Check On";
+            }
+            else
+            {
+                toolStripAutoSpellCheck.Text = "Auto Spell Check Off";
+            }
+
+            EventContainer.PublishEvent(EventPublisher.Events.ToggleAutoSpellCheckMode.ToString(), new EventArg(Guid.NewGuid(), null));
+
         }
     }
 }

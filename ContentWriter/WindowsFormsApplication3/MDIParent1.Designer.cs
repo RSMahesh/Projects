@@ -68,6 +68,7 @@
             this.filterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importBackUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showHideColumnsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.spellCheckToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.newWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cascadeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -86,7 +87,7 @@
             this.themeColorPickerToolStripSplitButton1 = new ExHtmlEditor.ColorPicker.ThemeColorPickerToolStripSplitButton();
             this.toolStripStatusClearFilter = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.spellCheckToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripAutoSpellCheck = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -417,6 +418,14 @@
             this.showHideColumnsToolStripMenuItem.Text = "ShowHideColumns";
             this.showHideColumnsToolStripMenuItem.Click += new System.EventHandler(this.showHideColumnsToolStripMenuItem_Click);
             // 
+            // spellCheckToolStripMenuItem
+            // 
+            this.spellCheckToolStripMenuItem.Name = "spellCheckToolStripMenuItem";
+            this.spellCheckToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F7;
+            this.spellCheckToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.spellCheckToolStripMenuItem.Text = "SpellCheck";
+            this.spellCheckToolStripMenuItem.Click += new System.EventHandler(this.spellCheckToolStripMenuItem_Click);
+            // 
             // windowsMenu
             // 
             this.windowsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -433,42 +442,42 @@
             // newWindowToolStripMenuItem
             // 
             this.newWindowToolStripMenuItem.Name = "newWindowToolStripMenuItem";
-            this.newWindowToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.newWindowToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.newWindowToolStripMenuItem.Text = "&New Window";
             this.newWindowToolStripMenuItem.Click += new System.EventHandler(this.ShowNewForm);
             // 
             // cascadeToolStripMenuItem
             // 
             this.cascadeToolStripMenuItem.Name = "cascadeToolStripMenuItem";
-            this.cascadeToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.cascadeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.cascadeToolStripMenuItem.Text = "&Cascade";
             this.cascadeToolStripMenuItem.Click += new System.EventHandler(this.CascadeToolStripMenuItem_Click);
             // 
             // tileVerticalToolStripMenuItem
             // 
             this.tileVerticalToolStripMenuItem.Name = "tileVerticalToolStripMenuItem";
-            this.tileVerticalToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.tileVerticalToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.tileVerticalToolStripMenuItem.Text = "Tile &Vertical";
             this.tileVerticalToolStripMenuItem.Click += new System.EventHandler(this.TileVerticalToolStripMenuItem_Click);
             // 
             // tileHorizontalToolStripMenuItem
             // 
             this.tileHorizontalToolStripMenuItem.Name = "tileHorizontalToolStripMenuItem";
-            this.tileHorizontalToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.tileHorizontalToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.tileHorizontalToolStripMenuItem.Text = "Tile &Horizontal";
             this.tileHorizontalToolStripMenuItem.Click += new System.EventHandler(this.TileHorizontalToolStripMenuItem_Click);
             // 
             // closeAllToolStripMenuItem
             // 
             this.closeAllToolStripMenuItem.Name = "closeAllToolStripMenuItem";
-            this.closeAllToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.closeAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.closeAllToolStripMenuItem.Text = "C&lose All";
             this.closeAllToolStripMenuItem.Click += new System.EventHandler(this.CloseAllToolStripMenuItem_Click);
             // 
             // arrangeIconsToolStripMenuItem
             // 
             this.arrangeIconsToolStripMenuItem.Name = "arrangeIconsToolStripMenuItem";
-            this.arrangeIconsToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.arrangeIconsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.arrangeIconsToolStripMenuItem.Text = "&Arrange Icons";
             this.arrangeIconsToolStripMenuItem.Click += new System.EventHandler(this.ArrangeIconsToolStripMenuItem_Click);
             // 
@@ -523,7 +532,8 @@
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel,
             this.themeColorPickerToolStripSplitButton1,
-            this.toolStripStatusClearFilter});
+            this.toolStripStatusClearFilter,
+            this.toolStripAutoSpellCheck});
             this.statusStrip.Location = new System.Drawing.Point(0, 431);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(805, 22);
@@ -557,13 +567,12 @@
             this.toolStripStatusClearFilter.Text = "Clear Filter";
             this.toolStripStatusClearFilter.Click += new System.EventHandler(this.toolStripStatusLabel1_Click);
             // 
-            // spellCheckToolStripMenuItem
+            // toolStripAutoSpellCheck
             // 
-            this.spellCheckToolStripMenuItem.Name = "spellCheckToolStripMenuItem";
-            this.spellCheckToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(System.Windows.Forms.Keys.F7));
-            this.spellCheckToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.spellCheckToolStripMenuItem.Text = "SpellCheck";
-            this.spellCheckToolStripMenuItem.Click += new System.EventHandler(this.spellCheckToolStripMenuItem_Click);
+            this.toolStripAutoSpellCheck.Name = "toolStripAutoSpellCheck";
+            this.toolStripAutoSpellCheck.Size = new System.Drawing.Size(117, 17);
+            this.toolStripAutoSpellCheck.Text = "Auto Spell Check Off";
+            this.toolStripAutoSpellCheck.Click += new System.EventHandler(this.toolStripStatusLabel1_Click_1);
             // 
             // MDIParent1
             // 
@@ -646,6 +655,7 @@
         private ExHtmlEditor.ColorPicker.ThemeColorPickerToolStripSplitButton themeColorPickerToolStripSplitButton1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusClearFilter;
         private System.Windows.Forms.ToolStripMenuItem spellCheckToolStripMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripAutoSpellCheck;
     }
 }
 

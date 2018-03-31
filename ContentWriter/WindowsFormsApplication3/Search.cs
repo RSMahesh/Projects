@@ -182,9 +182,9 @@ namespace WindowsFormsApplication3
             var list = new List<KeyValuePair<string, string[]>>();
             list.Add(new KeyValuePair<string, string[]>("Title", new[] { "Title", "Name" }));
             list.Add(new KeyValuePair<string, string[]>("Description", new[] { "Description" }));
-            list.Add(new KeyValuePair<string, string[]>("Bullet 1", new[] { "Bullet 1", "Bullet1" }));
-            list.Add(new KeyValuePair<string, string[]>("Bullet 2", new[] { "Bullet 2", "Bullet2" }));
-            list.Add(new KeyValuePair<string, string[]>("Bullet 3", new[] { "Bullet 3", "Bullet3" }));
+            list.Add(new KeyValuePair<string, string[]>("Bullet 1", new[] { "Bullet 1", "Bullet1", "Feature 1", "Feature1" }));
+            list.Add(new KeyValuePair<string, string[]>("Bullet 2", new[] { "Bullet 2", "Bullet2", "Feature 1", "Feature2" }));
+            list.Add(new KeyValuePair<string, string[]>("Bullet 3", new[] { "Bullet 3", "Bullet3", "Feature 1", "Feature3" }));
 
             return list;
         }
@@ -262,8 +262,9 @@ namespace WindowsFormsApplication3
 
         private void Search_Load(object sender, EventArgs e)
         {
-            dataGridView1.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
+            dataGridView1.RowTemplate.DefaultCellStyle.BackColor = Color.LightGray;
             dataGridView1.RowTemplate.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            dataGridView1.RowTemplate.DefaultCellStyle.Font =  new System.Drawing.Font("Verdana", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 
             dataGridView1.CellContentClick += DataGridView1_CellContentClick;
             dataGridView1.SelectionChanged += DataGridView1_SelectionChanged;
@@ -299,9 +300,13 @@ namespace WindowsFormsApplication3
                 return;
             }
 
+            if(e.RowIndex < 0 && e.ColumnIndex <0)
+            {
+                return;
+            }
           
 
-            dataGridView1.BeginEdit(false);
+           // dataGridView1.BeginEdit(false);
 
             if (dataGridView1[e.ColumnIndex, e.RowIndex].Tag != null)
             {
@@ -338,7 +343,7 @@ namespace WindowsFormsApplication3
             dataGridView1.Columns["col"].Visible = chkShowMetaInfo.CheckState == CheckState.Checked;
         }
 
-        private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+        private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }

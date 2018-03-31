@@ -110,6 +110,7 @@
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.Size = new System.Drawing.Size(252, 94);
             this.checkedListBox1.TabIndex = 6;
+            this.checkedListBox1.SelectedIndexChanged += new System.EventHandler(this.checkedListBox1_SelectedIndexChanged);
             // 
             // label3
             // 
@@ -149,7 +150,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(362, 330);
+            this.ClientSize = new System.Drawing.Size(369, 330);
             this.Controls.Add(this.btnShowDictionary);
             this.Controls.Add(this.btnAddToDictionary);
             this.Controls.Add(this.label3);
@@ -160,6 +161,7 @@
             this.Controls.Add(this.btnChange);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.textBox1);
+            this.MaximizeBox = false;
             this.Name = "SpellCheckWindow";
             this.Text = "SpellCheckWindow";
             this.Load += new System.EventHandler(this.SpellCheckWindow_Load);
