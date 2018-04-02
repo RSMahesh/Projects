@@ -23,29 +23,44 @@ namespace WindowsFormsApplication3
         }
         public void ShowMenu(Point p)
         {
+            Disable();
             contextMenu.Show(appContext.dataGridView, p);
         }
+
+        private void Disable()
+        {
+            var enabled = !string.IsNullOrEmpty(appContext.dataGridViewTextBoxEditing.SelectedText);
+            contextMenu.MenuItems["Cut"].Enabled =
+            contextMenu.MenuItems["Copy"].Enabled =
+            contextMenu.MenuItems["Delete"].Enabled =
+            contextMenu.MenuItems["Synonyms"].Enabled =
+            contextMenu.MenuItems["Find"].Enabled =
+            contextMenu.MenuItems["Filter"].Enabled =
+            contextMenu.MenuItems["Search"].Enabled =
+            enabled;
+        }
+
         void AddContextMenu()
         {
-            contextMenu.MenuItems.Add("Cut", OnCut);
-            contextMenu.MenuItems.Add("Copy", OnCopy);
-            contextMenu.MenuItems.Add("Past", OnPast);
-            contextMenu.MenuItems.Add("Delete", OnCut);
-
+            contextMenu.MenuItems.Add("Cut", OnCut).Name = "Cut";
+            contextMenu.MenuItems.Add("Copy", OnCopy).Name = "Copy";
+            contextMenu.MenuItems.Add("Paste", OnPast).Name = "Paste";
+            contextMenu.MenuItems.Add("Delete", OnCut).Name = "Delete";
 
             contextMenu.MenuItems.Add("-");
             menuItemSynonyms = contextMenu.MenuItems.Add("Synonyms");
+            menuItemSynonyms.Name = "Synonyms";
             menuItemSynonyms.Select += MenuItemSynonyms_Select;
-       
+
             contextMenu.MenuItems.Add("-");
-            contextMenu.MenuItems.Add("Editor", OnEditor);
+            contextMenu.MenuItems.Add("Editor", OnEditor).Name = "Editor";
             contextMenu.MenuItems.Add("-");
 
-            contextMenu.MenuItems.Add("Find", OnFind);
-
-            contextMenu.MenuItems.Add("Filter", OnFilter);
+            contextMenu.MenuItems.Add("Find", OnFind).Name = "Find";
+            contextMenu.MenuItems.Add("Filter", OnFilter).Name = "Filter";
 
             MenuItem addDevice = new MenuItem("Search");
+            addDevice.Name = "Search";
             addDevice.MenuItems.Add(new MenuItem("Backup", SearchBackup));
             addDevice.MenuItems.Add(new MenuItem("Internet", SearchInternet));
 
@@ -55,15 +70,14 @@ namespace WindowsFormsApplication3
 
         private void MenuItemSynonyms_Select(object sender, EventArgs e)
         {
-         appContext.synonymProvider.AddSynoms(appContext.dataGridViewTextBoxEditing.SelectedText,
-                menuItemSynonyms, OnSynonymClick);
+            appContext.synonymProvider.AddSynoms(appContext.dataGridViewTextBoxEditing.SelectedText,
+                   menuItemSynonyms, OnSynonymClick);
         }
 
         private void OnSynonymClick(object sender, EventArgs e)
         {
             var menuIltem = (MenuItem)sender;
-            
-            appContext.dataGridViewTextBoxEditing.Paste(menuIltem.Text); 
+            appContext.dataGridViewTextBoxEditing.Paste(menuIltem.Text);
         }
 
         void SearchBackup(object sender, EventArgs e)
@@ -107,7 +121,7 @@ namespace WindowsFormsApplication3
             filter.ColumnToFilter = appContext.dataGridView.CurrentCell.OwningColumn.Name;
             filter.TextToFilter = text;
             filter.Operation = "Contains";
-          
+
         }
 
         void OnFind(object sender, EventArgs e)

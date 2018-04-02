@@ -53,17 +53,17 @@
             this.listBox1.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 14;
-            this.listBox1.Location = new System.Drawing.Point(9, 79);
+            this.listBox1.Location = new System.Drawing.Point(9, 88);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(256, 116);
+            this.listBox1.Size = new System.Drawing.Size(256, 130);
             this.listBox1.TabIndex = 1;
             // 
             // btnChange
             // 
             this.btnChange.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnChange.Location = new System.Drawing.Point(275, 25);
+            this.btnChange.Location = new System.Drawing.Point(275, 89);
             this.btnChange.Name = "btnChange";
-            this.btnChange.Size = new System.Drawing.Size(84, 53);
+            this.btnChange.Size = new System.Drawing.Size(133, 45);
             this.btnChange.TabIndex = 2;
             this.btnChange.Text = "Change";
             this.btnChange.UseVisualStyleBackColor = true;
@@ -72,9 +72,9 @@
             // btnIgnore
             // 
             this.btnIgnore.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnIgnore.Location = new System.Drawing.Point(275, 82);
+            this.btnIgnore.Location = new System.Drawing.Point(275, 2);
             this.btnIgnore.Name = "btnIgnore";
-            this.btnIgnore.Size = new System.Drawing.Size(84, 53);
+            this.btnIgnore.Size = new System.Drawing.Size(133, 45);
             this.btnIgnore.TabIndex = 3;
             this.btnIgnore.Text = "Ignore";
             this.btnIgnore.UseVisualStyleBackColor = true;
@@ -94,7 +94,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(9, 59);
+            this.label2.Location = new System.Drawing.Point(9, 68);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(85, 14);
             this.label2.TabIndex = 5;
@@ -105,7 +105,7 @@
             this.checkedListBox1.ColumnWidth = 200;
             this.checkedListBox1.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Location = new System.Drawing.Point(13, 227);
+            this.checkedListBox1.Location = new System.Drawing.Point(13, 239);
             this.checkedListBox1.MultiColumn = true;
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.Size = new System.Drawing.Size(252, 94);
@@ -116,7 +116,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(12, 207);
+            this.label3.Location = new System.Drawing.Point(12, 221);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(61, 14);
             this.label3.TabIndex = 7;
@@ -125,9 +125,9 @@
             // btnAddToDictionary
             // 
             this.btnAddToDictionary.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAddToDictionary.Location = new System.Drawing.Point(275, 138);
+            this.btnAddToDictionary.Location = new System.Drawing.Point(275, 151);
             this.btnAddToDictionary.Name = "btnAddToDictionary";
-            this.btnAddToDictionary.Size = new System.Drawing.Size(84, 53);
+            this.btnAddToDictionary.Size = new System.Drawing.Size(133, 45);
             this.btnAddToDictionary.TabIndex = 8;
             this.btnAddToDictionary.Text = "Add To Dictionary";
             this.btnAddToDictionary.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -137,9 +137,9 @@
             // btnShowDictionary
             // 
             this.btnShowDictionary.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnShowDictionary.Location = new System.Drawing.Point(275, 197);
+            this.btnShowDictionary.Location = new System.Drawing.Point(275, 210);
             this.btnShowDictionary.Name = "btnShowDictionary";
-            this.btnShowDictionary.Size = new System.Drawing.Size(84, 53);
+            this.btnShowDictionary.Size = new System.Drawing.Size(133, 45);
             this.btnShowDictionary.TabIndex = 9;
             this.btnShowDictionary.Text = "Show Dictionary";
             this.btnShowDictionary.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -150,7 +150,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(369, 330);
+            this.ClientSize = new System.Drawing.Size(413, 343);
             this.Controls.Add(this.btnShowDictionary);
             this.Controls.Add(this.btnAddToDictionary);
             this.Controls.Add(this.label3);

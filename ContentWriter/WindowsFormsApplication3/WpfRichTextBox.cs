@@ -11,6 +11,7 @@ using System.Windows.Forms.Integration;
 using System.Windows.Media;
 using RichTextBox = System.Windows.Controls.RichTextBox;
 using ContextMenu = System.Windows.Controls.ContextMenu;
+using MenuItem = System.Windows.Controls.MenuItem;
 using System.Windows;
 using System.Threading;
 using System.Windows.Markup;
@@ -24,6 +25,9 @@ namespace WindowsFormsApplication3
         ElementHost host = new ElementHost();
         public System.Windows.Controls.SpellingError spellingError;
         public string SpellErrorText;
+
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem menuItemSynonyms;
 
         bool doNotPublishChangeText = false;
         public WpfRichTextBox(Control panel)
@@ -42,6 +46,40 @@ namespace WindowsFormsApplication3
             host.Dock = DockStyle.Fill;
             host.Child = richTextBox;
             panel.Controls.Add(host);
+            AddContextMenu();
+        }
+
+        void AddContextMenu()
+        {
+            //TODO: contect menu the spell suugstion and synonms
+            //richTextBox.ContextMenu = contextMenu;
+
+            MenuItem mm = new MenuItem();
+            mm.Header = "cut";
+            mm.Click += Mm_Click;
+            
+            //richTextBox.ContextMenu.Items.Add(mm);
+            //contextMenu.Items.Add("Copy", OnCopy);
+            //contextMenu.Items.Add("Past", OnPast);
+            //contextMenu.Items.Add("Delete", OnCut);
+
+          
+
+            //contextMenu.Items.Add("-");
+            //menuItemSynonyms = contextMenu.Items.Add("Synonyms");
+            //menuItemSynonyms.Select += MenuItemSynonyms_Select;
+        }
+       
+        private void AddMenuItem(string header, RoutedEventHandler handler)
+        {
+            MenuItem mm = new MenuItem();
+            mm.Header = header;
+            mm.Click += handler;
+        }
+
+        private void Mm_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         public string Text

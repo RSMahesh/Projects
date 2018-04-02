@@ -204,29 +204,14 @@ namespace WindowsFormsApplication3
 
         private void SetVoice()
         {
-            if (comboBox1.SelectedItem != null && comboBox1.SelectedItem.ToString().Equals("FeMale", StringComparison.OrdinalIgnoreCase))
-            {
-                speechSynthesizerObj.SelectVoiceByHints(VoiceGender.Female);
-            }
-            else
+            if (comboBox1.SelectedItem != null && comboBox1.SelectedItem.ToString().Equals("Male", StringComparison.OrdinalIgnoreCase))
             {
                 speechSynthesizerObj.SelectVoiceByHints(VoiceGender.Male);
             }
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-           // speechSynthesizerObj.Pause();
-          
-            speechSynthesizerObj = new SpeechSynthesizer();
-            speechSynthesizerObj.SelectVoiceByHints(VoiceGender.Female);
-            speechSynthesizerObj.Rate = this.trackBar1.Value;
-            speechSynthesizerObj.SpeakAsync(richTextBox.Text);
-
-            speechSynthesizerObj = new SpeechSynthesizer();
-            speechSynthesizerObj.SelectVoiceByHints(VoiceGender.Male);
-            speechSynthesizerObj.Rate = this.trackBar1.Value;
-            speechSynthesizerObj.SpeakAsync(richTextBox.Text);
+            else
+            {
+                speechSynthesizerObj.SelectVoiceByHints(VoiceGender.Female);
+            }
         }
     }
 }

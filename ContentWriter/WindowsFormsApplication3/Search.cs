@@ -138,7 +138,7 @@ namespace WindowsFormsApplication3
             dataGridView2.RowHeadersVisible = false;
             dataGridView2.ColumnHeadersVisible = false;
 
-            OLDBConnection12 connection = new OLDBConnection12(file);
+            OLDBConnection connection = new OLDBConnection(file);
             var sourceTable = connection.ExecuteDatatable("Select * from [Sheet1$]");
             var newTable = sourceTable.Clone();
             var rowIndex = int.Parse(dataGridView1.CurrentRow.Cells["Row"].Value.ToString()) - 1;
@@ -181,7 +181,7 @@ namespace WindowsFormsApplication3
         {
             var list = new List<KeyValuePair<string, string[]>>();
             list.Add(new KeyValuePair<string, string[]>("Title", new[] { "Title", "Name" }));
-            list.Add(new KeyValuePair<string, string[]>("Description", new[] { "Description" }));
+            list.Add(new KeyValuePair<string, string[]>("Description", new[] { "Description", "Long Description" }));
             list.Add(new KeyValuePair<string, string[]>("Bullet 1", new[] { "Bullet 1", "Bullet1", "Feature 1", "Feature1" }));
             list.Add(new KeyValuePair<string, string[]>("Bullet 2", new[] { "Bullet 2", "Bullet2", "Feature 1", "Feature2" }));
             list.Add(new KeyValuePair<string, string[]>("Bullet 3", new[] { "Bullet 3", "Bullet3", "Feature 1", "Feature3" }));

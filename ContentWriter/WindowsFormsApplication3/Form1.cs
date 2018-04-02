@@ -21,11 +21,10 @@ namespace WindowsFormsApplication3
     public partial class Form1 : Form
     {
         string _excelFilePath;
-        OLDBConnection12 _dataConnection;
+        OLDBConnection _dataConnection;
 
         bool IsReadOnlyFile;
         bool imageColumnLoaded = false;
-        // ContextMenu contextMenu = new ContextMenu();
         UndoRedoStack<CellData> _undoRedo;
         bool _importBackUp;
         List<RowInfo> rowsInfo = new List<RowInfo>();
@@ -40,6 +39,7 @@ namespace WindowsFormsApplication3
         PictureViewer frmPrectiureViwer = null;
         Search searchWindow;
         AppContext appContext;
+        Statistics statistics;
         string urlToSerach = "https://www.foagroup.com/catalogsearch/result/?q=";
         string[] exlcudeWordsInSearch = new[] { "FOA-", "xyz" };
         string columnNameToSearch = "Vendor SKU";
@@ -74,7 +74,8 @@ namespace WindowsFormsApplication3
             imageLoader = new ImageLoader(dataGridView1, _excelFilePath);
             findAndReplace = new FindAndReplace(appContext);
             spellCheckWindow = new SpellCheckWindow(appContext);
-       
+            statistics = new Statistics(appContext);
+
             wpfRichTextBoxPanel.Visible = false;
 
             IsReadOnlyFile = isReadOnly;
@@ -87,6 +88,7 @@ namespace WindowsFormsApplication3
             {
                 EventContainer.SubscribeEvent(EventPublisher.Events.StartDataImport.ToString(), StartBackUpImport);
             }
+
             SubScribeEvents();
 
             if (!IsReadOnlyFile)
@@ -125,7 +127,6 @@ namespace WindowsFormsApplication3
             dataGridView1.Sorted += DataGridView1_Sorted;
             dataGridView1.CellValueChanged += DataGridView1_CellValueChanged;
             dataGridView1.ColumnWidthChanged += DataGridView1_ColumnWidthChanged;
-            dataGridView1.RowHeightChanged += DataGridView1_RowHeightChanged;
             dataGridView1.Scroll += DataGridView1_Scroll;
             dataGridView1.ColumnHeaderMouseClick += DataGridView1_ColumnHeaderMouseClick;
             dataGridView1.MouseClick += DataGridView1_MouseClick;
@@ -140,12 +141,6 @@ namespace WindowsFormsApplication3
         {
             HideWpfRichTextBox();
         }
-
-        //private void DataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e)
-        //{
-        //    dataGridView1.CurrentCell = dataGridView1[e.ColumnIndex, e.RowIndex];
-        //    dataGridView1.BeginEdit(false);
-        //}
 
         private void ShowFindWindow(EventArg arg)
         {
@@ -163,19 +158,24 @@ namespace WindowsFormsApplication3
 
         private void DataGridView1_MouseClick(object sender, MouseEventArgs e)
         {
-            if (
-                dataGridView1.CurrentCell.OwningColumn.Name.Equals(columnNameToSearch, StringComparison.OrdinalIgnoreCase)
-                )
+            if (dataGridView1.CurrentCell.OwningColumn.Name.
+                Equals(columnNameToSearch, StringComparison.OrdinalIgnoreCase))
             {
-                string tt = urlToSerach;
-                var vv = dataGridView1.CurrentCell.Value.ToString();
+                OpenVendorWebSiteAndSerachItem(dataGridView1.CurrentCell.Value.ToString());
+            }
+        }
 
-                foreach (var word in exlcudeWordsInSearch)
+        private void OpenVendorWebSiteAndSerachItem(string valueToSearch)
+        {
+            if (dataGridView1.CurrentCell.OwningColumn.Name.
+                           Equals(columnNameToSearch, StringComparison.OrdinalIgnoreCase))
+            {
+                foreach (var excludeWord in exlcudeWordsInSearch)
                 {
-                    vv = vv.Replace(word, "");
+                    valueToSearch = valueToSearch.Replace(excludeWord, "");
                 }
-                tt += vv;
-                Process.Start(tt);
+
+                Process.Start(urlToSerach + valueToSearch);
             }
         }
 
@@ -183,32 +183,30 @@ namespace WindowsFormsApplication3
         {
             if (e.Button == MouseButtons.Right)
             {
-                if (
-                //dataGridView1.Columns[e.ColumnIndex] is DataGridViewImageColumn ||
-                dataGridView1.Columns[e.ColumnIndex].Name == "ID")
-                {
-                    return;
-                }
-
-                if (dataGridView1.Columns[e.ColumnIndex].Frozen)
-                {
-                    dataGridView1.Columns[e.ColumnIndex].Frozen = false;
-                    dataGridView1.Columns[e.ColumnIndex].DisplayIndex = (int)dataGridView1.Columns[e.ColumnIndex].Tag;
-                    //   dataGridView1.Columns[e.ColumnIndex].HeaderCell.Style.BackColor = Color.Black;
-                }
-                else
-                {
-
-                    dataGridView1.Columns[e.ColumnIndex].Tag = dataGridView1.Columns[e.ColumnIndex].DisplayIndex;
-
-                    dataGridView1.Columns[e.ColumnIndex].DisplayIndex = GetNextForzenIndex();
-                    //       dataGridView1.Columns[e.ColumnIndex].HeaderCell.Style.BackColor = Color.AliceBlue;
-                    dataGridView1.Columns[e.ColumnIndex].Frozen = true;
-
-                }
-
-                //dataGridView1.Columns[e.ColumnIndex].Frozen = !dataGridView1.Columns[e.ColumnIndex].Frozen;
+                ToggleColumnForzing(e.ColumnIndex);
             }
+        }
+
+
+        private void ToggleColumnForzing(int columnIndex)
+        {
+            if (dataGridView1.Columns[columnIndex].Name == "ID")
+            {
+                return;
+            }
+
+            if (dataGridView1.Columns[columnIndex].Frozen)
+            {
+                dataGridView1.Columns[columnIndex].Frozen = false;
+                dataGridView1.Columns[columnIndex].DisplayIndex = (int)dataGridView1.Columns[columnIndex].Tag;
+            }
+            else
+            {
+                dataGridView1.Columns[columnIndex].Tag = dataGridView1.Columns[columnIndex].DisplayIndex;
+                dataGridView1.Columns[columnIndex].DisplayIndex = GetNextForzenIndex();
+                dataGridView1.Columns[columnIndex].Frozen = true;
+            }
+
         }
 
         private int GetNextForzenIndex()
@@ -248,11 +246,7 @@ namespace WindowsFormsApplication3
             // ShowWpfRichTextBox();
         }
 
-        private void DataGridView1_RowHeightChanged(object sender, DataGridViewRowEventArgs e)
-        {
-            //ShowWpfRichTextBox();
-        }
-
+      
 
         private void SubScribeEvents()
         {
@@ -267,7 +261,7 @@ namespace WindowsFormsApplication3
                 EventContainer.SubscribeEvent(EventPublisher.Events.ClearFilter.ToString(), ClearFilter);
                 EventContainer.SubscribeEvent(EventPublisher.Events.Undo.ToString(), UnDo);
                 EventContainer.SubscribeEvent(EventPublisher.Events.ReDo.ToString(), ReDo);
-                EventContainer.SubscribeEvent(EventPublisher.Events.Statistics.ToString(), ShowStatistics);
+                EventContainer.SubscribeEvent(EventPublisher.Events.Statistics.ToString(), statistics.ShowStatistics);
                 EventContainer.SubscribeEvent(EventPublisher.Events.Formula.ToString(), Formula);
                 EventContainer.SubscribeEvent(EventPublisher.Events.SetenceCountInDescription.ToString(), SetenceCountInDescription);
                 EventContainer.SubscribeEvent(EventPublisher.Events.SetenceCountInBullet.ToString(), SetenceCountInBullets);
@@ -287,8 +281,6 @@ namespace WindowsFormsApplication3
 
         }
 
-
-        
         void ToggleAutoSpellCheckMode(EventArg arg)
         {
             autoSpellCheckMode = !autoSpellCheckMode;
@@ -299,9 +291,6 @@ namespace WindowsFormsApplication3
             spellCheckWindow.Check(arg);
             this.Cursor = Cursors.Default;
         }
-
-
-
         void LoadTheme(EventArg arg)
         {
             _theme = (Theme)arg.Arg;
@@ -361,7 +350,7 @@ namespace WindowsFormsApplication3
             dataGridView1.RowTemplate.Height = Constants.ImageIconSize;
             dataGridView1.RowTemplate.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
 
-            _dataConnection = new OLDBConnection12(_excelFilePath);
+            _dataConnection = new OLDBConnection(_excelFilePath);
 
             var dt = _dataConnection.ExecuteDatatable("Select * from [Sheet1$]").DefaultView;
 
@@ -508,32 +497,6 @@ namespace WindowsFormsApplication3
             dataGridView1.Rows[row].Height = dataGridView1.Rows[row].Height > GetRowHeightBasedOnLength(maxLength) ? dataGridView1.Rows[row].Height : GetRowHeightBasedOnLength(maxLength);
         }
 
-
-
-        //private void SpellCheck(EventArg arg)
-        //{
-        //    for (int row = 0; row < dataGridView1.Rows.Count; row++)
-        //    {
-        //        foreach (DataGridViewCell cell in dataGridView1.Rows[row].Cells)
-        //        {
-        //            if (cell.Value != null
-        //                && !(dataGridView1.Columns[cell.ColumnIndex] is DataGridViewImageColumn)
-        //                && dataGridView1.Columns[cell.ColumnIndex].Visible && cell.ColumnIndex ==5)
-        //            {
-
-        //                dataGridView1.CurrentCell = cell;
-        //                dataGridView1.BeginEdit(false);
-        //               if( wpfRichText.IsSpellErrors())
-        //                {
-        //                    return;
-        //                }
-
-        //            }
-        //        }
-        //    }
-        //}
-
-
         private int GetRowHeightBasedOnLength(int maxColumnTextLength)
         {
             return (int)Math.Abs(maxColumnTextLength / 4) + 10;
@@ -549,7 +512,6 @@ namespace WindowsFormsApplication3
                 IncreaseRowHeight(e.RowIndex, e.ColumnIndex);
                 dataGridView1.Columns[e.ColumnIndex].Width = dataGridView1.Columns[e.ColumnIndex].Width + 1;
                 dataGridView1[e.ColumnIndex, e.RowIndex].Selected = true;
-               // spellCheckWindow.Visible = false;
             }
         }
 
@@ -615,8 +577,6 @@ namespace WindowsFormsApplication3
                     var searchText = editingTextBox.Text.Substring(start, (end - start) + 1);
 
                     searchText = searchText.Replace(Environment.NewLine, string.Empty);
-
-
 
                     var colIndex = dataGridView1.Columns[dataGridView1.CurrentCell.ColumnIndex].DisplayIndex - 1;
                     var cell = dataGridView1[colIndex, dataGridView1.CurrentCell.RowIndex];
@@ -1180,6 +1140,8 @@ namespace WindowsFormsApplication3
             this.Dispose();
 
             EventPublisher.EventContainer.UnSubscribeAll(this);
+            EventPublisher.EventContainer.UnSubscribeAll(findAndReplace);
+
             SingleInstance.CloseFileMutex(_excelFilePath);
         }
 
@@ -1412,60 +1374,7 @@ namespace WindowsFormsApplication3
             return c;
         }
 
-        private void ShowStatistics(EventArg arg)
-        {
-            Dictionary<int, int> statics = new Dictionary<int, int>();
-            var highLighted = 0;
-            foreach (DataGridViewRow row in dataGridView1.Rows)
-            {
-
-                if (row.DefaultCellStyle.BackColor == _theme.HighlightedRowColor)
-                {
-                    highLighted++;
-                }
-
-                foreach (DataGridViewCell cell in row.Cells)
-                {
-                    if (!(dataGridView1.Columns[cell.ColumnIndex] is DataGridViewImageColumn))
-                    {
-                        if (cell.Value != null && !string.IsNullOrEmpty(cell.Value.ToString().Trim()))
-                        {
-                            if (statics.ContainsKey(cell.ColumnIndex))
-                            {
-                                statics[cell.ColumnIndex]++;
-                            }
-                            else
-                            {
-                                statics[cell.ColumnIndex] = 1;
-                            }
-
-                        }
-                    }
-                }
-            }
-
-            var tt = "";
-            tt += Environment.NewLine + "HighLighted : " + highLighted.ToString();
-
-            foreach (DataGridViewColumn col in dataGridView1.Columns)
-            {
-                if (!(col is DataGridViewImageColumn))
-                {
-                    if (statics.ContainsKey(col.Index))
-                    {
-
-                        tt += Environment.NewLine + col.Name + ": " + statics[col.Index];
-                    }
-                    else
-                    {
-                        tt += Environment.NewLine + col.Name + " : 0";
-                    }
-                }
-
-            }
-
-            MessageBox.Show(tt);
-        }
+      
 
     }
 }

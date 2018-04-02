@@ -32,7 +32,7 @@ namespace WindowsFormsApplication3
                 {
                     try
                     {
-                        OLDBConnection12 connection = new OLDBConnection12(file);
+                        OLDBConnection connection = new OLDBConnection(file);
                         var datatable = connection.ExecuteDatatable("Select * from [Sheet1$]");
                         cachedDataTables[file] = datatable;
                     }

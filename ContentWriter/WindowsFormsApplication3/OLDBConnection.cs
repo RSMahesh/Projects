@@ -9,7 +9,7 @@ using WindowsFormsApplication3;
 
 namespace StatusMaker.Data
 {
-    public class OLDBConnection12
+    public class OLDBConnection
     {
         string _filePath;
         OleDbDataAdapter _adap;
@@ -21,7 +21,7 @@ namespace StatusMaker.Data
         });
 
 
-        public OLDBConnection12(string filePath)
+        public OLDBConnection(string filePath)
         {
             _filePath = filePath;
         }

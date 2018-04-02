@@ -118,6 +118,7 @@
     <Compile Include="SpellCheckWindow.Designer.cs">
       <DependentUpon>SpellCheckWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Statistics.cs" />
     <Compile Include="Synonym.cs" />
     <Compile Include="Theme.cs" />
     <Compile Include="Excel.cs" />

@@ -30,7 +30,7 @@ namespace WindowsFormsApplication3
         private string MakeFirstCharacterCaptial(string replaceOutPut)
         {
             //TODO:This formula will fail if text got mutiple %p%. Need to get fixed.
-            const string remove = "%fc%";
+            const string remove = "%tc%";
             var indx = replaceOutPut.IndexOf(remove, StringComparison.OrdinalIgnoreCase);
 
             var arr = replaceOutPut.Split(new string[] { remove }, StringSplitOptions.None);
@@ -47,7 +47,7 @@ namespace WindowsFormsApplication3
         private string MakePragraphCase(string replaceOutPut)
         {
             //TODO:This formula will fail if text got mutiple %pc%. Need to get fixed.
-            const string remove = "%pc%";
+            const string remove = "%sc%";
             var indx = replaceOutPut.IndexOf(remove, StringComparison.OrdinalIgnoreCase);
 
             var arr = replaceOutPut.Split(new string[] { remove }, StringSplitOptions.None);
@@ -109,55 +109,53 @@ namespace WindowsFormsApplication3
 
                     if (arr[i][j] != ' ')
                     {
-                        arr[i] = ' ' + arr[i][j].ToString().ToUpper() + arr[i].Substring(j+1);
+                        arr[i] = ' ' + arr[i][j].ToString().ToUpper() + arr[i].Substring(j + 1);
                         break;
                     }
             }
 
             return string.Join(".", arr).Trim();
-    }
-
-    private string RemoveIfRequired(string replaceOutPut)
-    {
-        const string remove = "%-%";
-        var indx = replaceOutPut.IndexOf(remove, StringComparison.OrdinalIgnoreCase);
-
-        if (indx > 0)
-        {
-            var arr = replaceOutPut.Split(new string[] { remove }, StringSplitOptions.None);
-            if (arr.Length > 1)
-            {
-                replaceOutPut = Regex.Replace(arr[0], arr[1], string.Empty, RegexOptions.IgnoreCase);
-            }
         }
 
-        return replaceOutPut;
-    }
-    private string ReplacePlaceHolders(DataGridViewCell cell)
-    {
-        var regex = new Regex("{.*?}");
-        var matches = regex.Matches(currentFormula);
-        //  var formula = FormulaWindow.Formula;
-        string formulaOutPut = currentFormula;
-
-        foreach (Match match in matches)
+        private string RemoveIfRequired(string replaceOutPut)
         {
-            var replaceValue = string.Empty;
-            var columnName = match.Value.Replace("{", "").Replace("}", "");
-            if (columnName.Equals(Constants.CurrentCell, StringComparison.OrdinalIgnoreCase))
+            const string remove = "%-%";
+            var indx = replaceOutPut.IndexOf(remove, StringComparison.OrdinalIgnoreCase);
+
+            if (indx > 0)
             {
-                replaceValue = cell.Value.ToString();
+                var arr = replaceOutPut.Split(new string[] { remove }, StringSplitOptions.None);
+                if (arr.Length > 1)
+                {
+                    replaceOutPut = Regex.Replace(arr[0], arr[1], string.Empty, RegexOptions.IgnoreCase);
+                }
             }
-            else
-            {
-                replaceValue = dataGridView.Rows[cell.RowIndex].Cells[columnName].Value.ToString();
-            }
-            formulaOutPut = formulaOutPut.Replace("{" + columnName + "}", replaceValue);
+
+            return replaceOutPut;
         }
+        private string ReplacePlaceHolders(DataGridViewCell cell)
+        {
+            var regex = new Regex("{.*?}");
+            var matches = regex.Matches(currentFormula);
+            //  var formula = FormulaWindow.Formula;
+            string formulaOutPut = currentFormula;
 
-        return formulaOutPut;
+            foreach (Match match in matches)
+            {
+                var replaceValue = string.Empty;
+                var columnName = match.Value.Replace("{", "").Replace("}", "");
+                if (columnName.Equals(Constants.CurrentCell, StringComparison.OrdinalIgnoreCase))
+                {
+                    replaceValue = cell.Value.ToString();
+                }
+                else
+                {
+                    replaceValue = dataGridView.Rows[cell.RowIndex].Cells[columnName].Value.ToString();
+                }
+                formulaOutPut = formulaOutPut.Replace("{" + columnName + "}", replaceValue);
+            }
+
+            return formulaOutPut;
+        }
     }
-
-
-}
 }

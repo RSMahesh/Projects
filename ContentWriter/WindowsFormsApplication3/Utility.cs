@@ -80,8 +80,8 @@ namespace WindowsFormsApplication3
                     return;
                 }
 
-                var xmlDataTable = OLDBConnection12.ReadFromXml(files.FirstOrDefault());
-                OLDBConnection12 connection = new OLDBConnection12(excelPath);
+                var xmlDataTable = OLDBConnection.ReadFromXml(files.FirstOrDefault());
+                OLDBConnection connection = new OLDBConnection(excelPath);
                 var excelDataTable = connection.ExecuteDatatable("Select * from [Sheet1$]", false);
 
                 DataDiff diff = new DataDiff(files.FirstOrDefault());
