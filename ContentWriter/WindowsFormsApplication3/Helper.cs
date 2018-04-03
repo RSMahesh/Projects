@@ -17,9 +17,6 @@ namespace ImageThumbnailDataGridView
                                         int height,
                                         bool onlyResizeIfWider)
         {
-            //using (Image image = Image.FromFile(file))
-            {
-                // Prevent using images internal thumbnail
                 image.RotateFlip(RotateFlipType.Rotate180FlipNone);
                 image.RotateFlip(RotateFlipType.Rotate180FlipNone);
 
@@ -42,7 +39,6 @@ namespace ImageThumbnailDataGridView
                 Image NewImage = image.GetThumbnailImage(width, newHeight, null, IntPtr.Zero);
 
                 return NewImage;
-            }
         }
     }
 }

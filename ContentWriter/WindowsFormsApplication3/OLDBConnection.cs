@@ -145,13 +145,6 @@ namespace StatusMaker.Data
             var startFrom = 100;
             var fileCount = Directory.GetFiles(backUpDir, "*.xml").Length;
             startFrom += fileCount;
-
-            //var fileName = "1";
-            //for (var i =0; i< fileCount; i++)
-            //{
-            //    fileName += "1";
-            //}
-
             return startFrom + ".xml";
         }
 

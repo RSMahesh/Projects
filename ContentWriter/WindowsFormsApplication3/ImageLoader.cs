@@ -15,7 +15,6 @@ namespace WindowsFormsApplication3
         List<DataGridViewColumn> imgcolumns = new List<DataGridViewColumn>();
         DataGridView dataGridView;
         string excelFilePath;
-
         public ImageLoader(DataGridView dataGridView) : this(dataGridView, string.Empty)
         {
         }
@@ -149,20 +148,10 @@ namespace WindowsFormsApplication3
             }
         }
 
-        private void HandleImageNotFound_404()
-        {
-
-        }
-
         private void GetImageColumns()
         {
             for (var colIndex = 0; colIndex < dataGridView.Columns.Count; colIndex++)
             {
-                //if (dataGridView.Columns[colIndex].Name.IndexOf("Image", 0, StringComparison.OrdinalIgnoreCase) == -1)
-                //{
-                //    continue;
-                //}
-
                 for (var rowInd = 0; rowInd < dataGridView.Rows.Count; rowInd++)
                 {
                     var obj = dataGridView.Rows[rowInd].Cells[colIndex].Value;

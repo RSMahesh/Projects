@@ -11,7 +11,6 @@ namespace WindowsFormsApplication3
         private static string _logFilePath;
         static  Logger()
         {
-          
             _logFilePath = Path.Combine(Utility.FreeLanceAppDataFolder, "error.log");
           
             if(!Directory.Exists(Path.GetDirectoryName(_logFilePath)))

@@ -378,8 +378,7 @@ namespace WindowsFormsApplication3
 
         private void printToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FormSys frm = new FormSys();
-            frm.Show();
+            
         }
 
         private void spellCheckToolStripMenuItem_Click(object sender, EventArgs e)

@@ -80,8 +80,8 @@ namespace WindowsFormsApplication3
         {
             switch (input)
             {
-                case null: throw new ArgumentNullException(nameof(input));
-                case "": throw new ArgumentException($"{nameof(input)} cannot be empty", nameof(input));
+                case null: throw new ArgumentNullException("input can be null");
+                case "": throw new ArgumentException("input can be null");
                 default:
                     var arr = input.Split(' ');
 

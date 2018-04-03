@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppContext.cs" />
+    <Compile Include="BackUp.cs" />
     <Compile Include="CellData.cs" />
     <Compile Include="ColumnCustomization.cs">
       <SubType>Form</SubType>
@@ -90,10 +91,10 @@
     <Compile Include="Fom1.ObseleteCode.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form3.cs">
+    <Compile Include="NotInUse\Form3.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form3.Designer.cs">
+    <Compile Include="NotInUse\Form3.Designer.cs">
       <DependentUpon>Form3.cs</DependentUpon>
     </Compile>
     <Compile Include="FormulaRunner.cs" />
@@ -119,7 +120,8 @@
       <DependentUpon>SpellCheckWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Statistics.cs" />
-    <Compile Include="Synonym.cs" />
+    <Compile Include="Styler.cs" />
+    <Compile Include="SynonymProvider.cs" />
     <Compile Include="Theme.cs" />
     <Compile Include="Excel.cs" />
     <Compile Include="Filter.cs">
@@ -140,17 +142,11 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form2.cs">
+    <Compile Include="NotInUse\Form2.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form2.Designer.cs">
+    <Compile Include="NotInUse\Form2.Designer.cs">
       <DependentUpon>Form2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormSys.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormSys.Designer.cs">
-      <DependentUpon>FormSys.cs</DependentUpon>
     </Compile>
     <Compile Include="FormulaList.cs">
       <SubType>Form</SubType>
@@ -159,10 +155,10 @@
       <DependentUpon>FormulaList.cs</DependentUpon>
     </Compile>
     <Compile Include="Helper.cs" />
-    <Compile Include="LayOutSetting.cs">
+    <Compile Include="NotInUse\LayOutSetting.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LayOutSetting.Designer.cs">
+    <Compile Include="NotInUse\LayOutSetting.Designer.cs">
       <DependentUpon>LayOutSetting.cs</DependentUpon>
     </Compile>
     <Compile Include="Logger.cs" />
@@ -182,23 +178,14 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SingleInstance.cs" />
-    <Compile Include="ThemeScreen.cs">
+    <Compile Include="NotInUse\ThemeScreen.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ThemeScreen.Designer.cs">
+    <Compile Include="NotInUse\ThemeScreen.Designer.cs">
       <DependentUpon>ThemeScreen.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TracBarForToolStrip.cs">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="UndoRedo.cs" />
     <Compile Include="Utility.cs" />
-    <Compile Include="WordEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WordEditor.Designer.cs">
-      <DependentUpon>WordEditor.cs</DependentUpon>
-    </Compile>
     <Compile Include="WpfRichTextBox.cs" />
     <EmbeddedResource Include="ColumnCustomization.resx">
       <DependentUpon>ColumnCustomization.cs</DependentUpon>
@@ -218,19 +205,16 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form2.resx">
+    <EmbeddedResource Include="NotInUse\Form2.resx">
       <DependentUpon>Form2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form3.resx">
+    <EmbeddedResource Include="NotInUse\Form3.resx">
       <DependentUpon>Form3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormSys.resx">
-      <DependentUpon>FormSys.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormulaList.resx">
       <DependentUpon>FormulaList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LayOutSetting.resx">
+    <EmbeddedResource Include="NotInUse\LayOutSetting.resx">
       <DependentUpon>LayOutSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MDIParent1.resx">
@@ -258,11 +242,8 @@
     <EmbeddedResource Include="SpellCheckWindow.resx">
       <DependentUpon>SpellCheckWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ThemeScreen.resx">
+    <EmbeddedResource Include="NotInUse\ThemeScreen.resx">
       <DependentUpon>ThemeScreen.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="WordEditor.resx">
-      <DependentUpon>WordEditor.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
