@@ -65,7 +65,7 @@ namespace WindowsFormsApplication3
             MessageBox.Show(message);
         }
 
-        public  void SetenceCountInBullets(EventArg arg)
+        public void SetenceCountInBullets(EventArg arg)
         {
             int threshold = 0;
             var columsToCheck = GetColumsToCheckForSentenceCount();
@@ -74,7 +74,12 @@ namespace WindowsFormsApplication3
 
             foreach (DataGridViewRow row in appContext.dataGridView.Rows)
             {
-               styler.UnHighlightRow(int.Parse(row.Cells["ID"].Value.ToString()));
+                if (row.Cells["ID"].Value is DBNull)
+                {
+                    continue;
+                }
+
+                styler.UnHighlightRow(int.Parse(row.Cells["ID"].Value.ToString()));
 
                 foreach (var columnName in columsToCheck)
                 {
@@ -110,11 +115,16 @@ namespace WindowsFormsApplication3
             MessageBox.Show(msg);
         }
 
-        public  void SetenceCountInDescription(EventArg arg)
+        public void SetenceCountInDescription(EventArg arg)
         {
             var rowsWithLessSentenceCount = 0;
             foreach (DataGridViewRow row in appContext.dataGridView.Rows)
             {
+                if (row.Cells["ID"].Value is DBNull)
+                {
+                    continue;
+                }
+
                 styler.UnHighlightRow(int.Parse(row.Cells["ID"].Value.ToString()));
 
 
@@ -130,7 +140,46 @@ namespace WindowsFormsApplication3
 
             MessageBox.Show("Description with less then 3 sentence are :" + rowsWithLessSentenceCount);
         }
-        
+
+        public void WordsFrequency(EventArg arg)
+        {
+            var colIndex = appContext.dataGridView.CurrentCell.ColumnIndex;
+            appContext.dataGridView.Columns[Constants.WordFrequencyColumnName].Visible = true;
+            appContext.dataGridView.Columns[Constants.WordFrequencyColumnName].DisplayIndex = colIndex + 1;
+            appContext.dataGridView.Columns[Constants.WordFrequencyColumnName].Width = 200;
+
+            var dir = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+            var exludeWordsFrequencyCheckFile = Path.Combine(dir, "ExludeWordsFrequencyCheck.txt");
+
+            IEnumerable<string> exludeWords = new List<string>();
+
+            if (File.Exists(exludeWordsFrequencyCheckFile))
+            {
+                exludeWords = File.ReadAllText(exludeWordsFrequencyCheckFile).Replace(Environment.NewLine, "").Split(',');
+            }
+
+            foreach (DataGridViewRow row in appContext.dataGridView.Rows)
+            {
+                row.Cells[Constants.WordFrequencyColumnName].Value = Utility.CountWordsInString(row.Cells[colIndex].Value.ToString(), exludeWords);
+            }
+        }
+
+        public void CharacterCount(EventArg arg)
+        {
+            var colIndex = appContext.dataGridView.CurrentCell.ColumnIndex;
+            appContext.dataGridView.Columns[Constants.WordFrequencyColumnName].Visible = true;
+            appContext.dataGridView.Columns[Constants.WordFrequencyColumnName].DisplayIndex = colIndex + 1;
+            appContext.dataGridView.Columns[Constants.WordFrequencyColumnName].Width = 200;
+
+            appContext.dataGridView.Columns[Constants.WordFrequencyColumnName].HeaderText = "Character Count";
+
+
+            foreach (DataGridViewRow row in appContext.dataGridView.Rows)
+            {
+                row.Cells[Constants.WordFrequencyColumnName].Value = row.Cells[colIndex].Value.ToString().Length;
+            }
+        }
+
         private IEnumerable<string> GetColumsToCheckForSentenceCount()
         {
             List<string> lst = new List<string>();
@@ -151,6 +200,6 @@ namespace WindowsFormsApplication3
             var c = text.Count(f => f == '.');
             return c;
         }
-   
+
     }
 }

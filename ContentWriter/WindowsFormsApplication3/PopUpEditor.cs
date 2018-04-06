@@ -30,7 +30,6 @@ namespace WindowsFormsApplication3
 
         private void PopUpEditor_Load(object sender, EventArgs e)
         {
-
             this.trackBar1.Maximum = 10;
             this.trackBar1.Minimum = -10;
          
@@ -75,7 +74,6 @@ namespace WindowsFormsApplication3
 
         private void ShowCharLen(int len)
         {
-
            // this.toolStripStatusLabel1.Text = "Characters : " + len.ToString();
         }
 
@@ -140,7 +138,6 @@ namespace WindowsFormsApplication3
             }
         }
       
-
         private void PopUpEditor_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.speechSynthesizerObj.Pause();

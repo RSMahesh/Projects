@@ -23,11 +23,11 @@ namespace WindowsFormsApplication3
         }
         public void ShowMenu(Point p)
         {
-            Disable();
+            DisableMenuItemsIfRequired();
             contextMenu.Show(appContext.dataGridView, p);
         }
 
-        private void Disable()
+        private void DisableMenuItemsIfRequired()
         {
             var enabled = !string.IsNullOrEmpty(appContext.dataGridViewTextBoxEditing.SelectedText);
             contextMenu.MenuItems["Cut"].Enabled =

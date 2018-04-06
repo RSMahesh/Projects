@@ -24,5 +24,7 @@ namespace WindowsFormsApplication3
 
         public SynonymProvider synonymProvider;
 
+        public bool IsReadOnlyFile;
+
     }
 }

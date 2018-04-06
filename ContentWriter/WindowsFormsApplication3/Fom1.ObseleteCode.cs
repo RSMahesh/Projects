@@ -25,13 +25,13 @@ namespace WindowsFormsApplication3
             }
 
             var json = jj.Serialize(cols);
-            var jsonFile = Path.Combine(Path.GetDirectoryName(_excelFilePath), Path.GetFileNameWithoutExtension(_excelFilePath) + ".json");
+            var jsonFile = Path.Combine(Path.GetDirectoryName(appContext.ExcelFilePath), Path.GetFileNameWithoutExtension(appContext.ExcelFilePath) + ".json");
             File.AppendAllText(jsonFile, json);
 
         }
         private void LoadColumnOrder()
         {
-            var jsonFile = Path.Combine(Path.GetDirectoryName(_excelFilePath), Path.GetFileNameWithoutExtension(_excelFilePath) + ".json");
+            var jsonFile = Path.Combine(Path.GetDirectoryName(appContext.ExcelFilePath), Path.GetFileNameWithoutExtension(appContext.ExcelFilePath) + ".json");
             if (File.Exists(jsonFile))
             {
                 JavaScriptSerializer jj = new JavaScriptSerializer();

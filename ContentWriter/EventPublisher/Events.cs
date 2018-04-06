@@ -15,7 +15,6 @@ namespace EventPublisher
         WordDocClosed,
         WordDocSaved,
         OpenWord,
-        DescriptionCount,
         ShowFilterWindow,
         FilterDone,
         DataImportSelectionCompleted,
@@ -39,6 +38,9 @@ namespace EventPublisher
         ClearFilter,
         SpellCheck,
         CustomDictionaryUpdate,
-        ToggleAutoSpellCheckMode
+        ToggleAutoSpellCheckMode,
+        CheckColumnsCausingSaveError,
+        VendorWebSiteSearchSetting,
+        ShowCharacterCountForColumn
     }
 }

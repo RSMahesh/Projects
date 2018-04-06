@@ -63,18 +63,20 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppContext.cs" />
-    <Compile Include="BackUp.cs" />
-    <Compile Include="CellData.cs" />
+    <Compile Include="Code\AppContext.cs" />
+    <Compile Include="Code\BackUp.cs" />
+    <Compile Include="Code\CellData.cs" />
+    <Compile Include="Code\ContextMenueCurrentCell - Copy.cs" />
+    <Compile Include="Code\UnSavedData.cs" />
     <Compile Include="ColumnCustomization.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ColumnCustomization.Designer.cs">
       <DependentUpon>ColumnCustomization.cs</DependentUpon>
     </Compile>
-    <Compile Include="Constants.cs" />
-    <Compile Include="ContextMenueCurrentCell.cs" />
-    <Compile Include="ContextMenueMultiSelectCell.cs" />
+    <Compile Include="Code\Constants.cs" />
+    <Compile Include="Code\ContextMenueCurrentCell.cs" />
+    <Compile Include="Code\ContextMenueMultiSelectCell.cs" />
     <Compile Include="CustomDictionary.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -87,9 +89,15 @@
     <Compile Include="DataDiff.Designer.cs">
       <DependentUpon>DataDiff.cs</DependentUpon>
     </Compile>
-    <Compile Include="FindAndReplace.cs" />
+    <Compile Include="Code\FindAndReplace.cs" />
     <Compile Include="Fom1.ObseleteCode.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GridDataDisplayer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GridDataDisplayer.Designer.cs">
+      <DependentUpon>GridDataDisplayer.cs</DependentUpon>
     </Compile>
     <Compile Include="NotInUse\Form3.cs">
       <SubType>Form</SubType>
@@ -97,33 +105,33 @@
     <Compile Include="NotInUse\Form3.Designer.cs">
       <DependentUpon>Form3.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormulaRunner.cs" />
-    <Compile Include="ImageLoader.cs" />
+    <Compile Include="Code\FormulaRunner.cs" />
+    <Compile Include="Code\ImageLoader.cs" />
     <Compile Include="PopUpEditor.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="PopUpEditor.Designer.cs">
       <DependentUpon>PopUpEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="RowInfo.cs" />
+    <Compile Include="Code\RowInfo.cs" />
     <Compile Include="Search.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Search.Designer.cs">
       <DependentUpon>Search.cs</DependentUpon>
     </Compile>
-    <Compile Include="SearchService.cs" />
+    <Compile Include="Code\SearchService.cs" />
     <Compile Include="SpellCheckWindow.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="SpellCheckWindow.Designer.cs">
       <DependentUpon>SpellCheckWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Statistics.cs" />
-    <Compile Include="Styler.cs" />
-    <Compile Include="SynonymProvider.cs" />
-    <Compile Include="Theme.cs" />
-    <Compile Include="Excel.cs" />
+    <Compile Include="Code\Statistics.cs" />
+    <Compile Include="Code\Styler.cs" />
+    <Compile Include="Code\SynonymProvider.cs" />
+    <Compile Include="Code\Theme.cs" />
+    <Compile Include="Code\Excel.cs" />
     <Compile Include="Filter.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -154,21 +162,21 @@
     <Compile Include="FormulaList.Designer.cs">
       <DependentUpon>FormulaList.cs</DependentUpon>
     </Compile>
-    <Compile Include="Helper.cs" />
+    <Compile Include="Code\Helper.cs" />
     <Compile Include="NotInUse\LayOutSetting.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="NotInUse\LayOutSetting.Designer.cs">
       <DependentUpon>LayOutSetting.cs</DependentUpon>
     </Compile>
-    <Compile Include="Logger.cs" />
+    <Compile Include="Code\Logger.cs" />
     <Compile Include="MDIParent1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MDIParent1.Designer.cs">
       <DependentUpon>MDIParent1.cs</DependentUpon>
     </Compile>
-    <Compile Include="OLDBConnection.cs" />
+    <Compile Include="Code\OLDBConnection.cs" />
     <Compile Include="PictureViewer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -177,16 +185,22 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SingleInstance.cs" />
+    <Compile Include="Code\SingleInstance.cs" />
     <Compile Include="NotInUse\ThemeScreen.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="NotInUse\ThemeScreen.Designer.cs">
       <DependentUpon>ThemeScreen.cs</DependentUpon>
     </Compile>
-    <Compile Include="UndoRedo.cs" />
-    <Compile Include="Utility.cs" />
-    <Compile Include="WpfRichTextBox.cs" />
+    <Compile Include="Code\UndoRedo.cs" />
+    <Compile Include="Code\Utility.cs" />
+    <Compile Include="Code\WpfRichTextBox.cs" />
+    <Compile Include="VenderWebSiteSerachSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VenderWebSiteSerachSetting.Designer.cs">
+      <DependentUpon>VenderWebSiteSerachSetting.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="ColumnCustomization.resx">
       <DependentUpon>ColumnCustomization.cs</DependentUpon>
     </EmbeddedResource>
@@ -204,6 +218,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GridDataDisplayer.resx">
+      <DependentUpon>GridDataDisplayer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NotInUse\Form2.resx">
       <DependentUpon>Form2.cs</DependentUpon>
@@ -244,6 +261,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="NotInUse\ThemeScreen.resx">
       <DependentUpon>ThemeScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VenderWebSiteSerachSetting.resx">
+      <DependentUpon>VenderWebSiteSerachSetting.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

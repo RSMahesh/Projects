@@ -235,14 +235,7 @@ namespace WindowsFormsApplication3
         (EventPublisher.Events.OpenWord.ToString(), new EventArg(Guid.NewGuid(), null));
 
         }
-
-        private void descriptionCountToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            EventContainer.PublishEvent
-       (EventPublisher.Events.DescriptionCount.ToString(), new EventArg(Guid.NewGuid(), null));
-
-        }
-
+   
         private void fullBackUpToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var backUpFolder = Path.GetDirectoryName(lastFileName) + "\\" +
@@ -378,7 +371,8 @@ namespace WindowsFormsApplication3
 
         private void printToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
+            EventContainer.PublishEvent(EventPublisher.Events.CheckColumnsCausingSaveError.ToString(), new EventArg(Guid.NewGuid(), null));
+
         }
 
         private void spellCheckToolStripMenuItem_Click(object sender, EventArgs e)
@@ -399,6 +393,17 @@ namespace WindowsFormsApplication3
 
             EventContainer.PublishEvent(EventPublisher.Events.ToggleAutoSpellCheckMode.ToString(), new EventArg(Guid.NewGuid(), null));
 
+        }
+
+        private void vendorWebSiteSerachProductToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EventContainer.PublishEvent(EventPublisher.Events.VendorWebSiteSearchSetting.ToString(), new EventArg(Guid.NewGuid(), null));
+        }
+
+        private void characterCountToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EventContainer.PublishEvent
+    (EventPublisher.Events.ShowCharacterCountForColumn.ToString(), new EventArg(Guid.NewGuid(), null));
         }
     }
 }
