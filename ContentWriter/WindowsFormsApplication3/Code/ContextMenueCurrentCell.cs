@@ -11,14 +11,12 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApplication3
 {
-    class ContextMenueCurrentCell
+    class ContextMenueCurrentCell : BaseContextMenue
     {
         ContextMenu contextMenu = new ContextMenu();
-        AppContext appContext;
         MenuItem menuItemSynonyms;
-        public ContextMenueCurrentCell(AppContext appContext)
+        public ContextMenueCurrentCell(AppContext appContext): base(appContext)
         {
-            this.appContext = appContext;
             AddContextMenu();
         }
         public void ShowMenu(Point p)
@@ -59,12 +57,13 @@ namespace WindowsFormsApplication3
             contextMenu.MenuItems.Add("Find", OnFind).Name = "Find";
             contextMenu.MenuItems.Add("Filter", OnFilter).Name = "Filter";
 
-            MenuItem addDevice = new MenuItem("Search");
-            addDevice.Name = "Search";
-            addDevice.MenuItems.Add(new MenuItem("Backup", SearchBackup));
-            addDevice.MenuItems.Add(new MenuItem("Internet", SearchInternet));
+            MenuItem searchMenu = new MenuItem("Search");
+            searchMenu.Name = "Search";
+         
+            searchMenu.MenuItems.Add("Backup", ExcuteHandlerWithWaitCursor).Name = "SearchBackup";
+            searchMenu.MenuItems.Add(new MenuItem("Internet", SearchInternet));
 
-            contextMenu.MenuItems.Add(addDevice);
+            contextMenu.MenuItems.Add(searchMenu);
             appContext.dataGridView.ContextMenu = contextMenu;
         }
 

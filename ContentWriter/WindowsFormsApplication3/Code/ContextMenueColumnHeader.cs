@@ -6,19 +6,16 @@ using System.Reflection;
 
 namespace WindowsFormsApplication3
 {
-    class ContextMenueColumnHeader
+    class ContextMenueColumnHeader : BaseContextMenue
     {
         ContextMenu contextMenu = new ContextMenu();
-        AppContext appContext;
-        int headerColumnIndex;
-        public ContextMenueColumnHeader(AppContext appContext)
+       int headerColumnIndex;
+        public ContextMenueColumnHeader(AppContext appContext):base(appContext)
         {
-            this.appContext = appContext;
             AddContextMenu();
         }
         public void ShowMenu(Point p, int headerColumnIndex)
         {
-            //  DisableMenuItemsIfRequired();
             this.headerColumnIndex = headerColumnIndex;
             UpdateMenu();
             contextMenu.Show(appContext.dataGridView, p);
@@ -26,10 +23,9 @@ namespace WindowsFormsApplication3
         }
         void AddContextMenu()
         {
-            contextMenu.MenuItems.Add("Forze", ExcuteHandlerAction).Name = "ToggleColumnForzing";
-            contextMenu.MenuItems.Add("Show Words Frequency", ExcuteHandlerAction).Name = "WordFrequency";
-            contextMenu.MenuItems.Add("Show Character Count", ExcuteHandlerAction).Name = "ShowCharacterCount";
-            //  contextMenu.MenuItems.Add("Show Word Frequency", OnPast).Name = "Paste";
+            contextMenu.MenuItems.Add("Forze", ExcuteHandlerWithWaitCursor).Name = "ToggleColumnForzing";
+            contextMenu.MenuItems.Add("Show Words Frequency", ExcuteHandlerWithWaitCursor).Name = "WordFrequency";
+            contextMenu.MenuItems.Add("Show Character Count", ExcuteHandlerWithWaitCursor).Name = "ShowCharacterCount";
             appContext.dataGridView.ContextMenu = contextMenu;
         }
 
@@ -38,25 +34,7 @@ namespace WindowsFormsApplication3
             contextMenu.MenuItems["ToggleColumnForzing"].Text = appContext.dataGridView.Columns[this.headerColumnIndex].Frozen ? "UnForze" : "Forze";
         }
         
-        private void CallMethod(string methodName, object sender, EventArgs e)
-        {
-            MethodInfo methodInfo = this.GetType().GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance);
-            methodInfo.Invoke(this, new[] { sender, e });
-        }
-
-
-        void ExcuteHandlerAction(object sender, EventArgs e)
-        {
-            appContext.ChangeCursor(Cursors.WaitCursor);
-
-            var menuItem = (MenuItem)sender;
-
-            CallMethod(menuItem.Name, sender, e);
-
-            appContext.ChangeCursor(Cursors.Default);
-
-        }
-
+     
         void ShowCharacterCount(object sender, EventArgs e)
         {
             EventContainer.PublishEvent

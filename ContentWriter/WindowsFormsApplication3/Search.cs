@@ -285,7 +285,6 @@ namespace WindowsFormsApplication3
             dataGridView1.Columns.Add(dgvButton);
         }
 
-
         PictureViewer frmPrectiureViwer = null;
         private void DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -324,18 +323,15 @@ namespace WindowsFormsApplication3
             }
 
         }
-
         private void chkShowMetaInfo_CheckedChanged(object sender, EventArgs e)
         {
             ToggleMetaInfo();
         }
-
         private void ToggleMetaInfo()
         {
             dataGridView1.Columns["Row"].Visible = chkShowMetaInfo.CheckState == CheckState.Checked;
             dataGridView1.Columns["col"].Visible = chkShowMetaInfo.CheckState == CheckState.Checked;
         }
-
         private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 

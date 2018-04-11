@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="Code\AppContext.cs" />
     <Compile Include="Code\BackUp.cs" />
+    <Compile Include="Code\BaseContextMenue.cs" />
     <Compile Include="Code\CellData.cs" />
     <Compile Include="Code\ContextMenueColumnHeader.cs" />
     <Compile Include="Code\UnSavedData.cs" />
