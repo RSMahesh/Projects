@@ -106,7 +106,6 @@ namespace WindowsFormsApplication3
                         rowsWithLessSentenceCount++;
                     }
                 }
-
             }
 
             var msg = "Bullets with more then 0 sentence are :" + rowsWithLessSentenceCount;
@@ -127,7 +126,6 @@ namespace WindowsFormsApplication3
 
                 styler.UnHighlightRow(int.Parse(row.Cells["ID"].Value.ToString()));
 
-
                 var count = GetSetenceCount(row.Cells["Description"].Value.ToString());
 
                 if (count < 3)
@@ -143,10 +141,13 @@ namespace WindowsFormsApplication3
 
         public void WordsFrequency(EventArg arg)
         {
-            var colIndex = appContext.dataGridView.CurrentCell.ColumnIndex;
+            var colIndex = (int)arg.Arg;
             appContext.dataGridView.Columns[Constants.WordFrequencyColumnName].Visible = true;
             appContext.dataGridView.Columns[Constants.WordFrequencyColumnName].DisplayIndex = colIndex + 1;
             appContext.dataGridView.Columns[Constants.WordFrequencyColumnName].Width = 200;
+
+            appContext.dataGridView.Columns[Constants.WordFrequencyColumnName].HeaderText =
+               "Words Frequency " + appContext.dataGridView.Columns[colIndex].Name;
 
             var dir = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
             var exludeWordsFrequencyCheckFile = Path.Combine(dir, "ExludeWordsFrequencyCheck.txt");
@@ -166,13 +167,12 @@ namespace WindowsFormsApplication3
 
         public void CharacterCount(EventArg arg)
         {
-            var colIndex = appContext.dataGridView.CurrentCell.ColumnIndex;
+            var colIndex = (int)arg.Arg;
             appContext.dataGridView.Columns[Constants.WordFrequencyColumnName].Visible = true;
             appContext.dataGridView.Columns[Constants.WordFrequencyColumnName].DisplayIndex = colIndex + 1;
             appContext.dataGridView.Columns[Constants.WordFrequencyColumnName].Width = 200;
-
-            appContext.dataGridView.Columns[Constants.WordFrequencyColumnName].HeaderText = "Character Count";
-
+            appContext.dataGridView.Columns[Constants.WordFrequencyColumnName].HeaderText =
+                "Character Count " + appContext.dataGridView.Columns[colIndex].Name;
 
             foreach (DataGridViewRow row in appContext.dataGridView.Rows)
             {
@@ -200,6 +200,5 @@ namespace WindowsFormsApplication3
             var c = text.Count(f => f == '.');
             return c;
         }
-
     }
 }

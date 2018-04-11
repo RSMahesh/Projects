@@ -41,6 +41,10 @@ namespace EventPublisher
         ToggleAutoSpellCheckMode,
         CheckColumnsCausingSaveError,
         VendorWebSiteSearchSetting,
-        ShowCharacterCountForColumn
+        ShowCharacterCountForColumn,
+        ToggleColumnForzing,
+        StatusBarChangeText,
+        ToggleRowsExpansion
+
     }
 }

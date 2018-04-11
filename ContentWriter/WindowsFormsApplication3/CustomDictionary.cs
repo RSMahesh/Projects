@@ -33,7 +33,7 @@ namespace WindowsFormsApplication3
         {
             File.AppendAllText(customDictionaryFile, Environment.NewLine + word);
             EventContainer.PublishEvent
-                   (EventPublisher.Events.CustomDictionaryUpdate.ToString(), new EventArg(null));
+                   (EventPublisher.Events.CustomDictionaryUpdate.ToString(), new EventArg(new Uri(this.customDictionaryFile)));
         }
         
         public void ShowUI()

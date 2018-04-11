@@ -22,7 +22,6 @@ namespace WindowsFormsApplication3
         public List<SearchResult> SearchText(string text)
         {
             var files = System.IO.Directory.GetFiles(_folder, "*.xlsx");
-
         
             if (cachedDataTables == null)
             {
@@ -55,14 +54,11 @@ namespace WindowsFormsApplication3
                 try
                 {
                     allResults.AddRange(SearchDataTable(key, cachedDataTables[key], text));
-
                 }
                 catch (Exception)
                 {
 
-
                 }
-
             }
 
             return allResults;
@@ -90,6 +86,7 @@ namespace WindowsFormsApplication3
                 }
 
             }
+
             return lst;
         }
     }

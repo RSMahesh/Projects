@@ -63,7 +63,6 @@
             this.toolsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.sentenceCountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sentenceCountInBulletToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.wordsFrequencyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.formulaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.filterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importBackUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -90,9 +89,11 @@
             this.toolStripStatusClearFilter = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripAutoSpellCheck = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.characterCountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripBtnToggleRowsExpansion = new System.Windows.Forms.ToolStripButton();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -363,13 +364,11 @@
             this.toolsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.sentenceCountToolStripMenuItem,
             this.sentenceCountInBulletToolStripMenuItem,
-            this.wordsFrequencyToolStripMenuItem,
             this.formulaToolStripMenuItem,
             this.filterToolStripMenuItem,
             this.importBackUpToolStripMenuItem,
             this.showHideColumnsToolStripMenuItem,
-            this.spellCheckToolStripMenuItem,
-            this.characterCountToolStripMenuItem});
+            this.spellCheckToolStripMenuItem});
             this.toolsMenu.Name = "toolsMenu";
             this.toolsMenu.Size = new System.Drawing.Size(48, 20);
             this.toolsMenu.Text = "&Tools";
@@ -387,13 +386,6 @@
             this.sentenceCountInBulletToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
             this.sentenceCountInBulletToolStripMenuItem.Text = "Sentence Count in Bullet";
             this.sentenceCountInBulletToolStripMenuItem.Click += new System.EventHandler(this.sentenceCountInBulletToolStripMenuItem_Click);
-            // 
-            // wordsFrequencyToolStripMenuItem
-            // 
-            this.wordsFrequencyToolStripMenuItem.Name = "wordsFrequencyToolStripMenuItem";
-            this.wordsFrequencyToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.wordsFrequencyToolStripMenuItem.Text = "Words Frequency";
-            this.wordsFrequencyToolStripMenuItem.Click += new System.EventHandler(this.wordsFrequencyToolStripMenuItem_Click);
             // 
             // formulaToolStripMenuItem
             // 
@@ -594,18 +586,32 @@
             this.toolStripAutoSpellCheck.Text = "Auto Spell Check Off";
             this.toolStripAutoSpellCheck.Click += new System.EventHandler(this.toolStripStatusLabel1_Click_1);
             // 
-            // characterCountToolStripMenuItem
+            // toolStrip1
             // 
-            this.characterCountToolStripMenuItem.Name = "characterCountToolStripMenuItem";
-            this.characterCountToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.characterCountToolStripMenuItem.Text = "Character Count";
-            this.characterCountToolStripMenuItem.Click += new System.EventHandler(this.characterCountToolStripMenuItem_Click);
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripBtnToggleRowsExpansion});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 24);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(805, 25);
+            this.toolStrip1.TabIndex = 4;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripBtnToggleRowsExpansion
+            // 
+            this.toolStripBtnToggleRowsExpansion.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripBtnToggleRowsExpansion.Image = ((System.Drawing.Image)(resources.GetObject("toolStripBtnToggleRowsExpansion.Image")));
+            this.toolStripBtnToggleRowsExpansion.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripBtnToggleRowsExpansion.Name = "toolStripBtnToggleRowsExpansion";
+            this.toolStripBtnToggleRowsExpansion.Size = new System.Drawing.Size(23, 22);
+            this.toolStripBtnToggleRowsExpansion.Text = "Expand";
+            this.toolStripBtnToggleRowsExpansion.Click += new System.EventHandler(this.toolStripBtnToggleRowsExpansion_Click);
             // 
             // MDIParent1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(805, 453);
+            this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.menuStrip);
             this.IsMdiContainer = true;
@@ -618,6 +624,8 @@
             this.menuStrip.PerformLayout();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -675,7 +683,6 @@
         private System.Windows.Forms.ToolStripMenuItem sentenceCountToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sentenceCountInBulletToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem findToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem wordsFrequencyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openReadOnlyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem searchDataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showHideColumnsToolStripMenuItem;
@@ -685,7 +692,8 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripAutoSpellCheck;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem vendorWebSiteSerachProductToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem characterCountToolStripMenuItem;
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStripButton toolStripBtnToggleRowsExpansion;
     }
 }
 

@@ -30,7 +30,7 @@ namespace WindowsFormsApplication3
         private string MakeFirstCharacterCaptial(string replaceOutPut)
         {
             //TODO:This formula will fail if text got mutiple %p%. Need to get fixed.
-            const string remove = "%tc%";
+            const string remove = "%fc%";
             var indx = replaceOutPut.IndexOf(remove, StringComparison.OrdinalIgnoreCase);
 
             var arr = replaceOutPut.Split(new string[] { remove }, StringSplitOptions.None);

@@ -22,6 +22,11 @@ namespace WindowsFormsApplication3
         {
             InitializeComponent();
             toolStripStatusClearFilter.Visible = false;
+            //tag is used to m
+            toolStripBtnToggleRowsExpansion.Tag = false;
+
+            
+
             SubScribeEvents();
         }
 
@@ -33,6 +38,7 @@ namespace WindowsFormsApplication3
         private void SubScribeEvents()
         {
             EventContainer.SubscribeEvent(EventPublisher.Events.FilterDone.ToString(), FilterDone);
+            EventContainer.SubscribeEvent(EventPublisher.Events.StatusBarChangeText.ToString(), StatusBarChangeText);
         }
         private void ShowNewForm(object sender, EventArgs e)
         {
@@ -235,7 +241,7 @@ namespace WindowsFormsApplication3
         (EventPublisher.Events.OpenWord.ToString(), new EventArg(Guid.NewGuid(), null));
 
         }
-   
+
         private void fullBackUpToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var backUpFolder = Path.GetDirectoryName(lastFileName) + "\\" +
@@ -328,12 +334,6 @@ namespace WindowsFormsApplication3
             frm.Show();
         }
 
-        private void wordsFrequencyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            EventContainer.PublishEvent
-    (EventPublisher.Events.WordsFrequency.ToString(), new EventArg(Guid.NewGuid(), null));
-        }
-
         private void openReadOnlyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -348,8 +348,7 @@ namespace WindowsFormsApplication3
 
         private void searchDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Search search = new Search(this);
-            search.Show();
+            EventContainer.PublishEvent(EventPublisher.Events.SearchTextInBackUp.ToString(), new EventArg(string.Empty));
         }
 
         private void showHideColumnsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -364,6 +363,10 @@ namespace WindowsFormsApplication3
             toolStripStatusClearFilter.Visible = false;
         }
 
+        private void StatusBarChangeText(EventPublisher.EventArg arg)
+        {
+            toolStripStatusLabel.Text = arg.Arg.ToString();
+        }
         private void FilterDone(EventPublisher.EventArg arg)
         {
             toolStripStatusClearFilter.Visible = true;
@@ -382,7 +385,7 @@ namespace WindowsFormsApplication3
 
         private void toolStripStatusLabel1_Click_1(object sender, EventArgs e)
         {
-            if(toolStripAutoSpellCheck.Text == "Auto Spell Check Off")
+            if (toolStripAutoSpellCheck.Text == "Auto Spell Check Off")
             {
                 toolStripAutoSpellCheck.Text = "Auto Spell Check On";
             }
@@ -400,10 +403,10 @@ namespace WindowsFormsApplication3
             EventContainer.PublishEvent(EventPublisher.Events.VendorWebSiteSearchSetting.ToString(), new EventArg(Guid.NewGuid(), null));
         }
 
-        private void characterCountToolStripMenuItem_Click(object sender, EventArgs e)
+        private void toolStripBtnToggleRowsExpansion_Click(object sender, EventArgs e)
         {
-            EventContainer.PublishEvent
-    (EventPublisher.Events.ShowCharacterCountForColumn.ToString(), new EventArg(Guid.NewGuid(), null));
+            toolStripBtnToggleRowsExpansion.Tag = !(bool)toolStripBtnToggleRowsExpansion.Tag;
+            EventContainer.PublishEvent(EventPublisher.Events.ToggleRowsExpansion.ToString(), new EventArg(toolStripBtnToggleRowsExpansion.Tag));
         }
     }
 }

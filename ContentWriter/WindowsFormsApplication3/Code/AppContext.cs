@@ -26,5 +26,7 @@ namespace WindowsFormsApplication3
 
         public bool IsReadOnlyFile;
 
+        public Action<Cursor> ChangeCursor;
+
     }
 }

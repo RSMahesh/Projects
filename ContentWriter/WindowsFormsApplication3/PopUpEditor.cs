@@ -168,12 +168,11 @@ namespace WindowsFormsApplication3
             }
 
         }
-        
+
         private void btnPlayPause_Click(object sender, EventArgs e)
         {
             Toggle();
         }
-
       
         private void GetVoices()
         {

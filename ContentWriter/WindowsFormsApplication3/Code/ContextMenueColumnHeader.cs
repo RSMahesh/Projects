@@ -1,13 +1,8 @@
 ﻿using EventPublisher;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Script.Serialization;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace WindowsFormsApplication3
 {
@@ -15,113 +10,73 @@ namespace WindowsFormsApplication3
     {
         ContextMenu contextMenu = new ContextMenu();
         AppContext appContext;
-        MenuItem menuItemSynonyms;
+        int headerColumnIndex;
         public ContextMenueColumnHeader(AppContext appContext)
         {
             this.appContext = appContext;
             AddContextMenu();
         }
-        public void ShowMenu(Point p)
+        public void ShowMenu(Point p, int headerColumnIndex)
         {
-          //  DisableMenuItemsIfRequired();
+            //  DisableMenuItemsIfRequired();
+            this.headerColumnIndex = headerColumnIndex;
+            UpdateMenu();
             contextMenu.Show(appContext.dataGridView, p);
+           
         }
-
-      
-
         void AddContextMenu()
         {
-           // contextMenu.MenuItems.Add("Forze", OnCut).Name = "Cut";
-            contextMenu.MenuItems.Add("Show Character Count", OnCopy).Name = "Copy";
-          //  contextMenu.MenuItems.Add("Show Word Frequency", OnPast).Name = "Paste";
+            contextMenu.MenuItems.Add("Forze", ExcuteHandlerAction).Name = "ToggleColumnForzing";
+            contextMenu.MenuItems.Add("Show Words Frequency", ExcuteHandlerAction).Name = "WordFrequency";
+            contextMenu.MenuItems.Add("Show Character Count", ExcuteHandlerAction).Name = "ShowCharacterCount";
+            //  contextMenu.MenuItems.Add("Show Word Frequency", OnPast).Name = "Paste";
             appContext.dataGridView.ContextMenu = contextMenu;
         }
 
-        private void MenuItemSynonyms_Select(object sender, EventArgs e)
+        void UpdateMenu()
         {
-            appContext.synonymProvider.AddSynoms(appContext.dataGridViewTextBoxEditing.SelectedText,
-                   menuItemSynonyms, OnSynonymClick);
+            contextMenu.MenuItems["ToggleColumnForzing"].Text = appContext.dataGridView.Columns[this.headerColumnIndex].Frozen ? "UnForze" : "Forze";
+        }
+        
+        private void CallMethod(string methodName, object sender, EventArgs e)
+        {
+            MethodInfo methodInfo = this.GetType().GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance);
+            methodInfo.Invoke(this, new[] { sender, e });
         }
 
-        private void OnSynonymClick(object sender, EventArgs e)
+
+        void ExcuteHandlerAction(object sender, EventArgs e)
         {
-            var menuIltem = (MenuItem)sender;
-            appContext.dataGridViewTextBoxEditing.Paste(menuIltem.Text);
-        }
+            appContext.ChangeCursor(Cursors.WaitCursor);
 
-        void SearchBackup(object sender, EventArgs e)
-        {
-            var searchText = GetSearchText();
+            var menuItem = (MenuItem)sender;
 
-            if (string.IsNullOrEmpty(searchText))
-            {
-                return;
-            }
+            CallMethod(menuItem.Name, sender, e);
 
-            EventContainer.PublishEvent
-(Events.SearchTextInBackUp.ToString(), new EventArg(Guid.NewGuid(), searchText));
-
-        }
-
-        private string GetSearchText()
-        {
-
-            return appContext.dataGridViewTextBoxEditing.SelectedText.Trim();
-        }
-
-        void SearchInternet(object sender, EventArgs e)
-        {
-            var searchText = GetSearchText();
-
-            if (string.IsNullOrEmpty(searchText))
-            {
-                return;
-            }
-            Process.Start("https://www.google.com/search?q=" + searchText);
-        }
-
-        void OnFilter(object sender, EventArgs e)
-        {
-            Filter filter = new Filter(appContext);
-
-            filter.WindowState = FormWindowState.Normal;
-            filter.Show();
-            var text = appContext.dataGridViewTextBoxEditing.SelectedText;
-            filter.ColumnToFilter = appContext.dataGridView.CurrentCell.OwningColumn.Name;
-            filter.TextToFilter = text;
-            filter.Operation = "Contains";
+            appContext.ChangeCursor(Cursors.Default);
 
         }
 
-        void OnFind(object sender, EventArgs e)
-        {
-            var text = appContext.dataGridViewTextBoxEditing.SelectedText;
-            FindText frm = new FindText(appContext);
-            frm.FindString = text;
-            frm.TopMost = true;
-            frm.Show();
-            frm.FindNext();
-        }
-
-        void OnEditor(object sender, EventArgs e)
-        {
-            PopUpEditor frm = new PopUpEditor(appContext);
-            frm.Show();
-        }
-
-        void OnCut(object sender, EventArgs e)
-        {
-            appContext.dataGridViewTextBoxEditing.Cut();
-        }
-        void OnCopy(object sender, EventArgs e)
+        void ShowCharacterCount(object sender, EventArgs e)
         {
             EventContainer.PublishEvent
-(EventPublisher.Events.ShowCharacterCountForColumn.ToString(), new EventArg(Guid.NewGuid(), null));
+(EventPublisher.Events.ShowCharacterCountForColumn.ToString(), new EventArg(this.headerColumnIndex));
 
         }
-        void OnPast(object sender, EventArgs e)
+
+        void ToggleColumnForzing(object sender, EventArgs e)
         {
-            appContext.dataGridViewTextBoxEditing.Paste();
+            EventContainer.PublishEvent
+(EventPublisher.Events.ToggleColumnForzing.ToString(), new EventArg(this.headerColumnIndex));
+
+        }
+
+
+        void WordFrequency(object sender, EventArgs e)
+        {
+            EventContainer.PublishEvent
+(EventPublisher.Events.WordsFrequency.ToString(), new EventArg(this.headerColumnIndex));
+
         }
     }
 }

@@ -38,14 +38,12 @@ namespace WindowsFormsApplication3
                 menuItemSyno.MenuItems.Add(syno, callBack);
             }
         }
-        
+
         private Tuple<List<string>, List<string>> GetSynims(string word)
         {
-          
             var synonymList = new List<string>();
             var antonims = new List<string>();
 
-         
             Microsoft.Office.Interop.Word.SynonymInfo si =
                      appWord.get_SynonymInfo(word, ref (objLanguage));
 

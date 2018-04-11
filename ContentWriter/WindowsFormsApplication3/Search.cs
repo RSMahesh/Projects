@@ -1,14 +1,11 @@
 ﻿using StatusMaker.Data;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WindowsFormsApplication3
@@ -22,8 +19,14 @@ namespace WindowsFormsApplication3
             InitializeComponent();
             this.splitContainer1.SplitterDistance = 800;
             _mdiPArent = MDIpARENT;
-            this.MdiParent = _mdiPArent;
+          //  this.MdiParent = _mdiPArent;
             this.Resize += Search_Resize;
+            this.FormClosing += Search_FormClosing;
+        }
+        private void Search_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            this.Hide();
+            e.Cancel = true;
         }
         private void Search_Resize(object sender, EventArgs e)
         {
@@ -36,7 +39,6 @@ namespace WindowsFormsApplication3
             ShowResult(txtSerchText.Text);
             Cursor = Cursors.Default;
         }
-
         private void OpenFile()
         {
             var filePath = dataGridView1.CurrentRow.Cells["FilePath"].Value.ToString();
@@ -46,6 +48,8 @@ namespace WindowsFormsApplication3
         }
         public void ShowResult(string searchText)
         {
+            this.Cursor = Cursors.WaitCursor;
+
             txtSerchText.Text = searchText;
             if (string.IsNullOrEmpty(ConfigurationManager.AppSettings["BackUpFolder"]))
             {
@@ -59,7 +63,6 @@ namespace WindowsFormsApplication3
 
             if (results.Any())
             {
-
                 dataGridView1.Columns.Clear();
                 dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = SystemColors.Control;
                 dataGridView1.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
@@ -67,8 +70,7 @@ namespace WindowsFormsApplication3
                 dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
                 dataGridView1.ColumnHeadersHeight = 30;
                 dataGridView1.EnableHeadersVisualStyles = false;
-                
-
+        
                 dataGridView1.RowHeadersVisible = false;
 
                 dataGridView1.RowTemplate.Height = Constants.ImageIconSize;
@@ -91,8 +93,10 @@ namespace WindowsFormsApplication3
             }
 
             AddButton();
-        }
 
+            this.Cursor = Cursors.Default;
+            this.WindowState = FormWindowState.Maximized;
+        }
         private void SetColumnWidth()
         {
            foreach (DataGridViewColumn column in dataGridView1.Columns)
@@ -100,7 +104,6 @@ namespace WindowsFormsApplication3
                 column.Width = 200;
             }
         }
-
         private string GetImageUrl(DataRow dataRow)
         {
             foreach (var item in dataRow.ItemArray)
@@ -112,7 +115,6 @@ namespace WindowsFormsApplication3
             }
             return string.Empty;
         }
-
         private void DisplaySearchedInFiles()
         {
             //listBox1.Items.Clear();
@@ -156,7 +158,6 @@ namespace WindowsFormsApplication3
             dataGridView2.Columns[0].ReadOnly = true;
            
         }
-
         public DataTable FlipDataSet(DataTable dt)
         {
             DataTable table = new DataTable();
@@ -176,7 +177,6 @@ namespace WindowsFormsApplication3
 
             return table;
         }
-
         private List<KeyValuePair<string, string[]>> CustomColumns()
         {
             var list = new List<KeyValuePair<string, string[]>>();
@@ -188,7 +188,6 @@ namespace WindowsFormsApplication3
 
             return list;
         }
-
         private DataTable GetTable(IEnumerable<SearchResult> results)
         {
             DataTable dt = new DataTable("SearchResults");
@@ -227,7 +226,6 @@ namespace WindowsFormsApplication3
             return dt;
 
         }
-
         private void LoadDataFromDataRow(DataRow sourceDataRow, DataRow destinationDataRow, KeyValuePair<string, string[]> customColumn)
         {
             foreach (var colName in customColumn.Value)
@@ -259,7 +257,6 @@ namespace WindowsFormsApplication3
 
             return string.Empty;
         }
-
         private void Search_Load(object sender, EventArgs e)
         {
             dataGridView1.RowTemplate.DefaultCellStyle.BackColor = Color.LightGray;
@@ -271,12 +268,10 @@ namespace WindowsFormsApplication3
             dataGridView2.AllowUserToAddRows = false;
             dataGridView1.AllowUserToAddRows = false;
         }
-
         private void DataGridView1_SelectionChanged(object sender, EventArgs e)
         {
             ShowData();
         }
-
         private void AddButton()
         {
             var dgvButton = new DataGridViewButtonColumn();
@@ -305,8 +300,6 @@ namespace WindowsFormsApplication3
                 return;
             }
           
-
-           // dataGridView1.BeginEdit(false);
 
             if (dataGridView1[e.ColumnIndex, e.RowIndex].Tag != null)
             {

@@ -1,11 +1,5 @@
 ﻿using EventPublisher;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -15,7 +9,6 @@ namespace WindowsFormsApplication3
     {
         int startingRowToFind = 0;
         int startingColumnToFind = 0;
-        int startingIndexInCellToFindText = 0;
         DataGridView dataGridView;
         WpfRichTextBox wpfRichText;
         Action showWpfRichTextBox;
@@ -33,15 +26,12 @@ namespace WindowsFormsApplication3
             this.showWpfRichTextBox = appContext.ShowWpfRichTextBox;
             this.FormClosing += SpellCheckWindow_FormClosing;
             this.appContext = appContext;
-            customDictionary = new CustomDictionary();
-            CustomDictionaryUpdate(null);
-            LoadColumns();
+         
             checkedListBox1.MultiColumn = false;
             EventContainer.SubscribeEvent(EventPublisher.Events.CustomDictionaryUpdate.ToString(), CustomDictionaryUpdate);
             listBox1.ContextMenu = contextMenu;
             menuItemSynonyms = contextMenu.MenuItems.Add("Synonyms");
             menuItemSynonyms.Select += MenuItemSynonyms_Select;
-
         }
 
         private void MenuItemSynonyms_Select(object sender, EventArgs e)
@@ -52,11 +42,11 @@ namespace WindowsFormsApplication3
 
         private void OnSynonymClick(object sender, EventArgs e)
         {
-           // var menuIltem = (MenuItem)sender;
+            // var menuIltem = (MenuItem)sender;
 
-         //   listBox1.Items.Remove(listBox1.SelectedItem);
+            //   listBox1.Items.Remove(listBox1.SelectedItem);
 
-          //  appContext.dataGridViewTextBoxEditing.Paste(menuIltem.Text);
+            //  appContext.dataGridViewTextBoxEditing.Paste(menuIltem.Text);
         }
 
         private void CustomDictionaryUpdate(EventArg obj)
@@ -76,13 +66,15 @@ namespace WindowsFormsApplication3
 
         public void Check(EventArg arg)
         {
-            LoadColumns();
-            //var arr = arg.Arg as string;
-            //var columnName = arr;
-
-            //TODO: remove 
-            var columnName = "ALL";
             this.Cursor = Cursors.WaitCursor;
+            LoadColumns();
+
+            if (this.customDictionary == null)
+            {
+                customDictionary = new CustomDictionary();
+                CustomDictionaryUpdate(null);
+            }
+
             for (var rowIndex = startingRowToFind; rowIndex < dataGridView.Rows.Count; rowIndex++)
             {
                 DataGridViewRow row = dataGridView.Rows[rowIndex];
@@ -102,35 +94,34 @@ namespace WindowsFormsApplication3
                         if (cell.Visible && cell.Value != null && !string.IsNullOrEmpty(cell.Value.ToString()))
                         {
 
-                            if(!wpfRichText.DoesContainSpellErrors123(cell.Value.ToString()))
+                            if (!wpfRichText.DoesContainSpellErrors123(cell.Value.ToString()))
                             {
                                 continue;
                             }
-                          //  MessageBox.Show("c" + cell.ColumnIndex + " R:" + cell.RowIndex);
+                            //  MessageBox.Show("c" + cell.ColumnIndex + " R:" + cell.RowIndex);
                             dataGridView.CurrentCell = cell;
                             dataGridView.BeginEdit(false);
                             appContext.ShowWpfRichTextBox();
                             if (wpfRichText.IsSpellErrors())
                             {
-
                                 startingRowToFind = rowIndex;
                                 startingColumnToFind = colIndex;
-                               
+
                                 ShowSpellError();
                                 this.Show();
                                 var rec = appContext.dataGridView.GetCellDisplayRectangle(dataGridView.CurrentCell.ColumnIndex, dataGridView.CurrentCell.RowIndex, true);
 
                                 var screen = Screen.FromControl(this);
-                                
+
 
                                 if (rec.IntersectsWith(this.Bounds))
                                 {
                                     this.Left += 200;
                                     this.Top += 200;
 
-                                    if(this.Right > screen.Bounds.Right)
+                                    if (this.Right > screen.Bounds.Right)
                                     {
-                                      this.Left -=600;
+                                        this.Left -= 600;
                                     }
                                     if (this.Bottom > screen.Bounds.Bottom)
                                     {
@@ -142,7 +133,7 @@ namespace WindowsFormsApplication3
                             }
                             else
                             {
-                               // MessageBox.Show("No Error 2");
+                                // MessageBox.Show("No Error 2");
                             }
 
                         }
@@ -154,12 +145,12 @@ namespace WindowsFormsApplication3
 
             MessageBox.Show("No Spell Error");
             this.Cursor = Cursors.Default;
-            startingColumnToFind = startingRowToFind = startingIndexInCellToFindText = 0;
+            startingColumnToFind = startingRowToFind = 0;
         }
 
         private void ShowIfHidden()
         {
-           if( this.Visible == false)
+            if (this.Visible == false)
             {
                 this.Show();
             }
@@ -167,9 +158,9 @@ namespace WindowsFormsApplication3
 
         private bool IsNotColumnSelected(string columnName)
         {
-            for(int i =0; i < checkedListBox1.Items.Count; i++)
+            for (int i = 0; i < checkedListBox1.Items.Count; i++)
             {
-                if(checkedListBox1.GetItemChecked(i) &&
+                if (checkedListBox1.GetItemChecked(i) &&
                     checkedListBox1.Items[i].ToString().Equals(columnName))
                 {
                     return false;
@@ -181,7 +172,7 @@ namespace WindowsFormsApplication3
 
         public void OnCellBeginEdit(int cellColIndex, int cellRowIndex)
         {
-            if(cellColIndex != startingColumnToFind  && cellRowIndex != startingRowToFind)
+            if (cellColIndex != startingColumnToFind && cellRowIndex != startingRowToFind)
             {
                 btnChange.Enabled = false;
             }
@@ -192,7 +183,7 @@ namespace WindowsFormsApplication3
             textBox1.Text = wpfRichText.SpellErrorText;
             listBox1.Items.Clear();
 
-            foreach(string suggestion in wpfRichText.spellingError.Suggestions)
+            foreach (string suggestion in wpfRichText.spellingError.Suggestions)
             {
                 listBox1.Items.Add(suggestion);
             }
@@ -232,7 +223,7 @@ namespace WindowsFormsApplication3
 
             foreach (DataGridViewColumn col in appContext.dataGridView.Columns)
             {
-                if(col.Visible && !(col is DataGridViewImageColumn) && !col.ReadOnly &&
+                if (col.Visible && !(col is DataGridViewImageColumn) && !col.ReadOnly &&
                     col.ValueType == typeof(string)
                     )
                 {
@@ -258,6 +249,6 @@ namespace WindowsFormsApplication3
             var checkedState = checkedListBox1.GetItemCheckState(checkedListBox1.SelectedIndex) == CheckState.Checked;
             checkedListBox1.SetItemChecked(checkedListBox1.SelectedIndex, !checkedState);
         }
-        
+
     }
 }

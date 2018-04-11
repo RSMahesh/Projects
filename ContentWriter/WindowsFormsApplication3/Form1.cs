@@ -12,14 +12,12 @@ namespace WindowsFormsApplication3
 {
     public partial class Form1 : Form
     {
-       // bool IsReadOnlyFile;
         bool imageColumnLoaded = false;
         bool _importBackUp;
         bool autoSpellCheckMode;
         UndoRedoStack<CellData> undoRedo;
 
         OLDBConnection _dataConnection;
-        Theme _theme = new Theme();
         WpfRichTextBox wpfRichText;
         ImageLoader imageLoader;
         ContextMenueMultiSelectCell contextMenueMultiSelectCell;
@@ -47,7 +45,9 @@ namespace WindowsFormsApplication3
             appContext.ExcelFilePath = filePath;
             appContext.ShowWpfRichTextBox = ShowWpfRichTextBox;
             appContext.wpfRichTextBox = wpfRichText;
+
             appContext.synonymProvider = new SynonymProvider();
+            appContext.ChangeCursor = new Action<Cursor>((cursor) => this.Cursor = cursor);
 
             AddEventHandlersOfGridView();
 
@@ -55,13 +55,16 @@ namespace WindowsFormsApplication3
             contextMenueMultiSelectCell = new ContextMenueMultiSelectCell(dataGridView1, undoRedo);
             contextMenueCurrentCell = new ContextMenueCurrentCell(appContext);
             contextMenueColumnHeader = new ContextMenueColumnHeader(appContext);
+
             imageLoader = new ImageLoader(dataGridView1, appContext.ExcelFilePath);
             findAndReplace = new FindAndReplace(appContext);
             spellCheckWindow = new SpellCheckWindow(appContext);
             styler = new Styler(appContext);
+
             statistics = new Statistics(appContext, styler);
             backUp = new BackUp(appContext, this.MdiParent);
             searchWindow = new Search(this.MdiParent);
+
             venderWebSiteSerachSetting = new VenderWebSiteSerachSetting(appContext);
             unSavedData = new UnSavedData(appContext, undoRedo);
 
@@ -85,12 +88,12 @@ namespace WindowsFormsApplication3
             {
                 EventContainer.SubscribeEvent(EventPublisher.Events.StartDataImport.ToString(), backUp.StartBackUpImport);
             }
-         
         }
         private void Form1_Load(object sender, EventArgs e)
         {
             dataGridView1.RowTemplate.Height = Constants.ImageIconSize;
             dataGridView1.RowTemplate.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+
             _dataConnection = new OLDBConnection(appContext.ExcelFilePath);
 
             dataGridView1.DataSource = _dataConnection.ExecuteDatatable("Select * from [Sheet1$]").DefaultView;
@@ -102,19 +105,19 @@ namespace WindowsFormsApplication3
                 col.SortMode = DataGridViewColumnSortMode.Automatic;
             }
 
-            if (appContext.IsReadOnlyFile)
-            {
-                dataGridView1.RowTemplate.DefaultCellStyle.BackColor = _theme.XmlBackGroundColor;
-                dataGridView1.RowTemplate.DefaultCellStyle.ForeColor = _theme.XmlForeColor;
-                // dataGridView1.ReadOnly = true;
-            }
-
             styler.LoadTheme(new EventArg(appContext.IsReadOnlyFile ? Theme.GetReadOnlyTheme() : Theme.GetDefaultTheme()));
 
+            if (appContext.IsReadOnlyFile)
+            {
+                dataGridView1.RowTemplate.DefaultCellStyle.BackColor = appContext.Theme.XmlBackGroundColor;
+                dataGridView1.RowTemplate.DefaultCellStyle.ForeColor = appContext.Theme.XmlForeColor;
+            }
+
+         
             //this done because when user clicks on cell first time
             // its moves the cell focus to start as columns width get adusted
             // to avoid that work around is to call IncreaseRowHeight on load
-            IncreaseRowHeight(1, 4);
+            IncreaseRowHeight(1);
             this.Text = appContext.ExcelFilePath;
 
             HideColumns();
@@ -178,6 +181,8 @@ namespace WindowsFormsApplication3
                 EventContainer.SubscribeEvent(EventPublisher.Events.SpellCheck.ToString(), SpellCheck);
                 EventContainer.SubscribeEvent(EventPublisher.Events.ToggleAutoSpellCheckMode.ToString(), ToggleAutoSpellCheckMode);
                 EventContainer.SubscribeEvent(EventPublisher.Events.VendorWebSiteSearchSetting.ToString(), ShowVendorWebSiteSearchSetting);
+                EventContainer.SubscribeEvent(EventPublisher.Events.ToggleColumnForzing.ToString(), ToggleColumnForzing);
+                EventContainer.SubscribeEvent(EventPublisher.Events.ToggleRowsExpansion.ToString(), ToggleRowsExpansion);
             }
         }
         private void UnSubscribeEvents()
@@ -220,25 +225,22 @@ namespace WindowsFormsApplication3
             {
                 OpenVendorWebSiteAndSerachItem(dataGridView1.CurrentCell.Value.ToString());
             }
+            else
+            {
+                dataGridView1.BeginEdit(false);
+            }
         }
         private void DataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            // Load context menu on right mouse click
             DataGridView.HitTestInfo hitTestInfo;
             if (e.Button == MouseButtons.Right)
             {
-                // contextMenu.Show(dataGridView1, e.Location);
                 hitTestInfo = dataGridView1.HitTest(e.X, e.Y);
                 Rectangle r = dataGridView1.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false);
                 Point p = new Point(r.X + e.X, r.Y + e.Y);
 
-                contextMenueColumnHeader.ShowMenu(p);
+                contextMenueColumnHeader.ShowMenu(p, e.ColumnIndex);
             }
-
-            //if (e.Button == MouseButtons.Right)
-            //{
-            //    ToggleColumnForzing(e.ColumnIndex);
-            //}
         }
         private void DataGridView1_Scroll(object sender, ScrollEventArgs e)
         {
@@ -263,7 +265,7 @@ namespace WindowsFormsApplication3
         }
         private void DataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if (!(dataGridView1[e.ColumnIndex, e.RowIndex] is DataGridViewImageCell))
+            if (e.RowIndex != -1 && !(dataGridView1[e.ColumnIndex, e.RowIndex] is DataGridViewImageCell))
             {
                 if (imageColumnLoaded)
                 {
@@ -295,14 +297,14 @@ namespace WindowsFormsApplication3
                 return;
             }
 
-            IncreaseRowHeight(e.RowIndex, e.ColumnIndex);
+            IncreaseRowHeight(e.RowIndex);
         }
         private void DataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
 
             if ((ModifierKeys & Keys.Control) != Keys.Control)
             {
-                IncreaseRowHeight(e.RowIndex, e.ColumnIndex);
+                IncreaseRowHeight(e.RowIndex);
                 dataGridView1.Columns[e.ColumnIndex].Width = dataGridView1.Columns[e.ColumnIndex].Width + 1;
                 dataGridView1[e.ColumnIndex, e.RowIndex].Selected = true;
             }
@@ -334,7 +336,7 @@ namespace WindowsFormsApplication3
             {
                 return;
             }
-       
+
             if (dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() != e.FormattedValue.ToString())
             {
                 var cellData = new CellData(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value,
@@ -353,7 +355,7 @@ namespace WindowsFormsApplication3
             {
                 e.Paint(e.CellBounds, DataGridViewPaintParts.All
  & ~DataGridViewPaintParts.Border);
-                using (Pen p = new Pen(_theme.CurrentCellBorderColor, 2))
+                using (Pen p = new Pen(appContext.Theme.CurrentCellBorderColor, 2))
                 {
                     p.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
                     Rectangle rect = e.CellBounds;
@@ -524,7 +526,7 @@ namespace WindowsFormsApplication3
             FormulaList win = new FormulaList(null);
             win.ShowDialog();
         }
-       
+
         private void RichTextBoxTextChanged(EventArg arg)
         {
             dataGridView1.CurrentCell.Value = arg.Arg.ToString();
@@ -535,9 +537,14 @@ namespace WindowsFormsApplication3
             {
                 searchWindow = new Search(this.MdiParent);
             }
-            searchWindow.MdiParent = this.MdiParent;
-            searchWindow.Show();
-            searchWindow.ShowResult(arg.Arg.ToString());
+
+          //   searchWindow.MdiParent = this.MdiParent;
+             searchWindow.Show();
+
+            if (!string.IsNullOrEmpty(arg.Arg.ToString()))
+            {
+                searchWindow.ShowResult(arg.Arg.ToString());
+            }
         }
         private DataTable MarkAllDirty()
         {
@@ -722,7 +729,7 @@ namespace WindowsFormsApplication3
             { }
 
         }
-        private void IncreaseRowHeight(int row, int col, bool toogle = true)
+        private void IncreaseRowHeight(int row, int additionalHeight=0)
         {
             int maxLength = 0;
 
@@ -740,11 +747,17 @@ namespace WindowsFormsApplication3
             }
 
             dataGridView1.Rows[row].Height = dataGridView1.Rows[row].Height > GetRowHeightBasedOnLength(maxLength) ?
-                dataGridView1.Rows[row].Height : GetRowHeightBasedOnLength(maxLength);
+            dataGridView1.Rows[row].Height : GetRowHeightBasedOnLength(maxLength) + additionalHeight;
         }
+
+        private void DecreaseRowHeight(int row)
+        {
+            dataGridView1.Rows[row].Height = Constants.ImageIconSize;
+        }
+
         private int GetRowHeightBasedOnLength(int maxColumnTextLength)
         {
-            return (int)Math.Abs(maxColumnTextLength / 4) + 10;
+            return (int)Math.Abs(maxColumnTextLength / 4) + 20;
         }
         private void SetGridProperties()
         {
@@ -754,6 +767,7 @@ namespace WindowsFormsApplication3
             dataGridView1.AllowUserToResizeRows = true;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.CellSelect;
             dataGridView1.MultiSelect = true;
+
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.RowHeadersWidth = 30;
             dataGridView1.RowHeadersDefaultCellStyle.Font = new System.Drawing.Font("Verdana", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -777,8 +791,10 @@ namespace WindowsFormsApplication3
             frm.TopMost = true;
             frm.Show();
         }
-        private void ToggleColumnForzing(int columnIndex)
+        private void ToggleColumnForzing(EventArg arg)
         {
+            var columnIndex = (int)arg.Arg;
+
             if (dataGridView1.Columns[columnIndex].Name == "ID")
             {
                 return;
@@ -830,6 +846,46 @@ namespace WindowsFormsApplication3
             }
 
             Process.Start(venderWebSiteSerachSetting.CurrentSetting.Url + valueToSearch);
+        }
+        private void ToggleRowsExpansion(EventArg arg)
+        {
+            this.Cursor = Cursors.WaitCursor;
+        //    var expandedRows = (bool)arg.Arg;
+
+            foreach (DataGridViewColumn column in dataGridView1.Columns)
+            {
+                //TODO; remove commented code if it works fine
+                //if (expandedRows)
+                {
+                    column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    int colw = column.Width;
+                    column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                    column.Width = colw;
+                }
+                //else
+                //{
+                //    column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                //}
+            }
+
+            this.Cursor = Cursors.Default;
+
+            //datagrid has calculated it's widths so we can store them
+            //foreach (DataGridViewColumn column in dataGridView1.Columns)
+            //{
+
+            //        //store autosized widths
+            //        int colw = column.Width;
+            //    //remove autosizing
+            //   column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            //    //set width to calculated by autosize
+            //    column.Width = colw;
+            //}
+
+            //this.Cursor = Cursors.Default;
+
+            return;
+           
         }
     }
 }
