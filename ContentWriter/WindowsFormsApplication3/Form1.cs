@@ -39,27 +39,27 @@ namespace WindowsFormsApplication3
             InitializeComponent();
             _importBackUp = importBackUp;
 
-            wpfRichText = new WpfRichTextBox(wpfRichTextBoxPanel);
+           
             appContext = new AppContext();
             appContext.dataGridView = dataGridView1;
             appContext.ExcelFilePath = filePath;
             appContext.ShowWpfRichTextBox = ShowWpfRichTextBox;
-            appContext.wpfRichTextBox = wpfRichText;
-
+    
             appContext.synonymProvider = new SynonymProvider();
             appContext.ChangeCursor = new Action<Cursor>((cursor) => this.Cursor = cursor);
 
             AddEventHandlersOfGridView();
 
+            wpfRichText = new WpfRichTextBox(wpfRichTextBoxPanel,appContext);
             undoRedo = new UndoRedoStack<CellData>(new SetCellDataCommand(dataGridView1));
             contextMenueMultiSelectCell = new ContextMenueMultiSelectCell(dataGridView1, undoRedo);
             contextMenueCurrentCell = new ContextMenueCurrentCell(appContext);
             contextMenueColumnHeader = new ContextMenueColumnHeader(appContext);
 
             imageLoader = new ImageLoader(dataGridView1, appContext.ExcelFilePath);
-            findAndReplace = new FindAndReplace(appContext);
-            spellCheckWindow = new SpellCheckWindow(appContext);
-            styler = new Styler(appContext);
+            findAndReplace = new FindAndReplace(appContext, wpfRichText);
+            spellCheckWindow = new SpellCheckWindow(appContext, wpfRichText);
+            styler = new Styler(appContext, wpfRichText);
 
             statistics = new Statistics(appContext, styler);
             backUp = new BackUp(appContext, this.MdiParent);

@@ -10,19 +10,19 @@ namespace WindowsFormsApplication3
         int startingRowToFind = 0;
         int startingColumnToFind = 0;
         DataGridView dataGridView;
-        WpfRichTextBox wpfRichText;
+        WpfRichTextBox wpfRichTextBox;
         Action showWpfRichTextBox;
         AppContext appContext;
         CustomDictionary customDictionary;
 
         ContextMenu contextMenu = new ContextMenu();
         MenuItem menuItemSynonyms;
-        public SpellCheckWindow(AppContext appContext)
+        public SpellCheckWindow(AppContext appContext, WpfRichTextBox wpfRichTextBox)
         {
             InitializeComponent();
             this.textBox1.ReadOnly = true;
             this.dataGridView = appContext.dataGridView;
-            this.wpfRichText = appContext.wpfRichTextBox;
+            this.wpfRichTextBox = wpfRichTextBox;
             this.showWpfRichTextBox = appContext.ShowWpfRichTextBox;
             this.FormClosing += SpellCheckWindow_FormClosing;
             this.appContext = appContext;
@@ -51,7 +51,7 @@ namespace WindowsFormsApplication3
 
         private void CustomDictionaryUpdate(EventArg obj)
         {
-            appContext.wpfRichTextBox.LoadCustomDic(customDictionary.CustomDictionaryUri);
+            wpfRichTextBox.LoadCustomDic(customDictionary.CustomDictionaryUri);
         }
         private void SpellCheckWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -94,7 +94,7 @@ namespace WindowsFormsApplication3
                         if (cell.Visible && cell.Value != null && !string.IsNullOrEmpty(cell.Value.ToString()))
                         {
 
-                            if (!wpfRichText.DoesContainSpellErrors123(cell.Value.ToString()))
+                            if (!wpfRichTextBox.DoesContainSpellErrors123(cell.Value.ToString()))
                             {
                                 continue;
                             }
@@ -102,7 +102,7 @@ namespace WindowsFormsApplication3
                             dataGridView.CurrentCell = cell;
                             dataGridView.BeginEdit(false);
                             appContext.ShowWpfRichTextBox();
-                            if (wpfRichText.IsSpellErrors())
+                            if (wpfRichTextBox.IsSpellErrors())
                             {
                                 startingRowToFind = rowIndex;
                                 startingColumnToFind = colIndex;
@@ -180,10 +180,10 @@ namespace WindowsFormsApplication3
 
         private void ShowSpellError()
         {
-            textBox1.Text = wpfRichText.SpellErrorText;
+            textBox1.Text = wpfRichTextBox.SpellErrorText;
             listBox1.Items.Clear();
 
-            foreach (string suggestion in wpfRichText.spellingError.Suggestions)
+            foreach (string suggestion in wpfRichTextBox.spellingError.Suggestions)
             {
                 listBox1.Items.Add(suggestion);
             }
@@ -201,7 +201,7 @@ namespace WindowsFormsApplication3
 
         private void btnChange_Click(object sender, EventArgs e)
         {
-            wpfRichText.CorrectSpellError(listBox1.SelectedItem.ToString());
+            wpfRichTextBox.CorrectSpellError(listBox1.SelectedItem.ToString());
             Check(null);
         }
 
@@ -212,7 +212,7 @@ namespace WindowsFormsApplication3
 
         private void btnIgnore_Click(object sender, EventArgs e)
         {
-            wpfRichText.IgnoreSpellError();
+            wpfRichTextBox.IgnoreSpellError();
             Check(null);
         }
 

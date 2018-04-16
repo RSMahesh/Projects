@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
+
 namespace WindowsFormsApplication3
 {
     class SynonymProvider
@@ -37,6 +38,43 @@ namespace WindowsFormsApplication3
             {
                 menuItemSyno.MenuItems.Add(syno, callBack);
             }
+        }
+
+        public void AddSynoms(string word, System.Windows.Controls.MenuItem menuItemSyno, Action<string> callBack)
+        {
+            var response = GetSynims(word);
+            menuItemSyno.Items.Clear();
+
+            if (!response.Item1.Any() && !response.Item2.Any())
+            {
+                menuItemSyno.Items.Add("None");
+                return;
+            }
+
+            foreach (var syno in response.Item1)
+            {
+                menuItemSyno.Items.Add(NewMenuItem(syno, callBack));
+            }
+
+            menuItemSyno.Items.Add(new System.Windows.Controls.Separator());
+
+            foreach (var syno in response.Item2)
+            {
+                menuItemSyno.Items.Add(NewMenuItem(syno, callBack));
+
+            }
+        }
+
+        private System.Windows.Controls.MenuItem NewMenuItem(string name, Action<string> action)
+        {
+            System.Windows.Controls.MenuItem menuItem = new System.Windows.Controls.MenuItem();
+            menuItem.Header = name;
+            menuItem.Click += new System.Windows.RoutedEventHandler(delegate (Object o, System.Windows.RoutedEventArgs a)
+            {
+                action(name);
+            });
+
+            return menuItem;
         }
 
         private Tuple<List<string>, List<string>> GetSynims(string word)

@@ -68,6 +68,7 @@
     <Compile Include="Code\BaseContextMenue.cs" />
     <Compile Include="Code\CellData.cs" />
     <Compile Include="Code\ContextMenueColumnHeader.cs" />
+    <Compile Include="Code\ContextMenueCurrentCell - Copy.cs" />
     <Compile Include="Code\UnSavedData.cs" />
     <Compile Include="ColumnCustomization.cs">
       <SubType>Form</SubType>

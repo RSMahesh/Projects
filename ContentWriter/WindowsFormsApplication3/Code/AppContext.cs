@@ -20,7 +20,7 @@ namespace WindowsFormsApplication3
 
         public Action ShowWpfRichTextBox;
 
-        public WpfRichTextBox wpfRichTextBox;
+       // public WpfRichTextBox wpfRichTextBox;
 
         public SynonymProvider synonymProvider;
 

@@ -16,9 +16,11 @@ namespace WindowsFormsApplication3
         const string HighLighted = "highlighted";
         AppContext appContext;
         List<RowInfo> rowsInfo = new List<RowInfo>();
-        public Styler(AppContext appContext)
+        WpfRichTextBox wpfRichTextBox;
+        public Styler(AppContext appContext, WpfRichTextBox wpfRichTextBox)
         {
             this.appContext = appContext;
+            this.wpfRichTextBox = wpfRichTextBox;
         }
         public void HighLightRow(int rowId)
         {
@@ -101,9 +103,9 @@ namespace WindowsFormsApplication3
                 }
             }
 
-            appContext.wpfRichTextBox.BackgroundColor = Utility.ToMediaColor(appContext.Theme.BackGroundColor);
-            appContext.wpfRichTextBox.BorderColor = Utility.ToMediaColor(appContext.Theme.CurrentCellBorderColor);
-            appContext.wpfRichTextBox.ForegroundColor = Utility.ToMediaColor(appContext.Theme.ForeColor);
+            wpfRichTextBox.BackgroundColor = Utility.ToMediaColor(appContext.Theme.BackGroundColor);
+            wpfRichTextBox.BorderColor = Utility.ToMediaColor(appContext.Theme.CurrentCellBorderColor);
+            wpfRichTextBox.ForegroundColor = Utility.ToMediaColor(appContext.Theme.ForeColor);
         }
         public void ChangeBackGroundColor(EventArg arg)
         {

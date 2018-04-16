@@ -60,7 +60,7 @@ namespace WindowsFormsApplication3
 
         private void AddRichTextBox()
         {
-            richTextBox = new WpfRichTextBox(this.panel1);
+            richTextBox = new WpfRichTextBox(this.panel1, appContext);
             richTextBox.BackgroundColor = Utility.ToMediaColor(appContext.Theme.BackGroundColor);
             richTextBox.FontSize = 18;
             richTextBox.Text = appContext.dataGridViewTextBoxEditing.Text;

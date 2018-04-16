@@ -113,14 +113,12 @@ namespace WindowsFormsApplication3
         void OnFilter(object sender, EventArgs e)
         {
             Filter filter = new Filter(appContext);
-
             filter.WindowState = FormWindowState.Normal;
             filter.Show();
             var text = appContext.dataGridViewTextBoxEditing.SelectedText;
             filter.ColumnToFilter = appContext.dataGridView.CurrentCell.OwningColumn.Name;
             filter.TextToFilter = text;
             filter.Operation = "Contains";
-
         }
 
         void OnFind(object sender, EventArgs e)

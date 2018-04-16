@@ -18,22 +18,25 @@ using System.Windows.Markup;
 
 namespace WindowsFormsApplication3
 {
-    public class WpfRichTextBox
+    class WpfRichTextBox
     {
         RichTextBox richTextBox = new RichTextBox();
         RichTextBox internalRichTextBox = new RichTextBox();
         ElementHost host = new ElementHost();
+        ContextMenueWpfRichTextBox contextMenueWpfRichTextBox;
         public System.Windows.Controls.SpellingError spellingError;
         public string SpellErrorText;
 
         ContextMenu contextMenu = new ContextMenu();
         MenuItem menuItemSynonyms;
+        SynonymProvider synonymProvider;
 
         bool doNotPublishChangeText = false;
-        public WpfRichTextBox(Control panel)
+        public WpfRichTextBox(Control panel, AppContext appContext)
         {
+            synonymProvider = appContext.synonymProvider;
+            contextMenueWpfRichTextBox = new ContextMenueWpfRichTextBox(richTextBox, appContext);
             ChangeLanguage();
-
             richTextBox.PreviewMouseRightButtonDown += RichTextBox_PreviewMouseRightButtonDown;
             richTextBox.MouseDown += RichTextBox_MouseDown;
             richTextBox.SpellCheck.IsEnabled = true;
@@ -46,40 +49,6 @@ namespace WindowsFormsApplication3
             host.Dock = DockStyle.Fill;
             host.Child = richTextBox;
             panel.Controls.Add(host);
-            AddContextMenu();
-        }
-
-        void AddContextMenu()
-        {
-            //TODO: contect menu the spell suugstion and synonms
-            //richTextBox.ContextMenu = contextMenu;
-
-            MenuItem mm = new MenuItem();
-            mm.Header = "cut";
-            mm.Click += Mm_Click;
-            
-            //richTextBox.ContextMenu.Items.Add(mm);
-            //contextMenu.Items.Add("Copy", OnCopy);
-            //contextMenu.Items.Add("Past", OnPast);
-            //contextMenu.Items.Add("Delete", OnCut);
-
-          
-
-            //contextMenu.Items.Add("-");
-            //menuItemSynonyms = contextMenu.Items.Add("Synonyms");
-            //menuItemSynonyms.Select += MenuItemSynonyms_Select;
-        }
-       
-        private void AddMenuItem(string header, RoutedEventHandler handler)
-        {
-            MenuItem mm = new MenuItem();
-            mm.Header = header;
-            mm.Click += handler;
-        }
-
-        private void Mm_Click(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         public string Text
@@ -143,7 +112,7 @@ namespace WindowsFormsApplication3
                 richTextBox.BorderBrush = new SolidColorBrush(value);
             }
         }
-        
+
         public bool IsSpellErrors()
         {
             TextRange spellErrorRange;
@@ -152,26 +121,27 @@ namespace WindowsFormsApplication3
 
             richTextBox.SelectAll();
             int txtLen = richTextBox.Selection.Text.Length;
-           
+
             for (int i = chrPos; i < txtLen; i++)
             {
                 start_pointer = richTextBox.Document.ContentStart.GetNextInsertionPosition
                     (LogicalDirection.Forward).GetPositionAtOffset(i, LogicalDirection.Forward);
 
                 spellingError = richTextBox.GetSpellingError(start_pointer);
+
                 if (spellingError != null)
                 {
 
                     spellErrorRange = richTextBox.GetSpellingErrorRange(start_pointer);
                     SpellErrorText = spellErrorRange.Text;
                     int errRange = spellErrorRange.Text.Length;
-                    
+
                     string textRun = start_pointer.GetTextInRun(LogicalDirection.Forward);
                     string trimmedString = string.Empty;
                     end_pointer = richTextBox.Document.ContentStart.GetNextInsertionPosition
                         (LogicalDirection.Forward).GetPositionAtOffset(i + errRange, LogicalDirection.Forward);
                     richTextBox.Selection.Select(start_pointer, start_pointer);
-                   // richTextBox.Focus();
+                    // richTextBox.Focus();
 
 
                     Rect screenPos = richTextBox.Selection.Start.GetCharacterRect(LogicalDirection.Forward);
@@ -185,6 +155,7 @@ namespace WindowsFormsApplication3
             return false;
 
         }
+
 
         public bool IsSpellErrorsEx(string text)
         {
@@ -232,7 +203,7 @@ namespace WindowsFormsApplication3
         public bool DoesContainSpellErrors(string text)
         {
             //this.richTextBox.Visibility = Visibility.Hidden;
-        
+
             TextPointer start_pointer, end_pointer;
             int chrPos = 0;
 
@@ -241,16 +212,16 @@ namespace WindowsFormsApplication3
 
             richTextBox.SelectAll();
             int txtLen = richTextBox.Selection.Text.Length;
-          
+
             for (int i = chrPos; i < txtLen; i++)
             {
                 start_pointer = richTextBox.Document.ContentStart.GetNextInsertionPosition
                     (LogicalDirection.Forward).GetPositionAtOffset(i, LogicalDirection.Forward);
 
-              var  spellingError12 = richTextBox.GetSpellingError(start_pointer);
+                var spellingError12 = richTextBox.GetSpellingError(start_pointer);
                 if (spellingError12 != null)
                 {
-                   var spellErrorRange = richTextBox.GetSpellingErrorRange(start_pointer);
+                    var spellErrorRange = richTextBox.GetSpellingErrorRange(start_pointer);
                     return true;
                 }
             }
@@ -298,7 +269,7 @@ namespace WindowsFormsApplication3
         public void LoadCustomDic(Uri customDictionaryUri)
         {
             System.Collections.IList dictionaries = System.Windows.Controls.SpellCheck.GetCustomDictionaries(richTextBox);
-            if(dictionaries.Contains(customDictionaryUri))
+            if (dictionaries.Contains(customDictionaryUri))
             {
                 dictionaries.Remove(customDictionaryUri);
             }
@@ -332,7 +303,7 @@ namespace WindowsFormsApplication3
                 EventContainer.PublishEvent(Events.RichTextBoxTextChanged.ToString(), new EventArg(Text));
             }
         }
-        
+
         public int LineSpacing
         {
             set
@@ -341,7 +312,6 @@ namespace WindowsFormsApplication3
                 p.LineHeight = value;
             }
         }
-
 
         public void HighlightWholeWordAll(string word)
         {
