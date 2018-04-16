@@ -25,7 +25,6 @@ namespace WindowsFormsApplication3
             var highLighted = 0;
             foreach (DataGridViewRow row in appContext.dataGridView.Rows)
             {
-
                 if (row.DefaultCellStyle.BackColor == appContext.Theme.HighlightedRowColor)
                 {
                     highLighted++;
@@ -62,7 +61,7 @@ namespace WindowsFormsApplication3
                 }
             }
 
-            MessageBox.Show(message);
+            MessageBox.Show(message, "Stats1");
         }
 
         public void SetenceCountInBullets(EventArg arg)

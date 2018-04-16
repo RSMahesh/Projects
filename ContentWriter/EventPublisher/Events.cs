@@ -44,7 +44,8 @@ namespace EventPublisher
         ShowCharacterCountForColumn,
         ToggleColumnForzing,
         StatusBarChangeText,
-        ToggleRowsExpansion
+        ExpandCellsToFitContent,
+        ExpandCellToFitContent
 
     }
 }

@@ -25,8 +25,6 @@ namespace WindowsFormsApplication3
             //tag is used to m
             toolStripBtnToggleRowsExpansion.Tag = false;
 
-            
-
             SubScribeEvents();
         }
 
@@ -375,7 +373,6 @@ namespace WindowsFormsApplication3
         private void printToolStripMenuItem_Click(object sender, EventArgs e)
         {
             EventContainer.PublishEvent(EventPublisher.Events.CheckColumnsCausingSaveError.ToString(), new EventArg(Guid.NewGuid(), null));
-
         }
 
         private void spellCheckToolStripMenuItem_Click(object sender, EventArgs e)
@@ -405,8 +402,7 @@ namespace WindowsFormsApplication3
 
         private void toolStripBtnToggleRowsExpansion_Click(object sender, EventArgs e)
         {
-            toolStripBtnToggleRowsExpansion.Tag = !(bool)toolStripBtnToggleRowsExpansion.Tag;
-            EventContainer.PublishEvent(EventPublisher.Events.ToggleRowsExpansion.ToString(), new EventArg(toolStripBtnToggleRowsExpansion.Tag));
+            EventContainer.PublishEvent(EventPublisher.Events.ExpandCellsToFitContent.ToString(), null);
         }
     }
 }

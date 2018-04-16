@@ -78,6 +78,15 @@ namespace WindowsFormsApplication3
                 Utility.CheckDataSavedProperly(appContext.ExcelFilePath);
             }
         }
+
+        public DataGridView GridView
+        {
+            get
+            {
+                return this.dataGridView1;
+            }
+        }
+
         private void SetReadOnly()
         {
             if (Path.GetExtension(appContext.ExcelFilePath) == ".xml")
@@ -113,7 +122,7 @@ namespace WindowsFormsApplication3
                 dataGridView1.RowTemplate.DefaultCellStyle.ForeColor = appContext.Theme.XmlForeColor;
             }
 
-         
+
             //this done because when user clicks on cell first time
             // its moves the cell focus to start as columns width get adusted
             // to avoid that work around is to call IncreaseRowHeight on load
@@ -182,7 +191,8 @@ namespace WindowsFormsApplication3
                 EventContainer.SubscribeEvent(EventPublisher.Events.ToggleAutoSpellCheckMode.ToString(), ToggleAutoSpellCheckMode);
                 EventContainer.SubscribeEvent(EventPublisher.Events.VendorWebSiteSearchSetting.ToString(), ShowVendorWebSiteSearchSetting);
                 EventContainer.SubscribeEvent(EventPublisher.Events.ToggleColumnForzing.ToString(), ToggleColumnForzing);
-                EventContainer.SubscribeEvent(EventPublisher.Events.ToggleRowsExpansion.ToString(), ToggleRowsExpansion);
+                EventContainer.SubscribeEvent(EventPublisher.Events.ExpandCellsToFitContent.ToString(), ExpandCellsToFitContaint);
+    
             }
         }
         private void UnSubscribeEvents()
@@ -538,8 +548,8 @@ namespace WindowsFormsApplication3
                 searchWindow = new Search(this.MdiParent);
             }
 
-          //   searchWindow.MdiParent = this.MdiParent;
-             searchWindow.Show();
+            //   searchWindow.MdiParent = this.MdiParent;
+            searchWindow.Show();
 
             if (!string.IsNullOrEmpty(arg.Arg.ToString()))
             {
@@ -729,7 +739,7 @@ namespace WindowsFormsApplication3
             { }
 
         }
-        private void IncreaseRowHeight(int row, int additionalHeight=0)
+        private void IncreaseRowHeight(int row, int additionalHeight = 0)
         {
             int maxLength = 0;
 
@@ -847,45 +857,27 @@ namespace WindowsFormsApplication3
 
             Process.Start(venderWebSiteSerachSetting.CurrentSetting.Url + valueToSearch);
         }
-        private void ToggleRowsExpansion(EventArg arg)
+        private void ExpandCellsToFitContaint(EventArg arg)
         {
             this.Cursor = Cursors.WaitCursor;
-        //    var expandedRows = (bool)arg.Arg;
-
             foreach (DataGridViewColumn column in dataGridView1.Columns)
             {
-                //TODO; remove commented code if it works fine
-                //if (expandedRows)
-                {
-                    column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                    int colw = column.Width;
-                    column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-                    column.Width = colw;
-                }
-                //else
-                //{
-                //    column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-                //}
+                ExpandCellToFitContaint(new EventArg(column.Index));
             }
 
             this.Cursor = Cursors.Default;
+        }
 
-            //datagrid has calculated it's widths so we can store them
-            //foreach (DataGridViewColumn column in dataGridView1.Columns)
-            //{
+        private void ExpandCellToFitContaint(EventArg arg)
+        {
+            this.Cursor = Cursors.WaitCursor;
+            var colIndex = (int)arg.Arg;
 
-            //        //store autosized widths
-            //        int colw = column.Width;
-            //    //remove autosizing
-            //   column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            //    //set width to calculated by autosize
-            //    column.Width = colw;
-            //}
-
-            //this.Cursor = Cursors.Default;
-
-            return;
-           
+            var column = dataGridView1.Columns[colIndex];
+            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            int colw = column.Width;
+            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            column.Width = colw;
         }
     }
 }

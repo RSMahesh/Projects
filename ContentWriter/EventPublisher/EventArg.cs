@@ -5,6 +5,7 @@ namespace EventPublisher
 {
    public class EventArg
     {
+
        public EventArg(Guid eventId, object arg)
        {
            EventId = eventId;

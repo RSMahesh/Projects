@@ -9,8 +9,8 @@ namespace WindowsFormsApplication3
     class ContextMenueColumnHeader : BaseContextMenue
     {
         ContextMenu contextMenu = new ContextMenu();
-       int headerColumnIndex;
-        public ContextMenueColumnHeader(AppContext appContext):base(appContext)
+        int headerColumnIndex;
+        public ContextMenueColumnHeader(AppContext appContext) : base(appContext)
         {
             AddContextMenu();
         }
@@ -19,7 +19,7 @@ namespace WindowsFormsApplication3
             this.headerColumnIndex = headerColumnIndex;
             UpdateMenu();
             contextMenu.Show(appContext.dataGridView, p);
-           
+
         }
         void AddContextMenu()
         {
@@ -33,8 +33,7 @@ namespace WindowsFormsApplication3
         {
             contextMenu.MenuItems["ToggleColumnForzing"].Text = appContext.dataGridView.Columns[this.headerColumnIndex].Frozen ? "UnForze" : "Forze";
         }
-        
-     
+
         void ShowCharacterCount(object sender, EventArgs e)
         {
             EventContainer.PublishEvent
@@ -49,7 +48,7 @@ namespace WindowsFormsApplication3
 
         }
 
-
+      
         void WordFrequency(object sender, EventArgs e)
         {
             EventContainer.PublishEvent

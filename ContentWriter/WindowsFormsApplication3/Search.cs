@@ -21,17 +21,12 @@ namespace WindowsFormsApplication3
             _mdiPArent = MDIpARENT;
           //  this.MdiParent = _mdiPArent;
             this.Resize += Search_Resize;
-            this.FormClosing += Search_FormClosing;
-        }
-        private void Search_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            this.Hide();
-            e.Cancel = true;
-        }
+       }
+    
         private void Search_Resize(object sender, EventArgs e)
         {
             this.splitContainer1.Width = this.Width - 30;
-            this.splitContainer1.Height = this.Height - 80;
+            this.splitContainer1.Height = this.Height - 100;
         }
         private void btnSearch_Click(object sender, EventArgs e)
         {

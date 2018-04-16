@@ -122,6 +122,7 @@ namespace WindowsFormsApplication3
             EventContainer.PublishEvent
        (EventPublisher.Events.FindText.ToString(), new EventArg(new[] { textToFind, columnName } ));
 
+          
         }
     }
 }
